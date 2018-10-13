@@ -4,7 +4,22 @@
     "exclude": [
       "config/**/*.js",
       "node_modules/**/*.ts",
-      "coverage/lcov-report/*.js"
+      "coverage/lcov-report/*.js",
+      "src/common/**"
     ]
+  },
+  "rules": {
+    "interface-name": false,
+    "ordered-imports": false,
+    "object-literal-sort-keys": false,
+    "no-consecutive-blank-lines": false,
+    "member-access": false,
+    "arrow-parens": false,
+    "curly": false,
+    "max-classes-per-file": false,
+    "member-ordering": false,
+    "variable-name": false,
+    "max-line-length": false,
+    "no-console": false
   }
 }
