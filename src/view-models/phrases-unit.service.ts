@@ -11,9 +11,9 @@ export class PhrasesUnitService {
 
   unitPhrases: UnitPhrase[] = new Array(0);
 
-  constructor(private unitPhraseService: UnitPhraseService,
-              private settingsService: SettingsService,
-              private appService: AppService) {
+  constructor(@Inject private unitPhraseService: UnitPhraseService,
+              @Inject private settingsService: SettingsService,
+              @Inject private appService: AppService) {
     appService.initializeComplete.subscribe(_ => this.getData());
   }
 

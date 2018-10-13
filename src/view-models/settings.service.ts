@@ -138,11 +138,11 @@ export class SettingsService {
   units: string[] = new Array(0);
   parts: string[] = new Array(0);
 
-  constructor(private langService: LanguageService,
-              private userSettingService: UserSettingService,
-              private dictOnlineService: DictOnlineService,
-              private dictNoteService: DictNoteService,
-              private textbookService: TextbookService) { }
+  constructor(@Inject private langService: LanguageService,
+              @Inject private userSettingService: UserSettingService,
+              @Inject private dictOnlineService: DictOnlineService,
+              @Inject private dictNoteService: DictNoteService,
+              @Inject private textbookService: TextbookService) { }
 
   getData(): Observable<void> {
     return forkJoin([this.langService.getData(), this.userSettingService.getDataByUser(userid)]).pipe(

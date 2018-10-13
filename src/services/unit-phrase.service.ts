@@ -1,4 +1,4 @@
-import { Injectable, Inject } from 'react.di';
+import { Injectable } from 'react.di';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UnitPhrase, UnitPhrases } from '../models/unit-phrase';

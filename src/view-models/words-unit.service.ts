@@ -15,10 +15,10 @@ export class WordsUnitService {
   noteToIndex = 0;
   noteIfEmpty = true;
 
-  constructor(private unitWordService: UnitWordService,
-              private settingsService: SettingsService,
-              private appService: AppService,
-              private htmlService: HtmlService) {
+  constructor(@Inject private unitWordService: UnitWordService,
+              @Inject private settingsService: SettingsService,
+              @Inject private appService: AppService,
+              @Inject private htmlService: HtmlService) {
     appService.initializeComplete.subscribe(_ => this.getData());
   }
 
