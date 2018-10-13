@@ -20,6 +20,7 @@
     "member-ordering": false,
     "variable-name": false,
     "max-line-length": false,
-    "no-console": false
+    "no-console": false,
+    "jsx-boolean-value": false
   }
 }

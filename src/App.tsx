@@ -1,7 +1,8 @@
 import * as React from 'react';
 import './App.css';
 
-import logo from './logo.svg';
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
+
 import { Inject, Module } from 'react.di';
 import { WordsUnitService } from './view-models/words-unit.service';
 import { AppService } from './view-models/app.service';
@@ -15,6 +16,17 @@ import { LanguageService } from './services/language.service';
 import { UnitWordService } from './services/unit-word.service';
 import { SettingsService } from './view-models/settings.service';
 
+import WordsUnit from './components/WordsUnit';
+import PhrasesUnit from './components/PhrasesUnit';
+import Settings from './components/Settings';
+
+import 'primereact/resources/themes/nova-light/theme.css';
+import 'primereact/resources/primereact.min.css';
+import 'primeicons/primeicons.css';
+
+import { TabMenu } from 'primereact/tabmenu';
+import { MenuItem } from 'primereact/api';
+
 @Module({
   providers: [
     DictOnlineService, DictOfflineService, DictNoteService, HtmlService, LanguageService,
@@ -22,22 +34,44 @@ import { SettingsService } from './view-models/settings.service';
     PhrasesUnitService, SettingsService, WordsUnitService,
   ],
 })
-class App extends React.Component {
+export default class App extends React.Component<{}, {items: MenuItem[], activeItem: MenuItem | null}> {
   @Inject appService!: AppService;
 
-  public render() {
+  constructor(props: {}) {
+    super(props);
+    this.state = {
+      items: [
+        {label: 'Words in Unit', icon: 'pi pi-fw pi-pencil', url: '/words-unit'},
+        {label: 'Phrases in Unit', icon: 'pi pi-fw pi-calendar', url: '/phrases-unit'},
+        {label: 'Settings', icon: 'pi pi-fw pi-cog', url: '/settings'},
+      ],
+      activeItem: null
+    };
+  }
+
+  render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.tsx</code> and save to reload.
-        </p>
-      </div>
+      <BrowserRouter>
+        <div className="App">
+          <div className="content-section implementation">
+            <TabMenu model={this.state.items} activeItem={this.state.activeItem} onTabChange={this.onTabChange} />
+          </div>
+          <Switch>
+            <Route path="/" component={WordsUnit} />
+            <Route path="/phrases-unit" component={PhrasesUnit} exact />
+            <Route path="/phrases-unit-detail/:id" component={PhrasesUnit} exact />
+            <Route path="/words-unit" component={WordsUnit} exact />
+            <Route path="/words-unit-detail/:id" component={WordsUnit} exact />
+            <Route path="/words-dict/:index" component={WordsUnit} exact />
+            <Route path="/settings" component={Settings} exact />
+          </Switch>
+        </div>
+      </BrowserRouter>
     );
   }
-}
 
-export default App;
+  onTabChange = (e: { originalEvent: Event, value: any}) => {
+    this.setState({activeItem: e.value});
+  };
+
+}
