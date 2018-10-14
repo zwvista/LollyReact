@@ -25,7 +25,6 @@ import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 
 import { TabMenu } from 'primereact/tabmenu';
-import { MenuItem } from 'primereact/api';
 import history from './view-models/history';
 
 
@@ -59,6 +58,7 @@ export default class App extends React.Component<any, any> {
     return (
       <Router history={history}>
         <div className="App">
+          <h2>Lolly React</h2>
           <div className="content-section implementation">
             <TabMenu model={this.state.items} activeItem={this.state.activeItem} onTabChange={this.onTabChange} />
           </div>

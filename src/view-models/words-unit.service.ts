@@ -5,7 +5,7 @@ import { UnitWord } from '../models/unit-word';
 import { AppService } from './app.service';
 import { Observable ,  EMPTY as empty } from 'rxjs';
 import { HtmlService } from '../services/html.service';
-import { mergeMap } from 'rxjs/operators';
+import { concatMap, mergeMap, map } from 'rxjs/operators';
 
 @Injectable
 export class WordsUnitService {
@@ -19,15 +19,14 @@ export class WordsUnitService {
               @Inject private settingsService: SettingsService,
               @Inject private appService: AppService,
               @Inject private htmlService: HtmlService) {
-    appService.initializeComplete.subscribe(_ => this.getData());
   }
 
-  getData() {
-    if (this.appService.isInitialized) {
-      this.unitWordService.getDataByTextbookUnitPart(this.settingsService.USTEXTBOOKID,
-        this.settingsService.USUNITPARTFROM, this.settingsService.USUNITPARTTO)
-        .subscribe(res => this.unitWords = res);
-    }
+  getData(): Observable<UnitWord[]> {
+    return this.appService.initializeComplete.pipe(
+      concatMap(_ => this.unitWordService.getDataByTextbookUnitPart(this.settingsService.USTEXTBOOKID,
+        this.settingsService.USUNITPARTFROM, this.settingsService.USUNITPARTTO)),
+      map(res => this.unitWords = res),
+    );
   }
 
   create(item: UnitWord): Observable<number | any[]> {
