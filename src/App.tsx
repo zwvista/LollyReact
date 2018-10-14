@@ -36,10 +36,10 @@ import history from './view-models/history';
     PhrasesUnitService, SettingsService, WordsUnitService,
   ],
 })
-export default class App extends React.Component<{}, {items: MenuItem[], activeItem: MenuItem | null}> {
+export default class App extends React.Component<any, any> {
   @Inject appService!: AppService;
 
-  constructor(props: {}) {
+  constructor(props: any) {
     super(props);
     this.state = {
       items: [
@@ -76,7 +76,7 @@ export default class App extends React.Component<{}, {items: MenuItem[], activeI
     );
   }
 
-  onTabChange = (e: { originalEvent: Event, value: any}) => {
+  onTabChange = (e: any) => {
     this.setState({activeItem: e.value});
     history.push(e.value.target);
   };
