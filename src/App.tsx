@@ -1,7 +1,7 @@
 import * as React from 'react';
 import './App.css';
 
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { Router, Route, Switch } from 'react-router-dom'
 
 import { Inject, Module } from 'react.di';
 import { WordsUnitService } from './view-models/words-unit.service';
@@ -26,6 +26,8 @@ import 'primeicons/primeicons.css';
 
 import { TabMenu } from 'primereact/tabmenu';
 import { MenuItem } from 'primereact/api';
+import history from './view-models/history';
+
 
 @Module({
   providers: [
@@ -41,23 +43,27 @@ export default class App extends React.Component<{}, {items: MenuItem[], activeI
     super(props);
     this.state = {
       items: [
-        {label: 'Words in Unit', icon: 'pi pi-fw pi-pencil', url: '/words-unit'},
-        {label: 'Phrases in Unit', icon: 'pi pi-fw pi-calendar', url: '/phrases-unit'},
-        {label: 'Settings', icon: 'pi pi-fw pi-cog', url: '/settings'},
+        {label: 'Words in Unit', icon: 'pi pi-fw pi-pencil', target: '/words-unit'},
+        {label: 'Phrases in Unit', icon: 'pi pi-fw pi-calendar', target: '/phrases-unit'},
+        {label: 'Settings', icon: 'pi pi-fw pi-cog', target: '/settings'},
       ],
       activeItem: null
     };
   }
 
+  componentDidMount() {
+    console.log(this.appService);
+  }
+
   render() {
     return (
-      <BrowserRouter>
+      <Router history={history}>
         <div className="App">
           <div className="content-section implementation">
             <TabMenu model={this.state.items} activeItem={this.state.activeItem} onTabChange={this.onTabChange} />
           </div>
           <Switch>
-            <Route path="/" component={WordsUnit} />
+            <Route path="/" component={WordsUnit} exact />
             <Route path="/phrases-unit" component={PhrasesUnit} exact />
             <Route path="/phrases-unit-detail/:id" component={PhrasesUnit} exact />
             <Route path="/words-unit" component={WordsUnit} exact />
@@ -66,12 +72,13 @@ export default class App extends React.Component<{}, {items: MenuItem[], activeI
             <Route path="/settings" component={Settings} exact />
           </Switch>
         </div>
-      </BrowserRouter>
+      </Router>
     );
   }
 
   onTabChange = (e: { originalEvent: Event, value: any}) => {
     this.setState({activeItem: e.value});
+    history.push(e.value.target);
   };
 
 }
