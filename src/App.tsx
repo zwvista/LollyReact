@@ -23,6 +23,7 @@ import Settings from './components/Settings';
 import 'primereact/resources/themes/nova-light/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
+import "font-awesome/css/font-awesome.min.css";
 
 import { TabMenu } from 'primereact/tabmenu';
 import history from './view-models/history';
@@ -44,9 +45,9 @@ export default class App extends React.Component<any, any> {
   constructor(props: any) {
     super(props);
     const items = [
-      {label: 'Words in Unit', icon: 'pi pi-fw pi-pencil', target: '/words-unit'},
-      {label: 'Phrases in Unit', icon: 'pi pi-fw pi-calendar', target: '/phrases-unit'},
-      {label: 'Settings', icon: 'pi pi-fw pi-cog', target: '/settings'},
+      {label: 'Words in Unit', icon: 'fa fa-bus fa-lg', target: '/words-unit'},
+      {label: 'Phrases in Unit', icon: 'fa fa-plane fa-lg', target: '/phrases-unit'},
+      {label: 'Settings', icon: 'fa fa-cog fa-lg', target: '/settings'},
     ];
     const activeItem = items.find((value: any) => window.location.href.includes(value.target));
     this.state = {

@@ -17,8 +17,8 @@ export default class PhrasesUnit extends React.Component<any, any> {
 
   actionTemplate(rowData: any, column: any) {
     return <div>
-      <Button label="Delete" className="p-button-danger"/>
-      <Button label="Edit" />
+      <Button style={{marginRight: '.5em'}} icon="fa fa-trash" className="p-button-danger"/>
+      <Button style={{marginRight: '.5em'}} icon="fa fa-edit"/>
     </div>;
   }
 
