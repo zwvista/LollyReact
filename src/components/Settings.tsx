@@ -18,9 +18,10 @@ export default class Settings extends React.Component<any, any> {
     return this.settingsService.parts[this.settingsService.USPARTTO - 1];
   }
 
-  unitPartTo: boolean;
-
   componentDidMount() {
+    this.state = {
+      unitPartTo: false,
+    };
     this.settingsService.getData().subscribe(_ => this.updateTextbook());
   }
 
@@ -74,14 +75,14 @@ export default class Settings extends React.Component<any, any> {
         </div>
         <div className="row">
           <label className="col-2 control-label">
-            <input type="checkbox" checked={this.unitPartTo}/>To:
+            <input type="checkbox" checked={this.state.unitPartTo} onChange={this.onUnitPartToChange}/>To:
           </label>
-          <select className="col-2 form-control" disabled={!this.unitPartTo} value={this.unitTo} onChange={this.onUnitToChange}>
+          <select className="col-2 form-control" disabled={!this.state.unitPartTo} value={this.unitTo} onChange={this.onUnitToChange}>
           {
             this.settingsService.units.map(unit => <option key={unit} value={unit}>{unit}</option>)
           }
           </select>
-          <select className="col-2 form-control" disabled={!this.unitPartTo} value={this.partTo} onChange={this.onPartToChange}>
+          <select className="col-2 form-control" disabled={!this.state.unitPartTo} value={this.partTo} onChange={this.onPartToChange}>
             {
               this.settingsService.parts.map(part => <option key={part} value={part}>{part}</option>)
             }
@@ -121,7 +122,7 @@ export default class Settings extends React.Component<any, any> {
     this.settingsService.USUNITFROM = value;
     this.settingsService.updateUnitFrom()
       .subscribe(_ => {
-        if (!this.unitPartTo || this.settingsService.isInvalidUnitPart) {
+        if (!this.state.unitPartTo || this.settingsService.isInvalidUnitPart) {
           this.updateUnitPartTo();
         }
         this.updateState();
@@ -133,11 +134,16 @@ export default class Settings extends React.Component<any, any> {
     this.settingsService.USPARTFROM = value;
     this.settingsService.updatePartFrom()
       .subscribe(_ => {
-        if (!this.unitPartTo || this.settingsService.isInvalidUnitPart) {
+        if (!this.state.unitPartTo || this.settingsService.isInvalidUnitPart) {
           this.updateUnitPartTo();
         }
         this.updateState();
       });
+  };
+
+  onUnitPartToChange = (event: any) => {
+    this.setState({unitPartTo: !this.state.unitPartTo});
+    this.updateState();
   };
 
   onUnitToChange = (event: any) => {
@@ -165,7 +171,7 @@ export default class Settings extends React.Component<any, any> {
   };
 
   updateTextbook() {
-    this.unitPartTo = !this.settingsService.isSingleUnitPart;
+    this.setState({unitPartTo: !this.settingsService.isSingleUnitPart});
     this.updateState();
   }
 
