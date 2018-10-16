@@ -4,6 +4,7 @@ import { SettingsService } from './settings.service';
 import { UnitPhrase } from '../models/unit-phrase';
 import { UnitPhraseService } from '../services/unit-phrase.service';
 import { Observable } from 'rxjs';
+import { concatMap, map } from 'rxjs/operators';
 
 
 @Injectable
@@ -14,15 +15,14 @@ export class PhrasesUnitService {
   constructor(@Inject private unitPhraseService: UnitPhraseService,
               @Inject private settingsService: SettingsService,
               @Inject private appService: AppService) {
-    appService.initializeComplete.subscribe(_ => this.getData());
   }
 
   getData() {
-    if (this.appService.isInitialized) {
-      this.unitPhraseService.getDataByTextbookUnitPart(this.settingsService.USTEXTBOOKID,
-        this.settingsService.USUNITPARTFROM, this.settingsService.USUNITPARTTO)
-        .subscribe(res => this.unitPhrases = res);
-    }
+    return this.appService.initializeComplete.pipe(
+      concatMap(_ => this.unitPhraseService.getDataByTextbookUnitPart(this.settingsService.USTEXTBOOKID,
+        this.settingsService.USUNITPARTFROM, this.settingsService.USUNITPARTTO)),
+      map(res => this.unitPhrases = res),
+    );
   }
 
   create(item: UnitPhrase): Observable<number | any[]> {

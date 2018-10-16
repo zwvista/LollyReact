@@ -38,7 +38,7 @@ export default class WordsUnit extends React.Component<any, any> {
           <Column field="SEQNUM" header="SEQNUM" />
           <Column field="WORD" header="WORD" />
           <Column field="NOTE" header="NOTE" />
-          <Column body={this.actionTemplate} />
+          <Column body={this.actionTemplate} header="ACTIONS" />
         </DataTable>
       </div>
     );
