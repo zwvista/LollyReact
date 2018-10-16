@@ -18,10 +18,11 @@ export default class Settings extends React.Component<any, any> {
     return this.settingsService.parts[this.settingsService.USPARTTO - 1];
   }
 
+  state = {
+    unitPartTo: false,
+  };
+
   componentDidMount() {
-    this.state = {
-      unitPartTo: false,
-    };
     this.settingsService.getData().subscribe(_ => this.updateTextbook());
   }
 

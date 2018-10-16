@@ -9,10 +9,6 @@ import { Button } from 'primereact/button';
 export default class WordsUnit extends React.Component<any, any> {
   @Inject wordsUnitService: WordsUnitService;
 
-  state: any = {
-    wordsUnitService: null,
-  };
-
   componentDidMount() {
     this.wordsUnitService.getData().subscribe(
       _ => this.setState({wordsUnitService: this.wordsUnitService})
@@ -29,7 +25,7 @@ export default class WordsUnit extends React.Component<any, any> {
   render() {
     return (
       <div>
-        <DataTable value={this.wordsUnitService ? this.wordsUnitService.unitWords : []}
+        <DataTable value={this.wordsUnitService.unitWords}
                    selectionMode="single" autoLayout={true}>
           <Column rowReorder={true} style={{width: '3em'}} />
           <Column field="ID" header="ID" />

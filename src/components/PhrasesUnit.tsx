@@ -9,10 +9,6 @@ import { Button } from 'primereact/button';
 export default class PhrasesUnit extends React.Component<any, any> {
   @Inject phrasesUnitService: PhrasesUnitService;
 
-  state: any = {
-    phrasesUnitService: null,
-  };
-
   componentDidMount() {
     this.phrasesUnitService.getData().subscribe(
       _ => this.setState({phrasesUnitService: this.phrasesUnitService})
@@ -29,7 +25,7 @@ export default class PhrasesUnit extends React.Component<any, any> {
   render() {
     return (
       <div>
-        <DataTable value={this.phrasesUnitService ? this.phrasesUnitService.unitPhrases : []}
+        <DataTable value={this.phrasesUnitService.unitPhrases}
                    selectionMode="single" autoLayout={true}>
           <Column rowReorder={true} style={{width: '3em'}} />
           <Column field="ID" header="ID" />
