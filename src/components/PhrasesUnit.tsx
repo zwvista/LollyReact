@@ -29,7 +29,7 @@ export default class PhrasesUnit extends React.Component<any, any> {
   render() {
     return (
       <div>
-        <DataTable value={this.state.phrasesUnitService ? this.state.phrasesUnitService.unitPhrases : []}
+        <DataTable value={this.phrasesUnitService ? this.phrasesUnitService.unitPhrases : []}
                    selectionMode="single" autoLayout={true}>
           <Column rowReorder={true} style={{width: '3em'}} />
           <Column field="ID" header="ID" />

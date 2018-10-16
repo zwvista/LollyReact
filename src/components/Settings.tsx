@@ -93,26 +93,26 @@ export default class Settings extends React.Component<any, any> {
 
   onLangChange = (event: any) => {
     const index = event.target.selectedIndex;
-    this.settingsService.setSelectedLangIndex(index).subscribe();
+    this.settingsService.setSelectedLangIndex(index).subscribe(_ => this.updateState());
     this.settingsService.updateLang().subscribe();
   };
 
   onDictOnlineChange = (event: any) => {
     const index = event.target.selectedIndex;
     this.settingsService.selectedDictOnlineIndex = index;
-    this.settingsService.updateDictOnline().subscribe();
+    this.settingsService.updateDictOnline().subscribe(_ => this.updateState());
   };
 
   onDictNoteChange = (event: any) => {
     const index = event.target.selectedIndex;
     this.settingsService.selectedDictNoteIndex = index;
-    this.settingsService.updateDictNote().subscribe();
+    this.settingsService.updateDictNote().subscribe(_ => this.updateState());
   };
 
   onTextbookChange = (event: any) => {
     const index = event.target.selectedIndex;
     this.settingsService.selectedTextbookIndex = index;
-    this.settingsService.updateTextbook().subscribe();
+    this.settingsService.updateTextbook().subscribe(_ => this.updateState());
     this.updateTextbook();
   };
 
@@ -124,6 +124,7 @@ export default class Settings extends React.Component<any, any> {
         if (!this.unitPartTo || this.settingsService.isInvalidUnitPart) {
           this.updateUnitPartTo();
         }
+        this.updateState();
       });
   };
 
@@ -135,6 +136,7 @@ export default class Settings extends React.Component<any, any> {
         if (!this.unitPartTo || this.settingsService.isInvalidUnitPart) {
           this.updateUnitPartTo();
         }
+        this.updateState();
       });
   };
 
@@ -146,6 +148,7 @@ export default class Settings extends React.Component<any, any> {
         if (this.settingsService.isInvalidUnitPart) {
           this.updateUnitPartFrom();
         }
+        this.updateState();
       });
   };
 
@@ -157,11 +160,13 @@ export default class Settings extends React.Component<any, any> {
         if (this.settingsService.isInvalidUnitPart) {
           this.updateUnitPartFrom();
         }
+        this.updateState();
       });
   };
 
   updateTextbook() {
     this.unitPartTo = !this.settingsService.isSingleUnitPart;
+    this.updateState();
   }
 
   updateUnitPartFrom() {
@@ -173,6 +178,7 @@ export default class Settings extends React.Component<any, any> {
       this.settingsService.USPARTFROM = this.settingsService.USPARTTO;
       this.settingsService.updatePartFrom().subscribe();
     }
+    this.updateState();
   }
 
   updateUnitPartTo() {
@@ -184,6 +190,11 @@ export default class Settings extends React.Component<any, any> {
       this.settingsService.USPARTTO = this.settingsService.USPARTFROM;
       this.settingsService.updatePartTo().subscribe();
     }
+    this.updateState();
+  }
+
+  updateState() {
+    this.setState({settingsService: this.settingsService});
   }
 
 };

@@ -29,7 +29,7 @@ export default class WordsUnit extends React.Component<any, any> {
   render() {
     return (
       <div>
-        <DataTable value={this.state.wordsUnitService ? this.state.wordsUnitService.unitWords : []}
+        <DataTable value={this.wordsUnitService ? this.wordsUnitService.unitWords : []}
                    selectionMode="single" autoLayout={true}>
           <Column rowReorder={true} style={{width: '3em'}} />
           <Column field="ID" header="ID" />
