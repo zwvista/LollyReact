@@ -27,6 +27,9 @@ import 'primeicons/primeicons.css';
 import { TabMenu } from 'primereact/tabmenu';
 import history from './view-models/history';
 
+import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.css';
+
 
 @Module({
   providers: [
