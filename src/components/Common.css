@@ -1,0 +1,7 @@
+.button-margin-right {
+    margin-right: .5em !important;
+}
+
+.form-inline label{
+    justify-content: left !important;
+}

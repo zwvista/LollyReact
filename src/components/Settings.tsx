@@ -1,9 +1,12 @@
 import * as React from 'react';
 import { Inject } from 'react.di';
 import { SettingsService } from '../view-models/settings.service';
+import './Common.css'
+import { Subscription } from 'rxjs';
 
 export default class Settings extends React.Component<any, any> {
   @Inject settingsService: SettingsService;
+  subscription = new Subscription();
 
   get unitFrom() {
     return this.settingsService.units[this.settingsService.USUNITFROM - 1];
@@ -23,47 +26,51 @@ export default class Settings extends React.Component<any, any> {
   };
 
   componentDidMount() {
-    this.settingsService.getData().subscribe(_ => this.updateTextbook());
+    this.subscription.add(this.settingsService.getData().subscribe(_ => this.updateTextbook()));
+  }
+
+  componentWillUnmount() {
+    this.subscription.unsubscribe();
   }
 
   render() {
     return this.settingsService.selectedLang ? (
-      <div className="container">
-        <div className="row">
-          <label className="col-2 control-label">Languages:</label>
-          <select className="col-4 form-control" value={this.settingsService.selectedLang.ID} onChange={this.onLangChange}>
+      <div className="container mt-2">
+        <div className="form-inline mb-2">
+          <label htmlFor="lang" className="col-2 control-label">Languages:</label>
+          <select id="lang" className="col-4 form-control" value={this.settingsService.selectedLang.ID} onChange={this.onLangChange}>
           {
             this.settingsService.languages.map(lang => <option key={lang.ID} value={lang.ID}>{lang.NAME}</option>)
           }
           </select>
         </div>
-        <div className="row">
-          <label className="col-2 control-label">Dictionary(Online):</label>
-          <select className="col-4 form-control" value={this.settingsService.selectedDictOnline.ID} onChange={this.onDictOnlineChange}>
+        <div className="form-inline mb-2">
+          <label htmlFor="dictOnlne" className="col-2 control-label">Dictionary(Online):</label>
+          <select id="dictOnlne" className="col-4 form-control" value={this.settingsService.selectedDictOnline.ID} onChange={this.onDictOnlineChange}>
           {
             this.settingsService.dictsOnline.map(dict => <option key={dict.ID} value={dict.ID}>{dict.DICTNAME}</option>)
           }
           </select>
         </div>
-        <div className="row">
-          <label className="col-2 control-label">Dictionary(Note):</label>
-          <select className="col-4 form-control" value={this.settingsService.selectedDictNote && this.settingsService.selectedDictNote.ID} onChange={this.onDictNoteChange}>
+        <div className="form-inline mb-2">
+          <label htmlFor="dictNote" className="col-2 control-label">Dictionary(Note):</label>
+          <select id="dictNote" className="col-4 form-control" value={this.settingsService.selectedDictNote ? this.settingsService.selectedDictNote.ID : ''} onChange={this.onDictNoteChange}>
           {
             this.settingsService.dictsNote.map(dict => <option key={dict.ID} value={dict.ID}>{dict.DICTNAME}</option>)
           }
           </select>
         </div>
-        <div className=" row">
-          <label className="col-2 control-label">Textbook:</label>
-          <select className="col-4 form-control" value={this.settingsService.selectedTextbook.ID} onChange={this.onTextbookChange}>
+        <div className="form-inline mb-2">
+          <label htmlFor="textbook" className="col-2 control-label">Textbook:</label>
+          <select id="textbook" className="col-4 form-control" value={this.settingsService.selectedTextbook.ID} onChange={this.onTextbookChange}>
           {
             this.settingsService.textbooks.map(textbook => <option key={textbook.ID} value={textbook.ID}>{textbook.NAME}</option>)
           }
           </select>
         </div>
-        <div className="row">
-          <label className="col-2 control-label">Unit:</label>
-          <select className="col-2 form-control" value={this.unitFrom} onChange={this.onUnitFromChange}>
+        <div className="form-inline mb-2">
+          <label htmlFor="unitFrom" className="col-2 control-label">Unit:</label>
+          <select id="unitFrom" className="col-2 form-control" value={this.unitFrom} onChange={this.onUnitFromChange}>
           {
             this.settingsService.units.map(unit => <option key={unit} value={unit}>{unit}</option>)
           }
@@ -74,11 +81,11 @@ export default class Settings extends React.Component<any, any> {
           }
           </select>
         </div>
-        <div className="row">
-          <label className="col-2 control-label">
+        <div className="form-inline mb-2">
+          <label htmlFor="unitTo" className="col-2 control-label">
             <input type="checkbox" checked={this.state.unitPartTo} onChange={this.onUnitPartToChange}/>To:
           </label>
-          <select className="col-2 form-control" disabled={!this.state.unitPartTo} value={this.unitTo} onChange={this.onUnitToChange}>
+          <select id="unitTo" className="col-2 form-control" disabled={!this.state.unitPartTo} value={this.unitTo} onChange={this.onUnitToChange}>
           {
             this.settingsService.units.map(unit => <option key={unit} value={unit}>{unit}</option>)
           }
@@ -95,51 +102,51 @@ export default class Settings extends React.Component<any, any> {
 
   onLangChange = (event: any) => {
     const index = event.target.selectedIndex;
-    this.settingsService.setSelectedLangIndex(index).subscribe(_ => this.updateState());
+    this.subscription.add(this.settingsService.setSelectedLangIndex(index).subscribe(_ => this.updateState()));
     this.settingsService.updateLang().subscribe();
   };
 
   onDictOnlineChange = (event: any) => {
     const index = event.target.selectedIndex;
     this.settingsService.selectedDictOnlineIndex = index;
-    this.settingsService.updateDictOnline().subscribe(_ => this.updateState());
+    this.subscription.add(this.settingsService.updateDictOnline().subscribe(_ => this.updateState()));
   };
 
   onDictNoteChange = (event: any) => {
     const index = event.target.selectedIndex;
     this.settingsService.selectedDictNoteIndex = index;
-    this.settingsService.updateDictNote().subscribe(_ => this.updateState());
+    this.subscription.add(this.settingsService.updateDictNote().subscribe(_ => this.updateState()));
   };
 
   onTextbookChange = (event: any) => {
     const index = event.target.selectedIndex;
     this.settingsService.selectedTextbookIndex = index;
-    this.settingsService.updateTextbook().subscribe(_ => this.updateState());
+    this.subscription.add(this.settingsService.updateTextbook().subscribe(_ => this.updateState()));
     this.updateTextbook();
   };
 
   onUnitFromChange = (event: any) => {
     const value = +event.target.value;
     this.settingsService.USUNITFROM = value;
-    this.settingsService.updateUnitFrom()
+    this.subscription.add(this.settingsService.updateUnitFrom()
       .subscribe(_ => {
         if (!this.state.unitPartTo || this.settingsService.isInvalidUnitPart) {
           this.updateUnitPartTo();
         }
         this.updateState();
-      });
+      }));
   };
 
   onPartFromChange = (event: any) => {
     const value = +event.target.value;
     this.settingsService.USPARTFROM = value;
-    this.settingsService.updatePartFrom()
+    this.subscription.add(this.settingsService.updatePartFrom()
       .subscribe(_ => {
         if (!this.state.unitPartTo || this.settingsService.isInvalidUnitPart) {
           this.updateUnitPartTo();
         }
         this.updateState();
-      });
+      }));
   };
 
   onUnitPartToChange = (event: any) => {
@@ -150,25 +157,25 @@ export default class Settings extends React.Component<any, any> {
   onUnitToChange = (event: any) => {
     const value = +event.target.value;
     this.settingsService.USUNITTO = value;
-    this.settingsService.updateUnitTo()
+    this.subscription.add(this.settingsService.updateUnitTo()
       .subscribe(_ => {
         if (this.settingsService.isInvalidUnitPart) {
           this.updateUnitPartFrom();
         }
         this.updateState();
-      });
+      }));
   };
 
   onPartToChange = (event: any) => {
     const value = +event.target.value;
     this.settingsService.USPARTTO = value;
-    this.settingsService.updatePartTo()
+    this.subscription.add(this.settingsService.updatePartTo()
       .subscribe(_ => {
         if (this.settingsService.isInvalidUnitPart) {
           this.updateUnitPartFrom();
         }
         this.updateState();
-      });
+      }));
   };
 
   updateTextbook() {

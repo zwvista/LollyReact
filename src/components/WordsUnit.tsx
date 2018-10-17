@@ -4,21 +4,27 @@ import { Inject } from 'react.di';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
-
+import './Common.css'
+import { Subscription } from 'rxjs';
 
 export default class WordsUnit extends React.Component<any, any> {
   @Inject wordsUnitService: WordsUnitService;
+  subscription = new Subscription();
 
   componentDidMount() {
-    this.wordsUnitService.getData().subscribe(
+    this.subscription.add(this.wordsUnitService.getData().subscribe(
       _ => this.setState({wordsUnitService: this.wordsUnitService})
-    );
+    ));
+  }
+
+  componentWillUnmount() {
+    this.subscription.unsubscribe();
   }
 
   actionTemplate(rowData: any, column: any) {
     return <div>
-      <Button style={{marginRight: '.5em'}} icon="fa fa-trash" className="p-button-danger"/>
-      <Button style={{marginRight: '.5em'}} icon="fa fa-edit" />
+      <Button className="p-button-danger button-margin-right" icon="fa fa-trash" />
+      <Button className="button-margin-right" icon="fa fa-edit"/>
     </div>;
   }
 
