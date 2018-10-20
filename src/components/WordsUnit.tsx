@@ -9,6 +9,8 @@ import { interval, Subscription } from 'rxjs';
 import { Toolbar } from 'primereact/toolbar';
 import { InputText } from 'primereact/inputtext';
 import { KeyboardEvent, SyntheticEvent } from 'react';
+import history from '../view-models/history';
+import { UnitWord } from '../models/unit-word';
 
 export default class WordsUnit extends React.Component<any, any> {
   @Inject wordsUnitService: WordsUnitService;
@@ -28,10 +30,10 @@ export default class WordsUnit extends React.Component<any, any> {
     this.subscription.unsubscribe();
   }
 
-  actionTemplate(rowData: any, column: any) {
+  actionTemplate(rowData: UnitWord, column: any) {
     return <div>
       <Button className="p-button-danger button-margin-right" icon="fa fa-trash" />
-      <Button className="button-margin-right" icon="fa fa-edit"/>
+      <Button className="button-margin-right" icon="fa fa-edit" onClick={e => history.push('/words-unit-detail/' + rowData.ID)}/>
       <Button className="button-margin-right" label="Retrieve Note"/>
       <Button className="button-margin-right" icon="fa fa-copy"/>
       <Button className="button-margin-right" label="Dictionary"/>
@@ -43,7 +45,7 @@ export default class WordsUnit extends React.Component<any, any> {
       <div>
         <Toolbar>
           <div className="p-toolbar-group-left">
-            <Button className="button-margin-right" label="Add" icon="fa fa-plus" />
+            <Button className="button-margin-right" label="Add" icon="fa fa-plus" onClick={e => history.push('/words-unit-detail/0')} />
             <Button className="button-margin-right" label="Refresh" icon="fa fa-refresh" />
             <Button className="button-margin-right" label="Retrieve All Notes" />
             <Button className="button-margin-right" label="Retrieve Notes If Empty" />
@@ -51,7 +53,7 @@ export default class WordsUnit extends React.Component<any, any> {
         </Toolbar>
         <span className="p-float-label">
           <InputText id="float-input" type="text" value={this.state.newWord}
-                     onChange={this.handleNewWordChange} onKeyPress={this.handleNewWordKeyPress}/>
+                     onChange={this.onNewWordChange} onKeyPress={this.onNewWordKeyPress}/>
           <label htmlFor="float-input">New Word</label>
         </span>
         <DataTable value={this.wordsUnitService.unitWords}
@@ -69,11 +71,11 @@ export default class WordsUnit extends React.Component<any, any> {
     );
   }
 
-  handleNewWordChange = (e: SyntheticEvent) => {
+  onNewWordChange = (e: SyntheticEvent) => {
     this.setState({newWord: (e.nativeEvent.target as HTMLInputElement).value});
   };
 
-  handleNewWordKeyPress = (e: KeyboardEvent) => {
+  onNewWordKeyPress = (e: KeyboardEvent) => {
     if (e.key !== 'Enter' || !this.state.newWord) return;
     const o = this.wordsUnitService.newUnitWord();
     o.WORD = this.state.newWord;

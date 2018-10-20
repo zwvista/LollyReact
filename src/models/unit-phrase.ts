@@ -4,7 +4,7 @@ export class UnitPhrases {
   VUNITPHRASES!: UnitPhrase[];
 }
 export class UnitPhrase {
-  ID!: number;
+  ID = 0;
   TEXTBOOKID!: number;
   UNIT!: number;
   PART!: number;

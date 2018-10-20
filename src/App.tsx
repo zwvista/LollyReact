@@ -17,6 +17,7 @@ import { UnitWordService } from './services/unit-word.service';
 import { SettingsService } from './view-models/settings.service';
 
 import WordsUnit from './components/WordsUnit';
+import WordsUnitDetail from './components/WordsUnitDetail';
 import PhrasesUnit from './components/PhrasesUnit';
 import Settings from './components/Settings';
 
@@ -24,6 +25,7 @@ import 'primereact/resources/themes/nova-light/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import "font-awesome/css/font-awesome.min.css";
+import "primeflex/primeflex.css"
 
 import { TabMenu } from 'primereact/tabmenu';
 import history from './view-models/history';
@@ -66,14 +68,14 @@ export default class App extends React.Component<any, any> {
         <div className="App">
           <h2>Lolly React</h2>
           <div className="content-section implementation">
-            <TabMenu model={this.state.items} activeItem={this.state.activeItem} onTabChange={this.handleTabChange} />
+            <TabMenu model={this.state.items} activeItem={this.state.activeItem} onTabChange={this.onTabChange} />
           </div>
           <Switch>
             <Route path="/" component={WordsUnit} exact />
             <Route path="/phrases-unit" component={PhrasesUnit} exact />
             <Route path="/phrases-unit-detail/:id" component={PhrasesUnit} exact />
             <Route path="/words-unit" component={WordsUnit} exact />
-            <Route path="/words-unit-detail/:id" component={WordsUnit} exact />
+            <Route path="/words-unit-detail/:id" component={WordsUnitDetail} exact />
             <Route path="/words-dict/:index" component={WordsUnit} exact />
             <Route path="/settings" component={Settings} exact />
           </Switch>
@@ -82,7 +84,7 @@ export default class App extends React.Component<any, any> {
     );
   }
 
-  handleTabChange = (e: any) => {
+  onTabChange = (e: any) => {
     this.setState({activeItem: e.value});
     history.push(e.value.target);
   };
