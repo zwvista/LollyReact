@@ -19,6 +19,7 @@ import { SettingsService } from './view-models/settings.service';
 import WordsUnit from './components/WordsUnit';
 import WordsUnitDetail from './components/WordsUnitDetail';
 import PhrasesUnit from './components/PhrasesUnit';
+import PhrasesUnitDetail from './components/PhrasesUnitDetail';
 import Settings from './components/Settings';
 
 import 'primereact/resources/themes/nova-light/theme.css';
@@ -73,7 +74,7 @@ export default class App extends React.Component<any, any> {
           <Switch>
             <Route path="/" component={WordsUnit} exact />
             <Route path="/phrases-unit" component={PhrasesUnit} exact />
-            <Route path="/phrases-unit-detail/:id" component={PhrasesUnit} exact />
+            <Route path="/phrases-unit-detail/:id" component={PhrasesUnitDetail} exact />
             <Route path="/words-unit" component={WordsUnit} exact />
             <Route path="/words-unit-detail/:id" component={WordsUnitDetail} exact />
             <Route path="/words-dict/:index" component={WordsUnit} exact />

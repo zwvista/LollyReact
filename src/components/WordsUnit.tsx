@@ -30,7 +30,7 @@ export default class WordsUnit extends React.Component<any, any> {
     this.subscription.unsubscribe();
   }
 
-  actionTemplate(rowData: UnitWord, column: any) {
+  actionTemplate(rowData: any, column: any) {
     return <div>
       <Button className="p-button-danger button-margin-right" icon="fa fa-trash" />
       <Button className="button-margin-right" icon="fa fa-edit" onClick={e => history.push('/words-unit-detail/' + rowData.ID)}/>
