@@ -10,7 +10,6 @@ import { Toolbar } from 'primereact/toolbar';
 import { InputText } from 'primereact/inputtext';
 import { KeyboardEvent, SyntheticEvent } from 'react';
 import history from '../view-models/history';
-import { UnitWord } from '../models/unit-word';
 
 export default class WordsUnit extends React.Component<any, any> {
   @Inject wordsUnitService: WordsUnitService;
@@ -49,6 +48,7 @@ export default class WordsUnit extends React.Component<any, any> {
             <Button className="button-margin-right" label="Refresh" icon="fa fa-refresh" />
             <Button className="button-margin-right" label="Retrieve All Notes" />
             <Button className="button-margin-right" label="Retrieve Notes If Empty" />
+            <Button className="button-margin-right" label="Dictionary" />
           </div>
         </Toolbar>
         <span className="p-float-label">

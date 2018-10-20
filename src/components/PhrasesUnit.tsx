@@ -43,13 +43,13 @@ export default class PhrasesUnit extends React.Component<any, any> {
         <DataTable value={this.phrasesUnitService.unitPhrases}
                    selectionMode="single" autoLayout={true}>
           <Column rowReorder={true} style={{width: '3em'}} />
-          <Column field="ID" header="ID" />
-          <Column field="UNIT" header="UNIT" />
-          <Column field="PART" header="PART" />
-          <Column field="SEQNUM" header="SEQNUM" />
+          <Column style={{width:'80px'}} field="ID" header="ID" />
+          <Column style={{width:'80px'}} field="UNIT" header="UNIT" />
+          <Column style={{width:'80px'}} field="PART" header="PART" />
+          <Column style={{width:'80px'}} field="SEQNUM" header="SEQNUM" />
           <Column field="PHRASE" header="PHRASE" />
           <Column field="TRANSLATION" header="TRANSLATION" />
-          <Column body={this.actionTemplate} header="ACTIONS" />
+          <Column style={{width:'10%'}} body={this.actionTemplate} header="ACTIONS" />
         </DataTable>
       </div>
     );

@@ -5,7 +5,6 @@ import './Common.css'
 import { Subscription } from 'rxjs';
 import { InputText } from 'primereact/inputtext';
 import { Inject, Module } from 'react.di';
-import { SyntheticEvent } from 'react';
 
 export default class WordsUnitDetail extends React.Component<any, any> {
   @Inject wordsUnitService: WordsUnitService;
