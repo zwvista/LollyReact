@@ -21,6 +21,8 @@
     "variable-name": false,
     "max-line-length": false,
     "no-console": false,
-    "jsx-boolean-value": false
+    "jsx-boolean-value": false,
+    "jsx-no-lambda": false,
+    "no-empty": false
   }
 }

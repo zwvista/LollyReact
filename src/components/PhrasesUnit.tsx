@@ -6,6 +6,7 @@ import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import './Common.css'
 import { Subscription } from 'rxjs';
+import { Toolbar } from 'primereact/toolbar';
 
 
 export default class PhrasesUnit extends React.Component<any, any> {
@@ -32,6 +33,12 @@ export default class PhrasesUnit extends React.Component<any, any> {
   render() {
     return (
       <div>
+        <Toolbar>
+          <div className="p-toolbar-group-left">
+            <Button className="button-margin-right" label="Add" icon="fa fa-plus" />
+            <Button className="button-margin-right" label="Refresh" icon="fa fa-refresh" />
+          </div>
+        </Toolbar>
         <DataTable value={this.phrasesUnitService.unitPhrases}
                    selectionMode="single" autoLayout={true}>
           <Column rowReorder={true} style={{width: '3em'}} />

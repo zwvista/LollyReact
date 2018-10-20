@@ -66,7 +66,7 @@ export default class App extends React.Component<any, any> {
         <div className="App">
           <h2>Lolly React</h2>
           <div className="content-section implementation">
-            <TabMenu model={this.state.items} activeItem={this.state.activeItem} onTabChange={this.onTabChange} />
+            <TabMenu model={this.state.items} activeItem={this.state.activeItem} onTabChange={this.handleTabChange} />
           </div>
           <Switch>
             <Route path="/" component={WordsUnit} exact />
@@ -82,7 +82,7 @@ export default class App extends React.Component<any, any> {
     );
   }
 
-  onTabChange = (e: any) => {
+  handleTabChange = (e: any) => {
     this.setState({activeItem: e.value});
     history.push(e.value.target);
   };
