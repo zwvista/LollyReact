@@ -10,6 +10,7 @@ import { Toolbar } from 'primereact/toolbar';
 import { InputText } from 'primereact/inputtext';
 import { KeyboardEvent, SyntheticEvent } from 'react';
 import history from '../view-models/history';
+import * as CopyToClipboard from 'react-copy-to-clipboard';
 
 export default class WordsUnit extends React.Component<any, any> {
   @Inject wordsUnitService: WordsUnitService;
@@ -34,7 +35,9 @@ export default class WordsUnit extends React.Component<any, any> {
       <Button className="p-button-danger button-margin-right" icon="fa fa-trash" />
       <Button icon="fa fa-edit" onClick={() => history.push('/words-unit-detail/' + rowData.ID)} />
       <Button label="Retrieve Note"/>
-      <Button icon="fa fa-copy"/>
+      <CopyToClipboard text={rowData.WORD}>
+        <Button icon="fa fa-copy"/>
+      </CopyToClipboard>
       <Button label="Google Word" onClick={() => this.googleWord(rowData.WORD)} />
       <Button label="Dictionary" onClick={() => this.dictWord(rowData.ID)} />
     </div>;
