@@ -32,10 +32,10 @@ export default class WordsUnit extends React.Component<any, any> {
   actionTemplate(rowData: any, column: any) {
     return <div>
       <Button className="p-button-danger button-margin-right" icon="fa fa-trash" />
-      <Button className="button-margin-right" icon="fa fa-edit" onClick={e => history.push('/words-unit-detail/' + rowData.ID)}/>
-      <Button className="button-margin-right" label="Retrieve Note"/>
-      <Button className="button-margin-right" icon="fa fa-copy"/>
-      <Button className="button-margin-right" label="Dictionary"/>
+      <Button icon="fa fa-edit" onClick={e => history.push('/words-unit-detail/' + rowData.ID)}/>
+      <Button label="Retrieve Note"/>
+      <Button icon="fa fa-copy"/>
+      <Button label="Dictionary"/>
     </div>;
   }
 
@@ -44,11 +44,11 @@ export default class WordsUnit extends React.Component<any, any> {
       <div>
         <Toolbar>
           <div className="p-toolbar-group-left">
-            <Button className="button-margin-right" label="Add" icon="fa fa-plus" onClick={e => history.push('/words-unit-detail/0')} />
-            <Button className="button-margin-right" label="Refresh" icon="fa fa-refresh" />
-            <Button className="button-margin-right" label="Retrieve All Notes" />
-            <Button className="button-margin-right" label="Retrieve Notes If Empty" />
-            <Button className="button-margin-right" label="Dictionary" />
+            <Button label="Add" icon="fa fa-plus" onClick={e => history.push('/words-unit-detail/0')} />
+            <Button label="Refresh" icon="fa fa-refresh" />
+            <Button label="Retrieve All Notes" />
+            <Button label="Retrieve Notes If Empty" />
+            <Button label="Dictionary" />
           </div>
         </Toolbar>
         <span className="p-float-label">
