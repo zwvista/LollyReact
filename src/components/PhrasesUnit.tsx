@@ -24,19 +24,19 @@ export default class PhrasesUnit extends React.Component<any, any> {
     this.subscription.unsubscribe();
   }
 
-  actionTemplate(rowData: any, column: any) {
+  actionTemplate = (rowData: any, column: any) => {
     return <div>
       <Button className="p-button-danger button-margin-right" icon="fa fa-trash" />
-      <Button icon="fa fa-edit" onClick={e => history.push('/phrases-unit-detail/' + rowData.ID)}/>
+      <Button icon="fa fa-edit" onClick={() => history.push('/phrases-unit-detail/' + rowData.ID)}/>
     </div>;
-  }
+  };
 
   render() {
     return (
       <div>
         <Toolbar>
           <div className="p-toolbar-group-left">
-            <Button label="Add" icon="fa fa-plus" onClick={e => history.push('/phrases-unit-detail/0')} />
+            <Button label="Add" icon="fa fa-plus" onClick={() => history.push('/phrases-unit-detail/0')} />
             <Button label="Refresh" icon="fa fa-refresh" />
           </div>
         </Toolbar>

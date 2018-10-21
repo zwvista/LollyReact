@@ -29,26 +29,27 @@ export default class WordsUnit extends React.Component<any, any> {
     this.subscription.unsubscribe();
   }
 
-  actionTemplate(rowData: any, column: any) {
+  actionTemplate = (rowData: any, column: any) => {
     return <div>
       <Button className="p-button-danger button-margin-right" icon="fa fa-trash" />
-      <Button icon="fa fa-edit" onClick={e => history.push('/words-unit-detail/' + rowData.ID)}/>
+      <Button icon="fa fa-edit" onClick={() => history.push('/words-unit-detail/' + rowData.ID)} />
       <Button label="Retrieve Note"/>
       <Button icon="fa fa-copy"/>
-      <Button label="Dictionary"/>
+      <Button label="Google Word" onClick={() => this.googleWord(rowData.WORD)} />
+      <Button label="Dictionary" onClick={() => this.dictWord(rowData.ID)} />
     </div>;
-  }
+  };
 
   render() {
     return (
       <div>
         <Toolbar>
           <div className="p-toolbar-group-left">
-            <Button label="Add" icon="fa fa-plus" onClick={e => history.push('/words-unit-detail/0')} />
+            <Button label="Add" icon="fa fa-plus" onClick={() => history.push('/words-unit-detail/0')} />
             <Button label="Refresh" icon="fa fa-refresh" />
             <Button label="Retrieve All Notes" />
             <Button label="Retrieve Notes If Empty" />
-            <Button label="Dictionary" />
+            <Button label="Dictionary" onClick={() => history.push('/words-dict/0')} />
           </div>
         </Toolbar>
         <span className="p-float-label">
@@ -108,6 +109,11 @@ export default class WordsUnit extends React.Component<any, any> {
   // https://stackoverflow.com/questions/42775017/angular-2-redirect-to-an-external-url-and-open-in-a-new-tab
   googleWord(WORD: string) {
     window.open('https://www.google.com/search?q=' + encodeURIComponent(WORD), '_blank');
+  }
+
+  dictWord(ID: number) {
+    const index = this.wordsUnitService.unitWords.findIndex(value => value.ID === ID);
+    history.push('/words-dict/' + index);
   }
 
   getNotes(ifEmpty: boolean) {

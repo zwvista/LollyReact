@@ -18,6 +18,7 @@ import { SettingsService } from './view-models/settings.service';
 
 import WordsUnit from './components/WordsUnit';
 import WordsUnitDetail from './components/WordsUnitDetail';
+import WordsDict from './components/WordsDict';
 import PhrasesUnit from './components/PhrasesUnit';
 import PhrasesUnitDetail from './components/PhrasesUnitDetail';
 import Settings from './components/Settings';
@@ -77,7 +78,7 @@ export default class App extends React.Component<any, any> {
             <Route path="/phrases-unit-detail/:id" component={PhrasesUnitDetail} exact />
             <Route path="/words-unit" component={WordsUnit} exact />
             <Route path="/words-unit-detail/:id" component={WordsUnitDetail} exact />
-            <Route path="/words-dict/:index" component={WordsUnit} exact />
+            <Route path="/words-dict/:index" component={WordsDict} exact />
             <Route path="/settings" component={Settings} exact />
           </Switch>
         </div>

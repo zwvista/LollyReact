@@ -23,7 +23,7 @@ export default class PhrasesUnitDetail extends React.Component<any, any> {
   }
   
   render() {
-    return this.state ? (
+    return this.state && (
       <div>
         <div className="p-grid">
           <label className="p-col-1" htmlFor="ID">ID:</label>
@@ -54,7 +54,7 @@ export default class PhrasesUnitDetail extends React.Component<any, any> {
           <Button label="Save" onClick={this.save} />
         </div>
       </div>
-    ) : (<div/>);
+    );
   }
   
   onChange = (e: any) => {
