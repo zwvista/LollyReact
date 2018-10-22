@@ -32,12 +32,14 @@ export default class WordsUnit extends React.Component<any, any> {
 
   actionTemplate = (rowData: any, column: any) => {
     return <div>
-      <Button className="p-button-danger button-margin-right" icon="fa fa-trash" />
-      <Button icon="fa fa-edit" onClick={() => history.push('/words-unit-detail/' + rowData.ID)} />
-      <Button label="Retrieve Note"/>
+      <Button className="p-button-danger button-margin-right" icon="fa fa-trash"
+              tooltip="Delete" tooltipOptions={{position: 'top'}} />
+      <Button icon="fa fa-edit" tooltip="Edit" tooltipOptions={{position: 'top'}}
+              onClick={() => history.push('/words-unit-detail/' + rowData.ID)} />
       <CopyToClipboard text={rowData.WORD}>
-        <Button icon="fa fa-copy"/>
+        <Button icon="fa fa-copy" tooltip="Copy" tooltipOptions={{position: 'top'}}/>
       </CopyToClipboard>
+      <Button label="Retrieve Note"/>
       <Button label="Google Word" onClick={() => this.googleWord(rowData.WORD)} />
       <Button label="Dictionary" onClick={() => this.dictWord(rowData.ID)} />
     </div>;
