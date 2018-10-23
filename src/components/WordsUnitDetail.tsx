@@ -25,27 +25,27 @@ export default class WordsUnitDetail extends React.Component<any, any> {
   render() {
     return this.state && (
       <div>
-        <div className="p-grid">
+        <div className="p-grid mt-2 mb-2">
           <label className="p-col-1" htmlFor="ID">ID:</label>
           <InputText id="ID" name="ID" value={this.state.unitWord.ID} disabled />
         </div>
-        <div className="p-grid">
+        <div className="p-grid mb-2">
           <label className="p-col-1" htmlFor="UNIT">UNIT:</label>
           <InputText id="UNIT" name="UNIT" value={this.state.unitWord.UNIT} onChange={this.onChange} />
         </div>
-        <div className="p-grid">
+        <div className="p-grid mb-2">
           <label className="p-col-1" htmlFor="PART">PART:</label>
           <InputText id="PART" name="PART" value={this.state.unitWord.PART} onChange={this.onChange} />
         </div>
-        <div className="p-grid">
+        <div className="p-grid mb-2">
           <label className="p-col-1" htmlFor="SEQNUM">SEQNUM:</label>
           <InputText id="SEQNUM" name="SEQNUM" value={this.state.unitWord.SEQNUM} onChange={this.onChange} />
         </div>
-        <div className="p-grid">
+        <div className="p-grid mb-2">
           <label className="p-col-1" htmlFor="WORD">WORD:</label>
           <InputText id="WORD" name="WORD" value={this.state.unitWord.WORD} onChange={this.onChange} />
         </div>
-        <div className="p-grid">
+        <div className="p-grid mb-2">
           <label className="p-col-1" htmlFor="NOTE">NOTE:</label>
           <InputText id="NOTE" name="NOTE" value={this.state.unitWord.NOTE} onChange={this.onChange} />
         </div>
