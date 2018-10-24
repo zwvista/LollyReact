@@ -16,7 +16,7 @@ export default class PhrasesUnit extends React.Component<any, any> {
 
   componentDidMount() {
     this.subscription.add(this.phrasesUnitService.getData().subscribe(
-      _ => this.setState({phrasesUnitService: this.phrasesUnitService})
+      _ => this.updateServiceState()
     ));
   }
 
@@ -42,8 +42,8 @@ export default class PhrasesUnit extends React.Component<any, any> {
             <Button label="Refresh" icon="fa fa-refresh" />
           </div>
         </Toolbar>
-        <DataTable value={this.phrasesUnitService.unitPhrases}
-                   selectionMode="single" autoLayout={true}>
+        <DataTable value={this.phrasesUnitService.unitPhrases} selectionMode="single" autoLayout={true}
+                   onRowReorder={this.onReorder}>
           <Column rowReorder={true} style={{width: '3em'}} />
           <Column style={{width:'80px'}} field="ID" header="ID" />
           <Column style={{width:'80px'}} field="UNIT" header="UNIT" />
@@ -55,6 +55,16 @@ export default class PhrasesUnit extends React.Component<any, any> {
         </DataTable>
       </div>
     );
+  }
+
+  onReorder = (e:any) => {
+    console.log(`${e.dragIndex},${e.dropIndex}`);
+    this.phrasesUnitService.unitPhrases = e.value;
+    this.phrasesUnitService.reindex(index => this.updateServiceState());
+  };
+
+  updateServiceState() {
+    this.setState({phrasesUnitService: this.phrasesUnitService});
   }
 };
 

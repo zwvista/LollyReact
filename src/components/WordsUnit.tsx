@@ -22,7 +22,7 @@ export default class WordsUnit extends React.Component<any, any> {
 
   componentDidMount() {
     this.subscription.add(this.wordsUnitService.getData().subscribe(
-      _ => this.setState({wordsUnitService: this.wordsUnitService})
+      _ => this.updateServiceState()
     ));
   }
 
@@ -62,8 +62,8 @@ export default class WordsUnit extends React.Component<any, any> {
                      onChange={this.onNewWordChange} onKeyPress={this.onNewWordKeyPress}/>
           <label htmlFor="float-input">New Word</label>
         </span>
-        <DataTable value={this.wordsUnitService.unitWords}
-                   selectionMode="single" autoLayout={true}>
+        <DataTable value={this.wordsUnitService.unitWords} selectionMode="single" autoLayout={true}
+                   onRowReorder={this.onReorder}>
           <Column rowReorder={true} style={{width: '3em'}} />
           <Column style={{width:'80px'}} field="ID" header="ID" />
           <Column style={{width:'80px'}} field="UNIT" header="UNIT" />
@@ -88,19 +88,16 @@ export default class WordsUnit extends React.Component<any, any> {
     this.subscription.add(this.wordsUnitService.create(o).subscribe(id => {
       o.ID = id as number;
       this.wordsUnitService.unitWords.push(o);
-      this.setState({wordsUnitService: this.wordsUnitService, newWord: ''});
+      this.setState({newWord: ''});
+      this.updateServiceState();
     }));
   };
 
-  private reindex() {
-    this.wordsUnitService.reindex(index => {});
-  }
-
-  onWordReorder(from: number, to: number) {
-    console.log(`${from},${to}`);
-    this.wordsUnitService.unitWords.move(from, to);
-    this.reindex();
-  }
+  onReorder = (e:any) => {
+    console.log(`${e.dragIndex},${e.dropIndex}`);
+    this.wordsUnitService.unitWords = e.value;
+    this.wordsUnitService.reindex(index => this.updateServiceState());
+  };
 
   deleteWord(index: number) {
     console.log(index);
@@ -129,6 +126,10 @@ export default class WordsUnit extends React.Component<any, any> {
         subscription.unsubscribe();
       })
     ));
+  }
+
+  updateServiceState() {
+    this.setState({wordsUnitService: this.wordsUnitService});
   }
 };
 
