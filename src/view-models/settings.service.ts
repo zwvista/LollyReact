@@ -10,6 +10,8 @@ import { Textbook } from '../models/textbook';
 import { forkJoin ,  Observable } from 'rxjs';
 import { DictNoteService, DictOnlineService } from '../services/dictionary.service';
 import { TextbookService } from '../services/textbook.service';
+import { AutoCorrectService } from '../services/autocorrect.service';
+import { AutoCorrect } from '../models/autocorrect';
 
 const userid = 1;
 
@@ -138,11 +140,14 @@ export class SettingsService {
   units: string[] = new Array(0);
   parts: string[] = new Array(0);
 
+  autoCorrects: AutoCorrect[] = new Array(0);
+
   constructor(@Inject private langService: LanguageService,
               @Inject private userSettingService: UserSettingService,
               @Inject private dictOnlineService: DictOnlineService,
               @Inject private dictNoteService: DictNoteService,
-              @Inject private textbookService: TextbookService) { }
+              @Inject private textbookService: TextbookService,
+              private autoCorrectService: AutoCorrectService) { }
 
   getData(): Observable<void> {
     return forkJoin([this.langService.getData(), this.userSettingService.getDataByUser(userid)]).pipe(
@@ -158,8 +163,11 @@ export class SettingsService {
     this.selectedLangIndex = langindex;
     this.USLANGID = this.selectedLang.ID;
     this.selectedUSLangIndex = this.userSettings.findIndex(value => value.KIND === 2 && value.ENTITYID === this.USLANGID);
-    return forkJoin([this.dictOnlineService.getDataByLang(this.USLANGID),
-    this.dictNoteService.getDataByLang(this.USLANGID), this.textbookService.getDataByLang(this.USLANGID)]).pipe(
+    return forkJoin([
+      this.dictOnlineService.getDataByLang(this.USLANGID),
+      this.dictNoteService.getDataByLang(this.USLANGID),
+      this.textbookService.getDataByLang(this.USLANGID),
+      this.autoCorrectService.getDataByLang(this.USLANGID)]).pipe(
       map(res => {
         this.dictsOnline = res[0] as DictOnline[];
         this.selectedDictOnlineIndex = this.dictsOnline.findIndex(value => value.ID === this.USDICTONLINEID);
@@ -169,6 +177,7 @@ export class SettingsService {
         }
         this.textbooks = res[2] as Textbook[];
         this.selectedTextbookIndex = this.textbooks.findIndex(value => value.ID === this.USTEXTBOOKID);
+        this.autoCorrects = res[3] as AutoCorrect[];
       }));
   }
 

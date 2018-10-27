@@ -70,7 +70,7 @@ export default class WordsDict extends React.Component<any, any> {
 
   refreshDict(selectedDictOnline: DictOnline, selectedWord: string) {
     this.setState({
-      dictUrl: selectedDictOnline.urlString(selectedWord),
+      dictUrl: selectedDictOnline.urlString(selectedWord, this.settingsService.autoCorrects),
     });
   };
 

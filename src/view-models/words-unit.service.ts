@@ -76,7 +76,7 @@ export class WordsUnitService {
     if (!dictNote) return empty;
     const item = this.unitWords[index];
     console.log(dictNote);
-    const url = dictNote.urlString(item.WORD);
+    const url = dictNote.urlString(item.WORD, this.settingsService.autoCorrects);
     return this.htmlService.getHtml(url).pipe(
       mergeMap(html => {
         console.log(html);

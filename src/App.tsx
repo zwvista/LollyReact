@@ -34,13 +34,14 @@ import history from './view-models/history';
 
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
+import { AutoCorrectService } from './services/autocorrect.service';
 
 
 @Module({
   providers: [
     DictOnlineService, DictOfflineService, DictNoteService, HtmlService, LanguageService,
     TextbookService, UnitPhraseService, UnitWordService, UserSettingService, AppService,
-    PhrasesUnitService, SettingsService, WordsUnitService,
+    PhrasesUnitService, SettingsService, WordsUnitService, AutoCorrectService,
   ],
 })
 export default class App extends React.Component<any, any> {
