@@ -35,6 +35,14 @@ import history from './view-models/history';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import { AutoCorrectService } from './services/autocorrect.service';
+import { LangPhraseService } from './services/lang-phrase.service';
+import { LangWordService } from './services/lang-word.service';
+import { WordsLangService } from './view-models/words-lang.service';
+import { PhrasesLangService } from './view-models/phrases-lang.service';
+import WordsLang from './components/WordsLang';
+import PhrasesLangDetail from './components/PhrasesLangDetail';
+import WordsLangDetail from './components/WordsLangDetail';
+import PhrasesLang from './components/PhrasesLang';
 
 
 @Module({
@@ -42,6 +50,7 @@ import { AutoCorrectService } from './services/autocorrect.service';
     DictOnlineService, DictOfflineService, DictNoteService, HtmlService, LanguageService,
     TextbookService, UnitPhraseService, UnitWordService, UserSettingService, AppService,
     PhrasesUnitService, SettingsService, WordsUnitService, AutoCorrectService,
+    LangPhraseService, LangWordService, PhrasesLangService, WordsLangService,
   ],
 })
 export default class App extends React.Component<any, any> {
@@ -52,6 +61,8 @@ export default class App extends React.Component<any, any> {
     const items = [
       {label: 'Words in Unit', icon: 'fa fa-bus fa-lg', target: '/words-unit'},
       {label: 'Phrases in Unit', icon: 'fa fa-plane fa-lg', target: '/phrases-unit'},
+      {label: 'Words in Language', icon: 'fa fa-bus fa-lg', target: '/words-lang'},
+      {label: 'Phrases in Language', icon: 'fa fa-plane fa-lg', target: '/phrases-lang'},
       {label: 'Settings', icon: 'fa fa-cog fa-lg', target: '/settings'},
     ];
     const activeItem = items.find((value: any) => window.location.href.includes(value.target));
@@ -79,6 +90,10 @@ export default class App extends React.Component<any, any> {
             <Route path="/phrases-unit-detail/:id" component={PhrasesUnitDetail} exact />
             <Route path="/words-unit" component={WordsUnit} exact />
             <Route path="/words-unit-detail/:id" component={WordsUnitDetail} exact />
+            <Route path="/phrases-lang" component={PhrasesLang} exact />
+            <Route path="/phrases-lang-detail/:id" component={PhrasesLangDetail} exact />
+            <Route path="/words-lang" component={WordsLang} exact />
+            <Route path="/words-lang-detail/:id" component={WordsLangDetail} exact />
             <Route path="/words-dict/:index" component={WordsDict} exact />
             <Route path="/settings" component={Settings} exact />
           </Switch>

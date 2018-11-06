@@ -3,11 +3,12 @@ import { autoCorrect, AutoCorrect } from './autocorrect';
 class Dictionary {
   ID!: number;
   LANGIDFROM!: number;
+  DICTTYPEID!: number;
   DICTTYPENAME!: string;
   DICTNAME!: string;
   URL!: string;
   CHCONV!: string;
-  TRANSFORM_MAC!: string;
+  TRANSFORM!: string;
   WAIT!: number;
   TEMPLATE!: string;
 

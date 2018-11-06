@@ -80,7 +80,7 @@ export class WordsUnitService {
     return this.htmlService.getHtml(url).pipe(
       mergeMap(html => {
         console.log(html);
-        item.NOTE = HtmlService.extractTextFrom(html, dictNote.TRANSFORM_MAC, '', (text, _) => text);
+        item.NOTE = HtmlService.extractTextFrom(html, dictNote.TRANSFORM, '', (text, _) => text);
         return this.unitWordService.updateNote(item.ID, item.NOTE);
       }));
   }

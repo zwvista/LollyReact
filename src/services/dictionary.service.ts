@@ -8,7 +8,7 @@ import { DictNote, DictOffline, DictOnline, DictsNote, DictsOffline, DictsOnline
 export class DictOnlineService extends BaseService {
 
   getDataByLang(langid: number): Observable<DictOnline[]> {
-    const url = `${this.baseUrl}VDICTSONLINE?transform=1&filter=LANGIDFROM,eq,${langid}`;
+    const url = `${this.baseUrl}VDICTSONLINE?transform=1&filter=LANGIDFROM,eq,${langid}&filter[]=DICTTYPEID,ne,2`;
     return this.http.get<DictsOnline>(url)
       .pipe(
         map(result => result.VDICTSONLINE.map(value => Object.assign(new DictOnline(), value))),
