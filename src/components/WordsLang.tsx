@@ -39,7 +39,6 @@ export default class WordsLang extends React.Component<any, any> {
       <CopyToClipboard text={rowData.WORD}>
         <Button icon="fa fa-copy" tooltip="Copy" tooltipOptions={{position: 'top'}}/>
       </CopyToClipboard>
-      <Button label="Retrieve Note"/>
       <Button label="Google Word" onClick={() => this.googleWord(rowData.WORD)} />
       <Button label="Dictionary" onClick={() => this.dictWord(rowData.ID)} />
     </div>;

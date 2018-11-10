@@ -1,4 +1,5 @@
 import { autoCorrect, AutoCorrect } from './autocorrect';
+import { HtmlService } from '../services/html.service';
 
 class Dictionary {
   ID!: number;
@@ -25,15 +26,21 @@ class Dictionary {
 export class DictsOnline {
   VDICTSONLINE!: DictOnline[];
 }
+const cssFolder = 'http://zwvista.tk/lolly/css/';
 export class DictOnline extends Dictionary {
-
+  htmlString(html: string, word: string): string {
+    return HtmlService.extractTextFrom(html, this.TRANSFORM, this.TEMPLATE, (text: string, template2: string) =>
+      template2.replace(/\{0\}/g, word).replace(/\{1\}/g, cssFolder).replace(/\{2\}/g, text));
+  }
 }
+
 export class DictsOffline {
   VDICTSOFFLINE!: DictOffline[];
 }
 export class DictOffline extends Dictionary {
 
 }
+
 export class DictsNote {
   VDICTSNOTE!: DictNote[];
 }

@@ -3,7 +3,7 @@ import './Common.css'
 
 const DictBrowser = (props: any) => {
     return (
-      <iframe style={{width:'100%', height:'500px'}} src={props.url} />
+      <iframe style={{width:'100%', height:'500px'}} src={props.url} srcDoc={props.htmlString} />
     );
 };
 

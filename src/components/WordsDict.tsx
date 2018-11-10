@@ -9,10 +9,12 @@ import { SettingsService } from '../view-models/settings.service';
 import DictBrowser from './DictBrowser';
 import { ListBox } from 'primereact/listbox';
 import { DictOnline } from '../models/dictionary';
+import { HtmlService } from '../services/html.service';
 
 export default class WordsDict extends React.Component<any, any> {
   @Inject wordsUnitService: WordsUnitService;
   @Inject settingsService: SettingsService;
+  @Inject htmlService: HtmlService;
 
   componentDidMount() {
     const words = this.wordsUnitService.unitWords.map(v  => ({label: v.WORD, value: v.WORD}));
@@ -41,7 +43,7 @@ export default class WordsDict extends React.Component<any, any> {
           <ListBox className="p-col-2" listStyle={{'max-height':'480px'}} options={this.state.words}
                    value={this.state.selectedWord} onChange={this.onWordChange} />
           <div className="p-col-10">
-            <DictBrowser url={this.state.dictUrl} />
+            <DictBrowser url={this.state.dictUrl} htmlString={this.state.dictSrc} />
           </div>
         </div>
       </div>
@@ -69,9 +71,25 @@ export default class WordsDict extends React.Component<any, any> {
   };
 
   refreshDict(selectedDictOnline: DictOnline, selectedWord: string) {
-    this.setState({
-      dictUrl: selectedDictOnline.urlString(selectedWord, this.settingsService.autoCorrects),
-    });
+    const url = selectedDictOnline.urlString(selectedWord, this.settingsService.autoCorrects);
+    if (selectedDictOnline.DICTTYPENAME === 'OFFLINE') {
+      this.setState({
+        dictUrl: 'about:blank',
+      });
+      this.htmlService.getHtml(url).subscribe(html => {
+        const dictSrc = selectedDictOnline.htmlString(html, selectedWord)
+          .replace(/\n/g, ' ').replace(/"/g, '&quot;');
+        console.log(dictSrc);
+        this.setState({
+          dictSrc,
+        });
+      });
+    } else {
+      this.setState({
+        dictSrc: null,
+        dictUrl: url,
+      });
+    }
   };
 
   onload(event: Event) {
