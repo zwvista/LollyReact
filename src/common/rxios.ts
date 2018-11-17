@@ -12,7 +12,7 @@ export interface rxiosConfig extends AxiosRequestConfig {
 class rxios {
   private _httpClient: AxiosInstance;
 
-  constructor(private options: rxiosConfig = {}) {
+  constructor(options: rxiosConfig = {}) {
     this._httpClient = axios.create(options);
   }
 
