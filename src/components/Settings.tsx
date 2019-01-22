@@ -45,10 +45,10 @@ export default class Settings extends React.Component<any, any> {
           </select>
         </div>
         <div className="form-inline mb-2">
-          <label htmlFor="dictOnlne" className="col-2 control-label">Dictionary(Online):</label>
-          <select id="dictOnlne" className="col-4 form-control" value={this.settingsService.selectedDictOnline.ID} onChange={this.onDictOnlineChange}>
+          <label htmlFor="dictPicker" className="col-2 control-label">Dictionary(Word):</label>
+          <select id="dictPicker" className="col-4 form-control" value={this.settingsService.selectedDictPicker.DICTID} onChange={this.onDictOnlineChange}>
           {
-            this.settingsService.dictsOnline.map(dict => <option key={dict.ID} value={dict.ID}>{dict.DICTNAME}</option>)
+            this.settingsService.dictsPicker.map(dict => <option key={dict.DICTID} value={dict.DICTID}>{dict.DICTNAME}</option>)
           }
           </select>
         </div>
@@ -108,8 +108,8 @@ export default class Settings extends React.Component<any, any> {
 
   onDictOnlineChange = (event: any) => {
     const index = event.target.selectedIndex;
-    this.settingsService.selectedDictOnlineIndex = index;
-    this.subscription.add(this.settingsService.updateDictOnline().subscribe(_ => this.updateServiceState()));
+    this.settingsService.selectedDictPickerIndex = index;
+    this.subscription.add(this.settingsService.updateDictPicker().subscribe(_ => this.updateServiceState()));
   };
 
   onDictNoteChange = (event: any) => {

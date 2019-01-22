@@ -5,13 +5,14 @@ import { LanguageService } from '../services/language.service';
 import { UserSettingService } from '../services/user-setting.service';
 import { UserSetting } from '../models/user-setting';
 import { Language } from '../models/language';
-import { DictNote, DictOnline } from '../models/dictionary';
+import { DictNote, DictPicker, DictWord } from '../models/dictionary';
 import { Textbook } from '../models/textbook';
 import { forkJoin ,  Observable } from 'rxjs';
 import { DictNoteService, DictOnlineService } from '../services/dictionary.service';
 import { TextbookService } from '../services/textbook.service';
 import { AutoCorrectService } from '../services/autocorrect.service';
 import { AutoCorrect } from '../models/autocorrect';
+import * as _ from 'lodash';
 
 const userid = 1;
 
@@ -27,7 +28,7 @@ export class SettingsService {
     return +this.selectedUSUser.VALUE1;
   }
   private set USLANGID(newValue: number) {
-    this.selectedUSUser.VALUE1 = newValue;
+    this.selectedUSUser.VALUE1 = String(newValue);
   }
   private selectedUSLangIndex!: number;
   private get selectedUSLang(): UserSetting {
@@ -37,19 +38,25 @@ export class SettingsService {
     return +this.selectedUSLang.VALUE1;
   }
   set USTEXTBOOKID(newValue: number) {
-    this.selectedUSLang.VALUE1 = newValue;
+    this.selectedUSLang.VALUE1 = String(newValue);
   }
-  get USDICTONLINEID(): number {
-    return +this.selectedUSLang.VALUE2;
+  get USDICTPICKER(): string {
+    return this.selectedUSLang.VALUE2;
   }
-  set USDICTONLINEID(newValue: number) {
+  set USDICTPICKER(newValue: string) {
     this.selectedUSLang.VALUE2 = newValue;
   }
   get USDICTNOTEID(): number {
     return +this.selectedUSLang.VALUE3;
   }
   set USDICTNOTEID(newValue: number) {
-    this.selectedUSLang.VALUE3 = newValue;
+    this.selectedUSLang.VALUE3 = String(newValue);
+  }
+  get USDICTSPICKER(): string {
+    return this.selectedUSLang.VALUE4;
+  }
+  set USDICTSPICKER(newValue: string) {
+    this.selectedUSLang.VALUE4 = newValue;
   }
   private selectedUSTextbookIndex!: number;
   get selectedUSTextbook(): UserSetting {
@@ -59,25 +66,25 @@ export class SettingsService {
     return +this.selectedUSTextbook.VALUE1;
   }
   set USUNITFROM(newValue: number) {
-    this.selectedUSTextbook.VALUE1 = newValue;
+    this.selectedUSTextbook.VALUE1 = String(newValue);
   }
   get USPARTFROM(): number {
     return +this.selectedUSTextbook.VALUE2;
   }
   set USPARTFROM(newValue: number) {
-    this.selectedUSTextbook.VALUE2 = newValue;
+    this.selectedUSTextbook.VALUE2 = String(newValue);
   }
   get USUNITTO(): number {
     return +this.selectedUSTextbook.VALUE3;
   }
   set USUNITTO(newValue: number) {
-    this.selectedUSTextbook.VALUE3 = newValue;
+    this.selectedUSTextbook.VALUE3 = String(newValue);
   }
   get USPARTTO(): number {
     return +this.selectedUSTextbook.VALUE4;
   }
   set USPARTTO(newValue: number) {
-    this.selectedUSTextbook.VALUE4 = newValue;
+    this.selectedUSTextbook.VALUE4 = String(newValue);
   }
   get USUNITPARTFROM(): number {
     return this.USUNITFROM * 10 + this.USPARTFROM;
@@ -98,17 +105,18 @@ export class SettingsService {
     return this.languages[this.selectedLangIndex];
   }
 
-  dictsOnline: DictOnline[] = new Array(0);
-  private _selectedDictOnlineIndex!: number;
-  get selectedDictOnlineIndex() {
-    return this._selectedDictOnlineIndex;
+  dictsWord: DictWord[] = new Array(0);
+  dictsPicker: DictPicker[] = new Array(0);
+  private _selectedDictPickerIndex!: number;
+  get selectedDictPickerIndex() {
+    return this._selectedDictPickerIndex;
   }
-  set selectedDictOnlineIndex(newValue: number) {
-    this._selectedDictOnlineIndex = newValue;
-    this.USDICTONLINEID = this.selectedDictOnline.ID;
+  set selectedDictPickerIndex(newValue: number) {
+    this._selectedDictPickerIndex = newValue;
+    this.USDICTPICKER = this.selectedDictPicker.DICTID;
   }
-  get selectedDictOnline(): DictOnline {
-    return this.dictsOnline[this._selectedDictOnlineIndex];
+  get selectedDictPicker(): DictPicker {
+    return this.dictsPicker[this._selectedDictPickerIndex];
   }
 
   dictsNote: DictNote[] = new Array(0);
@@ -144,7 +152,7 @@ export class SettingsService {
 
   constructor(@Inject private langService: LanguageService,
               @Inject private userSettingService: UserSettingService,
-              @Inject private dictOnlineService: DictOnlineService,
+              @Inject private dictWordService: DictOnlineService,
               @Inject private dictNoteService: DictNoteService,
               @Inject private textbookService: TextbookService,
               private autoCorrectService: AutoCorrectService) { }
@@ -163,14 +171,24 @@ export class SettingsService {
     this.selectedLangIndex = langindex;
     this.USLANGID = this.selectedLang.ID;
     this.selectedUSLangIndex = this.userSettings.findIndex(value => value.KIND === 2 && value.ENTITYID === this.USLANGID);
+    const dicts = this.USDICTSPICKER.split('\r\n');
     return forkJoin([
-      this.dictOnlineService.getDataByLang(this.USLANGID),
+      this.dictWordService.getDataByLang(this.USLANGID),
       this.dictNoteService.getDataByLang(this.USLANGID),
       this.textbookService.getDataByLang(this.USLANGID),
       this.autoCorrectService.getDataByLang(this.USLANGID)]).pipe(
       map(res => {
-        this.dictsOnline = res[0] as DictOnline[];
-        this.selectedDictOnlineIndex = this.dictsOnline.findIndex(value => value.ID === this.USDICTONLINEID);
+        this.dictsWord = res[0] as DictWord[];
+        let i = 0;
+        this.dictsPicker = _.flatMap(dicts, d => {
+          if (d === '0')
+            return _.map(this.dictsWord, d2 => new DictPicker(String(d2.DICTID), d2.DICTNAME));
+          else {
+            i++;
+            return [new DictPicker(d, `Custom${i}`)];
+          }
+        });
+        this.selectedDictPickerIndex = this.dictsPicker.findIndex(value => value.DICTID === this.USDICTPICKER);
         this.dictsNote = res[1] as DictNote[];
         if (this.dictsNote.length > 0) {
           this.selectedDictNoteIndex = this.dictsNote.findIndex(value => value.ID === this.USDICTNOTEID);
@@ -188,6 +206,18 @@ export class SettingsService {
     this.parts = this.selectedTextbook.PARTS.split(' ');
   }
 
+  dictHtml(word: string, dictids: string[]): string {
+    let s = '<html><body>\n';
+    dictids.forEach((dictid, i) => {
+      const item = this.dictsWord.find(v => String(v.DICTID) === dictid);
+      const ifrId = `ifr${i + 1}`;
+      const url = item.urlString(word, this.autoCorrects);
+      s += `<iframe id='$ifrId' frameborder='1' style='width:100%; height:500px; display:block' src='$url'></iframe>\n`;
+    });
+    s += '</body></html>\\n';
+    return s;
+  }
+
   updateLang(): Observable<number> {
     return this.userSettingService.updateLang(this.selectedUSUser.ID, this.USLANGID);
   }
@@ -196,8 +226,8 @@ export class SettingsService {
     return this.userSettingService.updateTextbook(this.selectedUSLang.ID, this.USTEXTBOOKID);
   }
 
-  updateDictOnline(): Observable<number> {
-    return this.userSettingService.updateDictOnline(this.selectedUSLang.ID, this.USDICTONLINEID);
+  updateDictPicker(): Observable<number> {
+    return this.userSettingService.updateDictPicker(this.selectedUSLang.ID, this.USDICTPICKER);
   }
 
   updateDictNote(): Observable<number> {

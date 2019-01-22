@@ -2,29 +2,16 @@ import { Injectable } from 'react.di';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { BaseService } from './base.service';
-import { DictNote, DictOffline, DictOnline, DictsNote, DictsOffline, DictsOnline } from '../models/dictionary';
+import { DictNote, DictWord, DictsNote, DictsWord } from '../models/dictionary';
 
 @Injectable
 export class DictOnlineService extends BaseService {
 
-  getDataByLang(langid: number): Observable<DictOnline[]> {
-    const url = `${this.baseUrl}VDICTSONLINE?transform=1&filter[]=LANGIDFROM,eq,${langid}&filter[]=DICTTYPEID,ne,2`;
-    return this.http.get<DictsOnline>(url)
+  getDataByLang(langid: number): Observable<DictWord[]> {
+    const url = `${this.baseUrl}VDICTSWORD?transform=1&filter[]=LANGIDFROM,eq,${langid}&filter[]=DICTTYPEID,ne,2`;
+    return this.http.get<DictsWord>(url)
       .pipe(
-        map(result => result.VDICTSONLINE.map(value => Object.assign(new DictOnline(), value))),
-      );
-  }
-
-}
-
-@Injectable
-export class DictOfflineService extends BaseService {
-
-  getDataByLang(langid: number): Observable<DictOffline[]> {
-    const url = `${this.baseUrl}VDICTSOFFLINE?transform=1&filter=LANGIDFROM,eq,${langid}`;
-    return this.http.get<DictsOffline>(url)
-      .pipe(
-        map(result => result.VDICTSOFFLINE.map(value => Object.assign(new DictOffline(), value))),
+        map(result => result.VDICTSWORD.map(value => Object.assign(new DictWord(), value))),
       );
   }
 

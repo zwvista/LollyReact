@@ -8,7 +8,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { SettingsService } from '../view-models/settings.service';
 import DictBrowser from './DictBrowser';
 import { ListBox } from 'primereact/listbox';
-import { DictOnline } from '../models/dictionary';
+import { DictPicker, DictWord } from '../models/dictionary';
 import { HtmlService } from '../services/html.service';
 
 export default class WordsDict extends React.Component<any, any> {
@@ -19,14 +19,14 @@ export default class WordsDict extends React.Component<any, any> {
   componentDidMount() {
     const words = this.wordsUnitService.unitWords.map(v  => ({label: v.WORD, value: v.WORD}));
     const selectedWord = words[+this.props.match.params.index].value;
-    const selectedDictOnline = this.settingsService.selectedDictOnline;
+    const selectedDictPicker = this.settingsService.selectedDictPicker;
     this.setState({
       words,
       selectedWord,
       dictUrl: 'about:blank',
-      selectedDictOnline,
+      selectedDictPicker,
     });
-    if (selectedWord) this.refreshDict(selectedDictOnline, selectedWord);
+    if (selectedWord) this.refreshDict(selectedDictPicker, selectedWord);
   }
 
   render() {
@@ -35,7 +35,7 @@ export default class WordsDict extends React.Component<any, any> {
         <Toolbar>
           <div className="p-toolbar-group-left">
             <Button label="Back" onClick={this.goBack} />
-            <Dropdown className="p-col-2" options={this.settingsService.dictsOnline} value={this.state.selectedDictOnline}
+            <Dropdown className="p-col-2" options={this.settingsService.dictsPicker} value={this.state.selectedDictPicker}
                 optionLabel="DICTNAME" onChange={this.onDictChange} />
           </div>
         </Toolbar>
@@ -55,11 +55,11 @@ export default class WordsDict extends React.Component<any, any> {
   };
 
   onDictChange = (e: any) => {
-    const selectedDictOnline = e.value;
+    const selectedDictPicker = e.value;
     this.setState({
-      selectedDictOnline,
+      selectedDictPicker,
     });
-    this.refreshDict(selectedDictOnline, this.state.selectedWord);
+    this.refreshDict(selectedDictPicker, this.state.selectedWord);
   };
 
   onWordChange = (e: any) => {
@@ -67,28 +67,38 @@ export default class WordsDict extends React.Component<any, any> {
     this.setState({
       selectedWord,
     });
-    this.refreshDict(this.state.selectedDictOnline, selectedWord);
+    this.refreshDict(this.state.selectedDictPicker, selectedWord);
   };
 
-  refreshDict(selectedDictOnline: DictOnline, selectedWord: string) {
-    const url = selectedDictOnline.urlString(selectedWord, this.settingsService.autoCorrects);
-    if (selectedDictOnline.DICTTYPENAME === 'OFFLINE') {
+  refreshDict(selectedDictPicker: DictPicker, selectedWord: string) {
+    const item = selectedDictPicker;
+    if (item.DICTNAME.startsWith('Custom')) {
+      const dictSrc = this.settingsService.dictHtml(this.state.selectedWord, item.dictids());
       this.setState({
-        dictUrl: 'about:blank',
+        dictSrc,
       });
-      this.htmlService.getHtml(url).subscribe(html => {
-        const dictSrc = selectedDictOnline.htmlString(html, selectedWord)
-          .replace(/\n/g, ' ').replace(/"/g, '&quot;');
-        console.log(dictSrc);
+    }
+    else {
+      const item2 = this.settingsService.dictsWord.find(v => v.DICTNAME === item.DICTNAME);
+      const url = item2.urlString(selectedWord, this.settingsService.autoCorrects);
+      if (item2.DICTTYPENAME === 'OFFLINE') {
         this.setState({
-          dictSrc,
+          dictUrl: 'about:blank',
         });
-      });
-    } else {
-      this.setState({
-        dictSrc: null,
-        dictUrl: url,
-      });
+        this.htmlService.getHtml(url).subscribe(html => {
+          const dictSrc = item2.htmlString(html, selectedWord)
+            .replace(/\n/g, ' ').replace(/"/g, '&quot;');
+          console.log(dictSrc);
+          this.setState({
+            dictSrc,
+          });
+        });
+      } else {
+        this.setState({
+          dictSrc: null,
+          dictUrl: url,
+        });
+      }
     }
   };
 
