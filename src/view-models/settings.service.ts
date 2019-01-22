@@ -8,7 +8,7 @@ import { Language } from '../models/language';
 import { DictNote, DictPicker, DictWord } from '../models/dictionary';
 import { Textbook } from '../models/textbook';
 import { forkJoin ,  Observable } from 'rxjs';
-import { DictNoteService, DictOnlineService } from '../services/dictionary.service';
+import { DictNoteService, DictWordService } from '../services/dictionary.service';
 import { TextbookService } from '../services/textbook.service';
 import { AutoCorrectService } from '../services/autocorrect.service';
 import { AutoCorrect } from '../models/autocorrect';
@@ -152,7 +152,7 @@ export class SettingsService {
 
   constructor(@Inject private langService: LanguageService,
               @Inject private userSettingService: UserSettingService,
-              @Inject private dictWordService: DictOnlineService,
+              @Inject private dictWordService: DictWordService,
               @Inject private dictNoteService: DictNoteService,
               @Inject private textbookService: TextbookService,
               private autoCorrectService: AutoCorrectService) { }

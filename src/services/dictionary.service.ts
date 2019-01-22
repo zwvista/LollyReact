@@ -5,7 +5,7 @@ import { BaseService } from './base.service';
 import { DictNote, DictWord, DictsNote, DictsWord } from '../models/dictionary';
 
 @Injectable
-export class DictOnlineService extends BaseService {
+export class DictWordService extends BaseService {
 
   getDataByLang(langid: number): Observable<DictWord[]> {
     const url = `${this.baseUrl}VDICTSWORD?transform=1&filter[]=LANGIDFROM,eq,${langid}&filter[]=DICTTYPEID,ne,2`;
