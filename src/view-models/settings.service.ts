@@ -53,7 +53,7 @@ export class SettingsService {
     this.selectedUSLang.VALUE3 = String(newValue);
   }
   get USDICTSPICKER(): string {
-    return this.selectedUSLang.VALUE4;
+    return this.selectedUSLang.VALUE4 || '0';
   }
   set USDICTSPICKER(newValue: string) {
     this.selectedUSLang.VALUE4 = newValue;

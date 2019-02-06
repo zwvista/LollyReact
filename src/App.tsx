@@ -43,6 +43,7 @@ import WordsLang from './components/WordsLang';
 import PhrasesLangDetail from './components/PhrasesLangDetail';
 import WordsLangDetail from './components/WordsLangDetail';
 import PhrasesLang from './components/PhrasesLang';
+import { NoteService } from './view-models/note.service';
 
 
 @Module({
@@ -51,6 +52,7 @@ import PhrasesLang from './components/PhrasesLang';
     TextbookService, UnitPhraseService, UnitWordService, UserSettingService, AppService,
     PhrasesUnitService, SettingsService, WordsUnitService, AutoCorrectService,
     LangPhraseService, LangWordService, PhrasesLangService, WordsLangService,
+    NoteService,
   ],
 })
 export default class App extends React.Component<any, any> {

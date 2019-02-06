@@ -37,7 +37,7 @@ export class PhrasesUnitService {
           const itemLang = arrLang[0];
           const langphraseid = itemLang.ID;
           const b = itemLang.combineTranslation(item.TRANSLATION);
-          return b ? this.updateTranslation(langphraseid, item.TRANSLATION ? item.TRANSLATION : '').pipe(map(_ => langphraseid)) : of(langphraseid);
+          return b ? this.updateTranslation(langphraseid, item.TRANSLATION || '').pipe(map(_ => langphraseid)) : of(langphraseid);
         }
       }),
       concatMap(langphraseid => {
@@ -66,7 +66,7 @@ export class PhrasesUnitService {
           return this.langPhraseService.getDataById(langphraseid).pipe(
             concatMap(arrLangOld => {
               if (arrLangOld.length > 0 && arrLangOld[0].PHRASE === item.PHRASE)
-                return this.langPhraseService.updateTranslation(langphraseid, item.TRANSLATION ? item.TRANSLATION : '').pipe(map(_ => langphraseid));
+                return this.langPhraseService.updateTranslation(langphraseid, item.TRANSLATION || '').pipe(map(_ => langphraseid));
               else
                 return this.langPhraseService.getDataByLangPhrase(item.LANGID, item.PHRASE).pipe(
                   concatMap(arrLangNew => {
@@ -75,7 +75,7 @@ export class PhrasesUnitService {
                       const langphraseid = itemLang.ID;
                       const b = itemLang.combineTranslation(item.TRANSLATION);
                       item.TRANSLATION = itemLang.TRANSLATION;
-                      return b ? this.langPhraseService.updateTranslation(langphraseid, item.TRANSLATION ? item.TRANSLATION : '')
+                      return b ? this.langPhraseService.updateTranslation(langphraseid, item.TRANSLATION || '')
                         .pipe(map(_ => langphraseid)) : of(langphraseid);
                     };
                     if (arrUnit.length === 1)
