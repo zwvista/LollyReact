@@ -119,13 +119,7 @@ export default class WordsUnit extends React.Component<any, any> {
   }
 
   getNotes(ifEmpty: boolean) {
-    let subscription: Subscription;
-    // https://stackoverflow.com/questions/50200859/i-dont-get-rxjs-6-with-angular-6-with-interval-switchmap-and-map
-    this.wordsUnitService.getNotes(ifEmpty, n => subscription = interval(n).subscribe(_ =>
-      this.wordsUnitService.getNextNote(() => {}, () => {
-        subscription.unsubscribe();
-      })
-    ));
+    this.wordsUnitService.getNotes(ifEmpty, () => {}, () => {});
   }
 
   updateServiceState() {

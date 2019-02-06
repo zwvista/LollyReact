@@ -15,6 +15,14 @@ export class UnitPhraseService extends BaseService {
       );
   }
 
+  getDataByLangPhrase(langphraseid: number): Observable<UnitPhrase[]> {
+    const url = `${this.baseUrl}VUNITPHRASES?transform=1&filter=LANGPHRASEID,eq,${langphraseid}`;
+    return this.http.get<UnitPhrases>(url)
+      .pipe(
+        map(result => result.VUNITPHRASES.map(value => Object.assign(new UnitPhrase(), value))),
+      );
+  }
+
   create(item: UnitPhrase): Observable<number | any[]> {
     const url = `${this.baseUrl}UNITPHRASES`;
     return this.http.post<number | any[]>(url, item)

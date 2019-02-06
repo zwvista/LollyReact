@@ -3,12 +3,14 @@ export class UnitPhrases {
 }
 export class UnitPhrase {
   ID = 0;
-  TEXTBOOKID!: number;
-  UNIT!: number;
-  PART!: number;
-  SEQNUM!: number;
-  PHRASE!: string;
-  TRANSLATION!: string;
+  LANGID = 0;
+  TEXTBOOKID = 0;
+  UNIT = 0;
+  PART = 0;
+  SEQNUM = 0;
+  PHRASE = '';
+  TRANSLATION: string | null = null;
+  LANGPHRASEID = 0;
 
   get unitPartSeqnum(): string {
     return String(this.UNIT).padStart(3) +

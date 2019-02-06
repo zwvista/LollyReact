@@ -3,9 +3,11 @@ import { UnitWordService } from '../services/unit-word.service';
 import { SettingsService } from './settings.service';
 import { UnitWord } from '../models/unit-word';
 import { AppService } from './app.service';
-import { Observable ,  EMPTY as empty } from 'rxjs';
-import { HtmlService } from '../services/html.service';
-import { concatMap, mergeMap, map } from 'rxjs/operators';
+import { Observable, EMPTY as empty, of } from 'rxjs';
+import { concatMap, map } from 'rxjs/operators';
+import { NoteService } from './note.service';
+import { LangWordService } from '../services/lang-word.service';
+import { LangWord } from '../models/lang-word';
 
 @Injectable
 export class WordsUnitService {
@@ -16,9 +18,10 @@ export class WordsUnitService {
   noteIfEmpty = true;
 
   constructor(@Inject private unitWordService: UnitWordService,
+              @Inject private langWordService: LangWordService,
               @Inject private settingsService: SettingsService,
               @Inject private appService: AppService,
-              @Inject private htmlService: HtmlService) {
+              @Inject private noteService: NoteService) {
   }
 
   getData(): Observable<UnitWord[]> {
@@ -30,19 +33,77 @@ export class WordsUnitService {
   }
 
   create(item: UnitWord): Observable<number | any[]> {
-    return this.unitWordService.create(item);
+    return this.langWordService.getDataByLangWord(item.LANGID, item.WORD).pipe(
+      concatMap( arrLang => {
+        if (arrLang.length === 0) {
+          const itemLang = LangWord.fromUnit(item);
+          return this.langWordService.create(itemLang);
+        } else {
+          const itemLang = arrLang[0];
+          const langwordid = itemLang.ID;
+          const b = itemLang.combineNote(item.NOTE);
+          return b ? this.updateNote(langwordid, item.NOTE ? item.NOTE : '').pipe(map(_ => langwordid)) : of(langwordid);
+        }
+      }),
+      concatMap(langwordid => {
+        item.LANGWORDID = langwordid as number;
+        return this.unitWordService.create(item);
+      }),
+    );
   }
 
   updateSeqNum(id: number, seqnum: number): Observable<number> {
     return this.unitWordService.updateSeqNum(id, seqnum);
   }
 
-  updateNote(id: number, note: string): Observable<number> {
-    return this.unitWordService.updateNote(id, note);
+  updateNote(langwordid: number, note: string): Observable<number> {
+    return this.langWordService.updateNote(langwordid, note);
   }
 
   update(item: UnitWord): Observable<number> {
-    return this.unitWordService.update(item);
+    const langwordid = item.LANGWORDID;
+    return this.unitWordService.getDataByLangWord(langwordid).pipe(
+      concatMap(arrUnit => {
+        if (arrUnit.length === 0)
+          return empty;
+        else {
+          const itemLang = LangWord.fromUnit(item);
+          return this.langWordService.getDataById(langwordid).pipe(
+            concatMap(arrLangOld => {
+              if (arrLangOld.length > 0 && arrLangOld[0].WORD === item.WORD)
+                return this.langWordService.updateNote(langwordid, item.NOTE ? item.NOTE : '').pipe(map(_ => langwordid));
+              else
+                return this.langWordService.getDataByLangWord(item.LANGID, item.WORD).pipe(
+                  concatMap(arrLangNew => {
+                    const f = () => {
+                      const itemLang = arrLangNew[0];
+                      const langwordid = itemLang.ID;
+                      const b = itemLang.combineNote(item.NOTE);
+                      item.NOTE = itemLang.NOTE;
+                      return b ? this.langWordService.updateNote(langwordid, item.NOTE ? item.NOTE : '')
+                        .pipe(map(_ => langwordid)) : of(langwordid);
+                    };
+                    if (arrUnit.length === 1)
+                      if (arrLangNew.length === 0)
+                        return this.langWordService.update(itemLang).pipe(map(_ => langwordid));
+                      else
+                        return this.langWordService.delete(langwordid).pipe(concatMap(_ => f()));
+                    else
+                    if (arrLangNew.length === 0)
+                      return this.langWordService.create(itemLang);
+                    else
+                      return f();
+                  }),
+                );
+            }),
+            concatMap(langwordid => {
+              item.LANGWORDID = langwordid as number;
+              return this.unitWordService.update(item);
+            }),
+          );
+        }
+      }),
+    );
   }
 
   delete(id: number): Observable<number> {
@@ -62,6 +123,7 @@ export class WordsUnitService {
 
   newUnitWord(): UnitWord {
     const o = new UnitWord();
+    o.LANGID = this.settingsService.selectedLang.ID;
     o.TEXTBOOKID = this.settingsService.USTEXTBOOKID;
     const maxElem = this.unitWords.length === 0 ? null :
       this.unitWords.reduce((p, v) => p.unitPartSeqnum < v.unitPartSeqnum ? v : p);
@@ -72,40 +134,18 @@ export class WordsUnitService {
   }
 
   getNote(index: number): Observable<number> {
-    const dictNote = this.settingsService.selectedDictNote;
-    if (!dictNote) return empty;
     const item = this.unitWords[index];
-    console.log(dictNote);
-    const url = dictNote.urlString(item.WORD, this.settingsService.autoCorrects);
-    return this.htmlService.getHtml(url).pipe(
-      mergeMap(html => {
-        console.log(html);
-        item.NOTE = HtmlService.extractTextFrom(html, dictNote.TRANSFORM, '', (text, _) => text);
-        return this.unitWordService.updateNote(item.ID, item.NOTE);
-      }));
+    return this.noteService.getNote(item.WORD).pipe(
+      concatMap(note => {
+        item.NOTE = note;
+        return this.updateNote(item.LANGWORDID, note);
+      }),
+    );
   }
 
-  getNotes(ifEmpty: boolean, complete: (number: number) => void) {
-    const dictNote = this.settingsService.selectedDictNote;
-    if (!dictNote) return;
-    this.noteFromIndex = 0;
-    this.noteToIndex = this.unitWords.length;
-    this.noteIfEmpty = ifEmpty;
-    complete(dictNote.WAIT);
-  }
-
-  getNextNote(rowComplete: (number: number) => void, allComplete: () => void) {
-    if (this.noteIfEmpty)
-      while (this.noteFromIndex < this.noteToIndex && this.unitWords[this.noteFromIndex].NOTE)
-        this.noteFromIndex++;
-    if (this.noteFromIndex >= this.noteToIndex)
-      allComplete();
-    else {
-      const i = this.noteFromIndex;
-      this.getNote(i).subscribe(() => {
-        rowComplete(i);
-      });
-      this.noteFromIndex++;
-    }
+  getNotes(ifEmpty: boolean, oneComplete: (index: number) => void, allComplete: () => void) {
+    this.noteService.getNotes(this.unitWords.length,
+      i => !ifEmpty || !this.unitWords[i],
+      i => this.getNote(i).subscribe(_ => oneComplete(i)), allComplete);
   }
 }
