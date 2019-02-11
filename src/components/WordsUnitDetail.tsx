@@ -4,10 +4,12 @@ import { Button } from 'primereact/button';
 import './Common.css'
 import { Subscription } from 'rxjs';
 import { InputText } from 'primereact/inputtext';
-import { Inject, Module } from 'react.di';
+import { Inject } from 'react.di';
+import { SettingsService } from '../view-models/settings.service';
 
 export default class WordsUnitDetail extends React.Component<any, any> {
   @Inject wordsUnitService: WordsUnitService;
+  @Inject settingsService: SettingsService;
   subscription = new Subscription();
 
   componentDidMount() {
@@ -68,6 +70,7 @@ export default class WordsUnitDetail extends React.Component<any, any> {
   };
 
   save = () => {
+    this.state.unitWord.WORD = this.settingsService.autoCorrectInput(this.state.unitWord.WORD);
     if (this.state.unitWord.ID) {
       this.subscription.add(this.wordsUnitService.update(this.state.unitWord).subscribe(_ => this.goBack()));
     } else {

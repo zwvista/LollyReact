@@ -11,9 +11,11 @@ import { InputText } from 'primereact/inputtext';
 import { KeyboardEvent, SyntheticEvent } from 'react';
 import history from '../view-models/history';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
+import { SettingsService } from '../view-models/settings.service';
 
 export default class WordsLang extends React.Component<any, any> {
   @Inject wordsLangService: WordsLangService;
+  @Inject settingsService: SettingsService;
   subscription = new Subscription();
 
   state = {
@@ -63,6 +65,7 @@ export default class WordsLang extends React.Component<any, any> {
           <Column style={{width:'80px'}} field="ID" header="ID" />
           <Column field="WORD" header="WORD" />
           <Column field="LEVEL" header="LEVEL" />
+          <Column field="NOTE" header="NOTE" />
           <Column style={{width:'40%'}} body={this.actionTemplate} header="ACTIONS" />
         </DataTable>
       </div>
@@ -76,7 +79,7 @@ export default class WordsLang extends React.Component<any, any> {
   onNewWordKeyPress = (e: KeyboardEvent) => {
     if (e.key !== 'Enter' || !this.state.newWord) return;
     const o = this.wordsLangService.newLangWord();
-    o.WORD = this.state.newWord;
+    o.WORD = this.settingsService.autoCorrectInput(this.state.newWord);
     this.subscription.add(this.wordsLangService.create(o).subscribe(id => {
       o.ID = id as number;
       this.wordsLangService.langWords.push(o);

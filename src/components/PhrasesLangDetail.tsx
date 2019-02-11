@@ -5,9 +5,11 @@ import './Common.css'
 import { Subscription } from 'rxjs';
 import { InputText } from 'primereact/inputtext';
 import { Inject } from 'react.di';
+import { SettingsService } from '../view-models/settings.service';
 
 export default class PhrasesLangDetail extends React.Component<any, any> {
   @Inject phrasesLangService: PhrasesLangService;
+  @Inject settingsService: SettingsService;
   subscription = new Subscription();
 
   componentDidMount() {
@@ -56,6 +58,7 @@ export default class PhrasesLangDetail extends React.Component<any, any> {
   };
 
   save = () => {
+    this.state.langPhrase.PHRASE = this.settingsService.autoCorrectInput(this.state.langPhrase.PHRASE);
     if (this.state.langPhrase.ID) {
       this.subscription.add(this.phrasesLangService.update(this.state.langPhrase).subscribe(_ => this.goBack()));
     } else {

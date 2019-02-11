@@ -5,9 +5,11 @@ import './Common.css'
 import { Subscription } from 'rxjs';
 import { InputText } from 'primereact/inputtext';
 import { Inject } from 'react.di';
+import { SettingsService } from '../view-models/settings.service';
 
 export default class PhrasesUnitDetail extends React.Component<any, any> {
   @Inject phrasesUnitService: PhrasesUnitService;
+  @Inject settingsService: SettingsService;
   subscription = new Subscription();
 
   componentDidMount() {
@@ -68,6 +70,7 @@ export default class PhrasesUnitDetail extends React.Component<any, any> {
   };
 
   save = () => {
+    this.state.unitPhrase.PHRASE = this.settingsService.autoCorrectInput(this.state.unitPhrase.PHRASE);
     if (this.state.unitPhrase.ID) {
       this.subscription.add(this.phrasesUnitService.update(this.state.unitPhrase).subscribe(_ => this.goBack()));
     } else {

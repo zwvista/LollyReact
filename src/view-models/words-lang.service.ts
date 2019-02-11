@@ -38,7 +38,6 @@ export class WordsLangService {
   newLangWord(): LangWord {
     const o = new LangWord();
     o.LANGID = this.settingsService.selectedLang.ID;
-    o.LEVEL = 0;
     return o;
   }
 }

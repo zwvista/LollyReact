@@ -4,10 +4,12 @@ import { Button } from 'primereact/button';
 import './Common.css'
 import { Subscription } from 'rxjs';
 import { InputText } from 'primereact/inputtext';
-import { Inject, Module } from 'react.di';
+import { Inject } from 'react.di';
+import { SettingsService } from '../view-models/settings.service';
 
 export default class WordsLangDetail extends React.Component<any, any> {
   @Inject wordsLangService: WordsLangService;
+  @Inject settingsService: SettingsService;
   subscription = new Subscription();
 
   componentDidMount() {
@@ -37,6 +39,10 @@ export default class WordsLangDetail extends React.Component<any, any> {
           <label className="p-col-1" htmlFor="LEVEL">LEVEL:</label>
           <InputText id="LEVEL" name="LEVEL" value={this.state.langWord.LEVEL} onChange={this.onChange} />
         </div>
+        <div className="p-grid mb-2">
+          <label className="p-col-1" htmlFor="NOTE">NOTE:</label>
+          <InputText id="NOTE" name="NOTE" value={this.state.langWord.NOTE} onChange={this.onChange} />
+        </div>
         <div>
           <Button label="Back" onClick={this.goBack} />
           <Button label="Save" onClick={this.save} />
@@ -56,6 +62,7 @@ export default class WordsLangDetail extends React.Component<any, any> {
   };
 
   save = () => {
+    this.state.langWord.WORD = this.settingsService.autoCorrectInput(this.state.langWord.WORD);
     if (this.state.langWord.ID) {
       this.subscription.add(this.wordsLangService.update(this.state.langWord).subscribe(_ => this.goBack()));
     } else {

@@ -9,7 +9,6 @@ import { Subscription } from 'rxjs';
 import { Toolbar } from 'primereact/toolbar';
 import history from '../view-models/history';
 
-
 export default class PhrasesUnit extends React.Component<any, any> {
   @Inject phrasesUnitService: PhrasesUnitService;
   subscription = new Subscription();

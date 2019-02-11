@@ -11,9 +11,11 @@ import { InputText } from 'primereact/inputtext';
 import { KeyboardEvent, SyntheticEvent } from 'react';
 import history from '../view-models/history';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
+import { SettingsService } from '../view-models/settings.service';
 
 export default class WordsUnit extends React.Component<any, any> {
   @Inject wordsUnitService: WordsUnitService;
+  @Inject settingsService: SettingsService;
   subscription = new Subscription();
 
   state = {
@@ -84,7 +86,7 @@ export default class WordsUnit extends React.Component<any, any> {
   onNewWordKeyPress = (e: KeyboardEvent) => {
     if (e.key !== 'Enter' || !this.state.newWord) return;
     const o = this.wordsUnitService.newUnitWord();
-    o.WORD = this.state.newWord;
+    o.WORD = this.settingsService.autoCorrectInput(this.state.newWord);
     this.subscription.add(this.wordsUnitService.create(o).subscribe(id => {
       o.ID = id as number;
       this.wordsUnitService.unitWords.push(o);

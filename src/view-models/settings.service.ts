@@ -11,7 +11,7 @@ import { forkJoin ,  Observable } from 'rxjs';
 import { DictNoteService, DictWordService } from '../services/dictionary.service';
 import { TextbookService } from '../services/textbook.service';
 import { AutoCorrectService } from '../services/autocorrect.service';
-import { AutoCorrect } from '../models/autocorrect';
+import { autoCorrect, AutoCorrect } from '../models/autocorrect';
 import * as _ from 'lodash';
 
 const userid = 1;
@@ -250,4 +250,7 @@ export class SettingsService {
     return this.userSettingService.updatePartTo(this.selectedUSTextbook.ID, this.USPARTTO);
   }
 
+  autoCorrectInput(text: string): string {
+    return autoCorrect(text, this.autoCorrects, row => row.INPUT, row => row.EXTENDED)
+  }
 }
