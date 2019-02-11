@@ -251,6 +251,6 @@ export class SettingsService {
   }
 
   autoCorrectInput(text: string): string {
-    return autoCorrect(text, this.autoCorrects, row => row.INPUT, row => row.EXTENDED)
+    return autoCorrect(text, this.autoCorrects, row => row.INPUT, row => row.EXTENDED);
   }
 }

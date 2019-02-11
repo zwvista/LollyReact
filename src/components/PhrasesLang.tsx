@@ -8,6 +8,8 @@ import './Common.css'
 import { Subscription } from 'rxjs';
 import { Toolbar } from 'primereact/toolbar';
 import history from '../view-models/history';
+import * as CopyToClipboard from 'react-copy-to-clipboard';
+import { googleString } from '../common/common';
 
 export default class PhrasesLang extends React.Component<any, any> {
   @Inject phrasesLangService: PhrasesLangService;
@@ -29,6 +31,10 @@ export default class PhrasesLang extends React.Component<any, any> {
               tooltip="Delete" tooltipOptions={{position: 'top'}} />
       <Button icon="fa fa-edit" tooltip="Edit" tooltipOptions={{position: 'top'}}
               onClick={() => history.push('/phrases-lang-detail/' + rowData.ID)}/>
+      <CopyToClipboard text={rowData.PHRASE}>
+        <Button icon="fa fa-copy" tooltip="Copy" tooltipOptions={{position: 'top'}}/>
+      </CopyToClipboard>
+      <Button label="Google Phrase" onClick={() => this.googlePhrase(rowData.PHRASE)} />
     </div>;
   };
 
@@ -45,7 +51,7 @@ export default class PhrasesLang extends React.Component<any, any> {
           <Column style={{width:'80px'}} field="ID" header="ID" />
           <Column field="PHRASE" header="PHRASE" />
           <Column field="TRANSLATION" header="TRANSLATION" />
-          <Column style={{width:'10%'}} body={this.actionTemplate} header="ACTIONS" />
+          <Column style={{width:'20%'}} body={this.actionTemplate} header="ACTIONS" />
         </DataTable>
       </div>
     );
@@ -53,6 +59,10 @@ export default class PhrasesLang extends React.Component<any, any> {
 
   updateServiceState() {
     this.setState({phrasesLangService: this.phrasesLangService});
+  }
+
+  googlePhrase(phrase: string) {
+    googleString(phrase);
   }
 };
 

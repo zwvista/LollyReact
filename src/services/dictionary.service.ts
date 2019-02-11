@@ -8,7 +8,7 @@ import { DictNote, DictWord, DictsNote, DictsWord } from '../models/dictionary';
 export class DictWordService extends BaseService {
 
   getDataByLang(langid: number): Observable<DictWord[]> {
-    const url = `${this.baseUrl}VDICTSWORD?transform=1&filter[]=LANGIDFROM,eq,${langid}&filter[]=DICTTYPEID,ne,2`;
+    const url = `${this.baseUrl}VDICTSWORD?transform=1&filter[]=LANGIDFROM,eq,${langid}`;
     return this.http.get<DictsWord>(url)
       .pipe(
         map(result => result.VDICTSWORD.map(value => Object.assign(new DictWord(), value))),

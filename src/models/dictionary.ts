@@ -16,9 +16,8 @@ class Dictionary {
 
   urlString(word: string, autoCorrects: AutoCorrect[]): string {
     const word2 =
-      this.CHCONV === 'BASIC' ? autoCorrect(word, autoCorrects, row => row.EXTENDED, row => row.BASIC) :
-        encodeURIComponent(word);
-    const url = this.URL.replace('{0}', word2);
+      this.CHCONV === 'BASIC' ? autoCorrect(word, autoCorrects, row => row.EXTENDED, row => row.BASIC) : word;
+    const url = this.URL.replace('{0}', encodeURIComponent(word2));
     console.log(url);
     return url;
   }
