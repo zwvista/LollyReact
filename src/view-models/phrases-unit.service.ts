@@ -84,9 +84,10 @@ export class PhrasesUnitService {
                       else
                         return this.langPhraseService.delete(langphraseid).pipe(concatMap(_ => f()));
                     else
-                    if (arrLangNew.length === 0)
+                    if (arrLangNew.length === 0) {
+                      itemLang.ID = 0;
                       return this.langPhraseService.create(itemLang);
-                    else
+                    } else
                       return f();
                   }),
                 );
@@ -118,6 +119,7 @@ export class PhrasesUnitService {
 
   newUnitPhrase(): UnitPhrase {
     const o = new UnitPhrase();
+    o.LANGID = this.settingsService.selectedLang.ID;
     o.TEXTBOOKID = this.settingsService.USTEXTBOOKID;
     const maxElem = this.unitPhrases.length === 0 ? null :
       this.unitPhrases.reduce((p, v) => p.unitPartSeqnum < v.unitPartSeqnum ? v : p);

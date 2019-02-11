@@ -9,7 +9,7 @@ import { UnitWord } from '../models/unit-word';
 export class LangWordService extends BaseService {
 
   getDataByLang(langid: number): Observable<LangWord[]> {
-    const url = `${this.baseUrl}LANGWORDS?transform=1&filter=LANGID,eq,${langid}`;
+    const url = `${this.baseUrl}LANGWORDS?transform=1&filter=LANGID,eq,${langid}&order=WORD`;
     return this.http.get<LangWords>(url)
       .pipe(
         map(result => result.LANGWORDS.map(value => Object.assign(new LangWord(), value))),
@@ -20,7 +20,10 @@ export class LangWordService extends BaseService {
     const url = `${this.baseUrl}LANGWORDS?transform=1&filter[]=LANGID,eq,${langid}&filter[]=WORD,eq,${encodeURIComponent(word)}`;
     return this.http.get<LangWords>(url)
       .pipe(
-        map(result => result.LANGWORDS.map(value => Object.assign(new LangWord(), value))),
+        map(result => result.LANGWORDS.map(value => Object.assign(new LangWord(), value))
+          // Api is case insensitive
+          .filter(value => value.WORD === word)
+        ),
       );
   }
 

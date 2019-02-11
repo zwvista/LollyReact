@@ -89,9 +89,10 @@ export class WordsUnitService {
                       else
                         return this.langWordService.delete(langwordid).pipe(concatMap(_ => f()));
                     else
-                    if (arrLangNew.length === 0)
+                    if (arrLangNew.length === 0) {
+                      itemLang.ID = 0;
                       return this.langWordService.create(itemLang);
-                    else
+                    } else
                       return f();
                   }),
                 );

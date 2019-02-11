@@ -19,7 +19,10 @@ export class LangPhraseService extends BaseService {
     const url = `${this.baseUrl}LANGPHRASES?transform=1&filter[]=LANGID,eq,${langid}&filter[]=PHRASE,eq,${encodeURIComponent(phrase)}`;
     return this.http.get<LangPhrases>(url)
       .pipe(
-        map(result => result.LANGPHRASES.map(value => Object.assign(new LangPhrase(), value))),
+        map(result => result.LANGPHRASES.map(value => Object.assign(new LangPhrase(), value))
+          // Api is case insensitive
+          .filter(value => value.PHRASE === phrase)
+        ),
       );
   }
 
