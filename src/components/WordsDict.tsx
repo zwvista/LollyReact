@@ -8,7 +8,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { SettingsService } from '../view-models/settings.service';
 import DictBrowser from './DictBrowser';
 import { ListBox } from 'primereact/listbox';
-import { DictPicker, DictWord } from '../models/dictionary';
+import { DictPicker, DictMean } from '../models/dictionary';
 import { HtmlService } from '../services/html.service';
 
 export default class WordsDict extends React.Component<any, any> {
@@ -79,7 +79,7 @@ export default class WordsDict extends React.Component<any, any> {
       });
     }
     else {
-      const item2 = this.settingsService.dictsWord.find(v => v.DICTNAME === item.DICTNAME);
+      const item2 = this.settingsService.dictsMean.find(v => v.DICTNAME === item.DICTNAME);
       const url = item2.urlString(selectedWord, this.settingsService.autoCorrects);
       if (item2.DICTTYPENAME === 'OFFLINE') {
         this.setState({

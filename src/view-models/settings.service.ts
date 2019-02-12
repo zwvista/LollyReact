@@ -5,10 +5,10 @@ import { LanguageService } from '../services/language.service';
 import { UserSettingService } from '../services/user-setting.service';
 import { UserSetting } from '../models/user-setting';
 import { Language } from '../models/language';
-import { DictNote, DictPicker, DictWord } from '../models/dictionary';
+import { DictNote, DictPicker, DictMean } from '../models/dictionary';
 import { Textbook } from '../models/textbook';
 import { forkJoin ,  Observable } from 'rxjs';
-import { DictNoteService, DictWordService } from '../services/dictionary.service';
+import { DictNoteService, DictMeanService } from '../services/dictionary.service';
 import { TextbookService } from '../services/textbook.service';
 import { AutoCorrectService } from '../services/autocorrect.service';
 import { autoCorrect, AutoCorrect } from '../models/autocorrect';
@@ -105,7 +105,7 @@ export class SettingsService {
     return this.languages[this.selectedLangIndex];
   }
 
-  dictsWord: DictWord[] = new Array(0);
+  dictsMean: DictMean[] = new Array(0);
   dictsPicker: DictPicker[] = new Array(0);
   private _selectedDictPickerIndex!: number;
   get selectedDictPickerIndex() {
@@ -152,7 +152,7 @@ export class SettingsService {
 
   constructor(@Inject private langService: LanguageService,
               @Inject private userSettingService: UserSettingService,
-              @Inject private dictWordService: DictWordService,
+              @Inject private dictMeanService: DictMeanService,
               @Inject private dictNoteService: DictNoteService,
               @Inject private textbookService: TextbookService,
               private autoCorrectService: AutoCorrectService) { }
@@ -173,16 +173,16 @@ export class SettingsService {
     this.selectedUSLangIndex = this.userSettings.findIndex(value => value.KIND === 2 && value.ENTITYID === this.USLANGID);
     const dicts = this.USDICTSPICKER.split('\r\n');
     return forkJoin([
-      this.dictWordService.getDataByLang(this.USLANGID),
+      this.dictMeanService.getDataByLang(this.USLANGID),
       this.dictNoteService.getDataByLang(this.USLANGID),
       this.textbookService.getDataByLang(this.USLANGID),
       this.autoCorrectService.getDataByLang(this.USLANGID)]).pipe(
       map(res => {
-        this.dictsWord = res[0] as DictWord[];
+        this.dictsMean = res[0] as DictMean[];
         let i = 0;
         this.dictsPicker = _.flatMap(dicts, d => {
           if (d === '0')
-            return _.map(this.dictsWord, d2 => new DictPicker(String(d2.DICTID), d2.DICTNAME));
+            return _.map(this.dictsMean, d2 => new DictPicker(String(d2.DICTID), d2.DICTNAME));
           else {
             i++;
             return [new DictPicker(d, `Custom${i}`)];
@@ -209,7 +209,7 @@ export class SettingsService {
   dictHtml(word: string, dictids: string[]): string {
     let s = '<html><body>\n';
     dictids.forEach((dictid, i) => {
-      const item = this.dictsWord.find(v => String(v.DICTID) === dictid);
+      const item = this.dictsMean.find(v => String(v.DICTID) === dictid);
       const ifrId = `ifr${i + 1}`;
       const url = item.urlString(word, this.autoCorrects);
       s += `<iframe id='$ifrId' frameborder='1' style='width:100%; height:500px; display:block' src='$url'></iframe>\n`;

@@ -42,7 +42,7 @@ export default class WordsLang extends React.Component<any, any> {
         <Button icon="fa fa-copy" tooltip="Copy" tooltipOptions={{position: 'top'}}/>
       </CopyToClipboard>
       <Button label="Google Word" onClick={() => this.googleWord(rowData.WORD)} />
-      <Button label="Dictionary" onClick={() => this.dictWord(rowData.ID)} />
+      <Button label="Dictionary" onClick={() => this.dictMean(rowData.ID)} />
     </div>;
   };
 
@@ -97,7 +97,7 @@ export default class WordsLang extends React.Component<any, any> {
     window.open('https://www.google.com/search?q=' + encodeURIComponent(WORD), '_blank');
   }
 
-  dictWord(ID: number) {
+  dictMean(ID: number) {
     const index = this.wordsLangService.langWords.findIndex(value => value.ID === ID);
     history.push('/words-dict/' + index);
   }

@@ -23,11 +23,11 @@ class Dictionary {
   }
 }
 
-export class DictsWord {
-  VDICTSWORD!: DictWord[];
+export class DictsMean {
+  VDICTSMEAN!: DictMean[];
 }
 const cssFolder = 'http://zwvista.tk/lolly/css/';
-export class DictWord extends Dictionary {
+export class DictMean extends Dictionary {
   htmlString(html: string, word: string): string {
     return HtmlService.extractTextFrom(html, this.TRANSFORM, this.TEMPLATE, (text: string, template2: string) =>
       template2.replace(/\{0\}/g, word).replace(/\{1\}/g, cssFolder).replace(/\{2\}/g, text));
