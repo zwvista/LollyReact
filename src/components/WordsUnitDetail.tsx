@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { InputText } from 'primereact/inputtext';
 import { Inject } from 'react.di';
 import { SettingsService } from '../view-models/settings.service';
+import { Dropdown } from 'primereact/dropdown';
 
 export default class WordsUnitDetail extends React.Component<any, any> {
   @Inject wordsUnitService: WordsUnitService;
@@ -17,6 +18,8 @@ export default class WordsUnitDetail extends React.Component<any, any> {
     const o = this.wordsUnitService.unitWords.find(value => value.ID === id);
     this.setState({
       unitWord: o ? {...o} : this.wordsUnitService.newUnitWord(),
+      units: this.settingsService.units.map(v => ({label: v, value: Number(v)})),
+      parts: this.settingsService.parts.map((v, i) => ({label: v, value: i + 1})),
     });
   }
 
@@ -33,11 +36,11 @@ export default class WordsUnitDetail extends React.Component<any, any> {
         </div>
         <div className="p-grid mb-2">
           <label className="p-col-1" htmlFor="UNIT">UNIT:</label>
-          <InputText id="UNIT" name="UNIT" value={this.state.unitWord.UNIT} onChange={this.onChange} />
+          <Dropdown className="p-col-2" options={this.state.units} value={this.state.unitWord.UNIT} />
         </div>
         <div className="p-grid mb-2">
           <label className="p-col-1" htmlFor="PART">PART:</label>
-          <InputText id="PART" name="PART" value={this.state.unitWord.PART} onChange={this.onChange} />
+          <Dropdown className="p-col-2" options={this.state.parts} value={this.state.unitWord.PART} />
         </div>
         <div className="p-grid mb-2">
           <label className="p-col-1" htmlFor="SEQNUM">SEQNUM:</label>
