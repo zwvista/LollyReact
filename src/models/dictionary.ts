@@ -34,7 +34,7 @@ export class DictMean extends Dictionary {
   }
 }
 
-export class DictPicker {
+export class DictGroup {
   constructor(public DICTID: string, public DICTNAME: string) {}
   dictids(): string[] {
     return this.DICTID.split(',');
