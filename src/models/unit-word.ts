@@ -10,7 +10,9 @@ export class UnitWord {
   SEQNUM = 0;
   WORD = '';
   NOTE: string | null = null;
-  LANGWORDID = 0;
+  WORDID = 0;
+  FAMIID = 0;
+  LEVEL = 0;
 
   get unitPartSeqnum(): string {
     return String(this.UNIT).padStart(3) +

@@ -1,4 +1,5 @@
 import { UnitPhrase } from './unit-phrase';
+import { TextbookPhrase } from './textbook-phrase';
 
 export class LangPhrases {
   LANGPHRASES: LangPhrase[];
@@ -14,7 +15,15 @@ export class LangPhrase {
   // https://stackoverflow.com/questions/47540501/typescript-constructor-overloading
   static fromUnit(item: UnitPhrase): LangPhrase {
     const o = new LangPhrase();
-    o.ID = item.LANGPHRASEID;
+    o.ID = item.PHRASEID;
+    o.LANGID = item.LANGID;
+    o.PHRASE = item.PHRASE;
+    o.TRANSLATION = item.TRANSLATION;
+    return o;
+  }
+  static fromTextbook(item: TextbookPhrase): LangPhrase {
+    const o = new LangPhrase();
+    o.ID = item.PHRASEID;
     o.LANGID = item.LANGID;
     o.PHRASE = item.PHRASE;
     o.TRANSLATION = item.TRANSLATION;

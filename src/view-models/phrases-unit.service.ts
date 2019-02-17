@@ -35,13 +35,13 @@ export class PhrasesUnitService {
           return this.langPhraseService.create(itemLang);
         } else {
           const itemLang = arrLang[0];
-          const langphraseid = itemLang.ID;
+          const phraseid = itemLang.ID;
           const b = itemLang.combineTranslation(item.TRANSLATION);
-          return b ? this.updateTranslation(langphraseid, item.TRANSLATION || '').pipe(map(_ => langphraseid)) : of(langphraseid);
+          return b ? this.updateTranslation(phraseid, item.TRANSLATION || '').pipe(map(_ => phraseid)) : of(phraseid);
         }
       }),
-      concatMap(langphraseid => {
-        item.LANGPHRASEID = langphraseid as number;
+      concatMap(phraseid => {
+        item.PHRASEID = phraseid as number;
         return this.unitPhraseService.create(item);
       }),
     );
@@ -51,38 +51,38 @@ export class PhrasesUnitService {
     return this.unitPhraseService.updateSeqNum(id, seqnum);
   }
 
-  updateTranslation(langphraseid: number, translation: string): Observable<number> {
-    return this.langPhraseService.updateTranslation(langphraseid, translation);
+  updateTranslation(phraseid: number, translation: string): Observable<number> {
+    return this.langPhraseService.updateTranslation(phraseid, translation);
   }
 
   update(item: UnitPhrase): Observable<number> {
-    const langphraseid = item.LANGPHRASEID;
-    return this.unitPhraseService.getDataByLangPhrase(langphraseid).pipe(
+    const phraseid = item.PHRASEID;
+    return this.unitPhraseService.getDataByLangPhrase(phraseid).pipe(
       concatMap(arrUnit => {
         if (arrUnit.length === 0)
           return empty;
         else {
           const itemLang = LangPhrase.fromUnit(item);
-          return this.langPhraseService.getDataById(langphraseid).pipe(
+          return this.langPhraseService.getDataById(phraseid).pipe(
             concatMap(arrLangOld => {
               if (arrLangOld.length > 0 && arrLangOld[0].PHRASE === item.PHRASE)
-                return this.langPhraseService.updateTranslation(langphraseid, item.TRANSLATION || '').pipe(map(_ => langphraseid));
+                return this.langPhraseService.updateTranslation(phraseid, item.TRANSLATION || '').pipe(map(_ => phraseid));
               else
                 return this.langPhraseService.getDataByLangPhrase(item.LANGID, item.PHRASE).pipe(
                   concatMap(arrLangNew => {
                     const f = () => {
                       const itemLang = arrLangNew[0];
-                      const langphraseid = itemLang.ID;
+                      const phraseid = itemLang.ID;
                       const b = itemLang.combineTranslation(item.TRANSLATION);
                       item.TRANSLATION = itemLang.TRANSLATION;
-                      return b ? this.langPhraseService.updateTranslation(langphraseid, item.TRANSLATION || '')
-                        .pipe(map(_ => langphraseid)) : of(langphraseid);
+                      return b ? this.langPhraseService.updateTranslation(phraseid, item.TRANSLATION || '')
+                        .pipe(map(_ => phraseid)) : of(phraseid);
                     };
                     if (arrUnit.length === 1)
                       if (arrLangNew.length === 0)
-                        return this.langPhraseService.update(itemLang).pipe(map(_ => langphraseid));
+                        return this.langPhraseService.update(itemLang).pipe(map(_ => phraseid));
                       else
-                        return this.langPhraseService.delete(langphraseid).pipe(concatMap(_ => f()));
+                        return this.langPhraseService.delete(phraseid).pipe(concatMap(_ => f()));
                     else
                     if (arrLangNew.length === 0) {
                       itemLang.ID = 0;
@@ -92,8 +92,8 @@ export class PhrasesUnitService {
                   }),
                 );
             }),
-            concatMap(langphraseid => {
-              item.LANGPHRASEID = langphraseid as number;
+            concatMap(phraseid => {
+              item.PHRASEID = phraseid as number;
               return this.unitPhraseService.update(item);
             }),
           );

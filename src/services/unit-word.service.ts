@@ -15,8 +15,8 @@ export class UnitWordService extends BaseService {
       );
   }
 
-  getDataByLangWord(langwordid: number): Observable<UnitWord[]> {
-    const url = `${this.baseUrl}VUNITWORDS?transform=1&filter=LANGWORDID,eq,${langwordid}`;
+  getDataByLangWord(wordid: number): Observable<UnitWord[]> {
+    const url = `${this.baseUrl}VUNITWORDS?transform=1&filter=WORDID,eq,${wordid}`;
     return this.http.get<UnitWords>(url)
       .pipe(
         map(result => result.VUNITWORDS.map(value => Object.assign(new UnitWord(), value))),

@@ -8,9 +8,9 @@ export class UnitPhrase {
   UNIT = 0;
   PART = 0;
   SEQNUM = 0;
+  PHRASEID = 0;
   PHRASE = '';
   TRANSLATION: string | null = null;
-  LANGPHRASEID = 0;
 
   get unitPartSeqnum(): string {
     return String(this.UNIT).padStart(3) +
