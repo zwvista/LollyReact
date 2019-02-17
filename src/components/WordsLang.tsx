@@ -54,7 +54,7 @@ export default class WordsLang extends React.Component<any, any> {
           <div className="p-toolbar-group-left">
             <Button label="Add" icon="fa fa-plus" onClick={() => history.push('/words-lang-detail/0')} />
             <Button label="Refresh" icon="fa fa-refresh" />
-            <Button label="Dictionary" onClick={() => history.push('/words-dict/0')} />
+            <Button label="Dictionary" onClick={() => history.push('/words-dict/lang/0')} />
           </div>
         </Toolbar>
         <span className="p-float-label">
@@ -65,8 +65,8 @@ export default class WordsLang extends React.Component<any, any> {
         <DataTable value={this.wordsLangService.langWords} selectionMode="single" autoLayout={true}>
           <Column style={{width:'80px'}} field="ID" header="ID" />
           <Column field="WORD" header="WORD" />
-          <Column field="LEVEL" header="LEVEL" />
           <Column field="NOTE" header="NOTE" />
+          <Column field="LEVEL" header="LEVEL" />
           <Column style={{width:'40%'}} body={this.actionTemplate} header="ACTIONS" />
         </DataTable>
       </div>
@@ -105,7 +105,7 @@ export default class WordsLang extends React.Component<any, any> {
 
   dictMean(ID: number) {
     const index = this.wordsLangService.langWords.findIndex(value => value.ID === ID);
-    history.push('/words-dict/' + index);
+    history.push('/words-dict/lang/' + index);
   }
 
   updateServiceState() {

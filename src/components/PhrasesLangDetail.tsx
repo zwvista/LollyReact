@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { InputText } from 'primereact/inputtext';
 import { Inject } from 'react.di';
 import { SettingsService } from '../view-models/settings.service';
+import { Dropdown } from 'primereact/dropdown';
 
 export default class PhrasesLangDetail extends React.Component<any, any> {
   @Inject phrasesLangService: PhrasesLangService;
@@ -29,15 +30,15 @@ export default class PhrasesLangDetail extends React.Component<any, any> {
       <div>
         <div className="p-grid mt-2 mb-2">
           <label className="p-col-1" htmlFor="ID">ID:</label>
-          <InputText id="ID" name="ID" value={this.state.langPhrase.ID} disabled />
+          <InputText className="p-col-3" id="ID" name="ID" value={this.state.langPhrase.ID} disabled />
         </div>
         <div className="p-grid mb-2">
           <label className="p-col-1" htmlFor="PHRASE">PHRASE:</label>
-          <InputText id="PHRASE" name="PHRASE" value={this.state.langPhrase.PHRASE} onChange={this.onChange} />
+          <InputText className="p-col-3" id="PHRASE" name="PHRASE" value={this.state.langPhrase.PHRASE} onChange={this.onChange} />
         </div>
         <div className="p-grid mb-2">
           <label className="p-col-1" htmlFor="TRANSLATION">TRANSLATION:</label>
-          <InputText id="TRANSLATION" name="TRANSLATION" value={this.state.langPhrase.TRANSLATION} onChange={this.onChange} />
+          <InputText className="p-col-3" id="TRANSLATION" name="TRANSLATION" value={this.state.langPhrase.TRANSLATION} onChange={this.onChange} />
         </div>
         <div>
           <Button label="Back" onClick={this.goBack} />

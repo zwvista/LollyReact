@@ -53,7 +53,7 @@ export default class WordsTextbook extends React.Component<any, any> {
         <Toolbar>
           <div className="p-toolbar-group-left">
             <Button label="Refresh" icon="fa fa-refresh" />
-            <Button label="Dictionary" onClick={() => history.push('/words-dict/0')} />
+            <Button label="Dictionary" onClick={() => history.push('/words-dict/textbook/0')} />
           </div>
         </Toolbar>
         <DataTable value={this.wordsTextbookService.textbookWords} selectionMode="single" autoLayout={true}>
@@ -84,8 +84,8 @@ export default class WordsTextbook extends React.Component<any, any> {
   }
 
   dictMean(ID: number) {
-    const index = this.wordsTextbookService.textbookWords.findIndex(value => value.ENTRYID === ID);
-    history.push('/words-dict/' + index);
+    const index = this.wordsTextbookService.textbookWords.findIndex(value => value.ID === ID);
+    history.push('/words-dict/textbook/' + index);
   }
 
   updateServiceState() {

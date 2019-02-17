@@ -56,7 +56,7 @@ export default class WordsUnit extends React.Component<any, any> {
             <Button label="Refresh" icon="fa fa-refresh" />
             <Button label="Retrieve All Notes" />
             <Button label="Retrieve Notes If Empty" />
-            <Button label="Dictionary" onClick={() => history.push('/words-dict/0')} />
+            <Button label="Dictionary" onClick={() => history.push('/words-dict/unit/0')} />
           </div>
         </Toolbar>
         <span className="p-float-label">
@@ -117,7 +117,7 @@ export default class WordsUnit extends React.Component<any, any> {
 
   dictMean(ID: number) {
     const index = this.wordsUnitService.unitWords.findIndex(value => value.ID === ID);
-    history.push('/words-dict/' + index);
+    history.push('/words-dict/unit/' + index);
   }
 
   getNotes(ifEmpty: boolean) {

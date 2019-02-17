@@ -110,7 +110,7 @@ export default class App extends React.Component<any, any> {
             <Route path="/phrases-textbook-detail/:id" component={PhrasesTextbookDetail} exact />
             <Route path="/phrases-lang" component={PhrasesLang} exact />
             <Route path="/phrases-lang-detail/:id" component={PhrasesLangDetail} exact />
-            <Route path="/words-dict/:index" component={WordsDict} exact />
+            <Route path="/words-dict/:type/:index" component={WordsDict} exact />
             <Route path="/settings" component={Settings} exact />
           </Switch>
         </div>

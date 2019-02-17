@@ -16,7 +16,7 @@ export default class WordsLangDetail extends React.Component<any, any> {
     const id = +this.props.match.params.id;
     const o = this.wordsLangService.langWords.find(value => value.ID === id);
     this.setState({
-      langWord: o ? {...o} : this.wordsLangService.newLangWord(),
+      item: o ? {...o} : this.wordsLangService.newLangWord(),
     });
   }
 
@@ -29,19 +29,23 @@ export default class WordsLangDetail extends React.Component<any, any> {
       <div>
         <div className="p-grid mt-2 mb-2">
           <label className="p-col-1" htmlFor="ID">ID:</label>
-          <InputText id="ID" name="ID" value={this.state.langWord.ID} disabled />
+          <InputText className="p-col-3" id="ID" name="ID" value={this.state.item.ID} disabled />
         </div>
         <div className="p-grid mb-2">
           <label className="p-col-1" htmlFor="WORD">WORD:</label>
-          <InputText id="WORD" name="WORD" value={this.state.langWord.WORD} onChange={this.onChange} />
-        </div>
-        <div className="p-grid mb-2">
-          <label className="p-col-1" htmlFor="LEVEL">LEVEL:</label>
-          <InputText id="LEVEL" name="LEVEL" value={this.state.langWord.LEVEL} onChange={this.onChange} />
+          <InputText className="p-col-3" id="WORD" name="WORD" value={this.state.item.WORD} onChange={this.onChange} />
         </div>
         <div className="p-grid mb-2">
           <label className="p-col-1" htmlFor="NOTE">NOTE:</label>
-          <InputText id="NOTE" name="NOTE" value={this.state.langWord.NOTE} onChange={this.onChange} />
+          <InputText className="p-col-3" id="NOTE" name="NOTE" value={this.state.item.NOTE} onChange={this.onChange} />
+        </div>
+        <div className="p-grid mb-2">
+          <label className="p-col-1" htmlFor="FAMIID">FAMIID:</label>
+          <InputText className="p-col-3" id="FAMIID" name="FAMIID" value={this.state.item.FAMIID} disabled />
+        </div>
+        <div className="p-grid mb-2">
+          <label className="p-col-1" htmlFor="LEVEL">LEVEL:</label>
+          <InputText className="p-col-3" id="LEVEL" name="LEVEL" value={this.state.item.LEVEL} onChange={this.onChange} />
         </div>
         <div>
           <Button label="Back" onClick={this.goBack} />
@@ -53,8 +57,8 @@ export default class WordsLangDetail extends React.Component<any, any> {
   
   onChange = (e: any) => {
     const elem = e.nativeEvent.target as HTMLInputElement;
-    this.state.langWord[elem.name] = elem.value;
-    this.setState({langWord: this.state.langWord})
+    this.state.item[elem.name] = elem.value;
+    this.setState({item: this.state.item})
   };
 
   goBack = () => {
@@ -62,11 +66,11 @@ export default class WordsLangDetail extends React.Component<any, any> {
   };
 
   save = () => {
-    this.state.langWord.WORD = this.settingsService.autoCorrectInput(this.state.langWord.WORD);
-    if (this.state.langWord.ID) {
-      this.subscription.add(this.wordsLangService.update(this.state.langWord).subscribe(_ => this.goBack()));
+    this.state.item.WORD = this.settingsService.autoCorrectInput(this.state.item.WORD);
+    if (this.state.item.ID) {
+      this.subscription.add(this.wordsLangService.update(this.state.item).subscribe(_ => this.goBack()));
     } else {
-      this.subscription.add(this.wordsLangService.create(this.state.langWord).subscribe(_ => this.goBack()));
+      this.subscription.add(this.wordsLangService.create(this.state.item).subscribe(_ => this.goBack()));
     }
   };
 

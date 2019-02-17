@@ -17,7 +17,7 @@ export default class WordsUnitDetail extends React.Component<any, any> {
     const id = +this.props.match.params.id;
     const o = this.wordsUnitService.unitWords.find(value => value.ID === id);
     this.setState({
-      unitWord: o ? {...o} : this.wordsUnitService.newUnitWord(),
+      item: o ? {...o} : this.wordsUnitService.newUnitWord(),
       units: this.settingsService.units.map(v => ({label: v, value: Number(v)})),
       parts: this.settingsService.parts.map((v, i) => ({label: v, value: i + 1})),
     });
@@ -32,27 +32,39 @@ export default class WordsUnitDetail extends React.Component<any, any> {
       <div>
         <div className="p-grid mt-2 mb-2">
           <label className="p-col-1" htmlFor="ID">ID:</label>
-          <InputText id="ID" name="ID" value={this.state.unitWord.ID} disabled />
+          <InputText className="p-col-3" id="ID" name="ID" value={this.state.item.ID} disabled />
         </div>
         <div className="p-grid mb-2">
           <label className="p-col-1" htmlFor="UNIT">UNIT:</label>
-          <Dropdown className="p-col-2" options={this.state.units} value={this.state.unitWord.UNIT} />
+          <Dropdown className="p-col-3" autoWidth={false} options={this.state.units} value={this.state.item.UNIT} />
         </div>
         <div className="p-grid mb-2">
           <label className="p-col-1" htmlFor="PART">PART:</label>
-          <Dropdown className="p-col-2" options={this.state.parts} value={this.state.unitWord.PART} />
+          <Dropdown className="p-col-3" autoWidth={false} options={this.state.parts} value={this.state.item.PART} />
         </div>
         <div className="p-grid mb-2">
           <label className="p-col-1" htmlFor="SEQNUM">SEQNUM:</label>
-          <InputText id="SEQNUM" name="SEQNUM" value={this.state.unitWord.SEQNUM} onChange={this.onChange} />
+          <InputText className="p-col-3" id="SEQNUM" name="SEQNUM" value={this.state.item.SEQNUM} onChange={this.onChange} />
+        </div>
+        <div className="p-grid mb-2">
+          <label className="p-col-1" htmlFor="WORDID">WORDID:</label>
+          <InputText className="p-col-3" id="WORDID" name="WORDID" value={this.state.item.WORDID} disabled />
         </div>
         <div className="p-grid mb-2">
           <label className="p-col-1" htmlFor="WORD">WORD:</label>
-          <InputText id="WORD" name="WORD" value={this.state.unitWord.WORD} onChange={this.onChange} />
+          <InputText className="p-col-3" id="WORD" name="WORD" value={this.state.item.WORD} onChange={this.onChange} />
         </div>
         <div className="p-grid mb-2">
           <label className="p-col-1" htmlFor="NOTE">NOTE:</label>
-          <InputText id="NOTE" name="NOTE" value={this.state.unitWord.NOTE} onChange={this.onChange} />
+          <InputText className="p-col-3" id="NOTE" name="NOTE" value={this.state.item.NOTE} onChange={this.onChange} />
+        </div>
+        <div className="p-grid mb-2">
+          <label className="p-col-1" htmlFor="FAMIID">FAMIID:</label>
+          <InputText className="p-col-3" id="FAMIID" name="FAMIID" value={this.state.item.FAMIID} disabled />
+        </div>
+        <div className="p-grid mb-2">
+          <label className="p-col-1" htmlFor="LEVEL">LEVEL:</label>
+          <InputText className="p-col-3" id="LEVEL" name="NOTE" value={this.state.item.LEVEL} onChange={this.onChange} />
         </div>
         <div>
           <Button label="Back" onClick={this.goBack} />
@@ -64,8 +76,8 @@ export default class WordsUnitDetail extends React.Component<any, any> {
   
   onChange = (e: any) => {
     const elem = e.nativeEvent.target as HTMLInputElement;
-    this.state.unitWord[elem.name] = elem.value;
-    this.setState({unitWord: this.state.unitWord})
+    this.state.item[elem.name] = elem.value;
+    this.setState({item: this.state.item})
   };
 
   goBack = () => {
@@ -73,11 +85,11 @@ export default class WordsUnitDetail extends React.Component<any, any> {
   };
 
   save = () => {
-    this.state.unitWord.WORD = this.settingsService.autoCorrectInput(this.state.unitWord.WORD);
-    if (this.state.unitWord.ID) {
-      this.subscription.add(this.wordsUnitService.update(this.state.unitWord).subscribe(_ => this.goBack()));
+    this.state.item.WORD = this.settingsService.autoCorrectInput(this.state.item.WORD);
+    if (this.state.item.ID) {
+      this.subscription.add(this.wordsUnitService.update(this.state.item).subscribe(_ => this.goBack()));
     } else {
-      this.subscription.add(this.wordsUnitService.create(this.state.unitWord).subscribe(_ => this.goBack()));
+      this.subscription.add(this.wordsUnitService.create(this.state.item).subscribe(_ => this.goBack()));
     }
   };
 

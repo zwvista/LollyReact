@@ -5,7 +5,7 @@ export class TextbookWord {
   TEXTBOOKID = 0;
   LANGID = 0;
   TEXTBOOKNAME = '';
-  ENTRYID = 0;
+  ID = 0;
   UNIT = 0;
   PART = 0;
   SEQNUM = 0;
