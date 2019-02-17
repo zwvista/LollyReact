@@ -44,6 +44,14 @@ import PhrasesLangDetail from './components/PhrasesLangDetail';
 import WordsLangDetail from './components/WordsLangDetail';
 import PhrasesLang from './components/PhrasesLang';
 import { NoteService } from './view-models/note.service';
+import { TextbookWordService } from './services/textbook-word.service';
+import { TextbookPhraseService } from './services/textbook-phrase.service';
+import WordsTextbook from './components/WordsTextbook';
+import WordsTextbookDetail from './components/WordsTextbookDetail';
+import PhrasesTextbookDetail from './components/PhrasesTextbookDetail';
+import PhrasesTextbook from './components/PhrasesTextbook';
+import { WordsTextbookService } from './view-models/words-textbook.service';
+import { PhrasesTextbookService } from './view-models/phrases-textbook.service';
 
 
 @Module({
@@ -52,7 +60,7 @@ import { NoteService } from './view-models/note.service';
     TextbookService, UnitPhraseService, UnitWordService, UserSettingService, AppService,
     PhrasesUnitService, SettingsService, WordsUnitService, AutoCorrectService,
     LangPhraseService, LangWordService, PhrasesLangService, WordsLangService,
-    NoteService,
+    NoteService, TextbookWordService, TextbookPhraseService, WordsTextbookService, PhrasesTextbookService
   ],
 })
 export default class App extends React.Component<any, any> {
@@ -62,8 +70,10 @@ export default class App extends React.Component<any, any> {
     super(props);
     const items = [
       {label: 'Words in Unit', icon: 'fa fa-bus fa-lg', target: '/words-unit'},
-      {label: 'Phrases in Unit', icon: 'fa fa-plane fa-lg', target: '/phrases-unit'},
-      {label: 'Words in Language', icon: 'fa fa-bus fa-lg', target: '/words-lang'},
+      {label: 'Words in Textbook', icon: 'fa fa-taxi fa-lg', target: '/words-textbook'},
+      {label: 'Words in Language', icon: 'fa fa-plane fa-lg', target: '/words-lang'},
+      {label: 'Phrases in Unit', icon: 'fa fa-bus fa-lg', target: '/phrases-unit'},
+      {label: 'Phrases in Textbook', icon: 'fa fa-taxi fa-lg', target: '/phrases-textbook'},
       {label: 'Phrases in Language', icon: 'fa fa-plane fa-lg', target: '/phrases-lang'},
       {label: 'Settings', icon: 'fa fa-cog fa-lg', target: '/settings'},
     ];
@@ -88,14 +98,18 @@ export default class App extends React.Component<any, any> {
           </div>
           <Switch>
             <Route path="/" component={WordsUnit} exact />
-            <Route path="/phrases-unit" component={PhrasesUnit} exact />
-            <Route path="/phrases-unit-detail/:id" component={PhrasesUnitDetail} exact />
             <Route path="/words-unit" component={WordsUnit} exact />
             <Route path="/words-unit-detail/:id" component={WordsUnitDetail} exact />
-            <Route path="/phrases-lang" component={PhrasesLang} exact />
-            <Route path="/phrases-lang-detail/:id" component={PhrasesLangDetail} exact />
+            <Route path="/words-textbook" component={WordsTextbook} exact />
+            <Route path="/words-textbook-detail/:id" component={WordsTextbookDetail} exact />
             <Route path="/words-lang" component={WordsLang} exact />
             <Route path="/words-lang-detail/:id" component={WordsLangDetail} exact />
+            <Route path="/phrases-unit" component={PhrasesUnit} exact />
+            <Route path="/phrases-unit-detail/:id" component={PhrasesUnitDetail} exact />
+            <Route path="/phrases-textbook" component={PhrasesTextbook} exact />
+            <Route path="/phrases-textbook-detail/:id" component={PhrasesTextbookDetail} exact />
+            <Route path="/phrases-lang" component={PhrasesLang} exact />
+            <Route path="/phrases-lang-detail/:id" component={PhrasesLangDetail} exact />
             <Route path="/words-dict/:index" component={WordsDict} exact />
             <Route path="/settings" component={Settings} exact />
           </Switch>
