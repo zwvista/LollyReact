@@ -3,6 +3,7 @@ import { Inject } from 'react.di';
 import { SettingsService } from '../view-models/settings.service';
 import './Common.css'
 import { Subscription } from 'rxjs';
+import { concatMap } from 'rxjs/operators';
 
 export default class Settings extends React.Component<any, any> {
   @Inject settingsService: SettingsService;
@@ -96,6 +97,11 @@ export default class Settings extends React.Component<any, any> {
             }
           </select>
         </div>
+        <div className="form-inline mb-2">
+          <label className="col-2 control-label" />
+          <button className="btn btn-primary mr-2" onClick={this.previousUnitPart}>Previous</button>
+          <button className="btn btn-primary mr-2" onClick={this.nextUnitPart}>Next</button>
+        </div>
       </div>
     ) : (<div/>);
   }
@@ -176,6 +182,36 @@ export default class Settings extends React.Component<any, any> {
         }
         this.updateServiceState();
       }));
+  };
+
+  previousUnitPart = (event: any) => {
+    if (this.settingsService.USPARTFROM > 1) {
+      this.settingsService.USPARTFROM--;
+      this.updateUnitPartTo();
+      this.settingsService.updatePartFrom().subscribe();
+    } else if (this.settingsService.USUNITFROM > 1) {
+      this.settingsService.USUNITFROM--;
+      this.settingsService.USPARTFROM = this.settingsService.parts.length;
+      this.updateUnitPartTo();
+      this.settingsService.updateUnitFrom().pipe(
+        concatMap(_ => this.settingsService.updatePartFrom())
+      ).subscribe();
+    }
+  };
+
+  nextUnitPart = (event: any) => {
+    if (this.settingsService.USPARTFROM < this.settingsService.parts.length) {
+      this.settingsService.USPARTFROM++;
+      this.updateUnitPartTo();
+      this.settingsService.updatePartFrom().subscribe();
+    } else if (this.settingsService.USUNITFROM > 1) {
+      this.settingsService.USUNITFROM++;
+      this.settingsService.USPARTFROM = 1;
+      this.updateUnitPartTo();
+      this.settingsService.updateUnitFrom().pipe(
+        concatMap(_ => this.settingsService.updatePartFrom())
+      ).subscribe();
+    }
   };
 
   updateTextbook() {
