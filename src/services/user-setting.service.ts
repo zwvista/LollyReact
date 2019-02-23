@@ -27,9 +27,9 @@ export class UserSettingService extends BaseService {
     );
   }
 
-  updateDictGroup(id: number, dictgroup: string): Observable<number> {
+  updateDictItem(id: number, dictitem: string): Observable<number> {
     const url = `${this.baseUrl}USERSETTINGS/${id}`;
-    return this.http.put<number>(url, {VALUE2: dictgroup} as UserSetting).pipe(
+    return this.http.put<number>(url, {VALUE2: dictitem} as UserSetting).pipe(
     );
   }
 

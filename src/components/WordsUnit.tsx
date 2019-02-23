@@ -20,6 +20,7 @@ export default class WordsUnit extends React.Component<any, any> {
 
   state = {
     newWord: '',
+    hasNoNote: this.settingsService.dictsNote.length === 0,
   };
 
   componentDidMount() {
@@ -41,7 +42,7 @@ export default class WordsUnit extends React.Component<any, any> {
       <CopyToClipboard text={rowData.WORD}>
         <Button icon="fa fa-copy" tooltip="Copy" tooltipOptions={{position: 'top'}}/>
       </CopyToClipboard>
-      <Button label="Retrieve Note"/>
+      <Button hidden={this.state.hasNoNote} label="Retrieve Note"/>
       <Button label="Google Word" onClick={() => this.googleWord(rowData.WORD)} />
       <Button label="Dictionary" onClick={() => this.dictMean(rowData.ID)} />
     </div>;
@@ -54,8 +55,8 @@ export default class WordsUnit extends React.Component<any, any> {
           <div className="p-toolbar-group-left">
             <Button label="Add" icon="fa fa-plus" onClick={() => history.push('/words-unit-detail/0')} />
             <Button label="Refresh" icon="fa fa-refresh" />
-            <Button label="Retrieve All Notes" />
-            <Button label="Retrieve Notes If Empty" />
+            <Button hidden={this.state.hasNoNote} label="Retrieve All Notes" />
+            <Button hidden={this.state.hasNoNote} label="Retrieve Notes If Empty" />
             <Button label="Dictionary" onClick={() => history.push('/words-dict/unit/0')} />
           </div>
         </Toolbar>
@@ -87,11 +88,11 @@ export default class WordsUnit extends React.Component<any, any> {
     if (e.key !== 'Enter' || !this.state.newWord) return;
     const o = this.wordsUnitService.newUnitWord();
     o.WORD = this.settingsService.autoCorrectInput(this.state.newWord);
+    this.setState({newWord: ''});
+    this.updateServiceState();
     this.subscription.add(this.wordsUnitService.create(o).subscribe(id => {
       o.ID = id as number;
       this.wordsUnitService.unitWords.push(o);
-      this.setState({newWord: ''});
-      this.updateServiceState();
     }));
   };
 

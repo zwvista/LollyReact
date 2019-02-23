@@ -13,9 +13,6 @@ import { LangWord } from '../models/lang-word';
 export class WordsUnitService {
 
   unitWords: UnitWord[] = new Array(0);
-  noteFromIndex = 0;
-  noteToIndex = 0;
-  noteIfEmpty = true;
 
   constructor(@Inject private unitWordService: UnitWordService,
               @Inject private langWordService: LangWordService,

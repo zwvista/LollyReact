@@ -5,7 +5,7 @@ import { LanguageService } from '../services/language.service';
 import { UserSettingService } from '../services/user-setting.service';
 import { UserSetting } from '../models/user-setting';
 import { Language } from '../models/language';
-import { DictNote, DictGroup, DictMean } from '../models/dictionary';
+import { DictNote, DictItem, DictMean } from '../models/dictionary';
 import { Textbook } from '../models/textbook';
 import { forkJoin ,  Observable } from 'rxjs';
 import { DictNoteService, DictMeanService } from '../services/dictionary.service';
@@ -40,10 +40,10 @@ export class SettingsService {
   set USTEXTBOOKID(newValue: number) {
     this.selectedUSLang.VALUE1 = String(newValue);
   }
-  get USDICTGROUP(): string {
+  get USDICTITEM(): string {
     return this.selectedUSLang.VALUE2;
   }
-  set USDICTGROUP(newValue: string) {
+  set USDICTITEM(newValue: string) {
     this.selectedUSLang.VALUE2 = newValue;
   }
   get USDICTNOTEID(): number {
@@ -52,10 +52,10 @@ export class SettingsService {
   set USDICTNOTEID(newValue: number) {
     this.selectedUSLang.VALUE3 = String(newValue);
   }
-  get USDICTSGROUP(): string {
+  get USDICTITEMS(): string {
     return this.selectedUSLang.VALUE4 || '0';
   }
-  set USDICTSGROUP(newValue: string) {
+  set USDICTITEMS(newValue: string) {
     this.selectedUSLang.VALUE4 = newValue;
   }
   private selectedUSTextbookIndex!: number;
@@ -106,17 +106,17 @@ export class SettingsService {
   }
 
   dictsMean: DictMean[] = new Array(0);
-  dictsGroup: DictGroup[] = new Array(0);
-  private _selectedDictGroupIndex!: number;
-  get selectedDictGroupIndex() {
-    return this._selectedDictGroupIndex;
+  dictItems: DictItem[] = new Array(0);
+  private _selectedDictItemIndex!: number;
+  get selectedDictItemIndex() {
+    return this._selectedDictItemIndex;
   }
-  set selectedDictGroupIndex(newValue: number) {
-    this._selectedDictGroupIndex = newValue;
-    this.USDICTGROUP = this.selectedDictGroup.DICTID;
+  set selectedDictItemIndex(newValue: number) {
+    this._selectedDictItemIndex = newValue;
+    this.USDICTITEM = this.selectedDictItem.DICTID;
   }
-  get selectedDictGroup(): DictGroup {
-    return this.dictsGroup[this._selectedDictGroupIndex];
+  get selectedDictItem(): DictItem {
+    return this.dictItems[this._selectedDictItemIndex];
   }
 
   dictsNote: DictNote[] = new Array(0);
@@ -171,7 +171,7 @@ export class SettingsService {
     this.selectedLangIndex = langindex;
     this.USLANGID = this.selectedLang.ID;
     this.selectedUSLangIndex = this.userSettings.findIndex(value => value.KIND === 2 && value.ENTITYID === this.USLANGID);
-    const dicts = this.USDICTSGROUP.split('\r\n');
+    const dicts = this.USDICTITEMS.split('\r\n');
     return forkJoin([
       this.dictMeanService.getDataByLang(this.USLANGID),
       this.dictNoteService.getDataByLang(this.USLANGID),
@@ -180,15 +180,15 @@ export class SettingsService {
       map(res => {
         this.dictsMean = res[0] as DictMean[];
         let i = 0;
-        this.dictsGroup = _.flatMap(dicts, d => {
+        this.dictItems = _.flatMap(dicts, d => {
           if (d === '0')
-            return _.map(this.dictsMean, d2 => new DictGroup(String(d2.DICTID), d2.DICTNAME));
+            return _.map(this.dictsMean, d2 => new DictItem(String(d2.DICTID), d2.DICTNAME));
           else {
             i++;
-            return [new DictGroup(d, `Custom${i}`)];
+            return [new DictItem(d, `Custom${i}`)];
           }
         });
-        this.selectedDictGroupIndex = this.dictsGroup.findIndex(value => value.DICTID === this.USDICTGROUP);
+        this.selectedDictItemIndex = this.dictItems.findIndex(value => value.DICTID === this.USDICTITEM);
         this.dictsNote = res[1] as DictNote[];
         if (this.dictsNote.length > 0) {
           this.selectedDictNoteIndex = this.dictsNote.findIndex(value => value.ID === this.USDICTNOTEID);
@@ -226,8 +226,8 @@ export class SettingsService {
     return this.userSettingService.updateTextbook(this.selectedUSLang.ID, this.USTEXTBOOKID);
   }
 
-  updateDictGroup(): Observable<number> {
-    return this.userSettingService.updateDictGroup(this.selectedUSLang.ID, this.USDICTGROUP);
+  updateDictItem(): Observable<number> {
+    return this.userSettingService.updateDictItem(this.selectedUSLang.ID, this.USDICTITEM);
   }
 
   updateDictNote(): Observable<number> {

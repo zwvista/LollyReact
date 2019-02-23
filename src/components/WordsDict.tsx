@@ -8,7 +8,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { SettingsService } from '../view-models/settings.service';
 import DictBrowser from './DictBrowser';
 import { ListBox } from 'primereact/listbox';
-import { DictGroup, DictMean } from '../models/dictionary';
+import { DictItem, DictMean } from '../models/dictionary';
 import { HtmlService } from '../services/html.service';
 import { WordsLangService } from '../view-models/words-lang.service';
 import { WordsTextbookService } from '../view-models/words-textbook.service';
@@ -27,14 +27,14 @@ export default class WordsDict extends React.Component<any, any> {
       dictType === 'textbook' ? this.wordsTextbookService.textbookWords.map(v  => ({label: v.WORD, value: v.WORD})) :
       this.wordsLangService.langWords.map(v  => ({label: v.WORD, value: v.WORD}));
     const selectedWord = words[+this.props.match.params.index].value;
-    const selectedDictGroup = this.settingsService.selectedDictGroup;
+    const selectedDictItem = this.settingsService.selectedDictItem;
     this.setState({
       words,
       selectedWord,
       dictUrl: 'about:blank',
-      selectedDictGroup,
+      selectedDictItem,
     });
-    if (selectedWord) this.refreshDict(selectedDictGroup, selectedWord);
+    if (selectedWord) this.refreshDict(selectedDictItem, selectedWord);
   }
 
   render() {
@@ -43,7 +43,7 @@ export default class WordsDict extends React.Component<any, any> {
         <Toolbar>
           <div className="p-toolbar-group-left">
             <Button label="Back" onClick={this.goBack} />
-            <Dropdown className="p-col-2" options={this.settingsService.dictsGroup} value={this.state.selectedDictGroup}
+            <Dropdown className="p-col-2" options={this.settingsService.dictItems} value={this.state.selectedDictItem}
                 optionLabel="DICTNAME" onChange={this.onDictChange} />
           </div>
         </Toolbar>
@@ -63,11 +63,11 @@ export default class WordsDict extends React.Component<any, any> {
   };
 
   onDictChange = (e: any) => {
-    const selectedDictGroup = e.value;
+    const selectedDictItem = e.value;
     this.setState({
-      selectedDictGroup,
+      selectedDictItem,
     });
-    this.refreshDict(selectedDictGroup, this.state.selectedWord);
+    this.refreshDict(selectedDictItem, this.state.selectedWord);
   };
 
   onWordChange = (e: any) => {
@@ -75,11 +75,11 @@ export default class WordsDict extends React.Component<any, any> {
     this.setState({
       selectedWord,
     });
-    this.refreshDict(this.state.selectedDictGroup, selectedWord);
+    this.refreshDict(this.state.selectedDictItem, selectedWord);
   };
 
-  refreshDict(selectedDictGroup: DictGroup, selectedWord: string) {
-    const item = selectedDictGroup;
+  refreshDict(selectedDictItem: DictItem, selectedWord: string) {
+    const item = selectedDictItem;
     if (item.DICTNAME.startsWith('Custom')) {
       const dictSrc = this.settingsService.dictHtml(this.state.selectedWord, item.dictids());
       this.setState({

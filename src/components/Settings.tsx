@@ -46,10 +46,10 @@ export default class Settings extends React.Component<any, any> {
           </select>
         </div>
         <div className="form-inline mb-2">
-          <label htmlFor="dictGroup" className="col-2 control-label">Dictionary(Word):</label>
-          <select id="dictGroup" className="col-4 form-control" value={this.settingsService.selectedDictGroup.DICTID} onChange={this.onDictGroupChange}>
+          <label htmlFor="dictItem" className="col-2 control-label">Dictionary(Word):</label>
+          <select id="dictItem" className="col-4 form-control" value={this.settingsService.selectedDictItem.DICTID} onChange={this.onDictItemChange}>
           {
-            this.settingsService.dictsGroup.map(dict => <option key={dict.DICTID} value={dict.DICTID}>{dict.DICTNAME}</option>)
+            this.settingsService.dictItems.map(dict => <option key={dict.DICTID} value={dict.DICTID}>{dict.DICTNAME}</option>)
           }
           </select>
         </div>
@@ -99,8 +99,8 @@ export default class Settings extends React.Component<any, any> {
         </div>
         <div className="form-inline mb-2">
           <label className="col-2 control-label" />
-          <button className="btn btn-primary mr-2" onClick={this.previousUnitPart}>Previous</button>
-          <button className="btn btn-primary mr-2" onClick={this.nextUnitPart}>Next</button>
+          <button className="btn btn-primary mr-2" disabled={this.state.unitPartTo} onClick={this.previousUnitPart}>Previous</button>
+          <button className="btn btn-primary mr-2" disabled={this.state.unitPartTo} onClick={this.nextUnitPart}>Next</button>
         </div>
       </div>
     ) : (<div/>);
@@ -112,10 +112,10 @@ export default class Settings extends React.Component<any, any> {
     this.settingsService.updateLang().subscribe();
   };
 
-  onDictGroupChange = (event: any) => {
+  onDictItemChange = (event: any) => {
     const index = event.target.selectedIndex;
-    this.settingsService.selectedDictGroupIndex = index;
-    this.subscription.add(this.settingsService.updateDictGroup().subscribe(_ => this.updateServiceState()));
+    this.settingsService.selectedDictItemIndex = index;
+    this.subscription.add(this.settingsService.updateDictItem().subscribe(_ => this.updateServiceState()));
   };
 
   onDictNoteChange = (event: any) => {

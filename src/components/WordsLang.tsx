@@ -20,6 +20,7 @@ export default class WordsLang extends React.Component<any, any> {
 
   state = {
     newWord: '',
+    hasNoNote: this.settingsService.dictsNote.length === 0,
   };
 
   componentDidMount() {
@@ -41,7 +42,7 @@ export default class WordsLang extends React.Component<any, any> {
       <CopyToClipboard text={rowData.WORD}>
         <Button icon="fa fa-copy" tooltip="Copy" tooltipOptions={{position: 'top'}}/>
       </CopyToClipboard>
-      <Button label="Retrieve Note" onClick={() => this.getNote(rowData.ID)} />
+      <Button hidden={this.state.hasNoNote} label="Retrieve Note" onClick={() => this.getNote(rowData.ID)} />
       <Button label="Google Word" onClick={() => this.googleWord(rowData.WORD)} />
       <Button label="Dictionary" onClick={() => this.dictMean(rowData.ID)} />
     </div>;
@@ -81,11 +82,11 @@ export default class WordsLang extends React.Component<any, any> {
     if (e.key !== 'Enter' || !this.state.newWord) return;
     const o = this.wordsLangService.newLangWord();
     o.WORD = this.settingsService.autoCorrectInput(this.state.newWord);
+    this.setState({newWord: ''});
+    this.updateServiceState();
     this.subscription.add(this.wordsLangService.create(o).subscribe(id => {
       o.ID = id as number;
       this.wordsLangService.langWords.push(o);
-      this.setState({newWord: ''});
-      this.updateServiceState();
     }));
   };
 
