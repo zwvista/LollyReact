@@ -7,11 +7,14 @@ import { map } from 'rxjs/operators';
 @Injectable
 export class LangPhraseService extends BaseService {
 
-  getDataByLang(langid: number): Observable<LangPhrase[]> {
-    const url = `${this.baseUrl}LANGPHRASES?transform=1&filter=LANGID,eq,${langid}`;
+  getDataByLang(langid: number, page: number, rows: number): Observable<LangPhrases> {
+    const url = `${this.baseUrl}LANGPHRASES?transform=1&filter=LANGID,eq,${langid}&order=PHRASE&page=${page},${rows}`;
     return this.http.get<LangPhrases>(url)
       .pipe(
-        map(result => result.LANGPHRASES.map(value => Object.assign(new LangPhrase(), value))),
+        map(result => ({
+          LANGPHRASES: result.LANGPHRASES.map(value => Object.assign(new LangPhrase(), value)),
+          _results: result._results,
+        })),
       );
   }
 

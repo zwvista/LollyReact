@@ -3,6 +3,7 @@ import { KeyboardEvent, SyntheticEvent } from 'react';
 import { WordsLangService } from '../view-models/words-lang.service';
 import { Inject } from 'react.di';
 import { DataTable } from 'primereact/datatable';
+import { PageState, Paginator } from 'primereact/paginator';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import './Common.css'
@@ -21,13 +22,25 @@ export default class WordsLang extends React.Component<any, any> {
   state = {
     newWord: '',
     hasNoNote: this.settingsService.dictsNote.length === 0,
+    rows: this.settingsService.USROWSPERPAGE,
+    first: 0,
   };
 
   componentDidMount() {
-    this.subscription.add(this.wordsLangService.getData().subscribe(
+    this.subscription.add(this.wordsLangService.getData(1, this.state.rows).subscribe(
       _ => this.updateServiceState()
     ));
   }
+
+  onPageChange = (e: PageState) => {
+    this.setState({
+      first: e.first,
+      rows: e.rows
+    });
+    this.subscription.add(this.wordsLangService.getData(e.page + 1, e.rows).subscribe(
+      _ => this.updateServiceState()
+    ));
+  };
 
   componentWillUnmount() {
     this.subscription.unsubscribe();
@@ -53,16 +66,19 @@ export default class WordsLang extends React.Component<any, any> {
       <div>
         <Toolbar>
           <div className="p-toolbar-group-left">
-            <Button label="Add" icon="fa fa-plus" onClick={() => history.push('/words-lang-detail/0')} />
-            <Button label="Refresh" icon="fa fa-refresh" />
-            <Button label="Dictionary" onClick={() => history.push('/words-dict/lang/0')} />
+            <span className="p-float-label">
+              <InputText id="float-input" type="text" value={this.state.newWord}
+                         onChange={this.onNewWordChange} onKeyPress={this.onNewWordKeyPress}/>
+              <label htmlFor="float-input">New Word</label>
+              <Button label="Add" icon="fa fa-plus" onClick={() => history.push('/words-lang-detail/0')} />
+              <Button label="Refresh" icon="fa fa-refresh" />
+              <Button label="Dictionary" onClick={() => history.push('/words-dict/lang/0')} />
+            </span>
           </div>
         </Toolbar>
-        <span className="p-float-label">
-          <InputText id="float-input" type="text" value={this.state.newWord}
-                     onChange={this.onNewWordChange} onKeyPress={this.onNewWordKeyPress}/>
-          <label htmlFor="float-input">New Word</label>
-        </span>
+        <Paginator first={this.state.first} rows={this.state.rows} onPageChange={this.onPageChange}
+                   totalRecords={this.wordsLangService.langWordsCount}
+                   rowsPerPageOptions={this.settingsService.USROWSPERPAGEOPTIONS}/>
         <DataTable value={this.wordsLangService.langWords} selectionMode="single" autoLayout={true}>
           <Column style={{width:'80px'}} field="ID" header="ID" />
           <Column field="WORD" header="WORD" />

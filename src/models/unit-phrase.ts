@@ -12,10 +12,10 @@ export class UnitPhrase {
   PHRASE = '';
   TRANSLATION: string | null = null;
 
-  UNITSTR(arrUnits: [string]): string {
+  UNITSTR(arrUnits: string[]): string {
     return arrUnits[this.UNIT - 1];
   }
-  PARTSTR(arrParts: [string]): string {
+  PARTSTR(arrParts: string[]): string {
     return arrParts[this.PART - 1];
   }
   get unitPartSeqnum(): string {

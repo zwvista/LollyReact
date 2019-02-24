@@ -11,19 +11,23 @@ import { LangWordService } from '../services/lang-word.service';
 @Injectable
 export class WordsTextbookService {
 
-  textbookWords: TextbookWord[] = new Array(0);
+  textbookWords: TextbookWord[] = [];
+  textbookWordCount = 0;
 
-  constructor(private textbookWordService: TextbookWordService,
+  constructor(@Inject private textbookWordService: TextbookWordService,
               @Inject private langWordService: LangWordService,
-              private settingsService: SettingsService,
-              private appService: AppService,
-              private noteService: NoteService) {
+              @Inject private settingsService: SettingsService,
+              @Inject private appService: AppService,
+              @Inject private noteService: NoteService) {
   }
 
-  getData() {
+  getData(page: number, rows: number) {
     return this.appService.initializeComplete.pipe(
-      concatMap(_ => this.textbookWordService.getDataByLang(this.settingsService.selectedLang.ID)),
-      map(res => this.textbookWords = res),
+      concatMap(_ => this.textbookWordService.getDataByLang(this.settingsService.selectedLang.ID, page, rows)),
+      map(res => {
+        this.textbookWords = res.VTEXTBOOKWORDS;
+        this.textbookWordCount = res._results
+      }),
     );
   }
 

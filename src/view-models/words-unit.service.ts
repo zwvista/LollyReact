@@ -12,7 +12,7 @@ import { LangWord } from '../models/lang-word';
 @Injectable
 export class WordsUnitService {
 
-  unitWords: UnitWord[] = new Array(0);
+  unitWords: UnitWord[] = [];
 
   constructor(@Inject private unitWordService: UnitWordService,
               @Inject private langWordService: LangWordService,

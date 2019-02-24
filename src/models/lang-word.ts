@@ -3,6 +3,7 @@ import { TextbookWord } from './textbook-word';
 
 export class LangWords {
   VLANGWORDS: LangWord[];
+  _results = 0;
 }
 export class LangWord {
   ID = 0;

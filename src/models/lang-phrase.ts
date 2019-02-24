@@ -3,6 +3,7 @@ import { TextbookPhrase } from './textbook-phrase';
 
 export class LangPhrases {
   LANGPHRASES: LangPhrase[];
+  _results = 0;
 }
 export class LangPhrase {
   ID = 0;

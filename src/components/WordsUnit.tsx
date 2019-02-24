@@ -53,18 +53,18 @@ export default class WordsUnit extends React.Component<any, any> {
       <div>
         <Toolbar>
           <div className="p-toolbar-group-left">
+          <span className="p-float-label">
+            <InputText id="float-input" type="text" value={this.state.newWord}
+                       onChange={this.onNewWordChange} onKeyPress={this.onNewWordKeyPress}/>
+            <label htmlFor="float-input">New Word</label>
             <Button label="Add" icon="fa fa-plus" onClick={() => history.push('/words-unit-detail/0')} />
             <Button label="Refresh" icon="fa fa-refresh" />
             <Button hidden={this.state.hasNoNote} label="Retrieve All Notes" />
             <Button hidden={this.state.hasNoNote} label="Retrieve Notes If Empty" />
             <Button label="Dictionary" onClick={() => history.push('/words-dict/unit/0')} />
+          </span>
           </div>
         </Toolbar>
-        <span className="p-float-label">
-          <InputText id="float-input" type="text" value={this.state.newWord}
-                     onChange={this.onNewWordChange} onKeyPress={this.onNewWordKeyPress}/>
-          <label htmlFor="float-input">New Word</label>
-        </span>
         <DataTable value={this.wordsUnitService.unitWords} selectionMode="single" autoLayout={true}
                    onRowReorder={this.onReorder}>
           <Column rowReorder={true} style={{width: '3em'}} />

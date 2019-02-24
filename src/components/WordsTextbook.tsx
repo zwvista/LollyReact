@@ -2,6 +2,7 @@ import * as React from 'react';
 import { WordsTextbookService } from '../view-models/words-textbook.service';
 import { Inject } from 'react.di';
 import { DataTable } from 'primereact/datatable';
+import { PageState, Paginator } from 'primereact/paginator';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import './Common.css'
@@ -18,13 +19,26 @@ export default class WordsTextbook extends React.Component<any, any> {
 
   state = {
     hasNoNote: this.settingsService.dictsNote.length === 0,
+    rows: this.settingsService.USROWSPERPAGE,
+    first: 0,
   };
 
   componentDidMount() {
-    this.subscription.add(this.wordsTextbookService.getData().subscribe(
+    // https://stackoverflow.com/questions/4228356/integer-division-with-remainder-in-javascript
+    this.subscription.add(this.wordsTextbookService.getData(1, this.state.rows).subscribe(
       _ => this.updateServiceState()
     ));
   }
+
+  onPageChange = (e: PageState) => {
+    this.setState({
+      first: e.first,
+      rows: e.rows,
+    });
+    this.subscription.add(this.wordsTextbookService.getData(e.page + 1, e.rows).subscribe(
+      _ => this.updateServiceState()
+    ));
+  };
 
   componentWillUnmount() {
     this.subscription.unsubscribe();
@@ -54,6 +68,9 @@ export default class WordsTextbook extends React.Component<any, any> {
             <Button label="Dictionary" onClick={() => history.push('/words-dict/textbook/0')} />
           </div>
         </Toolbar>
+        <Paginator first={this.state.first} rows={this.state.rows} onPageChange={this.onPageChange}
+                   totalRecords={this.wordsTextbookService.textbookWordCount}
+                   rowsPerPageOptions={this.settingsService.USROWSPERPAGEOPTIONS}/>
         <DataTable value={this.wordsTextbookService.textbookWords} selectionMode="single" autoLayout={true}>
           <Column style={{width:'80px'}} field="ID" header="ID" />
           <Column style={{width:'80px'}} field="UNITSTR" header="UNIT" />

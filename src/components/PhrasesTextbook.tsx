@@ -2,6 +2,7 @@ import * as React from 'react';
 import { PhrasesTextbookService } from '../view-models/phrases-textbook.service';
 import { Inject } from 'react.di';
 import { DataTable } from 'primereact/datatable';
+import { PageState, Paginator } from 'primereact/paginator';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import './Common.css'
@@ -10,16 +11,33 @@ import { Toolbar } from 'primereact/toolbar';
 import history from '../view-models/history';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { googleString } from '../common/common';
+import { SettingsService } from '../view-models/settings.service';
 
 export default class PhrasesTextbook extends React.Component<any, any> {
   @Inject phrasesTextbookService: PhrasesTextbookService;
+  @Inject settingsService: SettingsService;
   subscription = new Subscription();
 
+  state = {
+    rows: this.settingsService.USROWSPERPAGE,
+    first: 0,
+  };
+
   componentDidMount() {
-    this.subscription.add(this.phrasesTextbookService.getData().subscribe(
+    this.subscription.add(this.phrasesTextbookService.getData(1, this.state.rows).subscribe(
       _ => this.updateServiceState()
     ));
   }
+
+  onPageChange = (e: PageState) => {
+    this.setState({
+      first: e.first,
+      rows: e.rows
+    });
+    this.subscription.add(this.phrasesTextbookService.getData(e.page + 1, e.rows).subscribe(
+      _ => this.updateServiceState()
+    ));
+  };
 
   componentWillUnmount() {
     this.subscription.unsubscribe();
@@ -46,6 +64,9 @@ export default class PhrasesTextbook extends React.Component<any, any> {
             <Button label="Refresh" icon="fa fa-refresh" />
           </div>
         </Toolbar>
+        <Paginator first={this.state.first} rows={this.state.rows} onPageChange={this.onPageChange}
+                   totalRecords={this.phrasesTextbookService.textbookPhraseCount}
+                   rowsPerPageOptions={this.settingsService.USROWSPERPAGEOPTIONS}/>
         <DataTable value={this.phrasesTextbookService.textbookPhrases} selectionMode="single" autoLayout={true}>
           <Column style={{width:'80px'}} field="ID" header="ID" />
           <Column style={{width:'80px'}} field="UNITSTR" header="UNIT" />

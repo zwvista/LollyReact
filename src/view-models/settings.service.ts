@@ -19,7 +19,7 @@ const userid = 1;
 @Injectable
 export class SettingsService {
 
-  userSettings: UserSetting[] = new Array(0);
+  userSettings: UserSetting[] = [];
   private selectedUSUserIndex!: number;
   private get selectedUSUser(): UserSetting {
     return this.userSettings[this.selectedUSUserIndex];
@@ -29,6 +29,12 @@ export class SettingsService {
   }
   private set USLANGID(newValue: number) {
     this.selectedUSUser.VALUE1 = String(newValue);
+  }
+  get USROWSPERPAGEOPTIONS(): number[] {
+    return this.selectedUSUser.VALUE2.split(',').map(value => +value);
+  }
+  get USROWSPERPAGE(): number {
+    return +this.selectedUSUser.VALUE3;
   }
   private selectedUSLangIndex!: number;
   private get selectedUSLang(): UserSetting {
@@ -99,14 +105,14 @@ export class SettingsService {
     return this.USUNITPARTFROM > this.USUNITPARTTO;
   }
 
-  languages: Language[] = new Array(0);
+  languages: Language[] = [];
   private selectedLangIndex!: number;
   get selectedLang(): Language {
     return this.languages[this.selectedLangIndex];
   }
 
-  dictsMean: DictMean[] = new Array(0);
-  dictItems: DictItem[] = new Array(0);
+  dictsMean: DictMean[] = [];
+  dictItems: DictItem[] = [];
   private _selectedDictItemIndex!: number;
   get selectedDictItemIndex() {
     return this._selectedDictItemIndex;
@@ -119,7 +125,7 @@ export class SettingsService {
     return this.dictItems[this._selectedDictItemIndex];
   }
 
-  dictsNote: DictNote[] = new Array(0);
+  dictsNote: DictNote[] = [];
   private _selectedDictNoteIndex!: number;
   get selectedDictNoteIndex() {
     return this._selectedDictNoteIndex;
@@ -132,7 +138,7 @@ export class SettingsService {
     return this.dictsNote.length === 0 ? null : this.dictsNote[this._selectedDictNoteIndex];
   }
 
-  textbooks: Textbook[] = new Array(0);
+  textbooks: Textbook[] = [];
   private _selectedTextbookIndex!: number;
   get selectedTextbookIndex() {
     return this._selectedTextbookIndex;
@@ -145,10 +151,10 @@ export class SettingsService {
     return this.textbooks[this._selectedTextbookIndex];
   }
 
-  units: string[] = new Array(0);
-  parts: string[] = new Array(0);
+  units: string[] = [];
+  parts: string[] = [];
 
-  autoCorrects: AutoCorrect[] = new Array(0);
+  autoCorrects: AutoCorrect[] = [];
 
   constructor(@Inject private langService: LanguageService,
               @Inject private userSettingService: UserSettingService,

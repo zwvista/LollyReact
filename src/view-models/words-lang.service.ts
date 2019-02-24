@@ -1,4 +1,4 @@
-import { Injectable } from 'react.di';
+import { Inject, Injectable } from 'react.di';
 import { SettingsService } from './settings.service';
 import { AppService } from './app.service';
 import { LangWordService } from '../services/lang-word.service';
@@ -10,18 +10,22 @@ import { NoteService } from './note.service';
 @Injectable
 export class WordsLangService {
 
-  langWords: LangWord[] = new Array(0);
+  langWords: LangWord[] = [];
+  langWordsCount = 0;
 
-  constructor(private langWordService: LangWordService,
-              private settingsService: SettingsService,
-              private appService: AppService,
-              private noteService: NoteService) {
+  constructor(@Inject private langWordService: LangWordService,
+              @Inject private settingsService: SettingsService,
+              @Inject private appService: AppService,
+              @Inject private noteService: NoteService) {
   }
 
-  getData(): Observable<LangWord[]> {
+  getData(page: number, rows: number): Observable<void> {
     return this.appService.initializeComplete.pipe(
-      concatMap(_ => this.langWordService.getDataByLang(this.settingsService.selectedLang.ID)),
-      map(res => this.langWords = res),
+      concatMap(_ => this.langWordService.getDataByLang(this.settingsService.selectedLang.ID, page, rows)),
+      map(res => {
+        this.langWords = res.VLANGWORDS;
+        this.langWordsCount = res._results;
+      }),
     );
   }
 

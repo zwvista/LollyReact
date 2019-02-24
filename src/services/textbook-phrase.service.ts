@@ -8,15 +8,18 @@ import { partsFrom, unitsFrom } from '../common/common';
 @Injectable
 export class TextbookPhraseService extends BaseService {
 
-  getDataByLang(langid: number): Observable<TextbookPhrase[]> {
-    const url = `${this.baseUrl}VTEXTBOOKPHRASES?transform=1&filter=LANGID,eq,${langid}&order[]=TEXTBOOKID&order[]=UNIT&order[]=PART&order[]=SEQNUM`;
+  getDataByLang(langid: number, page: number, rows: number): Observable<TextbookPhrases> {
+    const url = `${this.baseUrl}VTEXTBOOKPHRASES?transform=1&filter=LANGID,eq,${langid}&order[]=TEXTBOOKID&order[]=UNIT&order[]=PART&order[]=SEQNUM&page=${page},${rows}`;
     return this.http.get<TextbookPhrases>(url)
       .pipe(
-        map(result => result.VTEXTBOOKPHRASES.map(value => {
-          const v = Object.assign(new TextbookPhrase(), value);
-          v.units = unitsFrom(v.UNITINFO);
-          v.parts = partsFrom(v.PARTS);
-          return v;
+        map(result => ({
+          VTEXTBOOKPHRASES: result.VTEXTBOOKPHRASES.map(value => {
+            const v = Object.assign(new TextbookPhrase(), value);
+            v.units = unitsFrom(v.UNITINFO);
+            v.parts = partsFrom(v.PARTS);
+            return v;
+          }),
+          _results: result._results,
         })),
       );
   }

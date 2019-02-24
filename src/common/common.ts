@@ -12,6 +12,7 @@ export function unitsFrom(info: string): string[] {
   m = /PAGES,(\d+),(\d+)/g.exec(info);
   if (m) {
     const n1 = +m[1], n2 = +m[2];
+    // https://stackoverflow.com/questions/4228356/integer-division-with-remainder-in-javascript
     const units = (n1 + n2 - 1) / n2 >> 0;
     return Array.from(Array(units).keys()).map(value => `${value * n2 + 1}~${value * n2 + n2}`);
   }

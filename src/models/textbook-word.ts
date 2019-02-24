@@ -1,5 +1,6 @@
 export class TextbookWords {
   VTEXTBOOKWORDS!: TextbookWord[];
+  _results = 0;
 }
 export class TextbookWord {
   TEXTBOOKID = 0;

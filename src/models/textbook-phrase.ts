@@ -1,5 +1,6 @@
 export class TextbookPhrases {
   VTEXTBOOKPHRASES!: TextbookPhrase[];
+  _results = 0;
 }
 export class TextbookPhrase {
   TEXTBOOKID = 0;
