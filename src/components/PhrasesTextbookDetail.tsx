@@ -18,8 +18,8 @@ export default class PhrasesTextbookDetail extends React.Component<any, any> {
     const o = this.phrasesTextbookService.textbookPhrases.find(value => value.ID === id);
     this.setState({
       item: o,
-      units: this.settingsService.units.map(v => ({label: v, value: Number(v)})),
-      parts: this.settingsService.parts.map((v, i) => ({label: v, value: i + 1})),
+      units: o.units.map((v, i) => ({label: v, value: i + 1})),
+      parts: o.parts.map((v, i) => ({label: v, value: i + 1})),
     });
   }
 

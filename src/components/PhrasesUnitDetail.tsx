@@ -18,7 +18,7 @@ export default class PhrasesUnitDetail extends React.Component<any, any> {
     const o = this.phrasesUnitService.unitPhrases.find(value => value.ID === id);
     this.setState({
       item: o ? {...o} : this.phrasesUnitService.newUnitPhrase(),
-      units: this.settingsService.units.map(v => ({label: v, value: Number(v)})),
+      units: this.settingsService.units.map((v, i) => ({label: v, value: i + 1})),
       parts: this.settingsService.parts.map((v, i) => ({label: v, value: i + 1})),
     });
   }
