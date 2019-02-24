@@ -72,9 +72,11 @@ export default class WordsTextbook extends React.Component<any, any> {
                    rowsPerPageOptions={this.settingsService.USROWSPERPAGEOPTIONS}/>
         <DataTable value={this.wordsTextbookService.textbookWords} selectionMode="single" autoLayout={true}>
           <Column style={{width:'80px'}} field="ID" header="ID" />
+          <Column style={{width:'150px'}} field="TEXTBOOKNAME" header="TEXTBOOKNAME" />
           <Column style={{width:'80px'}} field="UNITSTR" header="UNIT" />
           <Column style={{width:'80px'}} field="PARTSTR" header="PART" />
           <Column style={{width:'80px'}} field="SEQNUM" header="SEQNUM" />
+          <Column style={{width:'80px'}} field="WORDID" header="WORDID" />
           <Column field="WORD" header="WORD" />
           <Column field="NOTE" header="NOTE" />
           <Column style={{width:'40%'}} body={this.actionTemplate} header="ACTIONS" />

@@ -54,6 +54,7 @@ export default class PhrasesUnit extends React.Component<any, any> {
           <Column style={{width:'80px'}} field="UNIT" header="UNIT" />
           <Column style={{width:'80px'}} field="PART" header="PART" />
           <Column style={{width:'80px'}} field="SEQNUM" header="SEQNUM" />
+          <Column style={{width:'80px'}} field="PHRASEID" header="PHRASEID" />
           <Column field="PHRASE" header="PHRASE" />
           <Column field="TRANSLATION" header="TRANSLATION" />
           <Column style={{width:'20%'}} body={this.actionTemplate} header="ACTIONS" />
