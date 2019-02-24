@@ -12,13 +12,12 @@ export class TextbookPhrase {
   PHRASEID = 0;
   PHRASE = '';
   TRANSLATION: string | null = null;
-  UNITS = 0;
-  get units(): string[] {
-    return Array.from(Array(this.UNITS).keys()).map(value => String(value + 1));
-  }
+  UNITINFO = '';
   PARTS = '';
-  get parts(): string[] {
-    return this.PARTS.split(' ');
+  units: string[] = [];
+  parts: string[] = [];
+  get UNITSTR(): string {
+    return this.units[this.UNIT - 1];
   }
   get PARTSTR(): string {
     return this.parts[this.PART - 1];

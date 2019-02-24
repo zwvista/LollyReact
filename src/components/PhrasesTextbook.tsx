@@ -48,8 +48,8 @@ export default class PhrasesTextbook extends React.Component<any, any> {
         </Toolbar>
         <DataTable value={this.phrasesTextbookService.textbookPhrases} selectionMode="single" autoLayout={true}>
           <Column style={{width:'80px'}} field="ID" header="ID" />
-          <Column style={{width:'80px'}} field="UNIT" header="UNIT" />
-          <Column style={{width:'80px'}} field="PART" header="PART" />
+          <Column style={{width:'80px'}} field="UNITSTR" header="UNIT" />
+          <Column style={{width:'80px'}} field="PARTSTR" header="PART" />
           <Column style={{width:'80px'}} field="SEQNUM" header="SEQNUM" />
           <Column field="PHRASE" header="PHRASE" />
           <Column field="TRANSLATION" header="TRANSLATION" />

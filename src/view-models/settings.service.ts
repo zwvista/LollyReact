@@ -13,6 +13,7 @@ import { TextbookService } from '../services/textbook.service';
 import { AutoCorrectService } from '../services/autocorrect.service';
 import { autoCorrect, AutoCorrect } from '../models/autocorrect';
 import * as _ from 'lodash';
+import { partsFrom, unitsFrom } from '../common/common';
 
 const userid = 1;
 
@@ -202,8 +203,9 @@ export class SettingsService {
   private setSelectedTextbookIndex() {
     this.USTEXTBOOKID = this.selectedTextbook.ID;
     this.selectedUSTextbookIndex = this.userSettings.findIndex(value => value.KIND === 3 && value.ENTITYID === this.USTEXTBOOKID);
-    this.units = Array.from(Array(this.selectedTextbook.UNITS).keys()).map(value => String(value + 1));
-    this.parts = this.selectedTextbook.PARTS.split(' ');
+    this.units = unitsFrom(this.selectedTextbook.UNITINFO);
+    this.selectedTextbook.UNITS = this.units.length;
+    this.parts = partsFrom(this.selectedTextbook.PARTS);
   }
 
   dictHtml(word: string, dictids: string[]): string {
