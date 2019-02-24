@@ -137,6 +137,9 @@ export class SettingsService {
   get selectedDictNote(): DictNote | null {
     return this.dictsNote.length === 0 ? null : this.dictsNote[this._selectedDictNoteIndex];
   }
+  get hasNote(): boolean {
+    return this.dictsNote.length !== 0;
+  }
 
   textbooks: Textbook[] = [];
   private _selectedTextbookIndex!: number;

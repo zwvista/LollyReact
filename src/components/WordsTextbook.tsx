@@ -18,7 +18,6 @@ export default class WordsTextbook extends React.Component<any, any> {
   subscription = new Subscription();
 
   state = {
-    hasNoNote: this.settingsService.dictsNote.length === 0,
     rows: this.settingsService.USROWSPERPAGE,
     first: 0,
   };
@@ -53,7 +52,7 @@ export default class WordsTextbook extends React.Component<any, any> {
       <CopyToClipboard text={rowData.WORD}>
         <Button icon="fa fa-copy" tooltip="Copy" tooltipOptions={{position: 'top'}}/>
       </CopyToClipboard>
-      <Button hidden={this.state.hasNoNote} label="Retrieve Note" onClick={() => this.getNote(rowData.ID)} />
+      <Button hidden={!this.settingsService.hasNote} label="Retrieve Note" onClick={() => this.getNote(rowData.ID)} />
       <Button label="Google Word" onClick={() => this.googleWord(rowData.WORD)} />
       <Button label="Dictionary" onClick={() => this.dictMean(rowData.ID)} />
     </div>;
