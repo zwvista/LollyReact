@@ -4,7 +4,6 @@ import { SettingsService } from './settings.service';
 import { AppService } from './app.service';
 import { concatMap, map } from 'rxjs/operators';
 import { TextbookPhrase } from '../models/textbook-phrase';
-import { Observable } from 'rxjs';
 
 @Injectable
 export class PhrasesTextbookService {

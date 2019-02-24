@@ -1,6 +1,6 @@
-import { Injectable, Inject } from 'react.di';
+import { Inject, Injectable } from 'react.di';
 import { SettingsService } from './settings.service';
-import { Observable, EMPTY as empty, interval, Subscription } from 'rxjs';
+import { EMPTY as empty, interval, Observable, Subscription } from 'rxjs';
 import { HtmlService } from '../services/html.service';
 import { mergeMap } from 'rxjs/operators';
 

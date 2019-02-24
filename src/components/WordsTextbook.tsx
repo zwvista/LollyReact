@@ -5,10 +5,8 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import './Common.css'
-import { interval, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Toolbar } from 'primereact/toolbar';
-import { InputText } from 'primereact/inputtext';
-import { KeyboardEvent, SyntheticEvent } from 'react';
 import history from '../view-models/history';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { SettingsService } from '../view-models/settings.service';

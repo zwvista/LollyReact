@@ -6,7 +6,6 @@ import { Subscription } from 'rxjs';
 import { InputText } from 'primereact/inputtext';
 import { Inject } from 'react.di';
 import { SettingsService } from '../view-models/settings.service';
-import { Dropdown } from 'primereact/dropdown';
 
 export default class PhrasesLangDetail extends React.Component<any, any> {
   @Inject phrasesLangService: PhrasesLangService;

@@ -6,7 +6,6 @@ import { Observable } from 'rxjs';
 import { TextbookWord } from '../models/textbook-word';
 import { concatMap, map } from 'rxjs/operators';
 import { NoteService } from './note.service';
-import { UnitWordService } from '../services/unit-word.service';
 import { LangWordService } from '../services/lang-word.service';
 
 @Injectable

@@ -1,7 +1,7 @@
 // https://github.com/davguij/rxios/blob/master/src/index.ts
 // ported to rxjs6
 
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosPromise } from 'axios';
+import axios, { AxiosInstance, AxiosPromise, AxiosRequestConfig } from 'axios';
 // import { Observable } from 'rxjs/Observable';
 import { Observable } from 'rxjs';
 

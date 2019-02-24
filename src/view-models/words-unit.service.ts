@@ -1,9 +1,9 @@
-import { Injectable, Inject } from 'react.di';
+import { Inject, Injectable } from 'react.di';
 import { UnitWordService } from '../services/unit-word.service';
 import { SettingsService } from './settings.service';
 import { UnitWord } from '../models/unit-word';
 import { AppService } from './app.service';
-import { Observable, EMPTY as empty, of } from 'rxjs';
+import { EMPTY as empty, Observable, of } from 'rxjs';
 import { concatMap, map } from 'rxjs/operators';
 import { NoteService } from './note.service';
 import { LangWordService } from '../services/lang-word.service';

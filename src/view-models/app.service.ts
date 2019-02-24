@@ -1,4 +1,4 @@
-import { Injectable, Inject } from 'react.di';
+import { Inject, Injectable } from 'react.di';
 import { ReplaySubject } from 'rxjs';
 import { SettingsService } from './settings.service';
 
