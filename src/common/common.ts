@@ -23,5 +23,5 @@ export function unitsFrom(info: string): string[] {
 }
 
 export function partsFrom(parts: string): string[] {
-  return parts.split(' ');
+  return parts.split(',');
 }
