@@ -102,7 +102,7 @@ export class SettingsService {
     return this.USUNITPARTFROM === this.USUNITPARTTO;
   }
   get isSingleUnit(): boolean {
-    return this.USUNITFROM === this.USUNITTO && this.USPARTFROM === 1 && this.USPARTTO === this.parts.length;
+    return this.USUNITFROM === this.USUNITTO && this.USPARTFROM === 1 && this.USPARTTO === this.partCount;
   }
   get isInvalidUnitPart(): boolean {
     return this.USUNITPARTFROM > this.USUNITPARTTO;
@@ -158,7 +158,13 @@ export class SettingsService {
   }
 
   units: string[] = [];
+  get unitCount(): number {
+    return this.units.length;
+  }
   parts: string[] = [];
+  get partCount(): number {
+    return this.parts.length;
+  }
 
   autoCorrects: AutoCorrect[] = [];
 
@@ -215,7 +221,7 @@ export class SettingsService {
     this.USTEXTBOOKID = this.selectedTextbook.ID;
     this.selectedUSTextbookIndex = this.userSettings.findIndex(value => value.KIND === 3 && value.ENTITYID === this.USTEXTBOOKID);
     this.units = unitsFrom(this.selectedTextbook.UNITINFO);
-    this.selectedTextbook.UNITS = this.units.length;
+    this.selectedTextbook.UNITS = this.unitCount;
     this.parts = partsFrom(this.selectedTextbook.PARTS);
   }
 
