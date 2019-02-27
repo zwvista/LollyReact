@@ -101,6 +101,9 @@ export class SettingsService {
   get isSingleUnitPart(): boolean {
     return this.USUNITPARTFROM === this.USUNITPARTTO;
   }
+  get isSingleUnit(): boolean {
+    return this.USUNITFROM === this.USUNITTO && this.USPARTFROM === 1 && this.USPARTTO === this.parts.length;
+  }
   get isInvalidUnitPart(): boolean {
     return this.USUNITPARTFROM > this.USUNITPARTTO;
   }
