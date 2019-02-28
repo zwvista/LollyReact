@@ -165,6 +165,9 @@ export class SettingsService {
   get partCount(): number {
     return this.parts.length;
   }
+  get isSinglePart(): boolean {
+    return this.partCount === 1;
+  }
 
   autoCorrects: AutoCorrect[] = [];
 
@@ -221,7 +224,6 @@ export class SettingsService {
     this.USTEXTBOOKID = this.selectedTextbook.ID;
     this.selectedUSTextbookIndex = this.userSettings.findIndex(value => value.KIND === 3 && value.ENTITYID === this.USTEXTBOOKID);
     this.units = unitsFrom(this.selectedTextbook.UNITINFO);
-    this.selectedTextbook.UNITS = this.unitCount;
     this.parts = partsFrom(this.selectedTextbook.PARTS);
   }
 

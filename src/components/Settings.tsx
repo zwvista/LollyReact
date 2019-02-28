@@ -216,7 +216,7 @@ export default class Settings extends React.Component<any, any> {
   };
 
   updateTextbook() {
-    const toType = this.settingsService.isSingleUnitPart ? 1 : this.settingsService.isSingleUnit ? 0 : 2;
+    const toType = this.settingsService.isSingleUnit ? 0 : this.settingsService.isSingleUnitPart ? 1 : 2;
     this.setState({toType});
     this.updateServiceState();
   }

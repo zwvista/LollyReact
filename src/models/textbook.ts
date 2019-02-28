@@ -7,5 +7,4 @@ export class Textbook {
   NAME = '';
   UNITINFO = '';
   PARTS = '';
-  UNITS = 0;
 }
