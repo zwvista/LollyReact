@@ -1,3 +1,5 @@
+import { SelectItem } from '../common/selectitem';
+
 export class TextbookWords {
   VTEXTBOOKWORDS!: TextbookWord[];
   _results = 0;
@@ -15,15 +17,16 @@ export class TextbookWord {
   NOTE: string | null = null;
   FAMIID = 0;
   LEVEL = 0;
-  UNITINFO = '';
+  UNITS = '';
   PARTS = '';
-  units: string[] = [];
-  parts: string[] = [];
+
+  units: SelectItem[] = [];
+  parts: SelectItem[] = [];
   get UNITSTR(): string {
-    return this.units[this.UNIT - 1];
+    return this.units.find(o => o.value === this.UNIT)!.label;
   }
   get PARTSTR(): string {
-    return this.parts[this.PART - 1];
+    return this.parts.find(o => o.value === this.PART)!.label;
   }
   get unitPartSeqnum(): string {
     return String(this.UNIT).padStart(3) +

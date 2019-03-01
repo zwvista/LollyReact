@@ -3,24 +3,11 @@ import { Inject } from 'react.di';
 import { SettingsService } from '../view-models/settings.service';
 import './Common.css'
 import { Subscription } from 'rxjs';
-import { concatMap } from 'rxjs/operators';
 
 export default class Settings extends React.Component<any, any> {
   @Inject settingsService: SettingsService;
   subscription = new Subscription();
 
-  get unitFrom() {
-    return this.settingsService.units[this.settingsService.USUNITFROM - 1];
-  }
-  get partFrom() {
-    return this.settingsService.parts[this.settingsService.USPARTFROM - 1];
-  }
-  get unitTo() {
-    return this.settingsService.units[this.settingsService.USUNITTO - 1];
-  }
-  get partTo() {
-    return this.settingsService.parts[this.settingsService.USPARTTO - 1];
-  }
   get toTypeIsUnit() {
     return this.state.toType === 0;
   }
@@ -81,14 +68,14 @@ export default class Settings extends React.Component<any, any> {
         </div>
         <div className="form-inline mb-2">
           <label htmlFor="unitFrom" className="col-2 control-label">Unit:</label>
-          <select id="unitFrom" className="col-2 form-control" value={this.unitFrom} onChange={this.onUnitFromChange}>
+          <select id="unitFrom" className="col-2 form-control" value={this.settingsService.USUNITFROM} onChange={this.onUnitFromChange}>
           {
-            this.settingsService.units.map(o => <option key={o} value={o}>{o}</option>)
+            this.settingsService.units.map(o => <option key={o.value} value={o.value}>{o.label}</option>)
           }
           </select>
-          <select id="partFrom" className="col-2 form-control" disabled={this.toTypeIsUnit} value={this.partFrom} onChange={this.onPartFromChange}>
+          <select id="partFrom" className="col-2 form-control" disabled={this.toTypeIsUnit} value={this.settingsService.USPARTFROM} onChange={this.onPartFromChange}>
           {
-            this.settingsService.parts.map(o => <option key={o} value={o}>{o}</option>)
+            this.settingsService.parts.map(o => <option key={o.value} value={o.value}>{o.label}</option>)
           }
           </select>
         </div>
@@ -99,14 +86,14 @@ export default class Settings extends React.Component<any, any> {
             }
           </select>
           <label className="col-1 control-label" />
-          <select id="unitTo" className="col-2 form-control" disabled={!this.toTypeIsTo} value={this.unitTo} onChange={this.onUnitToChange}>
+          <select id="unitTo" className="col-2 form-control" disabled={!this.toTypeIsTo} value={this.settingsService.USUNITTO} onChange={this.onUnitToChange}>
           {
-            this.settingsService.units.map(o => <option key={o} value={o}>{o}</option>)
+            this.settingsService.units.map(o => <option key={o.value} value={o.value}>{o.label}</option>)
           }
           </select>
-          <select id="partTo" className="col-2 form-control" disabled={!this.toTypeIsTo} value={this.partTo} onChange={this.onPartToChange}>
+          <select id="partTo" className="col-2 form-control" disabled={!this.toTypeIsTo} value={this.settingsService.USPARTTO} onChange={this.onPartToChange}>
             {
-              this.settingsService.parts.map(o => <option key={o} value={o}>{o}</option>)
+              this.settingsService.parts.map(o => <option key={o.value} value={o.value}>{o.label}</option>)
             }
           </select>
         </div>

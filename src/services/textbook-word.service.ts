@@ -15,7 +15,7 @@ export class TextbookWordService extends BaseService {
         map(result => ({
           VTEXTBOOKWORDS: result.VTEXTBOOKWORDS.map(value => {
             const v = Object.assign(new TextbookWord(), value);
-            v.units = unitsFrom(v.UNITINFO);
+            v.units = unitsFrom(v.UNITS);
             v.parts = partsFrom(v.PARTS);
             return v;
           }),

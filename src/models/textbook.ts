@@ -5,6 +5,6 @@ export class Textbook {
   ID = 0;
   LANGID = 0;
   NAME = '';
-  UNITINFO = '';
+  UNITS = '';
   PARTS = '';
 }

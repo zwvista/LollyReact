@@ -68,8 +68,8 @@ export default class WordsUnit extends React.Component<any, any> {
                    onRowReorder={this.onReorder}>
           <Column rowReorder={true} style={{width: '3em'}} />
           <Column style={{width:'80px'}} field="ID" header="ID" />
-          <Column style={{width:'80px'}} field="UNIT" header="UNIT" />
-          <Column style={{width:'80px'}} field="PART" header="PART" />
+          <Column style={{width:'80px'}} field="UNITSTR" header="UNIT" />
+          <Column style={{width:'80px'}} field="PARTSTR" header="PART" />
           <Column style={{width:'80px'}} field="SEQNUM" header="SEQNUM" />
           <Column style={{width:'80px'}} field="WORDID" header="WORDID" />
           <Column field="WORD" header="WORD" />

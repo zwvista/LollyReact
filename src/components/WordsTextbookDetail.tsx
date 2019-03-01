@@ -18,8 +18,6 @@ export default class WordsTextbookDetail extends React.Component<any, any> {
     const o = this.wordsTextbookService.textbookWords.find(value => value.ID === id);
     this.setState({
       item: o,
-      units: o.units.map((v, i) => ({label: v, value: i + 1})),
-      parts: o.parts.map((v, i) => ({label: v, value: i + 1})),
     });
   }
 
@@ -40,11 +38,11 @@ export default class WordsTextbookDetail extends React.Component<any, any> {
         </div>
         <div className="p-grid mb-2">
           <label className="p-col-1" htmlFor="UNIT">UNIT:</label>
-          <Dropdown className="p-col-3" autoWidth={false} options={this.state.units} value={this.state.item.UNIT} />
+          <Dropdown className="p-col-3" autoWidth={false} options={this.settingsService.units} value={this.state.item.UNIT} />
         </div>
         <div className="p-grid mb-2">
           <label className="p-col-1" htmlFor="PART">PART:</label>
-          <Dropdown className="p-col-3" autoWidth={false} options={this.state.parts} value={this.state.item.PART} />
+          <Dropdown className="p-col-3" autoWidth={false} options={this.settingsService.parts} value={this.state.item.PART} />
         </div>
         <div className="p-grid mb-2">
           <label className="p-col-1" htmlFor="SEQNUM">SEQNUM:</label>

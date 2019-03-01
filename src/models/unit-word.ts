@@ -1,3 +1,5 @@
+import { SelectItem } from '../common/selectitem';
+
 export class UnitWords {
   VUNITWORDS!: UnitWord[];
 }
@@ -13,12 +15,16 @@ export class UnitWord {
   WORDID = 0;
   FAMIID = 0;
   LEVEL = 0;
+  UNITS = '';
+  PARTS = '';
 
-  UNITSTR(arrUnits: string[]): string {
-    return arrUnits[this.UNIT - 1];
+  units: SelectItem[] = [];
+  parts: SelectItem[] = [];
+  get UNITSTR(): string {
+    return this.units.find(o => o.value === this.UNIT)!.label;
   }
-  PARTSTR(arrParts: string[]): string {
-    return arrParts[this.PART - 1];
+  get PARTSTR(): string {
+    return this.parts.find(o => o.value === this.PART)!.label;
   }
   get unitPartSeqnum(): string {
     return String(this.UNIT).padStart(3) +
