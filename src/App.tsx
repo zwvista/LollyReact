@@ -70,11 +70,11 @@ export default class App extends React.Component<any, any> {
     super(props);
     const items = [
       {label: 'Words in Unit', icon: 'fa fa-bus fa-lg', target: '/words-unit'},
-      {label: 'Words in Textbook', icon: 'fa fa-taxi fa-lg', target: '/words-textbook'},
-      {label: 'Words in Language', icon: 'fa fa-plane fa-lg', target: '/words-lang'},
       {label: 'Phrases in Unit', icon: 'fa fa-bus fa-lg', target: '/phrases-unit'},
-      {label: 'Phrases in Textbook', icon: 'fa fa-taxi fa-lg', target: '/phrases-textbook'},
+      {label: 'Words in Language', icon: 'fa fa-plane fa-lg', target: '/words-lang'},
       {label: 'Phrases in Language', icon: 'fa fa-plane fa-lg', target: '/phrases-lang'},
+      {label: 'Words in Textbook', icon: 'fa fa-taxi fa-lg', target: '/words-textbook'},
+      {label: 'Phrases in Textbook', icon: 'fa fa-taxi fa-lg', target: '/phrases-textbook'},
       {label: 'Settings', icon: 'fa fa-cog fa-lg', target: '/settings'},
     ];
     const activeItem = items.find((value: any) => window.location.href.includes(value.target));
@@ -100,16 +100,16 @@ export default class App extends React.Component<any, any> {
             <Route path="/" component={WordsUnit} exact />
             <Route path="/words-unit" component={WordsUnit} exact />
             <Route path="/words-unit-detail/:id" component={WordsUnitDetail} exact />
-            <Route path="/words-textbook" component={WordsTextbook} exact />
-            <Route path="/words-textbook-detail/:id" component={WordsTextbookDetail} exact />
-            <Route path="/words-lang" component={WordsLang} exact />
-            <Route path="/words-lang-detail/:id" component={WordsLangDetail} exact />
             <Route path="/phrases-unit" component={PhrasesUnit} exact />
             <Route path="/phrases-unit-detail/:id" component={PhrasesUnitDetail} exact />
-            <Route path="/phrases-textbook" component={PhrasesTextbook} exact />
-            <Route path="/phrases-textbook-detail/:id" component={PhrasesTextbookDetail} exact />
+            <Route path="/words-lang" component={WordsLang} exact />
+            <Route path="/words-lang-detail/:id" component={WordsLangDetail} exact />
             <Route path="/phrases-lang" component={PhrasesLang} exact />
             <Route path="/phrases-lang-detail/:id" component={PhrasesLangDetail} exact />
+            <Route path="/words-textbook" component={WordsTextbook} exact />
+            <Route path="/words-textbook-detail/:id" component={WordsTextbookDetail} exact />
+            <Route path="/phrases-textbook" component={PhrasesTextbook} exact />
+            <Route path="/phrases-textbook-detail/:id" component={PhrasesTextbookDetail} exact />
             <Route path="/words-dict/:type/:index" component={WordsDict} exact />
             <Route path="/settings" component={Settings} exact />
           </Switch>
