@@ -21,18 +21,19 @@ const userid = 1;
 export class SettingsService {
 
   userSettings: UserSetting[] = [];
-  private selectedUSUser!: UserSetting;
+  private selectedUSUser0!: UserSetting;
+  private selectedUSUser1!: UserSetting;
   private get USLANGID(): number {
-    return +this.selectedUSUser.VALUE1;
+    return +this.selectedUSUser0.VALUE1;
   }
   private set USLANGID(newValue: number) {
-    this.selectedUSUser.VALUE1 = String(newValue);
+    this.selectedUSUser0.VALUE1 = String(newValue);
   }
   get USROWSPERPAGEOPTIONS(): number[] {
-    return this.selectedUSUser.VALUE2.split(',').map(value => +value);
+    return this.selectedUSUser0.VALUE2.split(',').map(value => +value);
   }
   get USROWSPERPAGE(): number {
-    return +this.selectedUSUser.VALUE3;
+    return +this.selectedUSUser0.VALUE3;
   }
   private selectedUSLang!: UserSetting;
   get USTEXTBOOKID(): number {
@@ -163,7 +164,8 @@ export class SettingsService {
       mergeMap(res => {
         this.languages = res[0] as Language[];
         this.userSettings = res[1] as UserSetting[];
-        this.selectedUSUser = this.userSettings.find(value => value.KIND === 1)!;
+        this.selectedUSUser0 = this.userSettings.find(value => value.KIND === 1 && value.ENTITYID === 0);
+        this.selectedUSUser1 = this.userSettings.find(value => value.KIND === 1 && value.ENTITYID === 1);
         return this.setSelectedLang(this.languages.find(value => value.ID === this.USLANGID)!);
       }));
   }
@@ -218,7 +220,7 @@ export class SettingsService {
   }
 
   updateLang(): Observable<number> {
-    return this.userSettingService.updateLang(this.selectedUSUser.ID, this.USLANGID);
+    return this.userSettingService.updateLang(this.selectedUSUser0.ID, this.USLANGID);
   }
 
   updateTextbook(): Observable<number> {
