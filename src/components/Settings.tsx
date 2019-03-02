@@ -107,33 +107,34 @@ export default class Settings extends React.Component<any, any> {
   }
 
   onLangChange = (event: any) => {
+    console.log(event);
     const index = event.target.selectedIndex;
-    this.subscription.add(this.settingsService.setSelectedLangIndex(index).subscribe(_ => this.updateServiceState()));
+    this.subscription.add(this.settingsService.setSelectedLang(this.settingsService.languages[index]).subscribe(_ => this.updateServiceState()));
     this.settingsService.updateLang().subscribe();
   };
 
   onDictItemChange = (event: any) => {
     const index = event.target.selectedIndex;
-    this.settingsService.selectedDictItemIndex = index;
+    this.settingsService.selectedDictItem = this.settingsService.dictItems[index];
     this.subscription.add(this.settingsService.updateDictItem().subscribe(_ => this.updateServiceState()));
   };
 
   onDictNoteChange = (event: any) => {
     const index = event.target.selectedIndex;
-    this.settingsService.selectedDictNoteIndex = index;
+    this.settingsService.selectedDictNote = this.settingsService.dictsNote[index];
     this.subscription.add(this.settingsService.updateDictNote().subscribe(_ => this.updateServiceState()));
   };
 
   onTextbookChange = (event: any) => {
     const index = event.target.selectedIndex;
-    this.settingsService.selectedTextbookIndex = index;
+    this.settingsService.selectedTextbook = this.settingsService.textbooks[index];
     this.subscription.add(this.settingsService.updateTextbook().subscribe(_ => this.updateServiceState()));
     this.updateTextbook();
   };
 
   onUnitFromChange = (event: any) => {
     const index = event.target.selectedIndex;
-    if (!this.updateUnitFrom(index + 1)) return;
+    if (!this.updateUnitFrom(this.settingsService.units[index].value, false)) return;
     if (this.state.toType === 0)
       this.updateSingleUnit();
     else if (this.state.toType === 1 || this.settingsService.isInvalidUnitPart)
@@ -142,7 +143,7 @@ export default class Settings extends React.Component<any, any> {
 
   onPartFromChange = (event: any) => {
     const index = event.target.selectedIndex;
-    if (!this.updatePartFrom(index + 1)) return;
+    if (!this.updatePartFrom(this.settingsService.parts[index].value, false)) return;
     if (this.state.toType === 1 || this.settingsService.isInvalidUnitPart)
       this.updateUnitPartTo();
   };
@@ -154,20 +155,6 @@ export default class Settings extends React.Component<any, any> {
       this.updateSingleUnit();
     else if (index === 1)
       this.updateUnitPartTo();
-  };
-
-  onUnitToChange = (event: any) => {
-    const index = event.target.selectedIndex;
-    if (!this.updateUnitTo(index + 1)) return;
-    if (this.state.toType === 1 || this.settingsService.isInvalidUnitPart)
-      this.updateUnitPartFrom();
-  };
-
-  onPartToChange = (event: any) => {
-    const index = event.target.selectedIndex;
-    if (!this.updatePartTo(index + 1)) return;
-    if (this.state.toType === 1 || this.settingsService.isInvalidUnitPart)
-      this.updateUnitPartFrom();
   };
 
   previousUnitPart = (event: any) => {
@@ -202,6 +189,20 @@ export default class Settings extends React.Component<any, any> {
     }
   };
 
+  onUnitToChange = (event: any) => {
+    const index = event.target.selectedIndex;
+    if (!this.updateUnitTo(this.settingsService.units[index].value, false)) return;
+    if (this.state.toType === 1 || this.settingsService.isInvalidUnitPart)
+      this.updateUnitPartFrom();
+  };
+
+  onPartToChange = (event: any) => {
+    const index = event.target.selectedIndex;
+    if (!this.updatePartTo(this.settingsService.parts[index].value, false)) return;
+    if (this.state.toType === 1 || this.settingsService.isInvalidUnitPart)
+      this.updateUnitPartFrom();
+  };
+
   updateTextbook() {
     const toType = this.settingsService.isSingleUnit ? 0 : this.settingsService.isSingleUnitPart ? 1 : 2;
     this.setState({toType});
@@ -228,29 +229,29 @@ export default class Settings extends React.Component<any, any> {
     this.updatePartTo(this.settingsService.partCount);
   }
 
-  updateUnitFrom(v: number): boolean {
-    if (this.settingsService.USUNITFROM === v) return false;
+  updateUnitFrom(v: number, check: boolean = true): boolean {
+    if (check && this.settingsService.USUNITFROM === v) return false;
     this.settingsService.USUNITFROM = v;
     this.settingsService.updateUnitFrom().subscribe(_ => this.updateServiceState());
     return true;
   }
 
-  updatePartFrom(v: number): boolean {
-    if (this.settingsService.USPARTFROM === v) return false;
+  updatePartFrom(v: number, check: boolean = true): boolean {
+    if (check && this.settingsService.USPARTFROM === v) return false;
     this.settingsService.USPARTFROM = v;
     this.settingsService.updatePartFrom().subscribe(_ => this.updateServiceState());
     return true;
   }
 
-  updateUnitTo(v: number): boolean {
-    if (this.settingsService.USUNITTO === v) return false;
+  updateUnitTo(v: number, check: boolean = true): boolean {
+    if (check && this.settingsService.USUNITTO === v) return false;
     this.settingsService.USUNITTO = v;
     this.settingsService.updateUnitTo().subscribe(_ => this.updateServiceState());
     return true;
   }
 
-  updatePartTo(v: number): boolean {
-    if (this.settingsService.USPARTTO === v) return false;
+  updatePartTo(v: number, check: boolean = true): boolean {
+    if (check && this.settingsService.USPARTTO === v) return false;
     this.settingsService.USPARTTO = v;
     this.settingsService.updatePartTo().subscribe(_ => this.updateServiceState());
     return true;

@@ -21,10 +21,7 @@ const userid = 1;
 export class SettingsService {
 
   userSettings: UserSetting[] = [];
-  private selectedUSUserIndex!: number;
-  private get selectedUSUser(): UserSetting {
-    return this.userSettings[this.selectedUSUserIndex];
-  }
+  private selectedUSUser!: UserSetting;
   private get USLANGID(): number {
     return +this.selectedUSUser.VALUE1;
   }
@@ -37,10 +34,7 @@ export class SettingsService {
   get USROWSPERPAGE(): number {
     return +this.selectedUSUser.VALUE3;
   }
-  private selectedUSLangIndex!: number;
-  private get selectedUSLang(): UserSetting {
-    return this.userSettings[this.selectedUSLangIndex];
-  }
+  private selectedUSLang!: UserSetting;
   get USTEXTBOOKID(): number {
     return +this.selectedUSLang.VALUE1;
   }
@@ -65,10 +59,7 @@ export class SettingsService {
   set USDICTITEMS(newValue: string) {
     this.selectedUSLang.VALUE4 = newValue;
   }
-  private selectedUSTextbookIndex!: number;
-  get selectedUSTextbook(): UserSetting {
-    return this.userSettings[this.selectedUSTextbookIndex];
-  }
+  private selectedUSTextbook!: UserSetting;
   get USUNITFROM(): number {
     return +this.selectedUSTextbook.VALUE1;
   }
@@ -110,52 +101,40 @@ export class SettingsService {
   }
 
   languages: Language[] = [];
-  private selectedLangIndex!: number;
-  get selectedLang(): Language {
-    return this.languages[this.selectedLangIndex];
-  }
+  selectedLang!: Language;
 
   dictsMean: DictMean[] = [];
   dictItems: DictItem[] = [];
-  private _selectedDictItemIndex!: number;
-  get selectedDictItemIndex() {
-    return this._selectedDictItemIndex;
-  }
-  set selectedDictItemIndex(newValue: number) {
-    this._selectedDictItemIndex = newValue;
-    this.USDICTITEM = this.selectedDictItem.DICTID;
-  }
+  _selectedDictItem!: DictItem;
   get selectedDictItem(): DictItem {
-    return this.dictItems[this._selectedDictItemIndex];
+    return this._selectedDictItem;
+  }
+  set selectedDictItem(newValue: DictItem) {
+    this._selectedDictItem = newValue;
+    this.USDICTITEM = this._selectedDictItem.DICTID;
   }
 
   dictsNote: DictNote[] = [];
-  private _selectedDictNoteIndex!: number;
-  get selectedDictNoteIndex() {
-    return this._selectedDictNoteIndex;
-  }
-  set selectedDictNoteIndex(newValue: number) {
-    this._selectedDictNoteIndex = newValue;
-    this.USDICTNOTEID = this.selectedDictNote!.ID;
-  }
+  _selectedDictNote: DictNote | null = null;
   get selectedDictNote(): DictNote | null {
-    return this.dictsNote.length === 0 ? null : this.dictsNote[this._selectedDictNoteIndex];
+    return this._selectedDictNote;
+  }
+  set selectedDictNote(newValue: DictNote | null) {
+    this._selectedDictNote = newValue;
+    if (newValue) this.USDICTNOTEID = newValue.ID;
   }
   get hasNote(): boolean {
     return this.dictsNote.length !== 0;
   }
 
   textbooks: Textbook[] = [];
-  private _selectedTextbookIndex!: number;
-  get selectedTextbookIndex() {
-    return this._selectedTextbookIndex;
-  }
-  set selectedTextbookIndex(newValue: number) {
-    this._selectedTextbookIndex = newValue;
-    this.setSelectedTextbookIndex();
-  }
+  private _selectedTextbook: Textbook;
   get selectedTextbook(): Textbook {
-    return this.textbooks[this._selectedTextbookIndex];
+    return this._selectedTextbook;
+  }
+  set selectedTextbook(newValue: Textbook) {
+    this._selectedTextbook = newValue;
+    this.setSelectedTextbook();
   }
 
   units: SelectItem[] = [];
@@ -184,15 +163,15 @@ export class SettingsService {
       mergeMap(res => {
         this.languages = res[0] as Language[];
         this.userSettings = res[1] as UserSetting[];
-        this.selectedUSUserIndex = this.userSettings.findIndex(value => value.KIND === 1);
-        return this.setSelectedLangIndex(this.languages.findIndex(value => value.ID === this.USLANGID));
+        this.selectedUSUser = this.userSettings.find(value => value.KIND === 1)!;
+        return this.setSelectedLang(this.languages.find(value => value.ID === this.USLANGID)!);
       }));
   }
 
-  setSelectedLangIndex(langindex: number): Observable<void> {
-    this.selectedLangIndex = langindex;
+  setSelectedLang(lang: Language): Observable<void> {
+    this.selectedLang = lang;
     this.USLANGID = this.selectedLang.ID;
-    this.selectedUSLangIndex = this.userSettings.findIndex(value => value.KIND === 2 && value.ENTITYID === this.USLANGID);
+    this.selectedUSLang = this.userSettings.find(value => value.KIND === 2 && value.ENTITYID === this.USLANGID)!;
     const dicts = this.USDICTITEMS.split('\r\n');
     return forkJoin([
       this.dictMeanService.getDataByLang(this.USLANGID),
@@ -210,20 +189,18 @@ export class SettingsService {
             return [new DictItem(d, `Custom${i}`)];
           }
         });
-        this.selectedDictItemIndex = this.dictItems.findIndex(value => value.DICTID === this.USDICTITEM);
+        this.selectedDictItem = this.dictItems.find(value => value.DICTID === this.USDICTITEM)!;
         this.dictsNote = res[1] as DictNote[];
-        if (this.dictsNote.length > 0) {
-          this.selectedDictNoteIndex = this.dictsNote.findIndex(value => value.ID === this.USDICTNOTEID);
-        }
+        this.selectedDictNote = !this.hasNote ? null : this.dictsNote.find(value => value.ID === this.USDICTNOTEID)!;
         this.textbooks = res[2] as Textbook[];
-        this.selectedTextbookIndex = this.textbooks.findIndex(value => value.ID === this.USTEXTBOOKID);
+        this.selectedTextbook = this.textbooks.find(value => value.ID === this.USTEXTBOOKID)!;
         this.autoCorrects = res[3] as AutoCorrect[];
       }));
   }
 
-  private setSelectedTextbookIndex() {
+  private setSelectedTextbook() {
     this.USTEXTBOOKID = this.selectedTextbook.ID;
-    this.selectedUSTextbookIndex = this.userSettings.findIndex(value => value.KIND === 3 && value.ENTITYID === this.USTEXTBOOKID);
+    this.selectedUSTextbook = this.userSettings.find(value => value.KIND === 3 && value.ENTITYID === this.USTEXTBOOKID)!;
     this.units = unitsFrom(this.selectedTextbook.UNITS);
     this.parts = partsFrom(this.selectedTextbook.PARTS);
   }
