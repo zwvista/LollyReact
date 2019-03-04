@@ -42,8 +42,10 @@ export default class WordsUnit extends React.Component<any, any> {
         <Button icon="fa fa-copy" tooltip="Copy" tooltipOptions={{position: 'top'}}/>
       </CopyToClipboard>
       <Button hidden={!this.settingsService.hasNote} label="Retrieve Note"/>
-      <Button label="Google Word" onClick={() => this.googleWord(rowData.WORD)} />
-      <Button label="Dictionary" onClick={() => this.dictMean(rowData.ID)} />
+      <Button icon="fa fa-google" onClick={() => this.googleWord(rowData.WORD)}
+              tooltip="Google Word" tooltipOptions={{position: 'top'}}/>
+      <Button icon="fa fa-book" onClick={() => this.dictMean(rowData.ID)}
+              tooltip="Dictionary" tooltipOptions={{position: 'top'}}/>
     </div>;
   };
 
@@ -74,7 +76,7 @@ export default class WordsUnit extends React.Component<any, any> {
           <Column style={{width:'80px'}} field="WORDID" header="WORDID" />
           <Column field="WORD" header="WORD" />
           <Column field="NOTE" header="NOTE" />
-          <Column style={{width:'40%'}} body={this.actionTemplate} header="ACTIONS" />
+          <Column style={{width:'20%'}} body={this.actionTemplate} header="ACTIONS" />
         </DataTable>
       </div>
     );

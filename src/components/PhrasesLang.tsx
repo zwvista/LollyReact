@@ -52,7 +52,8 @@ export default class PhrasesLang extends React.Component<any, any> {
       <CopyToClipboard text={rowData.PHRASE}>
         <Button icon="fa fa-copy" tooltip="Copy" tooltipOptions={{position: 'top'}}/>
       </CopyToClipboard>
-      <Button label="Google Phrase" onClick={() => this.googlePhrase(rowData.PHRASE)} />
+      <Button icon="fa fa-google" onClick={() => this.googlePhrase(rowData.PHRASE)}
+              tooltip="Google Phrase" tooltipOptions={{position: 'top'}}/>
     </div>;
   };
 
