@@ -29,23 +29,23 @@ export default class WordsLangDetail extends React.Component<any, any> {
       <div>
         <div className="p-grid mt-2 mb-2">
           <label className="p-col-1" htmlFor="ID">ID:</label>
-          <InputText className="p-col-3" id="ID" name="ID" value={this.state.item.ID} disabled />
+          <InputText className="p-col-3" id="ID" value={this.state.item.ID} disabled />
         </div>
         <div className="p-grid mb-2">
           <label className="p-col-1" htmlFor="WORD">WORD:</label>
-          <InputText className="p-col-3" id="WORD" name="WORD" value={this.state.item.WORD} onChange={this.onChange} />
+          <InputText className="p-col-3" id="WORD" value={this.state.item.WORD} onChange={this.onChangeInput} />
         </div>
         <div className="p-grid mb-2">
           <label className="p-col-1" htmlFor="NOTE">NOTE:</label>
-          <InputText className="p-col-3" id="NOTE" name="NOTE" value={this.state.item.NOTE} onChange={this.onChange} />
+          <InputText className="p-col-3" id="NOTE" value={this.state.item.NOTE} onChange={this.onChangeInput} />
         </div>
         <div className="p-grid mb-2">
           <label className="p-col-1" htmlFor="FAMIID">FAMIID:</label>
-          <InputText className="p-col-3" id="FAMIID" name="FAMIID" value={this.state.item.FAMIID} disabled />
+          <InputText className="p-col-3" id="FAMIID" value={this.state.item.FAMIID} disabled />
         </div>
         <div className="p-grid mb-2">
           <label className="p-col-1" htmlFor="LEVEL">LEVEL:</label>
-          <InputText className="p-col-3" id="LEVEL" name="LEVEL" value={this.state.item.LEVEL} onChange={this.onChange} />
+          <InputText className="p-col-3" id="LEVEL" value={this.state.item.LEVEL} onChange={this.onChangeInput} />
         </div>
         <div>
           <Button label="Back" onClick={this.goBack} />
@@ -54,10 +54,10 @@ export default class WordsLangDetail extends React.Component<any, any> {
       </div>
     );
   }
-  
-  onChange = (e: any) => {
+
+  onChangeInput = (e: any) => {
     const elem = e.nativeEvent.target as HTMLInputElement;
-    this.state.item[elem.name] = elem.value;
+    this.state.item[elem.id] = elem.value;
     this.setState({item: this.state.item})
   };
 

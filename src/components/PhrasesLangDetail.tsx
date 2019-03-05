@@ -29,15 +29,15 @@ export default class PhrasesLangDetail extends React.Component<any, any> {
       <div>
         <div className="p-grid mt-2 mb-2">
           <label className="p-col-1" htmlFor="ID">ID:</label>
-          <InputText className="p-col-3" id="ID" name="ID" value={this.state.langPhrase.ID} disabled />
+          <InputText className="p-col-3" id="ID" value={this.state.langPhrase.ID} disabled />
         </div>
         <div className="p-grid mb-2">
           <label className="p-col-1" htmlFor="PHRASE">PHRASE:</label>
-          <InputText className="p-col-3" id="PHRASE" name="PHRASE" value={this.state.langPhrase.PHRASE} onChange={this.onChange} />
+          <InputText className="p-col-3" id="PHRASE" value={this.state.langPhrase.PHRASE} onChange={this.onChangeInput} />
         </div>
         <div className="p-grid mb-2">
           <label className="p-col-1" htmlFor="TRANSLATION">TRANSLATION:</label>
-          <InputText className="p-col-3" id="TRANSLATION" name="TRANSLATION" value={this.state.langPhrase.TRANSLATION} onChange={this.onChange} />
+          <InputText className="p-col-3" id="TRANSLATION" value={this.state.langPhrase.TRANSLATION} onChange={this.onChangeInput} />
         </div>
         <div>
           <Button label="Back" onClick={this.goBack} />
@@ -46,10 +46,10 @@ export default class PhrasesLangDetail extends React.Component<any, any> {
       </div>
     );
   }
-  
-  onChange = (e: any) => {
+
+  onChangeInput = (e: any) => {
     const elem = e.nativeEvent.target as HTMLInputElement;
-    this.state.langPhrase[elem.name] = elem.value;
+    this.state.langPhrase[elem.id] = elem.value;
     this.setState({langPhrase: this.state.langPhrase})
   };
 

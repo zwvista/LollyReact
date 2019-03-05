@@ -30,31 +30,31 @@ export default class PhrasesUnitDetail extends React.Component<any, any> {
       <div>
         <div className="p-grid mt-2 mb-2">
           <label className="p-col-1" htmlFor="ID">ID:</label>
-          <InputText className="p-col-3" id="ID" name="ID" value={this.state.item.ID} disabled />
+          <InputText className="p-col-3" id="ID" value={this.state.item.ID} disabled />
         </div>
         <div className="p-grid mb-2">
           <label className="p-col-1" htmlFor="UNIT">UNIT:</label>
-          <Dropdown className="p-col-3" autoWidth={false} options={this.settingsService.units} value={this.state.item.UNIT} />
+          <Dropdown className="p-col-3" id="UNIT" autoWidth={false} options={this.settingsService.units} value={this.state.item.UNIT} onChange={this.onChangeDropDown} />
         </div>
         <div className="p-grid mb-2">
           <label className="p-col-1" htmlFor="PART">PART:</label>
-          <Dropdown className="p-col-3" autoWidth={false} options={this.settingsService.parts} value={this.state.item.PART} />
+          <Dropdown className="p-col-3" id="PART" autoWidth={false} options={this.settingsService.parts} value={this.state.item.PART} onChange={this.onChangeDropDown} />
         </div>
         <div className="p-grid mb-2">
           <label className="p-col-1" htmlFor="SEQNUM">SEQNUM:</label>
-          <InputText className="p-col-3" id="SEQNUM" name="SEQNUM" value={this.state.item.SEQNUM} onChange={this.onChange} />
+          <InputText className="p-col-3" id="SEQNUM" value={this.state.item.SEQNUM} onChange={this.onChangeInput} />
         </div>
         <div className="p-grid mb-2">
           <label className="p-col-1" htmlFor="PHRASEID">PHRASEID:</label>
-          <InputText className="p-col-3" id="PHRASEID" name="PHRASEID" value={this.state.item.PHRASEID} disabled />
+          <InputText className="p-col-3" id="PHRASEID" value={this.state.item.PHRASEID} disabled />
         </div>
         <div className="p-grid mb-2">
           <label className="p-col-1" htmlFor="PHRASE">PHRASE:</label>
-          <InputText className="p-col-3" id="PHRASE" name="PHRASE" value={this.state.item.PHRASE} onChange={this.onChange} />
+          <InputText className="p-col-3" id="PHRASE" value={this.state.item.PHRASE} onChange={this.onChangeInput} />
         </div>
         <div className="p-grid mb-2">
           <label className="p-col-1" htmlFor="TRANSLATION">TRANSLATION:</label>
-          <InputText className="p-col-3" id="TRANSLATION" name="TRANSLATION" value={this.state.item.TRANSLATION} onChange={this.onChange} />
+          <InputText className="p-col-3" id="TRANSLATION" value={this.state.item.TRANSLATION} onChange={this.onChangeInput} />
         </div>
         <div>
           <Button label="Back" onClick={this.goBack} />
@@ -63,10 +63,15 @@ export default class PhrasesUnitDetail extends React.Component<any, any> {
       </div>
     );
   }
-  
-  onChange = (e: any) => {
+
+  onChangeInput = (e: any) => {
     const elem = e.nativeEvent.target as HTMLInputElement;
-    this.state.item[elem.name] = elem.value;
+    this.state.item[elem.id] = elem.value;
+    this.setState({item: this.state.item})
+  };
+
+  onChangeDropDown = (e: any) => {
+    this.state.item[e.target.id] = e.value;
     this.setState({item: this.state.item})
   };
 
