@@ -23,10 +23,7 @@ export default class WordsTextbook extends React.Component<any, any> {
   };
 
   componentDidMount() {
-    // https://stackoverflow.com/questions/4228356/integer-division-with-remainder-in-javascript
-    this.subscription.add(this.wordsTextbookService.getData(1, this.state.rows).subscribe(
-      _ => this.updateServiceState()
-    ));
+    this.onRefresh(null);
   }
 
   onPageChange = (e: PageState) => {
@@ -65,8 +62,8 @@ export default class WordsTextbook extends React.Component<any, any> {
       <div>
         <Toolbar>
           <div className="p-toolbar-group-left">
-            <Button label="Refresh" icon="fa fa-refresh" />
-            <Button label="Dictionary" onClick={() => history.push('/words-dict/textbook/0')} />
+            <Button label="Refresh" icon="fa fa-refresh" onClick={this.onRefresh}/>
+            <Button label="Dictionary" icon="fa fa-book" onClick={() => history.push('/words-dict/textbook/0')} />
           </div>
         </Toolbar>
         <Paginator first={this.state.first} rows={this.state.rows} onPageChange={this.onPageChange}
@@ -81,11 +78,18 @@ export default class WordsTextbook extends React.Component<any, any> {
           <Column style={{width:'80px'}} field="WORDID" header="WORDID" />
           <Column field="WORD" header="WORD" />
           <Column field="NOTE" header="NOTE" />
-          <Column style={{width:'40%'}} body={this.actionTemplate} header="ACTIONS" />
+          <Column style={{width:'30%'}} body={this.actionTemplate} header="ACTIONS" />
         </DataTable>
       </div>
     );
   }
+
+  onRefresh = (e:any) => {
+    // https://stackoverflow.com/questions/4228356/integer-division-with-remainder-in-javascript
+    this.subscription.add(this.wordsTextbookService.getData(1, this.state.rows).subscribe(
+      _ => this.updateServiceState()
+    ));
+  };
 
   deleteWord(index: number) {
     console.log(index);

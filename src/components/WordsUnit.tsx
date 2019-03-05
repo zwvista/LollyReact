@@ -23,9 +23,7 @@ export default class WordsUnit extends React.Component<any, any> {
   };
 
   componentDidMount() {
-    this.subscription.add(this.wordsUnitService.getData().subscribe(
-      _ => this.updateServiceState()
-    ));
+    this.onRefresh(null);
   }
 
   componentWillUnmount() {
@@ -59,10 +57,10 @@ export default class WordsUnit extends React.Component<any, any> {
                        onChange={this.onNewWordChange} onKeyPress={this.onNewWordKeyPress}/>
             <label htmlFor="float-input">New Word</label>
             <Button label="Add" icon="fa fa-plus" onClick={() => history.push('/words-unit-detail/0')} />
-            <Button label="Refresh" icon="fa fa-refresh" />
+            <Button label="Refresh" icon="fa fa-refresh" onClick={this.onRefresh}/>
             <Button hidden={!this.settingsService.hasNote} label="Retrieve All Notes" />
             <Button hidden={!this.settingsService.hasNote} label="Retrieve Notes If Empty" />
-            <Button label="Dictionary" onClick={() => history.push('/words-dict/unit/0')} />
+            <Button label="Dictionary" icon="fa fa-book" onClick={() => history.push('/words-dict/unit/0')} />
           </span>
           </div>
         </Toolbar>
@@ -76,7 +74,7 @@ export default class WordsUnit extends React.Component<any, any> {
           <Column style={{width:'80px'}} field="WORDID" header="WORDID" />
           <Column field="WORD" header="WORD" />
           <Column field="NOTE" header="NOTE" />
-          <Column style={{width:'20%'}} body={this.actionTemplate} header="ACTIONS" />
+          <Column style={{width:'30%'}} body={this.actionTemplate} header="ACTIONS" />
         </DataTable>
       </div>
     );
@@ -95,6 +93,7 @@ export default class WordsUnit extends React.Component<any, any> {
     this.subscription.add(this.wordsUnitService.create(o).subscribe(id => {
       o.ID = id as number;
       this.wordsUnitService.unitWords.push(o);
+      this.updateServiceState();
     }));
   };
 
@@ -102,6 +101,12 @@ export default class WordsUnit extends React.Component<any, any> {
     console.log(`${e.dragIndex},${e.dropIndex}`);
     this.wordsUnitService.unitWords = e.value;
     this.wordsUnitService.reindex(index => this.updateServiceState());
+  };
+
+  onRefresh = (e:any) => {
+    this.subscription.add(this.wordsUnitService.getData().subscribe(
+      _ => this.updateServiceState()
+    ));
   };
 
   deleteWord(index: number) {

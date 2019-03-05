@@ -26,9 +26,7 @@ export default class WordsLang extends React.Component<any, any> {
   };
 
   componentDidMount() {
-    this.subscription.add(this.wordsLangService.getData(1, this.state.rows).subscribe(
-      _ => this.updateServiceState()
-    ));
+    this.onRefresh(null);
   }
 
   onPageChange = (e: PageState) => {
@@ -72,8 +70,8 @@ export default class WordsLang extends React.Component<any, any> {
                          onChange={this.onNewWordChange} onKeyPress={this.onNewWordKeyPress}/>
               <label htmlFor="float-input">New Word</label>
               <Button label="Add" icon="fa fa-plus" onClick={() => history.push('/words-lang-detail/0')} />
-              <Button label="Refresh" icon="fa fa-refresh" />
-              <Button label="Dictionary" onClick={() => history.push('/words-dict/lang/0')} />
+              <Button label="Refresh" icon="fa fa-refresh" onClick={this.onRefresh}/>
+              <Button label="Dictionary" icon="fa fa-book" onClick={() => history.push('/words-dict/lang/0')} />
             </span>
           </div>
         </Toolbar>
@@ -85,7 +83,7 @@ export default class WordsLang extends React.Component<any, any> {
           <Column field="WORD" header="WORD" />
           <Column field="NOTE" header="NOTE" />
           <Column field="LEVEL" header="LEVEL" />
-          <Column style={{width:'40%'}} body={this.actionTemplate} header="ACTIONS" />
+          <Column style={{width:'30%'}} body={this.actionTemplate} header="ACTIONS" />
         </DataTable>
       </div>
     );
@@ -105,6 +103,12 @@ export default class WordsLang extends React.Component<any, any> {
       o.ID = id as number;
       this.wordsLangService.langWords.push(o);
     }));
+  };
+
+  onRefresh = (e:any) => {
+    this.subscription.add(this.wordsLangService.getData(1, this.state.rows).subscribe(
+      _ => this.updateServiceState()
+    ));
   };
 
   deleteWord(index: number) {

@@ -16,9 +16,7 @@ export default class PhrasesUnit extends React.Component<any, any> {
   subscription = new Subscription();
 
   componentDidMount() {
-    this.subscription.add(this.phrasesUnitService.getData().subscribe(
-      _ => this.updateServiceState()
-    ));
+    this.onRefresh(null);
   }
 
   componentWillUnmount() {
@@ -45,7 +43,7 @@ export default class PhrasesUnit extends React.Component<any, any> {
         <Toolbar>
           <div className="p-toolbar-group-left">
             <Button label="Add" icon="fa fa-plus" onClick={() => history.push('/phrases-unit-detail/0')} />
-            <Button label="Refresh" icon="fa fa-refresh" />
+            <Button label="Refresh" icon="fa fa-refresh" onClick={this.onRefresh}/>
           </div>
         </Toolbar>
         <DataTable value={this.phrasesUnitService.unitPhrases} selectionMode="single" autoLayout={true}
@@ -68,6 +66,12 @@ export default class PhrasesUnit extends React.Component<any, any> {
     console.log(`${e.dragIndex},${e.dropIndex}`);
     this.phrasesUnitService.unitPhrases = e.value;
     this.phrasesUnitService.reindex(index => this.updateServiceState());
+  };
+
+  onRefresh = (e:any) => {
+    this.subscription.add(this.phrasesUnitService.getData().subscribe(
+      _ => this.updateServiceState()
+    ));
   };
 
   updateServiceState() {
