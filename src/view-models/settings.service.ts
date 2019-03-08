@@ -12,7 +12,6 @@ import { TextbookService } from '../services/textbook.service';
 import { AutoCorrectService } from '../services/autocorrect.service';
 import { autoCorrect, AutoCorrect } from '../models/autocorrect';
 import * as _ from 'lodash';
-import { partsFrom, unitsFrom } from '../common/common';
 import { SelectItem } from '../common/selectitem';
 import { WordColor } from '../models/word-color';
 
@@ -137,7 +136,8 @@ export class SettingsService {
   }
   set selectedTextbook(newValue: Textbook) {
     this._selectedTextbook = newValue;
-    this.setSelectedTextbook();
+    this.USTEXTBOOKID = newValue.ID;
+    this.selectedUSTextbook = this.userSettings.find(value => value.KIND === 3 && value.ENTITYID === newValue.ID)!;
   }
 
   units: SelectItem[] = [];
@@ -203,13 +203,6 @@ export class SettingsService {
         this.selectedTextbook = this.textbooks.find(value => value.ID === this.USTEXTBOOKID)!;
         this.autoCorrects = res[3] as AutoCorrect[];
       }));
-  }
-
-  private setSelectedTextbook() {
-    this.USTEXTBOOKID = this.selectedTextbook.ID;
-    this.selectedUSTextbook = this.userSettings.find(value => value.KIND === 3 && value.ENTITYID === this.USTEXTBOOKID)!;
-    this.units = unitsFrom(this.selectedTextbook.UNITS);
-    this.parts = partsFrom(this.selectedTextbook.PARTS);
   }
 
   dictHtml(word: string, dictids: string[]): string {

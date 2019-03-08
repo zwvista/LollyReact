@@ -13,8 +13,6 @@ export class UnitPhrase {
   PHRASEID = 0;
   PHRASE = '';
   TRANSLATION: string | null = null;
-  UNITS = '';
-  PARTS = '';
 
   units: SelectItem[] = [];
   parts: SelectItem[] = [];

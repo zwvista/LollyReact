@@ -23,7 +23,7 @@ export class WordsUnitService {
 
   getData(): Observable<void> {
     return this.appService.initializeComplete.pipe(
-      concatMap(_ => this.unitWordService.getDataByTextbookUnitPart(this.settingsService.USTEXTBOOKID,
+      concatMap(_ => this.unitWordService.getDataByTextbookUnitPart(this.settingsService.selectedTextbook,
         this.settingsService.USUNITPARTFROM, this.settingsService.USUNITPARTTO)),
       map(res => {
         this.settingsService.setColorStyle(res);

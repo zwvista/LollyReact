@@ -1,3 +1,5 @@
+import { SelectItem } from '../common/selectitem';
+
 export class Textbooks {
   TEXTBOOKS!: Textbook[];
 }
@@ -7,4 +9,7 @@ export class Textbook {
   NAME = '';
   UNITS = '';
   PARTS = '';
+
+  units: SelectItem[] = [];
+  parts: SelectItem[] = [];
 }

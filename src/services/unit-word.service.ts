@@ -3,20 +3,20 @@ import { UnitWord, UnitWords } from '../models/unit-word';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { BaseService } from './base.service';
-import { partsFrom, unitsFrom } from '../common/common';
+import { Textbook } from '../models/textbook';
 
 @Injectable
 export class UnitWordService extends BaseService {
 
-  getDataByTextbookUnitPart(textbookid: number, unitPartFrom: number, unitPartTo: number): Observable<UnitWord[]> {
-    const url = `${this.baseUrl}VUNITWORDS?transform=1&filter[]=TEXTBOOKID,eq,${textbookid}&filter[]=UNITPART,bt,${unitPartFrom},${unitPartTo}&order[]=UNITPART&order[]=SEQNUM`;
+  getDataByTextbookUnitPart(textbook: Textbook, unitPartFrom: number, unitPartTo: number): Observable<UnitWord[]> {
+    const url = `${this.baseUrl}VUNITWORDS?transform=1&filter[]=TEXTBOOKID,eq,${textbook.ID}&filter[]=UNITPART,bt,${unitPartFrom},${unitPartTo}&order[]=UNITPART&order[]=SEQNUM`;
     return this.http.get<UnitWords>(url)
       .pipe(
         map(result => {
           const result2 = result.VUNITWORDS.map(value => Object.assign(new UnitWord(), value));
           result2.forEach(o => {
-            o.units = unitsFrom(o.UNITS);
-            o.parts = partsFrom(o.PARTS);
+            o.units = textbook.units;
+            o.parts = textbook.parts;
           });
           return result2;
         }),

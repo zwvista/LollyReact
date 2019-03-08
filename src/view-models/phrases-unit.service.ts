@@ -21,7 +21,7 @@ export class PhrasesUnitService {
 
   getData() {
     return this.appService.initializeComplete.pipe(
-      concatMap(_ => this.unitPhraseService.getDataByTextbookUnitPart(this.settingsService.USTEXTBOOKID,
+      concatMap(_ => this.unitPhraseService.getDataByTextbookUnitPart(this.settingsService.selectedTextbook,
         this.settingsService.USUNITPARTFROM, this.settingsService.USUNITPARTTO)),
       map(res => this.unitPhrases = res),
     );

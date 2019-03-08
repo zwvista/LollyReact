@@ -16,8 +16,6 @@ export class UnitWord implements WordColor {
   WORDID = 0;
   FAMIID = 0;
   LEVEL = 0;
-  UNITS = '';
-  PARTS = '';
   colorStyle: {string: string} | {} = {};
 
   units: SelectItem[] = [];

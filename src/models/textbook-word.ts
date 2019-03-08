@@ -18,8 +18,6 @@ export class TextbookWord implements WordColor {
   NOTE: string | null = null;
   FAMIID = 0;
   LEVEL = 0;
-  UNITS = '';
-  PARTS = '';
   colorStyle: {string: string} | {} = {};
 
   units: SelectItem[] = [];

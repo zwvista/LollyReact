@@ -23,7 +23,8 @@ export class WordsTextbookService {
 
   getData(page: number, rows: number) {
     return this.appService.initializeComplete.pipe(
-      concatMap(_ => this.textbookWordService.getDataByLang(this.settingsService.selectedLang.ID, page, rows)),
+      concatMap(_ => this.textbookWordService.getDataByLang(this.settingsService.selectedLang.ID,
+        this.settingsService.textbooks, page, rows)),
       map(res => {
         this.textbookWords = res.VTEXTBOOKWORDS;
         this.textbookWordCount = res._results
