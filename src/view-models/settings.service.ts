@@ -14,6 +14,7 @@ import { autoCorrect, AutoCorrect } from '../models/autocorrect';
 import * as _ from 'lodash';
 import { partsFrom, unitsFrom } from '../common/common';
 import { SelectItem } from '../common/selectitem';
+import { WordColor } from '../models/word-color';
 
 const userid = 1;
 
@@ -35,6 +36,7 @@ export class SettingsService {
   get USROWSPERPAGE(): number {
     return +this.selectedUSUser0.VALUE3;
   }
+  USLEVELCOLORS!: {number: [string]} | {};
   private selectedUSLang!: UserSetting;
   get USTEXTBOOKID(): number {
     return +this.selectedUSLang.VALUE1;
@@ -166,6 +168,9 @@ export class SettingsService {
         this.userSettings = res[1] as UserSetting[];
         this.selectedUSUser0 = this.userSettings.find(value => value.KIND === 1 && value.ENTITYID === 0);
         this.selectedUSUser1 = this.userSettings.find(value => value.KIND === 1 && value.ENTITYID === 1);
+        this.USLEVELCOLORS = {};
+        this.selectedUSUser0.VALUE4.split('\r\n').map(v => v.split(','))
+          .forEach(v => this.USLEVELCOLORS[+v[0]] = [v[1], v[2]]);
         return this.setSelectedLang(this.languages.find(value => value.ID === this.USLANGID)!);
       }));
   }
@@ -253,5 +258,12 @@ export class SettingsService {
 
   autoCorrectInput(text: string): string {
     return autoCorrect(text, this.autoCorrects, row => row.INPUT, row => row.EXTENDED);
+  }
+
+  setColorStyle(words: WordColor[]) {
+    words.forEach(v => v.colorStyle = v.LEVEL === 0 ? {} : {
+      'background-color': '#' + this.USLEVELCOLORS[v.LEVEL][0],
+      'color': '#' + this.USLEVELCOLORS[v.LEVEL][1],
+    });
   }
 }

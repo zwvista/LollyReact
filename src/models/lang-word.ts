@@ -1,17 +1,19 @@
 import { UnitWord } from './unit-word';
 import { TextbookWord } from './textbook-word';
+import { WordColor } from './word-color';
 
 export class LangWords {
   VLANGWORDS: LangWord[];
   _results = 0;
 }
-export class LangWord {
+export class LangWord implements WordColor {
   ID = 0;
   LANGID = 0;
   WORD = '';
   NOTE: string | null = null;
   FAMIID = 0;
   LEVEL = 0;
+  colorStyle: {string: string} | {} = {};
 
   constructor() {}
 

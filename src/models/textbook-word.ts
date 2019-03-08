@@ -1,10 +1,11 @@
 import { SelectItem } from '../common/selectitem';
+import { WordColor } from './word-color';
 
 export class TextbookWords {
   VTEXTBOOKWORDS!: TextbookWord[];
   _results = 0;
 }
-export class TextbookWord {
+export class TextbookWord implements WordColor {
   TEXTBOOKID = 0;
   LANGID = 0;
   TEXTBOOKNAME = '';
@@ -19,6 +20,7 @@ export class TextbookWord {
   LEVEL = 0;
   UNITS = '';
   PARTS = '';
+  colorStyle: {string: string} | {} = {};
 
   units: SelectItem[] = [];
   parts: SelectItem[] = [];

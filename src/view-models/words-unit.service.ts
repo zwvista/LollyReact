@@ -21,11 +21,14 @@ export class WordsUnitService {
               @Inject private noteService: NoteService) {
   }
 
-  getData(): Observable<UnitWord[]> {
+  getData(): Observable<void> {
     return this.appService.initializeComplete.pipe(
       concatMap(_ => this.unitWordService.getDataByTextbookUnitPart(this.settingsService.USTEXTBOOKID,
         this.settingsService.USUNITPARTFROM, this.settingsService.USUNITPARTTO)),
-      map(res => this.unitWords = res),
+      map(res => {
+        this.settingsService.setColorStyle(res);
+        this.unitWords = res
+      }),
     );
   }
 

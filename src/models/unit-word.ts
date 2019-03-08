@@ -1,9 +1,10 @@
 import { SelectItem } from '../common/selectitem';
+import { WordColor } from './word-color';
 
 export class UnitWords {
   VUNITWORDS!: UnitWord[];
 }
-export class UnitWord {
+export class UnitWord implements WordColor {
   ID = 0;
   LANGID = 0;
   TEXTBOOKID = 0;
@@ -17,6 +18,7 @@ export class UnitWord {
   LEVEL = 0;
   UNITS = '';
   PARTS = '';
+  colorStyle: {string: string} | {} = {};
 
   units: SelectItem[] = [];
   parts: SelectItem[] = [];
