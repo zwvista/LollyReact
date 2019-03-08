@@ -140,11 +140,15 @@ export class SettingsService {
     this.selectedUSTextbook = this.userSettings.find(value => value.KIND === 3 && value.ENTITYID === newValue.ID)!;
   }
 
-  units: SelectItem[] = [];
+  get units(): SelectItem[] {
+    return this.selectedTextbook.units;
+  }
   get unitCount(): number {
     return this.units.length;
   }
-  parts: SelectItem[] = [];
+  get parts(): SelectItem[] {
+    return this.selectedTextbook.parts;
+  }
   get partCount(): number {
     return this.parts.length;
   }
