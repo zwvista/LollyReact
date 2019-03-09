@@ -23,6 +23,23 @@ export class UnitWordService extends BaseService {
       );
   }
 
+  getDataByLang(langid: number, textbooks: MTextbook[], page: number, rows: number): Observable<MUnitWords> {
+    const url = `${this.baseUrl}VUNITWORDS?transform=1&filter=LANGID,eq,${langid}&order[]=TEXTBOOKID&order[]=UNIT&order[]=PART&order[]=SEQNUM&page=${page},${rows}`;
+    return this.http.get<MUnitWords>(url)
+      .pipe(
+        map(result => ({
+          VUNITWORDS: result.VUNITWORDS.map(value => {
+            const v = Object.assign(new MUnitWord(), value);
+            const v2 = textbooks.find(o => o.ID === v.TEXTBOOKID);
+            v.units = v2.units;
+            v.parts = v2.parts;
+            return v;
+          }),
+          _results: result._results,
+        })),
+      );
+  }
+
   getDataByLangWord(wordid: number): Observable<MUnitWord[]> {
     const url = `${this.baseUrl}VUNITWORDS?transform=1&filter=WORDID,eq,${wordid}`;
     return this.http.get<MUnitWords>(url)

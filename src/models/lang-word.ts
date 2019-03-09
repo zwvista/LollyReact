@@ -1,5 +1,4 @@
 import { MUnitWord } from './unit-word';
-import { MTextbookWord } from './textbook-word';
 import { MWordColor } from './word-color';
 
 export class MLangWords {
@@ -26,7 +25,7 @@ export class MLangWord implements MWordColor {
     o.NOTE = item.NOTE;
     return o;
   }
-  static fromTextbook(item: MTextbookWord): MLangWord {
+  static fromTextbook(item: MUnitWord): MLangWord {
     const o = new MLangWord();
     o.ID = item.WORDID;
     o.LANGID = item.LANGID;

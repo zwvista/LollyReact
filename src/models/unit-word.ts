@@ -3,11 +3,13 @@ import { MWordColor } from './word-color';
 
 export class MUnitWords {
   VUNITWORDS!: MUnitWord[];
+  _results = 0;
 }
 export class MUnitWord implements MWordColor {
   ID = 0;
   LANGID = 0;
   TEXTBOOKID = 0;
+  TEXTBOOKNAME = '';
   UNIT = 0;
   PART = 0;
   SEQNUM = 0;

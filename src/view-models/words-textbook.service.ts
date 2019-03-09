@@ -1,20 +1,20 @@
 import { Inject, Injectable } from 'react.di';
 import { SettingsService } from './settings.service';
 import { AppService } from './app.service';
-import { TextbookWordService } from '../services/textbook-word.service';
 import { Observable } from 'rxjs';
-import { MTextbookWord } from '../models/textbook-word';
 import { concatMap, map } from 'rxjs/operators';
 import { NoteService } from './note.service';
 import { LangWordService } from '../services/lang-word.service';
+import { UnitWordService } from '../services/unit-word.service';
+import { MUnitWord } from '../models/unit-word';
 
 @Injectable
 export class WordsTextbookService {
 
-  textbookWords: MTextbookWord[] = [];
+  textbookWords: MUnitWord[] = [];
   textbookWordCount = 0;
 
-  constructor(@Inject private textbookWordService: TextbookWordService,
+  constructor(@Inject private unitWordService: UnitWordService,
               @Inject private langWordService: LangWordService,
               @Inject private settingsService: SettingsService,
               @Inject private appService: AppService,
@@ -23,10 +23,10 @@ export class WordsTextbookService {
 
   getData(page: number, rows: number) {
     return this.appService.initializeComplete.pipe(
-      concatMap(_ => this.textbookWordService.getDataByLang(this.settingsService.selectedLang.ID,
+      concatMap(_ => this.unitWordService.getDataByLang(this.settingsService.selectedLang.ID,
         this.settingsService.textbooks, page, rows)),
       map(res => {
-        this.textbookWords = res.VTEXTBOOKWORDS;
+        this.textbookWords = res.VUNITWORDS;
         this.textbookWordCount = res._results
       }),
     );

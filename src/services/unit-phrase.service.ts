@@ -23,6 +23,23 @@ export class UnitPhraseService extends BaseService {
       );
   }
 
+  getDataByLang(langid: number, textbooks: MTextbook[], page: number, rows: number): Observable<MUnitPhrases> {
+    const url = `${this.baseUrl}VUNITPHRASES?transform=1&filter=LANGID,eq,${langid}&order[]=TEXTBOOKID&order[]=UNIT&order[]=PART&order[]=SEQNUM&page=${page},${rows}`;
+    return this.http.get<MUnitPhrases>(url)
+      .pipe(
+        map(result => ({
+          VUNITPHRASES: result.VUNITPHRASES.map(value => {
+            const v = Object.assign(new MUnitPhrase(), value);
+            const v2 = textbooks.find(o => o.ID === v.TEXTBOOKID);
+            v.units = v2.units;
+            v.parts = v2.parts;
+            return v;
+          }),
+          _results: result._results,
+        })),
+      );
+  }
+
   getDataByLangPhrase(phraseid: number): Observable<MUnitPhrase[]> {
     const url = `${this.baseUrl}VUNITPHRASES?transform=1&filter=PHRASEID,eq,${phraseid}`;
     return this.http.get<MUnitPhrases>(url)

@@ -1,5 +1,4 @@
 import { MUnitPhrase } from './unit-phrase';
-import { MTextbookPhrase } from './textbook-phrase';
 
 export class MLangPhrases {
   LANGPHRASES: MLangPhrase[];
@@ -22,7 +21,7 @@ export class MLangPhrase {
     o.TRANSLATION = item.TRANSLATION;
     return o;
   }
-  static fromTextbook(item: MTextbookPhrase): MLangPhrase {
+  static fromTextbook(item: MUnitPhrase): MLangPhrase {
     const o = new MLangPhrase();
     o.ID = item.PHRASEID;
     o.LANGID = item.LANGID;

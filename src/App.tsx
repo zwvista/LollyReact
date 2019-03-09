@@ -44,8 +44,6 @@ import PhrasesLangDetail from './components/PhrasesLangDetail';
 import WordsLangDetail from './components/WordsLangDetail';
 import PhrasesLang from './components/PhrasesLang';
 import { NoteService } from './view-models/note.service';
-import { TextbookWordService } from './services/textbook-word.service';
-import { TextbookPhraseService } from './services/textbook-phrase.service';
 import WordsTextbook from './components/WordsTextbook';
 import WordsTextbookDetail from './components/WordsTextbookDetail';
 import PhrasesTextbookDetail from './components/PhrasesTextbookDetail';
@@ -61,7 +59,7 @@ import { VoicesService } from './services/voices.service';
     TextbookService, UnitPhraseService, UnitWordService, UserSettingService, AppService,
     PhrasesUnitService, SettingsService, WordsUnitService, AutoCorrectService,
     LangPhraseService, LangWordService, PhrasesLangService, WordsLangService,
-    NoteService, TextbookWordService, TextbookPhraseService, WordsTextbookService, PhrasesTextbookService,
+    NoteService, WordsTextbookService, PhrasesTextbookService,
     VoicesService,
   ],
 })
