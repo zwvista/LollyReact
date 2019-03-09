@@ -1,7 +1,7 @@
-export class UserSettings {
-  USERSETTINGS!: UserSetting[];
+export class MUserSettings {
+  USERSETTINGS!: MUserSetting[];
 }
-export class UserSetting {
+export class MUserSetting {
   ID!: number;
   USERID!: number;
   KIND!: number;

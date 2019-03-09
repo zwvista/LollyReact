@@ -1,50 +1,50 @@
 import { Injectable } from 'react.di';
 import { BaseService } from './base.service';
 import { Observable } from 'rxjs';
-import { LangWord, LangWords } from '../models/lang-word';
+import { MLangWord, MLangWords } from '../models/lang-word';
 import { map } from 'rxjs/operators';
 
 @Injectable
 export class LangWordService extends BaseService {
 
-  getDataByLang(langid: number, page: number, rows: number): Observable<LangWords> {
+  getDataByLang(langid: number, page: number, rows: number): Observable<MLangWords> {
     const url = `${this.baseUrl}VLANGWORDS?transform=1&filter=LANGID,eq,${langid}&order=WORD&page=${page},${rows}`;
-    return this.http.get<LangWords>(url)
+    return this.http.get<MLangWords>(url)
       .pipe(
         map(result => ({
-          VLANGWORDS: result.VLANGWORDS.map(value => Object.assign(new LangWord(), value)),
+          VLANGWORDS: result.VLANGWORDS.map(value => Object.assign(new MLangWord(), value)),
           _results: result._results,
         })),
       );
   }
 
-  getDataByLangWord(langid: number, word: string): Observable<LangWord[]> {
+  getDataByLangWord(langid: number, word: string): Observable<MLangWord[]> {
     const url = `${this.baseUrl}VLANGWORDS?transform=1&filter[]=LANGID,eq,${langid}&filter[]=WORD,eq,${encodeURIComponent(word)}`;
-    return this.http.get<LangWords>(url)
+    return this.http.get<MLangWords>(url)
       .pipe(
-        map(result => result.VLANGWORDS.map(value => Object.assign(new LangWord(), value))
+        map(result => result.VLANGWORDS.map(value => Object.assign(new MLangWord(), value))
           // Api is case insensitive
           .filter(value => value.WORD === word)
         ),
       );
   }
 
-  getDataById(id: number): Observable<LangWord[]> {
+  getDataById(id: number): Observable<MLangWord[]> {
     const url = `${this.baseUrl}VLANGWORDS?transform=1&filter=ID,eq,${id}`;
-    return this.http.get<LangWords>(url)
+    return this.http.get<MLangWords>(url)
       .pipe(
-        map(result => result.VLANGWORDS.map(value => Object.assign(new LangWord(), value))),
+        map(result => result.VLANGWORDS.map(value => Object.assign(new MLangWord(), value))),
       );
   }
 
-  create(item: LangWord): Observable<number | any[]> {
+  create(item: MLangWord): Observable<number | any[]> {
     const url = `${this.baseUrl}LANGWORDS`;
     return this.http.post<number | any[]>(url, item)
       .pipe(
       );
   }
 
-  update(item: LangWord): Observable<number> {
+  update(item: MLangWord): Observable<number> {
     const url = `${this.baseUrl}LANGWORDS/${item.ID}`;
     return this.http.put<number>(url, item).pipe(
     );
@@ -52,7 +52,7 @@ export class LangWordService extends BaseService {
 
   updateNote(id: number, note: string): Observable<number> {
     const url = `${this.baseUrl}LANGWORDS/${id}`;
-    return this.http.put<number>(url, {ID: id, NOTE: note} as LangWord).pipe(
+    return this.http.put<number>(url, {ID: id, NOTE: note} as MLangWord).pipe(
     );
   }
 

@@ -1,9 +1,9 @@
-import { SelectItem } from '../common/selectitem';
+import { MSelectItem } from '../common/selectitem';
 
-export class UnitPhrases {
-  VUNITPHRASES!: UnitPhrase[];
+export class MUnitPhrases {
+  VUNITPHRASES!: MUnitPhrase[];
 }
-export class UnitPhrase {
+export class MUnitPhrase {
   ID = 0;
   LANGID = 0;
   TEXTBOOKID = 0;
@@ -14,8 +14,8 @@ export class UnitPhrase {
   PHRASE = '';
   TRANSLATION: string | null = null;
 
-  units: SelectItem[] = [];
-  parts: SelectItem[] = [];
+  units: MSelectItem[] = [];
+  parts: MSelectItem[] = [];
   get UNITSTR(): string {
     return this.units.find(o => o.value === this.UNIT)!.label;
   }

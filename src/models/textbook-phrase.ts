@@ -1,10 +1,10 @@
-import { SelectItem } from '../common/selectitem';
+import { MSelectItem } from '../common/selectitem';
 
-export class TextbookPhrases {
-  VTEXTBOOKPHRASES!: TextbookPhrase[];
+export class MTextbookPhrases {
+  VTEXTBOOKPHRASES!: MTextbookPhrase[];
   _results = 0;
 }
-export class TextbookPhrase {
+export class MTextbookPhrase {
   TEXTBOOKID = 0;
   LANGID = 0;
   TEXTBOOKNAME = '';
@@ -16,8 +16,8 @@ export class TextbookPhrase {
   PHRASE = '';
   TRANSLATION: string | null = null;
 
-  units: SelectItem[] = [];
-  parts: SelectItem[] = [];
+  units: MSelectItem[] = [];
+  parts: MSelectItem[] = [];
   get UNITSTR(): string {
     return this.units.find(o => o.value === this.UNIT)!.label;
   }

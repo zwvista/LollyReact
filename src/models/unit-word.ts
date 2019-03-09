@@ -1,10 +1,10 @@
-import { SelectItem } from '../common/selectitem';
-import { WordColor } from './word-color';
+import { MSelectItem } from '../common/selectitem';
+import { MWordColor } from './word-color';
 
-export class UnitWords {
-  VUNITWORDS!: UnitWord[];
+export class MUnitWords {
+  VUNITWORDS!: MUnitWord[];
 }
-export class UnitWord implements WordColor {
+export class MUnitWord implements MWordColor {
   ID = 0;
   LANGID = 0;
   TEXTBOOKID = 0;
@@ -18,8 +18,8 @@ export class UnitWord implements WordColor {
   LEVEL = 0;
   colorStyle: {string: string} | {} = {};
 
-  units: SelectItem[] = [];
-  parts: SelectItem[] = [];
+  units: MSelectItem[] = [];
+  parts: MSelectItem[] = [];
   get UNITSTR(): string {
     return this.units.find(o => o.value === this.UNIT)!.label;
   }

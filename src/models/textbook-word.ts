@@ -1,11 +1,11 @@
-import { SelectItem } from '../common/selectitem';
-import { WordColor } from './word-color';
+import { MSelectItem } from '../common/selectitem';
+import { MWordColor } from './word-color';
 
-export class TextbookWords {
-  VTEXTBOOKWORDS!: TextbookWord[];
+export class MTextbookWords {
+  VTEXTBOOKWORDS!: MTextbookWord[];
   _results = 0;
 }
-export class TextbookWord implements WordColor {
+export class MTextbookWord implements MWordColor {
   TEXTBOOKID = 0;
   LANGID = 0;
   TEXTBOOKNAME = '';
@@ -20,8 +20,8 @@ export class TextbookWord implements WordColor {
   LEVEL = 0;
   colorStyle: {string: string} | {} = {};
 
-  units: SelectItem[] = [];
-  parts: SelectItem[] = [];
+  units: MSelectItem[] = [];
+  parts: MSelectItem[] = [];
   get UNITSTR(): string {
     return this.units.find(o => o.value === this.UNIT)!.label;
   }

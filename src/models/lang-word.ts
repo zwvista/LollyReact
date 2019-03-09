@@ -1,12 +1,12 @@
-import { UnitWord } from './unit-word';
-import { TextbookWord } from './textbook-word';
-import { WordColor } from './word-color';
+import { MUnitWord } from './unit-word';
+import { MTextbookWord } from './textbook-word';
+import { MWordColor } from './word-color';
 
-export class LangWords {
-  VLANGWORDS: LangWord[];
+export class MLangWords {
+  VLANGWORDS: MLangWord[];
   _results = 0;
 }
-export class LangWord implements WordColor {
+export class MLangWord implements MWordColor {
   ID = 0;
   LANGID = 0;
   WORD = '';
@@ -18,16 +18,16 @@ export class LangWord implements WordColor {
   constructor() {}
 
   // https://stackoverflow.com/questions/47540501/typescript-constructor-overloading
-  static fromUnit(item: UnitWord): LangWord {
-    const o = new LangWord();
+  static fromUnit(item: MUnitWord): MLangWord {
+    const o = new MLangWord();
     o.ID = item.WORDID;
     o.LANGID = item.LANGID;
     o.WORD = item.WORD;
     o.NOTE = item.NOTE;
     return o;
   }
-  static fromTextbook(item: TextbookWord): LangWord {
-    const o = new LangWord();
+  static fromTextbook(item: MTextbookWord): MLangWord {
+    const o = new MLangWord();
     o.ID = item.WORDID;
     o.LANGID = item.LANGID;
     o.WORD = item.WORD;

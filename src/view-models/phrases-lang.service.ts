@@ -3,13 +3,13 @@ import { LangPhraseService } from '../services/lang-phrase.service';
 import { SettingsService } from './settings.service';
 import { AppService } from './app.service';
 import { concatMap, map } from 'rxjs/operators';
-import { LangPhrase } from '../models/lang-phrase';
+import { MLangPhrase } from '../models/lang-phrase';
 import { Observable } from 'rxjs';
 
 @Injectable
 export class PhrasesLangService {
 
-  langPhrases: LangPhrase[] = [];
+  langPhrases: MLangPhrase[] = [];
   langPhraseCount = 0;
 
   constructor(@Inject private langPhraseService: LangPhraseService,
@@ -27,11 +27,11 @@ export class PhrasesLangService {
     );
   }
 
-  create(item: LangPhrase): Observable<number | any[]> {
+  create(item: MLangPhrase): Observable<number | any[]> {
     return this.langPhraseService.create(item);
   }
 
-  update(item: LangPhrase): Observable<number> {
+  update(item: MLangPhrase): Observable<number> {
     return this.langPhraseService.update(item);
   }
 
@@ -39,8 +39,8 @@ export class PhrasesLangService {
     return this.langPhraseService.delete(id);
   }
 
-  newLangPhrase(): LangPhrase {
-    const o = new LangPhrase();
+  newLangPhrase(): MLangPhrase {
+    const o = new MLangPhrase();
     o.LANGID = this.settingsService.selectedLang.ID;
     return o;
   }

@@ -1,4 +1,8 @@
-export class AutoCorrect {
+export class MAutoCorrects {
+  AUTOCORRECT: MAutoCorrect[];
+}
+
+export class MAutoCorrect {
   ID = 0;
   LANGID = 0;
   SEQNUM = 0;
@@ -7,11 +11,7 @@ export class AutoCorrect {
   BASIC = '';
 }
 
-export class AutoCorrects {
-  AUTOCORRECT: AutoCorrect[];
-}
-
-export function autoCorrect(text: string, autoCorrects: AutoCorrect[],
-                            colFunc1: (row: AutoCorrect) => string, colFunc2: (row: AutoCorrect) => string): string {
+export function autoCorrect(text: string, autoCorrects: MAutoCorrect[],
+                            colFunc1: (row: MAutoCorrect) => string, colFunc2: (row: MAutoCorrect) => string): string {
   return autoCorrects.reduce((str, row) => str.replace(colFunc1(row), colFunc2(row)), text);
 }

@@ -1,7 +1,7 @@
-import { autoCorrect, AutoCorrect } from './autocorrect';
+import { autoCorrect, MAutoCorrect } from './autocorrect';
 import { HtmlService } from '../services/html.service';
 
-class Dictionary {
+class MDictionary {
   ID!: number;
   DICTID!: number;
   LANGIDFROM!: number;
@@ -14,7 +14,7 @@ class Dictionary {
   WAIT!: number;
   TEMPLATE!: string;
 
-  urlString(word: string, autoCorrects: AutoCorrect[]): string {
+  urlString(word: string, autoCorrects: MAutoCorrect[]): string {
     const word2 =
       this.CHCONV === 'BASIC' ? autoCorrect(word, autoCorrects, row => row.EXTENDED, row => row.BASIC) : word;
     const url = this.URL.replace('{0}', encodeURIComponent(word2));
@@ -23,26 +23,26 @@ class Dictionary {
   }
 }
 
-export class DictsMean {
-  VDICTSMEAN!: DictMean[];
+export class MDictsMean {
+  VDICTSMEAN!: MDictMean[];
 }
 const cssFolder = 'http://zwvista.tk/lolly/css/';
-export class DictMean extends Dictionary {
+export class MDictMean extends MDictionary {
   htmlString(html: string, word: string): string {
     return HtmlService.extractTextFrom(html, this.TRANSFORM, this.TEMPLATE, (text: string, template2: string) =>
       template2.replace(/\{0\}/g, word).replace(/\{1\}/g, cssFolder).replace(/\{2\}/g, text));
   }
 }
 
-export class DictItem {
+export class MDictItem {
   constructor(public DICTID: string, public DICTNAME: string) {}
   dictids(): string[] {
     return this.DICTID.split(',');
   }
 }
 
-export class DictsNote {
-  VDICTSNOTE!: DictNote[];
+export class MDictsNote {
+  VDICTSNOTE!: MDictNote[];
 }
-export class DictNote extends Dictionary {
+export class MDictNote extends MDictionary {
 }

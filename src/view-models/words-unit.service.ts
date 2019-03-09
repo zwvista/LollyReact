@@ -1,18 +1,18 @@
 import { Inject, Injectable } from 'react.di';
 import { UnitWordService } from '../services/unit-word.service';
 import { SettingsService } from './settings.service';
-import { UnitWord } from '../models/unit-word';
+import { MUnitWord } from '../models/unit-word';
 import { AppService } from './app.service';
 import { EMPTY as empty, Observable, of } from 'rxjs';
 import { concatMap, map } from 'rxjs/operators';
 import { NoteService } from './note.service';
 import { LangWordService } from '../services/lang-word.service';
-import { LangWord } from '../models/lang-word';
+import { MLangWord } from '../models/lang-word';
 
 @Injectable
 export class WordsUnitService {
 
-  unitWords: UnitWord[] = [];
+  unitWords: MUnitWord[] = [];
 
   constructor(@Inject private unitWordService: UnitWordService,
               @Inject private langWordService: LangWordService,
@@ -32,11 +32,11 @@ export class WordsUnitService {
     );
   }
 
-  create(item: UnitWord): Observable<number | any[]> {
+  create(item: MUnitWord): Observable<number | any[]> {
     return this.langWordService.getDataByLangWord(item.LANGID, item.WORD).pipe(
       concatMap( arrLang => {
         if (arrLang.length === 0) {
-          const itemLang = LangWord.fromUnit(item);
+          const itemLang = MLangWord.fromUnit(item);
           return this.langWordService.create(itemLang);
         } else {
           const itemLang = arrLang[0];
@@ -60,14 +60,14 @@ export class WordsUnitService {
     return this.langWordService.updateNote(wordid, note);
   }
 
-  update(item: UnitWord): Observable<number> {
+  update(item: MUnitWord): Observable<number> {
     const wordid = item.WORDID;
     return this.unitWordService.getDataByLangWord(wordid).pipe(
       concatMap(arrUnit => {
         if (arrUnit.length === 0)
           return empty;
         else {
-          const itemLang = LangWord.fromUnit(item);
+          const itemLang = MLangWord.fromUnit(item);
           return this.langWordService.getDataById(wordid).pipe(
             concatMap(arrLangOld => {
               if (arrLangOld.length > 0 && arrLangOld[0].WORD === item.WORD)
@@ -122,8 +122,8 @@ export class WordsUnitService {
     }
   }
 
-  newUnitWord(): UnitWord {
-    const o = new UnitWord();
+  newUnitWord(): MUnitWord {
+    const o = new MUnitWord();
     o.LANGID = this.settingsService.selectedLang.ID;
     o.TEXTBOOKID = this.settingsService.USTEXTBOOKID;
     const maxElem = this.unitWords.length === 0 ? null :

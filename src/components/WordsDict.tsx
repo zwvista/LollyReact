@@ -8,7 +8,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { SettingsService } from '../view-models/settings.service';
 import DictBrowser from './DictBrowser';
 import { ListBox } from 'primereact/listbox';
-import { DictItem } from '../models/dictionary';
+import { MDictItem } from '../models/dictionary';
 import { HtmlService } from '../services/html.service';
 import { WordsLangService } from '../view-models/words-lang.service';
 import { WordsTextbookService } from '../view-models/words-textbook.service';
@@ -78,7 +78,7 @@ export default class WordsDict extends React.Component<any, any> {
     this.refreshDict(this.state.selectedDictItem, selectedWord);
   };
 
-  refreshDict(selectedDictItem: DictItem, selectedWord: string) {
+  refreshDict(selectedDictItem: MDictItem, selectedWord: string) {
     const item = selectedDictItem;
     if (item.DICTNAME.startsWith('Custom')) {
       const dictSrc = this.settingsService.dictHtml(this.state.selectedWord, item.dictids());

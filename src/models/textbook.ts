@@ -1,15 +1,15 @@
-import { SelectItem } from '../common/selectitem';
+import { MSelectItem } from '../common/selectitem';
 
-export class Textbooks {
-  TEXTBOOKS!: Textbook[];
+export class MTextbooks {
+  TEXTBOOKS!: MTextbook[];
 }
-export class Textbook {
+export class MTextbook {
   ID = 0;
   LANGID = 0;
   NAME = '';
   UNITS = '';
   PARTS = '';
 
-  units: SelectItem[] = [];
-  parts: SelectItem[] = [];
+  units: MSelectItem[] = [];
+  parts: MSelectItem[] = [];
 }

@@ -1,7 +1,7 @@
-export class Languages {
-  LANGUAGES!: Language[];
+export class MLanguages {
+  LANGUAGES!: MLanguage[];
 }
-export class Language {
+export class MLanguage {
   ID!: number;
   NAME!: string;
 }

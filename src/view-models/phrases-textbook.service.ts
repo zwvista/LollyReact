@@ -3,12 +3,12 @@ import { TextbookPhraseService } from '../services/textbook-phrase.service';
 import { SettingsService } from './settings.service';
 import { AppService } from './app.service';
 import { concatMap, map } from 'rxjs/operators';
-import { TextbookPhrase } from '../models/textbook-phrase';
+import { MTextbookPhrase } from '../models/textbook-phrase';
 
 @Injectable
 export class PhrasesTextbookService {
 
-  textbookPhrases: TextbookPhrase[] = [];
+  textbookPhrases: MTextbookPhrase[] = [];
   textbookPhraseCount = 0;
 
   constructor(@Inject private textbookPhraseService: TextbookPhraseService,

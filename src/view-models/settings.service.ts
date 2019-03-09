@@ -2,27 +2,27 @@ import { map, mergeMap } from 'rxjs/operators';
 import { Inject, Injectable } from 'react.di';
 import { LanguageService } from '../services/language.service';
 import { UserSettingService } from '../services/user-setting.service';
-import { UserSetting } from '../models/user-setting';
-import { Language } from '../models/language';
-import { DictItem, DictMean, DictNote } from '../models/dictionary';
-import { Textbook } from '../models/textbook';
+import { MUserSetting } from '../models/user-setting';
+import { MLanguage } from '../models/language';
+import { MDictItem, MDictMean, MDictNote } from '../models/dictionary';
+import { MTextbook } from '../models/textbook';
 import { forkJoin, Observable } from 'rxjs';
 import { DictMeanService, DictNoteService } from '../services/dictionary.service';
 import { TextbookService } from '../services/textbook.service';
 import { AutoCorrectService } from '../services/autocorrect.service';
-import { autoCorrect, AutoCorrect } from '../models/autocorrect';
+import { autoCorrect, MAutoCorrect } from '../models/autocorrect';
 import * as _ from 'lodash';
-import { SelectItem } from '../common/selectitem';
-import { WordColor } from '../models/word-color';
+import { MSelectItem } from '../common/selectitem';
+import { MWordColor } from '../models/word-color';
 
 const userid = 1;
 
 @Injectable
 export class SettingsService {
 
-  userSettings: UserSetting[] = [];
-  private selectedUSUser0!: UserSetting;
-  private selectedUSUser1!: UserSetting;
+  userSettings: MUserSetting[] = [];
+  private selectedUSUser0!: MUserSetting;
+  private selectedUSUser1!: MUserSetting;
   private get USLANGID(): number {
     return +this.selectedUSUser0.VALUE1;
   }
@@ -36,7 +36,7 @@ export class SettingsService {
     return +this.selectedUSUser0.VALUE3;
   }
   USLEVELCOLORS!: {number: [string]} | {};
-  private selectedUSLang!: UserSetting;
+  private selectedUSLang!: MUserSetting;
   get USTEXTBOOKID(): number {
     return +this.selectedUSLang.VALUE1;
   }
@@ -61,7 +61,7 @@ export class SettingsService {
   set USDICTITEMS(newValue: string) {
     this.selectedUSLang.VALUE4 = newValue;
   }
-  private selectedUSTextbook!: UserSetting;
+  private selectedUSTextbook!: MUserSetting;
   get USUNITFROM(): number {
     return +this.selectedUSTextbook.VALUE1;
   }
@@ -102,26 +102,26 @@ export class SettingsService {
     return this.USUNITPARTFROM > this.USUNITPARTTO;
   }
 
-  languages: Language[] = [];
-  selectedLang!: Language;
+  languages: MLanguage[] = [];
+  selectedLang!: MLanguage;
 
-  dictsMean: DictMean[] = [];
-  dictItems: DictItem[] = [];
-  _selectedDictItem!: DictItem;
-  get selectedDictItem(): DictItem {
+  dictsMean: MDictMean[] = [];
+  dictItems: MDictItem[] = [];
+  _selectedDictItem!: MDictItem;
+  get selectedDictItem(): MDictItem {
     return this._selectedDictItem;
   }
-  set selectedDictItem(newValue: DictItem) {
+  set selectedDictItem(newValue: MDictItem) {
     this._selectedDictItem = newValue;
     this.USDICTITEM = this._selectedDictItem.DICTID;
   }
 
-  dictsNote: DictNote[] = [];
-  _selectedDictNote: DictNote | null = null;
-  get selectedDictNote(): DictNote | null {
+  dictsNote: MDictNote[] = [];
+  _selectedDictNote: MDictNote | null = null;
+  get selectedDictNote(): MDictNote | null {
     return this._selectedDictNote;
   }
-  set selectedDictNote(newValue: DictNote | null) {
+  set selectedDictNote(newValue: MDictNote | null) {
     this._selectedDictNote = newValue;
     if (newValue) this.USDICTNOTEID = newValue.ID;
   }
@@ -129,24 +129,24 @@ export class SettingsService {
     return this.dictsNote.length !== 0;
   }
 
-  textbooks: Textbook[] = [];
-  private _selectedTextbook: Textbook;
-  get selectedTextbook(): Textbook {
+  textbooks: MTextbook[] = [];
+  private _selectedTextbook: MTextbook;
+  get selectedTextbook(): MTextbook {
     return this._selectedTextbook;
   }
-  set selectedTextbook(newValue: Textbook) {
+  set selectedTextbook(newValue: MTextbook) {
     this._selectedTextbook = newValue;
     this.USTEXTBOOKID = newValue.ID;
     this.selectedUSTextbook = this.userSettings.find(value => value.KIND === 3 && value.ENTITYID === newValue.ID)!;
   }
 
-  get units(): SelectItem[] {
+  get units(): MSelectItem[] {
     return this.selectedTextbook.units;
   }
   get unitCount(): number {
     return this.units.length;
   }
-  get parts(): SelectItem[] {
+  get parts(): MSelectItem[] {
     return this.selectedTextbook.parts;
   }
   get partCount(): number {
@@ -156,7 +156,7 @@ export class SettingsService {
     return this.partCount === 1;
   }
 
-  autoCorrects: AutoCorrect[] = [];
+  autoCorrects: MAutoCorrect[] = [];
 
   constructor(@Inject private langService: LanguageService,
               @Inject private userSettingService: UserSettingService,
@@ -168,8 +168,8 @@ export class SettingsService {
   getData(): Observable<void> {
     return forkJoin([this.langService.getData(), this.userSettingService.getDataByUser(userid)]).pipe(
       mergeMap(res => {
-        this.languages = res[0] as Language[];
-        this.userSettings = res[1] as UserSetting[];
+        this.languages = res[0] as MLanguage[];
+        this.userSettings = res[1] as MUserSetting[];
         this.selectedUSUser0 = this.userSettings.find(value => value.KIND === 1 && value.ENTITYID === 0);
         this.selectedUSUser1 = this.userSettings.find(value => value.KIND === 1 && value.ENTITYID === 1);
         this.USLEVELCOLORS = {};
@@ -179,7 +179,7 @@ export class SettingsService {
       }));
   }
 
-  setSelectedLang(lang: Language): Observable<void> {
+  setSelectedLang(lang: MLanguage): Observable<void> {
     this.selectedLang = lang;
     this.USLANGID = this.selectedLang.ID;
     this.selectedUSLang = this.userSettings.find(value => value.KIND === 2 && value.ENTITYID === this.USLANGID)!;
@@ -190,22 +190,22 @@ export class SettingsService {
       this.textbookService.getDataByLang(this.USLANGID),
       this.autoCorrectService.getDataByLang(this.USLANGID)]).pipe(
       map(res => {
-        this.dictsMean = res[0] as DictMean[];
+        this.dictsMean = res[0] as MDictMean[];
         let i = 0;
         this.dictItems = _.flatMap(dicts, d => {
           if (d === '0')
-            return _.map(this.dictsMean, d2 => new DictItem(String(d2.DICTID), d2.DICTNAME));
+            return _.map(this.dictsMean, d2 => new MDictItem(String(d2.DICTID), d2.DICTNAME));
           else {
             i++;
-            return [new DictItem(d, `Custom${i}`)];
+            return [new MDictItem(d, `Custom${i}`)];
           }
         });
         this.selectedDictItem = this.dictItems.find(value => value.DICTID === this.USDICTITEM)!;
-        this.dictsNote = res[1] as DictNote[];
+        this.dictsNote = res[1] as MDictNote[];
         this.selectedDictNote = !this.hasNote ? null : this.dictsNote.find(value => value.ID === this.USDICTNOTEID)!;
-        this.textbooks = res[2] as Textbook[];
+        this.textbooks = res[2] as MTextbook[];
         this.selectedTextbook = this.textbooks.find(value => value.ID === this.USTEXTBOOKID)!;
-        this.autoCorrects = res[3] as AutoCorrect[];
+        this.autoCorrects = res[3] as MAutoCorrect[];
       }));
   }
 
@@ -257,7 +257,7 @@ export class SettingsService {
     return autoCorrect(text, this.autoCorrects, row => row.INPUT, row => row.EXTENDED);
   }
 
-  setColorStyle(words: WordColor[]) {
+  setColorStyle(words: MWordColor[]) {
     words.forEach(v => v.colorStyle = v.LEVEL === 0 ? {} : {
       'background-color': '#' + this.USLEVELCOLORS[v.LEVEL][0],
       'color': '#' + this.USLEVELCOLORS[v.LEVEL][1],

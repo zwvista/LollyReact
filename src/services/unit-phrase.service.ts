@@ -1,19 +1,19 @@
 import { Injectable } from 'react.di';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { UnitPhrase, UnitPhrases } from '../models/unit-phrase';
+import { MUnitPhrase, MUnitPhrases } from '../models/unit-phrase';
 import { BaseService } from './base.service';
-import { Textbook } from '../models/textbook';
+import { MTextbook } from '../models/textbook';
 
 @Injectable
 export class UnitPhraseService extends BaseService {
 
-  getDataByTextbookUnitPart(textbook: Textbook, unitPartFrom: number, unitPartTo: number): Observable<UnitPhrase[]> {
+  getDataByTextbookUnitPart(textbook: MTextbook, unitPartFrom: number, unitPartTo: number): Observable<MUnitPhrase[]> {
     const url = `${this.baseUrl}VUNITPHRASES?transform=1&filter[]=TEXTBOOKID,eq,${textbook.ID}&filter[]=UNITPART,bt,${unitPartFrom},${unitPartTo}&order[]=UNITPART&order[]=SEQNUM`;
-    return this.http.get<UnitPhrases>(url)
+    return this.http.get<MUnitPhrases>(url)
       .pipe(
         map(result => {
-          const result2 = result.VUNITPHRASES.map(value => Object.assign(new UnitPhrase(), value));
+          const result2 = result.VUNITPHRASES.map(value => Object.assign(new MUnitPhrase(), value));
           result2.forEach(o => {
             o.units = textbook.units;
             o.parts = textbook.parts;
@@ -23,15 +23,15 @@ export class UnitPhraseService extends BaseService {
       );
   }
 
-  getDataByLangPhrase(phraseid: number): Observable<UnitPhrase[]> {
+  getDataByLangPhrase(phraseid: number): Observable<MUnitPhrase[]> {
     const url = `${this.baseUrl}VUNITPHRASES?transform=1&filter=PHRASEID,eq,${phraseid}`;
-    return this.http.get<UnitPhrases>(url)
+    return this.http.get<MUnitPhrases>(url)
       .pipe(
-        map(result => result.VUNITPHRASES.map(value => Object.assign(new UnitPhrase(), value))),
+        map(result => result.VUNITPHRASES.map(value => Object.assign(new MUnitPhrase(), value))),
       );
   }
 
-  create(item: UnitPhrase): Observable<number | any[]> {
+  create(item: MUnitPhrase): Observable<number | any[]> {
     const url = `${this.baseUrl}UNITPHRASES`;
     return this.http.post<number | any[]>(url, item)
       .pipe(
@@ -40,11 +40,11 @@ export class UnitPhraseService extends BaseService {
 
   updateSeqNum(id: number, seqnum: number): Observable<number> {
     const url = `${this.baseUrl}UNITPHRASES/${id}`;
-    return this.http.put<number>(url, {ID: id, SEQNUM: seqnum} as UnitPhrase).pipe(
+    return this.http.put<number>(url, {ID: id, SEQNUM: seqnum} as MUnitPhrase).pipe(
     );
   }
 
-  update(item: UnitPhrase): Observable<number> {
+  update(item: MUnitPhrase): Observable<number> {
     const url = `${this.baseUrl}UNITPHRASES/${item.ID}`;
     return this.http.put<number>(url, item).pipe(
     );

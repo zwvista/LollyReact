@@ -1,11 +1,11 @@
-import { UnitPhrase } from './unit-phrase';
-import { TextbookPhrase } from './textbook-phrase';
+import { MUnitPhrase } from './unit-phrase';
+import { MTextbookPhrase } from './textbook-phrase';
 
-export class LangPhrases {
-  LANGPHRASES: LangPhrase[];
+export class MLangPhrases {
+  LANGPHRASES: MLangPhrase[];
   _results = 0;
 }
-export class LangPhrase {
+export class MLangPhrase {
   ID = 0;
   LANGID = 0;
   PHRASE = '';
@@ -14,16 +14,16 @@ export class LangPhrase {
   constructor() {}
 
   // https://stackoverflow.com/questions/47540501/typescript-constructor-overloading
-  static fromUnit(item: UnitPhrase): LangPhrase {
-    const o = new LangPhrase();
+  static fromUnit(item: MUnitPhrase): MLangPhrase {
+    const o = new MLangPhrase();
     o.ID = item.PHRASEID;
     o.LANGID = item.LANGID;
     o.PHRASE = item.PHRASE;
     o.TRANSLATION = item.TRANSLATION;
     return o;
   }
-  static fromTextbook(item: TextbookPhrase): LangPhrase {
-    const o = new LangPhrase();
+  static fromTextbook(item: MTextbookPhrase): MLangPhrase {
+    const o = new MLangPhrase();
     o.ID = item.PHRASEID;
     o.LANGID = item.LANGID;
     o.PHRASE = item.PHRASE;
