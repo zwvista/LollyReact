@@ -22,34 +22,23 @@ export default class WordsLang extends React.Component<any, any> {
 
   state = {
     newWord: '',
-    rows: this.settingsService.USROWSPERPAGE,
     first: 0,
+    rows: this.settingsService.USROWSPERPAGE,
+    page: 1,
     selectedRow: null as any,
   };
 
   componentDidMount() {
-    this.onRefresh(null);
-  }
-
-  setRowColor() {
-    const self = this;
-    $("tr").each((i, row) => {
-      if (i === 0) return;
-      const c = self.wordsLangService.langWords[i - 1].colorStyle;
-      $(row).css('background-color', c['background-color'])
-        .css('color', c['color']);
-    });
+    this.onRefresh(this.state.page);
   }
 
   onPageChange = (e: PageState) => {
     this.setState({
       first: e.first,
-      rows: e.rows
+      rows: e.rows,
+      page: e.page + 1,
     });
-    this.subscription.add(this.wordsLangService.getData(e.page + 1, e.rows).subscribe(_ => {
-      this.updateServiceState();
-      this.setRowColor();
-    }));
+    this.onRefresh(e.page + 1);
   };
 
   componentWillUnmount() {
@@ -85,7 +74,7 @@ export default class WordsLang extends React.Component<any, any> {
                          onChange={this.onNewWordChange} onKeyPress={this.onNewWordKeyPress}/>
               <label htmlFor="float-input">New Word</label>
               <Button label="Add" icon="fa fa-plus" onClick={() => history.push('/words-lang-detail/0')} />
-              <Button label="Refresh" icon="fa fa-refresh" onClick={this.onRefresh}/>
+              <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => this.onRefresh(this.state.page)}/>
               <Button label="Dictionary" icon="fa fa-book" onClick={() => history.push('/words-dict/lang/0')} />
             </span>
           </div>
@@ -121,10 +110,20 @@ export default class WordsLang extends React.Component<any, any> {
     }));
   };
 
-  onRefresh = (e:any) => {
-    this.subscription.add(this.wordsLangService.getData(1, this.state.rows).subscribe(_ => {
+  onRefresh = (page: number) => {
+    this.subscription.add(this.wordsLangService.getData(page, this.state.rows).subscribe(_ => {
       this.updateServiceState();
-      this.setRowColor();
+      // Here we have to use JQuery to set td styles based on row number,
+      // as PrimeReact DataTable has no rowStyle attribute.
+      const self = this;
+      $("tr").each((i, row) => {
+        if (i === 0) return;
+        const c = self.wordsLangService.langWords[i - 1].colorStyle;
+        if (c['background-color'])
+          $(row).css('background-color', c['background-color']).css('color', c['color']);
+        else
+          $(row).css('background-color', '').css('color', '');
+      });
     }));
   };
 

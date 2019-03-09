@@ -24,16 +24,6 @@ export default class WordsUnit extends React.Component<any, any> {
     selectedRow: null as any,
   };
 
-  setRowColor() {
-    const self = this;
-    $("tr").each((i, row) => {
-      if (i === 0) return;
-      const c = self.wordsUnitService.unitWords[i - 1].colorStyle;
-      $(row).css('background-color', c['background-color'])
-        .css('color', c['color']);
-    });
-  }
-
   componentDidMount() {
     this.onRefresh(null);
   }
@@ -125,7 +115,17 @@ export default class WordsUnit extends React.Component<any, any> {
   onRefresh = (e:any) => {
     this.subscription.add(this.wordsUnitService.getData().subscribe(_ => {
       this.updateServiceState();
-      this.setRowColor();
+      // Here we have to use JQuery to set td styles based on row number,
+      // as PrimeReact DataTable has no rowStyle attribute.
+      const self = this;
+      $("tr").each((i, row) => {
+        if (i === 0) return;
+        const c = self.wordsUnitService.unitWords[i - 1].colorStyle;
+        if (c['background-color'])
+          $(row).css('background-color', c['background-color']).css('color', c['color']);
+        else
+          $(row).css('background-color', '').css('color', '');
+      });
     }));
   };
 

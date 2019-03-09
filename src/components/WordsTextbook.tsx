@@ -19,34 +19,23 @@ export default class WordsTextbook extends React.Component<any, any> {
   subscription = new Subscription();
 
   state = {
-    rows: this.settingsService.USROWSPERPAGE,
     first: 0,
+    rows: this.settingsService.USROWSPERPAGE,
+    page: 1,
     selectedRow: null as any,
   };
 
   componentDidMount() {
-    this.onRefresh(null);
-  }
-
-  setRowColor() {
-    const self = this;
-    $("tr").each((i, row) => {
-      if (i === 0) return;
-      const c = self.wordsTextbookService.textbookWords[i - 1].colorStyle;
-      $(row).css('background-color', c['background-color'])
-        .css('color', c['color']);
-    });
+    this.onRefresh(this.state.page);
   }
 
   onPageChange = (e: PageState) => {
     this.setState({
       first: e.first,
       rows: e.rows,
+      page: e.page + 1,
     });
-    this.subscription.add(this.wordsTextbookService.getData(e.page + 1, e.rows).subscribe(_ => {
-      this.updateServiceState();
-      this.setRowColor();
-    }));
+    this.onRefresh(e.page + 1)
   };
 
   componentWillUnmount() {
@@ -77,7 +66,7 @@ export default class WordsTextbook extends React.Component<any, any> {
       <div>
         <Toolbar>
           <div className="p-toolbar-group-left">
-            <Button label="Refresh" icon="fa fa-refresh" onClick={this.onRefresh}/>
+            <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => this.onRefresh(this.state.page)}/>
             <Button label="Dictionary" icon="fa fa-book" onClick={() => history.push('/words-dict/textbook/0')} />
           </div>
         </Toolbar>
@@ -100,11 +89,21 @@ export default class WordsTextbook extends React.Component<any, any> {
     );
   }
 
-  onRefresh = (e:any) => {
+  onRefresh = (page: number) => {
     // https://stackoverflow.com/questions/4228356/integer-division-with-remainder-in-javascript
-    this.subscription.add(this.wordsTextbookService.getData(1, this.state.rows).subscribe(_ => {
+    this.subscription.add(this.wordsTextbookService.getData(page, this.state.rows).subscribe(_ => {
       this.updateServiceState();
-      this.setRowColor();
+      // Here we have to use JQuery to set td styles based on row number,
+      // as PrimeReact DataTable has no rowStyle attribute.
+      const self = this;
+      $("tr").each((i, row) => {
+        if (i === 0) return;
+        const c = self.wordsTextbookService.textbookWords[i - 1].colorStyle;
+        if (c['background-color'])
+          $(row).css('background-color', c['background-color']).css('color', c['color']);
+        else
+          $(row).css('background-color', '').css('color', '');
+      });
     }));
   };
 

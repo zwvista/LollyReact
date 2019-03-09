@@ -20,23 +20,23 @@ export default class PhrasesLang extends React.Component<any, any> {
   subscription = new Subscription();
 
   state = {
-    rows: this.settingsService.USROWSPERPAGE,
     first: 0,
+    rows: this.settingsService.USROWSPERPAGE,
+    page: 1,
     selectedRow: null as MLangPhrase,
   };
 
   componentDidMount() {
-    this.onRefresh(null);
+    this.onRefresh(this.state.page);
   }
 
   onPageChange = (e: PageState) => {
     this.setState({
       first: e.first,
-      rows: e.rows
+      rows: e.rows,
+      page: e.page + 1,
     });
-    this.subscription.add(this.phrasesLangService.getData(e.page + 1, e.rows).subscribe(
-      _ => this.updateServiceState()
-    ));
+    this.onRefresh(e.page + 1);
   };
 
   componentWillUnmount() {
@@ -65,7 +65,7 @@ export default class PhrasesLang extends React.Component<any, any> {
         <Toolbar>
           <div className="p-toolbar-group-left">
             <Button label="Add" icon="fa fa-plus" onClick={() => history.push('/phrases-lang-detail/0')} />
-            <Button label="Refresh" icon="fa fa-refresh" onClick={this.onRefresh}/>
+            <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => this.onRefresh(this.state.page)}/>
           </div>
         </Toolbar>
         <Paginator first={this.state.first} rows={this.state.rows} onPageChange={this.onPageChange}
@@ -82,8 +82,8 @@ export default class PhrasesLang extends React.Component<any, any> {
     );
   }
 
-  onRefresh = (e:any) => {
-    this.subscription.add(this.phrasesLangService.getData(1, this.state.rows).subscribe(
+  onRefresh = (page: number) => {
+    this.subscription.add(this.phrasesLangService.getData(page, this.state.rows).subscribe(
       _ => this.updateServiceState()
     ));
   };
