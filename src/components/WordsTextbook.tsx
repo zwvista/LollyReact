@@ -11,6 +11,7 @@ import { Toolbar } from 'primereact/toolbar';
 import history from '../view-models/history';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { SettingsService } from '../view-models/settings.service';
+import * as $ from "jquery";
 
 export default class WordsTextbook extends React.Component<any, any> {
   @Inject wordsTextbookService: WordsTextbookService;
@@ -20,10 +21,21 @@ export default class WordsTextbook extends React.Component<any, any> {
   state = {
     rows: this.settingsService.USROWSPERPAGE,
     first: 0,
+    selectedRow: null as any,
   };
 
   componentDidMount() {
     this.onRefresh(null);
+  }
+
+  setRowColor() {
+    const self = this;
+    $("tr").each((i, row) => {
+      if (i === 0) return;
+      const c = self.wordsTextbookService.textbookWords[i - 1].colorStyle;
+      $(row).css('background-color', c['background-color'])
+        .css('color', c['color']);
+    });
   }
 
   onPageChange = (e: PageState) => {
@@ -31,9 +43,10 @@ export default class WordsTextbook extends React.Component<any, any> {
       first: e.first,
       rows: e.rows,
     });
-    this.subscription.add(this.wordsTextbookService.getData(e.page + 1, e.rows).subscribe(
-      _ => this.updateServiceState()
-    ));
+    this.subscription.add(this.wordsTextbookService.getData(e.page + 1, e.rows).subscribe(_ => {
+      this.updateServiceState();
+      this.setRowColor();
+    }));
   };
 
   componentWillUnmount() {
@@ -71,7 +84,8 @@ export default class WordsTextbook extends React.Component<any, any> {
         <Paginator first={this.state.first} rows={this.state.rows} onPageChange={this.onPageChange}
                    totalRecords={this.wordsTextbookService.textbookWordCount}
                    rowsPerPageOptions={this.settingsService.USROWSPERPAGEOPTIONS}/>
-        <DataTable value={this.wordsTextbookService.textbookWords} selectionMode="single" autoLayout={true}>
+        <DataTable value={this.wordsTextbookService.textbookWords} selectionMode="single" autoLayout={true}
+                   selection={this.state.selectedRow} onSelectionChange={this.onSelectionChange}>
           <Column style={{width:'80px'}} field="ID" header="ID" />
           <Column style={{width:'150px'}} field="TEXTBOOKNAME" header="TEXTBOOKNAME" />
           <Column style={{width:'80px'}} field="UNITSTR" header="UNIT" />
@@ -88,9 +102,14 @@ export default class WordsTextbook extends React.Component<any, any> {
 
   onRefresh = (e:any) => {
     // https://stackoverflow.com/questions/4228356/integer-division-with-remainder-in-javascript
-    this.subscription.add(this.wordsTextbookService.getData(1, this.state.rows).subscribe(
-      _ => this.updateServiceState()
-    ));
+    this.subscription.add(this.wordsTextbookService.getData(1, this.state.rows).subscribe(_ => {
+      this.updateServiceState();
+      this.setRowColor();
+    }));
+  };
+
+  onSelectionChange = (e: any) => {
+    this.setState({selectedRow: e.data});
   };
 
   deleteWord(index: number) {

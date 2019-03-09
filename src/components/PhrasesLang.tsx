@@ -12,6 +12,7 @@ import history from '../view-models/history';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { googleString } from '../common/common';
 import { SettingsService } from '../view-models/settings.service';
+import { MLangPhrase } from '../models/lang-phrase';
 
 export default class PhrasesLang extends React.Component<any, any> {
   @Inject phrasesLangService: PhrasesLangService;
@@ -21,6 +22,7 @@ export default class PhrasesLang extends React.Component<any, any> {
   state = {
     rows: this.settingsService.USROWSPERPAGE,
     first: 0,
+    selectedRow: null as MLangPhrase,
   };
 
   componentDidMount() {
@@ -69,7 +71,8 @@ export default class PhrasesLang extends React.Component<any, any> {
         <Paginator first={this.state.first} rows={this.state.rows} onPageChange={this.onPageChange}
                    totalRecords={this.phrasesLangService.langPhraseCount}
                    rowsPerPageOptions={this.settingsService.USROWSPERPAGEOPTIONS}/>
-        <DataTable value={this.phrasesLangService.langPhrases} selectionMode="single" autoLayout={true}>
+        <DataTable value={this.phrasesLangService.langPhrases} selectionMode="single" autoLayout={true}
+                   selection={this.state.selectedRow} onSelectionChange={this.onSelectionChange}>
           <Column style={{width:'80px'}} field="ID" header="ID" />
           <Column field="PHRASE" header="PHRASE" />
           <Column field="TRANSLATION" header="TRANSLATION" />
@@ -83,6 +86,10 @@ export default class PhrasesLang extends React.Component<any, any> {
     this.subscription.add(this.phrasesLangService.getData(1, this.state.rows).subscribe(
       _ => this.updateServiceState()
     ));
+  };
+
+  onSelectionChange = (e: any) => {
+    this.setState({selectedRow: e.data});
   };
 
   updateServiceState() {

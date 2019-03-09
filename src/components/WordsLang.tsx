@@ -13,6 +13,7 @@ import { InputText } from 'primereact/inputtext';
 import history from '../view-models/history';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { SettingsService } from '../view-models/settings.service';
+import * as $ from "jquery";
 
 export default class WordsLang extends React.Component<any, any> {
   @Inject wordsLangService: WordsLangService;
@@ -23,10 +24,21 @@ export default class WordsLang extends React.Component<any, any> {
     newWord: '',
     rows: this.settingsService.USROWSPERPAGE,
     first: 0,
+    selectedRow: null as any,
   };
 
   componentDidMount() {
     this.onRefresh(null);
+  }
+
+  setRowColor() {
+    const self = this;
+    $("tr").each((i, row) => {
+      if (i === 0) return;
+      const c = self.wordsLangService.langWords[i - 1].colorStyle;
+      $(row).css('background-color', c['background-color'])
+        .css('color', c['color']);
+    });
   }
 
   onPageChange = (e: PageState) => {
@@ -34,9 +46,10 @@ export default class WordsLang extends React.Component<any, any> {
       first: e.first,
       rows: e.rows
     });
-    this.subscription.add(this.wordsLangService.getData(e.page + 1, e.rows).subscribe(
-      _ => this.updateServiceState()
-    ));
+    this.subscription.add(this.wordsLangService.getData(e.page + 1, e.rows).subscribe(_ => {
+      this.updateServiceState();
+      this.setRowColor();
+    }));
   };
 
   componentWillUnmount() {
@@ -80,7 +93,8 @@ export default class WordsLang extends React.Component<any, any> {
         <Paginator first={this.state.first} rows={this.state.rows} onPageChange={this.onPageChange}
                    totalRecords={this.wordsLangService.langWordsCount}
                    rowsPerPageOptions={this.settingsService.USROWSPERPAGEOPTIONS}/>
-        <DataTable value={this.wordsLangService.langWords} selectionMode="single" autoLayout={true}>
+        <DataTable value={this.wordsLangService.langWords} selectionMode="single" autoLayout={true}
+                   selection={this.state.selectedRow} onSelectionChange={this.onSelectionChange}>
           <Column style={{width:'80px'}} field="ID" header="ID" />
           <Column field="WORD" header="WORD" />
           <Column field="NOTE" header="NOTE" />
@@ -108,9 +122,14 @@ export default class WordsLang extends React.Component<any, any> {
   };
 
   onRefresh = (e:any) => {
-    this.subscription.add(this.wordsLangService.getData(1, this.state.rows).subscribe(
-      _ => this.updateServiceState()
-    ));
+    this.subscription.add(this.wordsLangService.getData(1, this.state.rows).subscribe(_ => {
+      this.updateServiceState();
+      this.setRowColor();
+    }));
+  };
+
+  onSelectionChange = (e: any) => {
+    this.setState({selectedRow: e.data});
   };
 
   deleteWord(index: number) {

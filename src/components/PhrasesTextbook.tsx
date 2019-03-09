@@ -12,6 +12,7 @@ import history from '../view-models/history';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { googleString } from '../common/common';
 import { SettingsService } from '../view-models/settings.service';
+import { MUnitPhrase } from '../models/unit-phrase';
 
 export default class PhrasesTextbook extends React.Component<any, any> {
   @Inject phrasesTextbookService: PhrasesTextbookService;
@@ -21,6 +22,7 @@ export default class PhrasesTextbook extends React.Component<any, any> {
   state = {
     rows: this.settingsService.USROWSPERPAGE,
     first: 0,
+    selectedRow: null as MUnitPhrase,
   };
 
   componentDidMount() {
@@ -68,7 +70,8 @@ export default class PhrasesTextbook extends React.Component<any, any> {
         <Paginator first={this.state.first} rows={this.state.rows} onPageChange={this.onPageChange}
                    totalRecords={this.phrasesTextbookService.textbookPhraseCount}
                    rowsPerPageOptions={this.settingsService.USROWSPERPAGEOPTIONS}/>
-        <DataTable value={this.phrasesTextbookService.textbookPhrases} selectionMode="single" autoLayout={true}>
+        <DataTable value={this.phrasesTextbookService.textbookPhrases} selectionMode="single" autoLayout={true}
+                   selection={this.state.selectedRow} onSelectionChange={this.onSelectionChange}>
           <Column style={{width:'80px'}} field="ID" header="ID" />
           <Column style={{width:'150px'}} field="TEXTBOOKNAME" header="TEXTBOOKNAME" />
           <Column style={{width:'80px'}} field="UNITSTR" header="UNIT" />
@@ -87,6 +90,10 @@ export default class PhrasesTextbook extends React.Component<any, any> {
     this.subscription.add(this.phrasesTextbookService.getData(1, this.state.rows).subscribe(
       _ => this.updateServiceState()
     ));
+  };
+
+  onSelectionChange = (e: any) => {
+    this.setState({selectedRow: e.data});
   };
 
   updateServiceState() {

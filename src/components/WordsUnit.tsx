@@ -12,6 +12,7 @@ import { InputText } from 'primereact/inputtext';
 import history from '../view-models/history';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { SettingsService } from '../view-models/settings.service';
+import * as $ from "jquery";
 
 export default class WordsUnit extends React.Component<any, any> {
   @Inject wordsUnitService: WordsUnitService;
@@ -20,7 +21,18 @@ export default class WordsUnit extends React.Component<any, any> {
 
   state = {
     newWord: '',
+    selectedRow: null as any,
   };
+
+  setRowColor() {
+    const self = this;
+    $("tr").each((i, row) => {
+      if (i === 0) return;
+      const c = self.wordsUnitService.unitWords[i - 1].colorStyle;
+      $(row).css('background-color', c['background-color'])
+        .css('color', c['color']);
+    });
+  }
 
   componentDidMount() {
     this.onRefresh(null);
@@ -66,8 +78,9 @@ export default class WordsUnit extends React.Component<any, any> {
           </span>
           </div>
         </Toolbar>
-        <DataTable value={this.wordsUnitService.unitWords} selectionMode="single" autoLayout={true}
-                   onRowReorder={this.onReorder}>
+        <DataTable value={this.wordsUnitService.unitWords} autoLayout={true}
+                   onRowReorder={this.onReorder} selectionMode="single"
+                   selection={this.state.selectedRow} onSelectionChange={this.onSelectionChange}>
           <Column rowReorder={true} style={{width: '3em'}} />
           <Column style={{width:'80px'}} field="ID" header="ID" />
           <Column style={{width:'80px'}} field="UNITSTR" header="UNIT" />
@@ -81,6 +94,10 @@ export default class WordsUnit extends React.Component<any, any> {
       </div>
     );
   }
+
+  onSelectionChange = (e: any) => {
+    this.setState({selectedRow: e.data});
+  };
 
   onNewWordChange = (e: SyntheticEvent) => {
     this.setState({newWord: (e.nativeEvent.target as HTMLInputElement).value});
@@ -106,9 +123,10 @@ export default class WordsUnit extends React.Component<any, any> {
   };
 
   onRefresh = (e:any) => {
-    this.subscription.add(this.wordsUnitService.getData().subscribe(
-      _ => this.updateServiceState()
-    ));
+    this.subscription.add(this.wordsUnitService.getData().subscribe(_ => {
+      this.updateServiceState();
+      this.setRowColor();
+    }));
   };
 
   deleteWord(index: number) {

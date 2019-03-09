@@ -11,11 +11,16 @@ import history from '../view-models/history';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { googleString } from '../common/common';
 import { SettingsService } from '../view-models/settings.service';
+import { MUnitPhrase } from '../models/unit-phrase';
 
 export default class PhrasesUnit extends React.Component<any, any> {
   @Inject phrasesUnitService: PhrasesUnitService;
   @Inject settingsService: SettingsService;
   subscription = new Subscription();
+
+  state = {
+    selectedRow: null as MUnitPhrase,
+  };
 
   componentDidMount() {
     this.onRefresh(null);
@@ -51,7 +56,8 @@ export default class PhrasesUnit extends React.Component<any, any> {
           </div>
         </Toolbar>
         <DataTable value={this.phrasesUnitService.unitPhrases} selectionMode="single" autoLayout={true}
-                   onRowReorder={this.onReorder}>
+                   onRowReorder={this.onReorder}
+                   selection={this.state.selectedRow} onSelectionChange={this.onSelectionChange}>
           <Column rowReorder={true} style={{width: '3em'}} />
           <Column style={{width:'80px'}} field="ID" header="ID" />
           <Column style={{width:'80px'}} field="UNITSTR" header="UNIT" />
@@ -76,6 +82,10 @@ export default class PhrasesUnit extends React.Component<any, any> {
     this.subscription.add(this.phrasesUnitService.getData().subscribe(
       _ => this.updateServiceState()
     ));
+  };
+
+  onSelectionChange = (e: any) => {
+    this.setState({selectedRow: e.data});
   };
 
   updateServiceState() {
