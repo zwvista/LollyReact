@@ -14,8 +14,7 @@ import { autoCorrect, MAutoCorrect } from '../models/autocorrect';
 import * as _ from 'lodash';
 import { MSelectItem } from '../common/selectitem';
 import { MWordColor } from '../models/word-color';
-// https://stackoverflow.com/questions/41292559/could-not-find-a-declaration-file-for-module-module-name-path-to-module-nam
-const Speech = require('speak-tts');
+import * as Speech from 'speak-tts';
 import { VoicesService } from '../services/voices.service';
 import { MVoice } from '../models/voice';
 
@@ -112,7 +111,7 @@ export class SettingsService {
   voices: MVoice[] = [];
   selectedVoice: MVoice | null = null;
 
-  // speech = new Speech();
+  speech = new Speech.default();
 
   dictsMean: MDictMean[] = [];
   dictItems: MDictItem[] = [];
@@ -170,7 +169,9 @@ export class SettingsService {
               @Inject private dictNoteService: DictNoteService,
               @Inject private textbookService: TextbookService,
               @Inject private autoCorrectService: AutoCorrectService,
-              @Inject private voiceService: VoicesService) { }
+              @Inject private voiceService: VoicesService) {
+    this.speech.init();
+  }
 
   getData(): Observable<void> {
     return forkJoin([this.langService.getData(), this.userSettingService.getDataByUser(userid)]).pipe(
@@ -216,7 +217,7 @@ export class SettingsService {
         this.autoCorrects = res[3] as MAutoCorrect[];
         this.voices = res[4] as MVoice[];
         this.selectedVoice = this.voices.length === 0 ? null : this.voices[0];
-        // if (this.selectedVoice) this.speech.setVoice(this.selectedVoice.VOICENAME);
+        if (this.selectedVoice) this.speech.setVoice(this.selectedVoice.VOICENAME);
       }));
   }
 
