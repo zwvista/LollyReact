@@ -10,9 +10,11 @@ import { Toolbar } from 'primereact/toolbar';
 import history from '../view-models/history';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { googleString } from '../common/common';
+import { SettingsService } from '../view-models/settings.service';
 
 export default class PhrasesUnit extends React.Component<any, any> {
   @Inject phrasesUnitService: PhrasesUnitService;
+  @Inject settingsService: SettingsService;
   subscription = new Subscription();
 
   componentDidMount() {
@@ -29,6 +31,8 @@ export default class PhrasesUnit extends React.Component<any, any> {
               tooltip="Delete" tooltipOptions={{position: 'top'}} />
       <Button icon="fa fa-edit" tooltip="Edit" tooltipOptions={{position: 'top'}}
               onClick={() => history.push('/phrases-unit-detail/' + rowData.ID)}/>
+      <Button icon="fa fa-volume-up" tooltipOptions={{position: 'top'}}
+              tooltip="Speak" onClick={() => this.speak(rowData.PHRASE)} />
       <CopyToClipboard text={rowData.PHRASE}>
         <Button icon="fa fa-copy" tooltip="Copy" tooltipOptions={{position: 'top'}}/>
       </CopyToClipboard>
@@ -80,6 +84,13 @@ export default class PhrasesUnit extends React.Component<any, any> {
 
   googlePhrase(phrase: string) {
     googleString(phrase);
+  }
+
+  speak(phrase: string) {
+    this.settingsService.speech.speak({
+      text: phrase,
+      queue: false,
+    });
   }
 };
 

@@ -125,6 +125,13 @@ export default class WordsUnit extends React.Component<any, any> {
     window.open('https://www.google.com/search?q=' + encodeURIComponent(WORD), '_blank');
   }
 
+  speak(word: string) {
+    this.settingsService.speech.speak({
+      text: word,
+      queue: false,
+    });
+  }
+
   dictMean(ID: number) {
     const index = this.wordsUnitService.unitWords.findIndex(value => value.ID === ID);
     history.push('/words-dict/unit/' + index);
@@ -136,13 +143,6 @@ export default class WordsUnit extends React.Component<any, any> {
 
   updateServiceState() {
     this.setState({wordsUnitService: this.wordsUnitService});
-  }
-
-  speak(word: string) {
-    this.settingsService.speech.speak({
-      text: word,
-      queue: false,
-    });
   }
 };
 
