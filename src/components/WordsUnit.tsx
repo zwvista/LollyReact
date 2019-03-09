@@ -39,7 +39,7 @@ export default class WordsUnit extends React.Component<any, any> {
       <CopyToClipboard text={rowData.WORD}>
         <Button icon="fa fa-copy" tooltip="Copy" tooltipOptions={{position: 'top'}}/>
       </CopyToClipboard>
-      <Button hidden={!this.settingsService.hasNote} label="Retrieve Note"/>
+      <Button hidden={!this.settingsService.selectedDictNote} label="Retrieve Note"/>
       <Button icon="fa fa-google" onClick={() => this.googleWord(rowData.WORD)}
               tooltip="Google Word" tooltipOptions={{position: 'top'}}/>
       <Button icon="fa fa-book" onClick={() => this.dictMean(rowData.ID)}
@@ -58,8 +58,8 @@ export default class WordsUnit extends React.Component<any, any> {
             <label htmlFor="float-input">New Word</label>
             <Button label="Add" icon="fa fa-plus" onClick={() => history.push('/words-unit-detail/0')} />
             <Button label="Refresh" icon="fa fa-refresh" onClick={this.onRefresh}/>
-            <Button hidden={!this.settingsService.hasNote} label="Retrieve All Notes" />
-            <Button hidden={!this.settingsService.hasNote} label="Retrieve Notes If Empty" />
+            <Button hidden={!this.settingsService.selectedDictNote} label="Retrieve All Notes" />
+            <Button hidden={!this.settingsService.selectedDictNote} label="Retrieve Notes If Empty" />
             <Button label="Dictionary" icon="fa fa-book" onClick={() => history.push('/words-dict/unit/0')} />
           </span>
           </div>

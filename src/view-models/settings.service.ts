@@ -14,6 +14,10 @@ import { autoCorrect, MAutoCorrect } from '../models/autocorrect';
 import * as _ from 'lodash';
 import { MSelectItem } from '../common/selectitem';
 import { MWordColor } from '../models/word-color';
+// https://stackoverflow.com/questions/41292559/could-not-find-a-declaration-file-for-module-module-name-path-to-module-nam
+const Speech = require('speak-tts');
+import { VoicesService } from '../services/voices.service';
+import { MVoice } from '../models/voice';
 
 const userid = 1;
 
@@ -105,6 +109,11 @@ export class SettingsService {
   languages: MLanguage[] = [];
   selectedLang!: MLanguage;
 
+  voices: MVoice[] = [];
+  selectedVoice: MVoice | null = null;
+
+  // speech = new Speech();
+
   dictsMean: MDictMean[] = [];
   dictItems: MDictItem[] = [];
   _selectedDictItem!: MDictItem;
@@ -124,9 +133,6 @@ export class SettingsService {
   set selectedDictNote(newValue: MDictNote | null) {
     this._selectedDictNote = newValue;
     if (newValue) this.USDICTNOTEID = newValue.ID;
-  }
-  get hasNote(): boolean {
-    return this.dictsNote.length !== 0;
   }
 
   textbooks: MTextbook[] = [];
@@ -163,7 +169,8 @@ export class SettingsService {
               @Inject private dictMeanService: DictMeanService,
               @Inject private dictNoteService: DictNoteService,
               @Inject private textbookService: TextbookService,
-              private autoCorrectService: AutoCorrectService) { }
+              @Inject private autoCorrectService: AutoCorrectService,
+              @Inject private voiceService: VoicesService) { }
 
   getData(): Observable<void> {
     return forkJoin([this.langService.getData(), this.userSettingService.getDataByUser(userid)]).pipe(
@@ -188,7 +195,8 @@ export class SettingsService {
       this.dictMeanService.getDataByLang(this.USLANGID),
       this.dictNoteService.getDataByLang(this.USLANGID),
       this.textbookService.getDataByLang(this.USLANGID),
-      this.autoCorrectService.getDataByLang(this.USLANGID)]).pipe(
+      this.autoCorrectService.getDataByLang(this.USLANGID),
+      this.voiceService.getDataByLang(this.USLANGID)]).pipe(
       map(res => {
         this.dictsMean = res[0] as MDictMean[];
         let i = 0;
@@ -202,10 +210,13 @@ export class SettingsService {
         });
         this.selectedDictItem = this.dictItems.find(value => value.DICTID === this.USDICTITEM)!;
         this.dictsNote = res[1] as MDictNote[];
-        this.selectedDictNote = !this.hasNote ? null : this.dictsNote.find(value => value.ID === this.USDICTNOTEID)!;
+        this.selectedDictNote = this.dictsNote.length === 0 ? null : this.dictsNote.find(value => value.ID === this.USDICTNOTEID);
         this.textbooks = res[2] as MTextbook[];
         this.selectedTextbook = this.textbooks.find(value => value.ID === this.USTEXTBOOKID)!;
         this.autoCorrects = res[3] as MAutoCorrect[];
+        this.voices = res[4] as MVoice[];
+        this.selectedVoice = this.voices.length === 0 ? null : this.voices[0];
+        // if (this.selectedVoice) this.speech.setVoice(this.selectedVoice.VOICENAME);
       }));
   }
 

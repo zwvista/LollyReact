@@ -52,6 +52,7 @@ import PhrasesTextbookDetail from './components/PhrasesTextbookDetail';
 import PhrasesTextbook from './components/PhrasesTextbook';
 import { WordsTextbookService } from './view-models/words-textbook.service';
 import { PhrasesTextbookService } from './view-models/phrases-textbook.service';
+import { VoicesService } from './services/voices.service';
 
 
 @Module({
@@ -60,7 +61,8 @@ import { PhrasesTextbookService } from './view-models/phrases-textbook.service';
     TextbookService, UnitPhraseService, UnitWordService, UserSettingService, AppService,
     PhrasesUnitService, SettingsService, WordsUnitService, AutoCorrectService,
     LangPhraseService, LangWordService, PhrasesLangService, WordsLangService,
-    NoteService, TextbookWordService, TextbookPhraseService, WordsTextbookService, PhrasesTextbookService
+    NoteService, TextbookWordService, TextbookPhraseService, WordsTextbookService, PhrasesTextbookService,
+    VoicesService,
   ],
 })
 export default class App extends React.Component<any, any> {
