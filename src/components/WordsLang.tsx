@@ -14,6 +14,7 @@ import history from '../view-models/history';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { SettingsService } from '../view-models/settings.service';
 import * as $ from "jquery";
+import { MWordColor } from '../models/word-color';
 
 export default class WordsLang extends React.Component<any, any> {
   @Inject wordsLangService: WordsLangService;
@@ -114,24 +115,24 @@ export default class WordsLang extends React.Component<any, any> {
     }));
   };
 
-  setRowStyle() {
-    // Here we have to use JQuery to set td styles based on row number,
-    // as PrimeReact DataTable has no rowStyle attribute.
-    const self = this;
-    $("tr").each((i, row) => {
-      if (i === 0) return;
-      const c = self.wordsLangService.langWords[i - 1].colorStyle;
-      if (c['background-color'])
-        $(row).css('background-color', c['background-color']).css('color', c['color']);
-      else
-        $(row).css('background-color', '').css('color', '');
-    });
+  // Here we have to use JQuery to set td styles based on row number,
+  // as PrimeReact DataTable has no rowStyle attribute.
+  setRowStyle(o: MWordColor, tr: any) {
+    const c = o.colorStyle;
+    if (c['background-color'])
+      $(tr).css('background-color', c['background-color']).css('color', c['color']);
+    else
+      $(tr).css('background-color', '').css('color', '');
   }
 
   onRefresh = (page: number) => {
     this.subscription.add(this.wordsLangService.getData(page, this.state.rows).subscribe(_ => {
-      this.updateServiceState();
-      this.setRowStyle();
+      const self = this;
+      $("tr").each((i, tr) => {
+        if (i === 0) return;
+        this.updateServiceState();
+        this.setRowStyle(this.wordsLangService.langWords[i - 1], tr);
+      });
     }));
   };
 
@@ -154,8 +155,9 @@ export default class WordsLang extends React.Component<any, any> {
   }
 
   updateLevel(ID: number, delta: number) {
-    const o = this.wordsLangService.langWords.find(v => v.ID === ID);
-    this.settingsService.updateLevel(o, o.ID, delta).subscribe(_ => this.setRowStyle());
+    const i = this.wordsLangService.langWords.findIndex(v => v.ID === ID);
+    const o = this.wordsLangService.langWords[i];
+    this.settingsService.updateLevel(o, o.ID, delta).subscribe(_ => this.setRowStyle(o, $('tr').eq(i + 1)));
   }
 
   speak(word: string) {

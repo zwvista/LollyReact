@@ -117,24 +117,24 @@ export default class WordsUnit extends React.Component<any, any> {
     this.wordsUnitService.reindex(index => this.updateServiceState());
   };
 
-  setRowStyle() {
-    // Here we have to use JQuery to set td styles based on row number,
-    // as PrimeReact DataTable has no rowStyle attribute.
-    const self = this;
-    $("tr").each((i, row) => {
-      if (i === 0) return;
-      const c = self.wordsUnitService.unitWords[i - 1].colorStyle;
-      if (c['background-color'])
-        $(row).css('background-color', c['background-color']).css('color', c['color']);
-      else
-        $(row).css('background-color', '').css('color', '');
-    });
+  // Here we have to use JQuery to set td styles based on row number,
+  // as PrimeReact DataTable has no rowStyle attribute.
+  setRowStyle(o: MWordColor, tr: any) {
+    const c = o.colorStyle;
+    if (c['background-color'])
+      $(tr).css('background-color', c['background-color']).css('color', c['color']);
+    else
+      $(tr).css('background-color', '').css('color', '');
   }
 
   onRefresh = (e:any) => {
     this.subscription.add(this.wordsUnitService.getData().subscribe(_ => {
       this.updateServiceState();
-      this.setRowStyle();
+      const self = this;
+      $("tr").each((i, row) => {
+        if (i === 0) return;
+        this.setRowStyle(self.wordsUnitService.unitWords[i - 1], $(row));
+      });
     }));
   };
 
@@ -153,8 +153,9 @@ export default class WordsUnit extends React.Component<any, any> {
   }
 
   updateLevel(ID: number, delta: number) {
-    const o = this.wordsUnitService.unitWords.find(v => v.ID === ID);
-    this.settingsService.updateLevel(o, o.WORDID, delta).subscribe(_ => this.setRowStyle());
+    const i = this.wordsUnitService.unitWords.findIndex(v => v.ID === ID);
+    const o = this.wordsUnitService.unitWords[i];
+    this.settingsService.updateLevel(o, o.WORDID, delta).subscribe(_ => this.setRowStyle(o, $('tr').eq(i + 1)));
   }
 
   speak(word: string) {
