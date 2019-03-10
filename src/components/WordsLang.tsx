@@ -127,10 +127,10 @@ export default class WordsLang extends React.Component<any, any> {
 
   onRefresh = (page: number) => {
     this.subscription.add(this.wordsLangService.getData(page, this.state.rows).subscribe(_ => {
+      this.updateServiceState();
       const self = this;
       $("tr").each((i, tr) => {
         if (i === 0) return;
-        this.updateServiceState();
         this.setRowStyle(this.wordsLangService.langWords[i - 1], tr);
       });
     }));
