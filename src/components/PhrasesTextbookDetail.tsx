@@ -7,9 +7,11 @@ import { InputText } from 'primereact/inputtext';
 import { Inject } from 'react.di';
 import { SettingsService } from '../view-models/settings.service';
 import { Dropdown } from 'primereact/dropdown';
+import { PhrasesUnitService } from '../view-models/phrases-unit.service';
 
 export default class PhrasesTextbookDetail extends React.Component<any, any> {
   @Inject phrasesTextbookService: PhrasesTextbookService;
+  @Inject phrasesUnitService: PhrasesUnitService;
   @Inject settingsService: SettingsService;
   subscription = new Subscription();
 
@@ -85,6 +87,7 @@ export default class PhrasesTextbookDetail extends React.Component<any, any> {
 
   save = () => {
     this.state.item.PHRASE = this.settingsService.autoCorrectInput(this.state.item.PHRASE);
+    this.subscription.add(this.phrasesUnitService.update(this.state.item).subscribe(_ => this.goBack()));
   };
 
 };

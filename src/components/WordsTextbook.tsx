@@ -91,6 +91,9 @@ export default class WordsTextbook extends React.Component<any, any> {
           <Column style={{width:'80px'}} field="LEVEL" header="LEVEL" />
           <Column style={{width:'30%'}} body={this.actionTemplate} header="ACTIONS" />
         </DataTable>
+        <Paginator first={this.state.first} rows={this.state.rows} onPageChange={this.onPageChange}
+                   totalRecords={this.wordsTextbookService.textbookWordCount}
+                   rowsPerPageOptions={this.settingsService.USROWSPERPAGEOPTIONS}/>
       </div>
     );
   }

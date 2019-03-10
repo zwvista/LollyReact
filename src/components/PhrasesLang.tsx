@@ -78,6 +78,9 @@ export default class PhrasesLang extends React.Component<any, any> {
           <Column field="TRANSLATION" header="TRANSLATION" />
           <Column style={{width:'20%'}} body={this.actionTemplate} header="ACTIONS" />
         </DataTable>
+        <Paginator first={this.state.first} rows={this.state.rows} onPageChange={this.onPageChange}
+                   totalRecords={this.phrasesLangService.langPhraseCount}
+                   rowsPerPageOptions={this.settingsService.USROWSPERPAGEOPTIONS}/>
       </div>
     );
   }
