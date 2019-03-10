@@ -50,7 +50,7 @@ export default class WordsTextbook extends React.Component<any, any> {
       <Button icon="fa fa-edit" tooltip="Edit" tooltipOptions={{position: 'top'}}
               onClick={() => history.push('/words-textbook-detail/' + rowData.ID)} />
       <Button hidden={!this.settingsService.selectedVoice} icon="fa fa-volume-up" tooltipOptions={{position: 'top'}}
-              tooltip="Speak" onClick={() => this.speak(rowData.WORD)} />
+              tooltip="Speak" onClick={() => this.settingsService.speak(rowData.WORD)} />
       <CopyToClipboard text={rowData.WORD}>
         <Button icon="fa fa-copy" tooltip="Copy" tooltipOptions={{position: 'top'}}/>
       </CopyToClipboard>
@@ -142,13 +142,6 @@ export default class WordsTextbook extends React.Component<any, any> {
     const i = this.wordsTextbookService.textbookWords.findIndex(v => v.ID === ID);
     const o = this.wordsTextbookService.textbookWords[i];
     this.settingsService.updateLevel(o, o.WORDID, delta).subscribe(_ => this.setRowStyle(o, $('tr').eq(i + 1)));
-  }
-
-  speak(word: string) {
-    this.settingsService.speech.speak({
-      text: word,
-      queue: false,
-    });
   }
 
   dictMean(ID: number) {

@@ -294,4 +294,11 @@ export class SettingsService {
       return empty;
     }
   }
+
+  speak(text: string) {
+    this.speech.speak({
+      text,
+      queue: false,
+    });
+  }
 }

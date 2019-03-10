@@ -50,7 +50,7 @@ export default class PhrasesLang extends React.Component<any, any> {
       <Button icon="fa fa-edit" tooltip="Edit" tooltipOptions={{position: 'top'}}
               onClick={() => history.push('/phrases-lang-detail/' + rowData.ID)}/>
       <Button icon="fa fa-volume-up" tooltipOptions={{position: 'top'}}
-              tooltip="Speak" onClick={() => this.speak(rowData.PHRASE)} />
+              tooltip="Speak" onClick={() => this.settingsService.speak(rowData.PHRASE)} />
       <CopyToClipboard text={rowData.PHRASE}>
         <Button icon="fa fa-copy" tooltip="Copy" tooltipOptions={{position: 'top'}}/>
       </CopyToClipboard>
@@ -101,13 +101,6 @@ export default class PhrasesLang extends React.Component<any, any> {
 
   googlePhrase(phrase: string) {
     googleString(phrase);
-  }
-
-  speak(phrase: string) {
-    this.settingsService.speech.speak({
-      text: phrase,
-      queue: false,
-    });
   }
 };
 
