@@ -49,7 +49,7 @@ export default class WordsTextbook extends React.Component<any, any> {
               tooltip="Delete" tooltipOptions={{position: 'top'}} />
       <Button icon="fa fa-edit" tooltip="Edit" tooltipOptions={{position: 'top'}}
               onClick={() => history.push('/words-textbook-detail/' + rowData.ID)} />
-      <Button icon="fa fa-volume-up" tooltipOptions={{position: 'top'}}
+      <Button hidden={!this.settingsService.selectedVoice} icon="fa fa-volume-up" tooltipOptions={{position: 'top'}}
               tooltip="Speak" onClick={() => this.speak(rowData.WORD)} />
       <CopyToClipboard text={rowData.WORD}>
         <Button icon="fa fa-copy" tooltip="Copy" tooltipOptions={{position: 'top'}}/>
@@ -58,11 +58,11 @@ export default class WordsTextbook extends React.Component<any, any> {
               tooltip="Level Up" onClick={() => this.updateLevel(rowData.ID, 1)} />
       <Button icon="fa fa-arrow-down" tooltipOptions={{position: 'top'}}
               tooltip="Level Down" onClick={() => this.updateLevel(rowData.ID, -1)} />
-      <Button hidden={!this.settingsService.selectedDictNote} label="Retrieve Note" onClick={() => this.getNote(rowData.ID)} />
       <Button icon="fa fa-google" onClick={() => this.googleWord(rowData.WORD)}
               tooltip="Google Word" tooltipOptions={{position: 'top'}}/>
       <Button icon="fa fa-book" onClick={() => this.dictMean(rowData.ID)}
               tooltip="Dictionary" tooltipOptions={{position: 'top'}}/>
+      <Button hidden={!this.settingsService.selectedDictNote} label="Retrieve Note" onClick={() => this.getNote(rowData.ID)} />
     </div>;
   };
 
