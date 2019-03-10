@@ -51,6 +51,8 @@ import PhrasesTextbook from './components/PhrasesTextbook';
 import { WordsTextbookService } from './view-models/words-textbook.service';
 import { PhrasesTextbookService } from './view-models/phrases-textbook.service';
 import { VoicesService } from './services/voices.service';
+import { WordFamiService } from './services/word-fami.service';
+import { WordsFamiService } from './view-models/words-fami.service';
 
 
 @Module({
@@ -59,7 +61,7 @@ import { VoicesService } from './services/voices.service';
     TextbookService, UnitPhraseService, UnitWordService, UserSettingService, AppService,
     PhrasesUnitService, SettingsService, WordsUnitService, AutoCorrectService,
     LangPhraseService, LangWordService, PhrasesLangService, WordsLangService,
-    NoteService, WordsTextbookService, PhrasesTextbookService,
+    NoteService, WordsTextbookService, PhrasesTextbookService, WordFamiService, WordsFamiService,
     VoicesService,
   ],
 })

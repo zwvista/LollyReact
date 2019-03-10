@@ -56,6 +56,10 @@ export default class WordsLang extends React.Component<any, any> {
       <CopyToClipboard text={rowData.WORD}>
         <Button icon="fa fa-copy" tooltip="Copy" tooltipOptions={{position: 'top'}}/>
       </CopyToClipboard>
+      <Button icon="fa fa-arrow-up" tooltipOptions={{position: 'top'}}
+              tooltip="Level Up" onClick={() => this.updateLevel(rowData.ID, 1)} />
+      <Button icon="fa fa-arrow-down" tooltipOptions={{position: 'top'}}
+              tooltip="Level Down" onClick={() => this.updateLevel(rowData.ID, -1)} />
       <Button hidden={!this.settingsService.selectedDictNote} label="Retrieve Note" onClick={() => this.getNote(rowData.ID)} />
       <Button icon="fa fa-google" onClick={() => this.googleWord(rowData.WORD)}
               tooltip="Google Word" tooltipOptions={{position: 'top'}}/>
@@ -110,20 +114,24 @@ export default class WordsLang extends React.Component<any, any> {
     }));
   };
 
+  setRowStyle() {
+    // Here we have to use JQuery to set td styles based on row number,
+    // as PrimeReact DataTable has no rowStyle attribute.
+    const self = this;
+    $("tr").each((i, row) => {
+      if (i === 0) return;
+      const c = self.wordsLangService.langWords[i - 1].colorStyle;
+      if (c['background-color'])
+        $(row).css('background-color', c['background-color']).css('color', c['color']);
+      else
+        $(row).css('background-color', '').css('color', '');
+    });
+  }
+
   onRefresh = (page: number) => {
     this.subscription.add(this.wordsLangService.getData(page, this.state.rows).subscribe(_ => {
       this.updateServiceState();
-      // Here we have to use JQuery to set td styles based on row number,
-      // as PrimeReact DataTable has no rowStyle attribute.
-      const self = this;
-      $("tr").each((i, row) => {
-        if (i === 0) return;
-        const c = self.wordsLangService.langWords[i - 1].colorStyle;
-        if (c['background-color'])
-          $(row).css('background-color', c['background-color']).css('color', c['color']);
-        else
-          $(row).css('background-color', '').css('color', '');
-      });
+      this.setRowStyle();
     }));
   };
 
@@ -143,6 +151,11 @@ export default class WordsLang extends React.Component<any, any> {
   // https://stackoverflow.com/questions/42775017/angular-2-redirect-to-an-external-url-and-open-in-a-new-tab
   googleWord(WORD: string) {
     window.open('https://www.google.com/search?q=' + encodeURIComponent(WORD), '_blank');
+  }
+
+  updateLevel(ID: number, delta: number) {
+    const o = this.wordsLangService.langWords.find(v => v.ID === ID);
+    this.settingsService.updateLevel(o, o.ID, delta).subscribe(_ => this.setRowStyle());
   }
 
   speak(word: string) {

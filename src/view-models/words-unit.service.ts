@@ -26,7 +26,7 @@ export class WordsUnitService {
       concatMap(_ => this.unitWordService.getDataByTextbookUnitPart(this.settingsService.selectedTextbook,
         this.settingsService.USUNITPARTFROM, this.settingsService.USUNITPARTTO)),
       map(res => {
-        this.settingsService.setColorStyle(res);
+        this.settingsService.setColorStyles(res);
         this.unitWords = res
       }),
     );

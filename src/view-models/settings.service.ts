@@ -6,7 +6,7 @@ import { MUserSetting } from '../models/user-setting';
 import { MLanguage } from '../models/language';
 import { MDictItem, MDictMean, MDictNote } from '../models/dictionary';
 import { MTextbook } from '../models/textbook';
-import { forkJoin, Observable } from 'rxjs';
+import { EMPTY as empty, forkJoin, Observable } from 'rxjs';
 import { DictMeanService, DictNoteService } from '../services/dictionary.service';
 import { TextbookService } from '../services/textbook.service';
 import { AutoCorrectService } from '../services/autocorrect.service';
@@ -17,6 +17,7 @@ import { MWordColor } from '../models/word-color';
 import * as Speech from 'speak-tts';
 import { VoicesService } from '../services/voices.service';
 import { MVoice } from '../models/voice';
+import { WordsFamiService } from './words-fami.service';
 
 const userid = 1;
 
@@ -169,7 +170,8 @@ export class SettingsService {
               @Inject private dictNoteService: DictNoteService,
               @Inject private textbookService: TextbookService,
               @Inject private autoCorrectService: AutoCorrectService,
-              @Inject private voiceService: VoicesService) {
+              @Inject private voiceService: VoicesService,
+              @Inject private wordsFamiService: WordsFamiService) {
     this.speech.init();
   }
 
@@ -269,10 +271,27 @@ export class SettingsService {
     return autoCorrect(text, this.autoCorrects, row => row.INPUT, row => row.EXTENDED);
   }
 
-  setColorStyle(words: MWordColor[]) {
-    words.forEach(v => v.colorStyle = v.LEVEL === 0 ? {} : {
-      'background-color': '#' + this.USLEVELCOLORS[v.LEVEL][0],
-      'color': '#' + this.USLEVELCOLORS[v.LEVEL][1],
-    });
+  setColorStyle(o: MWordColor) {
+    const c = this.USLEVELCOLORS[o.LEVEL];
+    o.colorStyle = !c ? {} : {
+      'background-color': '#' + c[0],
+      'color': '#' + c[1],
+    };
+  }
+
+  setColorStyles(words: MWordColor[]) {
+    words.forEach(o => this.setColorStyle(o));
+  }
+
+  updateLevel(o: MWordColor, wordid: number, delta: number): Observable<void> {
+    o.LEVEL += delta;
+    this.setColorStyle(o);
+    if (o.colorStyle['color'] || o.LEVEL === 0)
+      return this.wordsFamiService.update(wordid, o.LEVEL).pipe(map(_ => {}));
+    else {
+      o.LEVEL -= delta;
+      this.setColorStyle(o);
+      return empty;
+    }
   }
 }

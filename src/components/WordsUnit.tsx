@@ -13,6 +13,7 @@ import history from '../view-models/history';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { SettingsService } from '../view-models/settings.service';
 import * as $ from "jquery";
+import { MWordColor } from '../models/word-color';
 
 export default class WordsUnit extends React.Component<any, any> {
   @Inject wordsUnitService: WordsUnitService;
@@ -43,6 +44,10 @@ export default class WordsUnit extends React.Component<any, any> {
       <CopyToClipboard text={rowData.WORD}>
         <Button icon="fa fa-copy" tooltip="Copy" tooltipOptions={{position: 'top'}}/>
       </CopyToClipboard>
+      <Button icon="fa fa-arrow-up" tooltipOptions={{position: 'top'}}
+              tooltip="Level Up" onClick={() => this.updateLevel(rowData.ID, 1)} />
+      <Button icon="fa fa-arrow-down" tooltipOptions={{position: 'top'}}
+              tooltip="Level Down" onClick={() => this.updateLevel(rowData.ID, -1)} />
       <Button hidden={!this.settingsService.selectedDictNote} label="Retrieve Note"/>
       <Button icon="fa fa-google" onClick={() => this.googleWord(rowData.WORD)}
               tooltip="Google Word" tooltipOptions={{position: 'top'}}/>
@@ -112,20 +117,24 @@ export default class WordsUnit extends React.Component<any, any> {
     this.wordsUnitService.reindex(index => this.updateServiceState());
   };
 
+  setRowStyle() {
+    // Here we have to use JQuery to set td styles based on row number,
+    // as PrimeReact DataTable has no rowStyle attribute.
+    const self = this;
+    $("tr").each((i, row) => {
+      if (i === 0) return;
+      const c = self.wordsUnitService.unitWords[i - 1].colorStyle;
+      if (c['background-color'])
+        $(row).css('background-color', c['background-color']).css('color', c['color']);
+      else
+        $(row).css('background-color', '').css('color', '');
+    });
+  }
+
   onRefresh = (e:any) => {
     this.subscription.add(this.wordsUnitService.getData().subscribe(_ => {
       this.updateServiceState();
-      // Here we have to use JQuery to set td styles based on row number,
-      // as PrimeReact DataTable has no rowStyle attribute.
-      const self = this;
-      $("tr").each((i, row) => {
-        if (i === 0) return;
-        const c = self.wordsUnitService.unitWords[i - 1].colorStyle;
-        if (c['background-color'])
-          $(row).css('background-color', c['background-color']).css('color', c['color']);
-        else
-          $(row).css('background-color', '').css('color', '');
-      });
+      this.setRowStyle();
     }));
   };
 
@@ -141,6 +150,11 @@ export default class WordsUnit extends React.Component<any, any> {
   // https://stackoverflow.com/questions/42775017/angular-2-redirect-to-an-external-url-and-open-in-a-new-tab
   googleWord(WORD: string) {
     window.open('https://www.google.com/search?q=' + encodeURIComponent(WORD), '_blank');
+  }
+
+  updateLevel(ID: number, delta: number) {
+    const o = this.wordsUnitService.unitWords.find(v => v.ID === ID);
+    this.settingsService.updateLevel(o, o.WORDID, delta).subscribe(_ => this.setRowStyle());
   }
 
   speak(word: string) {
