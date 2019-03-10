@@ -92,7 +92,7 @@ export default class WordsLang extends React.Component<any, any> {
           <Column style={{width:'80px'}} field="ID" header="ID" />
           <Column field="WORD" header="WORD" />
           <Column field="NOTE" header="NOTE" />
-          <Column field="LEVEL" header="LEVEL" />
+          <Column style={{width:'80px'}} field="LEVEL" header="LEVEL" />
           <Column style={{width:'30%'}} body={this.actionTemplate} header="ACTIONS" />
         </DataTable>
       </div>
