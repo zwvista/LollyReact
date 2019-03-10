@@ -40,30 +40,37 @@ export class SettingsService {
     return +this.selectedUSUser0.VALUE3;
   }
   USLEVELCOLORS!: {number: [string]} | {};
-  private selectedUSLang!: MUserSetting;
+  private selectedUSLang2!: MUserSetting;
   get USTEXTBOOKID(): number {
-    return +this.selectedUSLang.VALUE1;
+    return +this.selectedUSLang2.VALUE1;
   }
   set USTEXTBOOKID(newValue: number) {
-    this.selectedUSLang.VALUE1 = String(newValue);
+    this.selectedUSLang2.VALUE1 = String(newValue);
   }
   get USDICTITEM(): string {
-    return this.selectedUSLang.VALUE2;
+    return this.selectedUSLang2.VALUE2;
   }
   set USDICTITEM(newValue: string) {
-    this.selectedUSLang.VALUE2 = newValue;
+    this.selectedUSLang2.VALUE2 = newValue;
   }
   get USDICTNOTEID(): number {
-    return +this.selectedUSLang.VALUE3;
+    return +this.selectedUSLang2.VALUE3 || 0;
   }
   set USDICTNOTEID(newValue: number) {
-    this.selectedUSLang.VALUE3 = String(newValue);
+    this.selectedUSLang2.VALUE3 = String(newValue);
   }
   get USDICTITEMS(): string {
-    return this.selectedUSLang.VALUE4 || '0';
+    return this.selectedUSLang2.VALUE4 || '0';
   }
   set USDICTITEMS(newValue: string) {
-    this.selectedUSLang.VALUE4 = newValue;
+    this.selectedUSLang2.VALUE4 = newValue;
+  }
+  private selectedUSLang4!: MUserSetting;
+  get USVOICEID(): number {
+    return +this.selectedUSLang4.VALUE3 || 0;
+  }
+  set USVOICEID(newValue: number) {
+    this.selectedUSLang4.VALUE3 = String(newValue);
   }
   private selectedUSTextbook!: MUserSetting;
   get USUNITFROM(): number {
@@ -110,13 +117,20 @@ export class SettingsService {
   selectedLang!: MLanguage;
 
   voices: MVoice[] = [];
-  selectedVoice: MVoice | null = null;
-
   speech = new Speech.default();
+  private _selectedVoice: MVoice | null = null;
+  get selectedVoice(): MVoice | null {
+    return this._selectedVoice;
+  }
+  set selectedVoice(newValue: MVoice | null) {
+    this._selectedVoice = newValue;
+    this.USVOICEID = newValue ? newValue.ID : 0;
+    this.speech.setVoice(newValue ? newValue.VOICENAME : '');
+  }
 
   dictsMean: MDictMean[] = [];
   dictItems: MDictItem[] = [];
-  _selectedDictItem!: MDictItem;
+  private _selectedDictItem!: MDictItem;
   get selectedDictItem(): MDictItem {
     return this._selectedDictItem;
   }
@@ -126,7 +140,7 @@ export class SettingsService {
   }
 
   dictsNote: MDictNote[] = [];
-  _selectedDictNote: MDictNote | null = null;
+  private _selectedDictNote: MDictNote | null = null;
   get selectedDictNote(): MDictNote | null {
     return this._selectedDictNote;
   }
@@ -192,7 +206,8 @@ export class SettingsService {
   setSelectedLang(lang: MLanguage): Observable<void> {
     this.selectedLang = lang;
     this.USLANGID = this.selectedLang.ID;
-    this.selectedUSLang = this.userSettings.find(value => value.KIND === 2 && value.ENTITYID === this.USLANGID)!;
+    this.selectedUSLang2 = this.userSettings.find(value => value.KIND === 2 && value.ENTITYID === this.USLANGID)!;
+    this.selectedUSLang4 = this.userSettings.find(value => value.KIND === 4 && value.ENTITYID === this.USLANGID)!;
     const dicts = this.USDICTITEMS.split('\r\n');
     return forkJoin([
       this.dictMeanService.getDataByLang(this.USLANGID),
@@ -218,8 +233,8 @@ export class SettingsService {
         this.selectedTextbook = this.textbooks.find(value => value.ID === this.USTEXTBOOKID)!;
         this.autoCorrects = res[3] as MAutoCorrect[];
         this.voices = res[4] as MVoice[];
-        this.selectedVoice = this.voices.length === 0 ? null : this.voices[0];
-        if (this.selectedVoice) this.speech.setVoice(this.selectedVoice.VOICENAME);
+        const v = this.voices.find(value => value.ID === this.USVOICEID);
+        this.selectedVoice = v ? v : this.voices.length > 0 ? this.voices[0] : null;
       }));
   }
 
@@ -240,15 +255,19 @@ export class SettingsService {
   }
 
   updateTextbook(): Observable<number> {
-    return this.userSettingService.updateTextbook(this.selectedUSLang.ID, this.USTEXTBOOKID);
+    return this.userSettingService.updateTextbook(this.selectedUSLang2.ID, this.USTEXTBOOKID);
   }
 
   updateDictItem(): Observable<number> {
-    return this.userSettingService.updateDictItem(this.selectedUSLang.ID, this.USDICTITEM);
+    return this.userSettingService.updateDictItem(this.selectedUSLang2.ID, this.USDICTITEM);
   }
 
   updateDictNote(): Observable<number> {
-    return this.userSettingService.updateDictNote(this.selectedUSLang.ID, this.USDICTNOTEID);
+    return this.userSettingService.updateDictNote(this.selectedUSLang2.ID, this.USDICTNOTEID);
+  }
+
+  updateVoice(): Observable<number> {
+    return this.userSettingService.updateVoice(this.selectedUSLang4.ID, this.USVOICEID);
   }
 
   updateUnitFrom(): Observable<number> {

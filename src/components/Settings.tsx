@@ -43,6 +43,14 @@ export default class Settings extends React.Component<any, any> {
           </select>
         </div>
         <div className="form-inline mb-2">
+          <label htmlFor="voice" className="col-2 control-label">Voice:</label>
+          <select id="voice" className="col-4 form-control" value={this.settingsService.selectedVoice ? this.settingsService.selectedVoice.ID : ''} onChange={this.onVoiceChange}>
+            {
+              this.settingsService.voices.map(o => <option key={o.ID} value={o.ID}>{o.VOICENAME}</option>)
+            }
+          </select>
+        </div>
+        <div className="form-inline mb-2">
           <label htmlFor="dictItem" className="col-2 control-label">Dictionary(Word):</label>
           <select id="dictItem" className="col-4 form-control" value={this.settingsService.selectedDictItem.DICTID} onChange={this.onDictItemChange}>
           {
@@ -111,6 +119,12 @@ export default class Settings extends React.Component<any, any> {
     const index = event.target.selectedIndex;
     this.subscription.add(this.settingsService.setSelectedLang(this.settingsService.languages[index]).subscribe(_ => this.updateServiceState()));
     this.settingsService.updateLang().subscribe();
+  };
+
+  onVoiceChange = (event: any) => {
+    const index = event.target.selectedIndex;
+    this.settingsService.selectedVoice = this.settingsService.voices[index];
+    this.subscription.add(this.settingsService.updateVoice().subscribe(_ => this.updateServiceState()));
   };
 
   onDictItemChange = (event: any) => {
