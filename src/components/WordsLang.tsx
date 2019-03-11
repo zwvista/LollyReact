@@ -57,15 +57,15 @@ export default class WordsLang extends React.Component<any, any> {
       <CopyToClipboard text={rowData.WORD}>
         <Button icon="fa fa-copy" tooltip="Copy" tooltipOptions={{position: 'top'}}/>
       </CopyToClipboard>
-      <Button icon="fa fa-arrow-up" tooltipOptions={{position: 'top'}}
+      <Button icon="fa fa-arrow-up" tooltipOptions={{position: 'top'}} className="p-button-warning"
               tooltip="Level Up" onClick={() => this.updateLevel(rowData.ID, 1)} />
-      <Button icon="fa fa-arrow-down" tooltipOptions={{position: 'top'}}
+      <Button icon="fa fa-arrow-down" tooltipOptions={{position: 'top'}} className="p-button-warning"
               tooltip="Level Down" onClick={() => this.updateLevel(rowData.ID, -1)} />
       <Button icon="fa fa-google" onClick={() => this.googleWord(rowData.WORD)}
               tooltip="Google Word" tooltipOptions={{position: 'top'}}/>
       <Button icon="fa fa-book" onClick={() => this.dictMean(rowData.ID)}
               tooltip="Dictionary" tooltipOptions={{position: 'top'}}/>
-      <Button hidden={!this.settingsService.selectedDictNote} label="Retrieve Note" onClick={() => this.getNote(rowData.ID)} />
+      <Button hidden={!this.settingsService.selectedDictNote} className="p-button-warning" label="Retrieve Note" onClick={() => this.getNote(rowData.ID)} />
     </div>;
   };
 
@@ -78,6 +78,8 @@ export default class WordsLang extends React.Component<any, any> {
               <InputText id="float-input" type="text" value={this.state.newWord}
                          onChange={this.onNewWordChange} onKeyPress={this.onNewWordKeyPress}/>
               <label htmlFor="float-input">New Word</label>
+              <Button hidden={!this.settingsService.selectedVoice} icon="fa fa-volume-up" tooltipOptions={{position: 'top'}}
+                      tooltip="Speak" onClick={() => this.settingsService.speak(this.state.newWord)} />
               <Button label="Add" icon="fa fa-plus" onClick={() => history.push('/words-lang-detail/0')} />
               <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => this.onRefresh(this.state.page)}/>
               <Button label="Dictionary" icon="fa fa-book" onClick={() => history.push('/words-dict/lang/0')} />
