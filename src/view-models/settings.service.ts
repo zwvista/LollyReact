@@ -228,13 +228,14 @@ export class SettingsService {
         });
         this.selectedDictItem = this.dictItems.find(value => value.DICTID === this.USDICTITEM)!;
         this.dictsNote = res[1] as MDictNote[];
-        this.selectedDictNote = this.dictsNote.length === 0 ? null : this.dictsNote.find(value => value.ID === this.USDICTNOTEID);
+        this.selectedDictNote = this.dictsNote.find(value => value.DICTID === this.USDICTNOTEID) ||
+          (this.dictsNote.length === 0 ? null : this.dictsNote[0]);
         this.textbooks = res[2] as MTextbook[];
         this.selectedTextbook = this.textbooks.find(value => value.ID === this.USTEXTBOOKID)!;
         this.autoCorrects = res[3] as MAutoCorrect[];
         this.voices = res[4] as MVoice[];
-        const v = this.voices.find(value => value.ID === this.USVOICEID);
-        this.selectedVoice = v ? v : this.voices.length > 0 ? this.voices[0] : null;
+        this.selectedVoice = this.voices.find(value => value.ID === this.USVOICEID) ||
+          (this.voices.length === 0 ? null : this.voices[0]);
       }));
   }
 
