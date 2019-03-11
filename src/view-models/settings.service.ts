@@ -67,10 +67,10 @@ export class SettingsService {
   }
   private selectedUSLang4!: MUserSetting;
   get USVOICEID(): number {
-    return +this.selectedUSLang4.VALUE3 || 0;
+    return +(this.selectedUSLang4.VALUE1 || '0');
   }
   set USVOICEID(newValue: number) {
-    this.selectedUSLang4.VALUE3 = String(newValue);
+    this.selectedUSLang4.VALUE1 = String(newValue);
   }
   private selectedUSTextbook!: MUserSetting;
   get USUNITFROM(): number {
@@ -157,7 +157,7 @@ export class SettingsService {
   set selectedTextbook(newValue: MTextbook) {
     this._selectedTextbook = newValue;
     this.USTEXTBOOKID = newValue.ID;
-    this.selectedUSTextbook = this.userSettings.find(value => value.KIND === 3 && value.ENTITYID === newValue.ID)!;
+    this.selectedUSTextbook = this.userSettings.find(value => value.KIND === 11 && value.ENTITYID === newValue.ID)!;
   }
 
   get units(): MSelectItem[] {
