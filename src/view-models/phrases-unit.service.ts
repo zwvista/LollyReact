@@ -102,8 +102,11 @@ export class PhrasesUnitService {
     );
   }
 
-  delete(id: number): Observable<number> {
-    return this.unitPhraseService.delete(id);
+  delete(item: MUnitPhrase): Observable<number> {
+    return this.unitPhraseService.delete(item.ID).pipe(
+      concatMap(_ => this.unitPhraseService.getDataByLangPhrase(item.PHRASEID)),
+      concatMap(arr => arr.length !== 0 ? empty : this.langPhraseService.delete(item.PHRASEID)),
+    );
   }
 
   reindex(onNext: (index: number) => void) {

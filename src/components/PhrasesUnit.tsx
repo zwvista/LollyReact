@@ -33,7 +33,7 @@ export default class PhrasesUnit extends React.Component<any, any> {
   actionTemplate = (rowData: any, column: any) => {
     return <div>
       <Button className="p-button-danger button-margin-right" icon="fa fa-trash"
-              tooltip="Delete" tooltipOptions={{position: 'top'}} />
+              tooltip="Delete" tooltipOptions={{position: 'top'}} onClick={() => this.deletePhrase(rowData)} />
       <Button icon="fa fa-edit" tooltip="Edit" tooltipOptions={{position: 'top'}}
               onClick={() => history.push('/phrases-unit-detail/' + rowData.ID)}/>
       <Button icon="fa fa-volume-up" tooltipOptions={{position: 'top'}}
@@ -83,6 +83,10 @@ export default class PhrasesUnit extends React.Component<any, any> {
       _ => this.updateServiceState()
     ));
   };
+
+  deletePhrase(item: MUnitPhrase) {
+    this.phrasesUnitService.delete(item);
+  }
 
   onSelectionChange = (e: any) => {
     this.setState({selectedRow: e.data});

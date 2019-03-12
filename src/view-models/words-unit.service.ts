@@ -107,8 +107,11 @@ export class WordsUnitService {
     );
   }
 
-  delete(id: number): Observable<number> {
-    return this.unitWordService.delete(id);
+  delete(item: MUnitWord): Observable<number> {
+    return this.unitWordService.delete(item.ID).pipe(
+      concatMap(_ => this.unitWordService.getDataByLangWord(item.WORDID)),
+      concatMap(arr => arr.length !== 0 ? empty : this.langWordService.delete(item.WORDID)),
+    );
   }
 
   reindex(onNext: (index: number) => void) {

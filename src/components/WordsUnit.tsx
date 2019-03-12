@@ -14,6 +14,7 @@ import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { SettingsService } from '../view-models/settings.service';
 import * as $ from "jquery";
 import { MWordColor } from '../models/word-color';
+import { MUnitWord } from '../models/unit-word';
 
 export default class WordsUnit extends React.Component<any, any> {
   @Inject wordsUnitService: WordsUnitService;
@@ -36,7 +37,7 @@ export default class WordsUnit extends React.Component<any, any> {
   actionTemplate = (rowData: any, column: any) => {
     return <div>
       <Button className="p-button-danger button-margin-right" icon="fa fa-trash"
-              tooltip="Delete" tooltipOptions={{position: 'top'}} />
+              tooltip="Delete" tooltipOptions={{position: 'top'}} onClick={() => this.deleteWord(rowData)} />
       <Button icon="fa fa-edit" tooltip="Edit" tooltipOptions={{position: 'top'}}
               onClick={() => history.push('/words-unit-detail/' + rowData.ID)} />
       <Button hidden={!this.settingsService.selectedVoice} icon="fa fa-volume-up" tooltipOptions={{position: 'top'}}
@@ -141,8 +142,8 @@ export default class WordsUnit extends React.Component<any, any> {
     }));
   };
 
-  deleteWord(index: number) {
-    console.log(index);
+  deleteWord(item: MUnitWord) {
+    this.wordsUnitService.delete(item);
   }
 
   getNote(index: number) {
