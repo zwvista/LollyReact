@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { PhrasesTextbookService } from '../view-models/phrases-textbook.service';
 import { Button } from 'primereact/button';
 import './Common.css'
 import { Subscription } from 'rxjs';
@@ -10,14 +9,13 @@ import { Dropdown } from 'primereact/dropdown';
 import { PhrasesUnitService } from '../view-models/phrases-unit.service';
 
 export default class PhrasesTextbookDetail extends React.Component<any, any> {
-  @Inject phrasesTextbookService: PhrasesTextbookService;
   @Inject phrasesUnitService: PhrasesUnitService;
   @Inject settingsService: SettingsService;
   subscription = new Subscription();
 
   componentDidMount() {
     const id = +this.props.match.params.id;
-    const o = this.phrasesTextbookService.textbookPhrases.find(value => value.ID === id);
+    const o = this.phrasesUnitService.textbookPhrases.find(value => value.ID === id);
     this.setState({
       item: o,
     });

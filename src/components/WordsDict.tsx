@@ -11,11 +11,9 @@ import { ListBox } from 'primereact/listbox';
 import { MDictItem } from '../models/dictionary';
 import { HtmlService } from '../services/html.service';
 import { WordsLangService } from '../view-models/words-lang.service';
-import { WordsTextbookService } from '../view-models/words-textbook.service';
 
 export default class WordsDict extends React.Component<any, any> {
   @Inject wordsUnitService: WordsUnitService;
-  @Inject wordsTextbookService: WordsTextbookService;
   @Inject wordsLangService: WordsLangService;
   @Inject settingsService: SettingsService;
   @Inject htmlService: HtmlService;
@@ -24,7 +22,7 @@ export default class WordsDict extends React.Component<any, any> {
     const dictType = this.props.match.params.type;
     const words =
       dictType === 'unit' ? this.wordsUnitService.unitWords.map(v  => ({label: v.WORD, value: v.WORD})) :
-      dictType === 'textbook' ? this.wordsTextbookService.textbookWords.map(v  => ({label: v.WORD, value: v.WORD})) :
+      dictType === 'textbook' ? this.wordsUnitService.textbookWords.map(v  => ({label: v.WORD, value: v.WORD})) :
       this.wordsLangService.langWords.map(v  => ({label: v.WORD, value: v.WORD}));
     const selectedWord = words[+this.props.match.params.index].value;
     const selectedDictItem = this.settingsService.selectedDictItem;

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { PhrasesTextbookService } from '../view-models/phrases-textbook.service';
 import { Inject } from 'react.di';
 import { DataTable } from 'primereact/datatable';
 import { PageState, Paginator } from 'primereact/paginator';
@@ -13,9 +12,10 @@ import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { googleString } from '../common/common';
 import { SettingsService } from '../view-models/settings.service';
 import { MUnitPhrase } from '../models/unit-phrase';
+import { PhrasesUnitService } from '../view-models/phrases-unit.service';
 
 export default class PhrasesTextbook extends React.Component<any, any> {
-  @Inject phrasesTextbookService: PhrasesTextbookService;
+  @Inject phrasesUnitService: PhrasesUnitService;
   @Inject settingsService: SettingsService;
   subscription = new Subscription();
 
@@ -68,9 +68,9 @@ export default class PhrasesTextbook extends React.Component<any, any> {
           </div>
         </Toolbar>
         <Paginator first={this.state.first} rows={this.state.rows} onPageChange={this.onPageChange}
-                   totalRecords={this.phrasesTextbookService.textbookPhraseCount}
+                   totalRecords={this.phrasesUnitService.textbookPhraseCount}
                    rowsPerPageOptions={this.settingsService.USROWSPERPAGEOPTIONS}/>
-        <DataTable value={this.phrasesTextbookService.textbookPhrases} selectionMode="single" autoLayout={true}
+        <DataTable value={this.phrasesUnitService.textbookPhrases} selectionMode="single" autoLayout={true}
                    selection={this.state.selectedRow} onSelectionChange={this.onSelectionChange}>
           <Column style={{width:'80px'}} field="ID" header="ID" />
           <Column style={{width:'150px'}} field="TEXTBOOKNAME" header="TEXTBOOKNAME" />
@@ -83,14 +83,14 @@ export default class PhrasesTextbook extends React.Component<any, any> {
           <Column style={{width:'20%'}} body={this.actionTemplate} header="ACTIONS" />
         </DataTable>
         <Paginator first={this.state.first} rows={this.state.rows} onPageChange={this.onPageChange}
-                   totalRecords={this.phrasesTextbookService.textbookPhraseCount}
+                   totalRecords={this.phrasesUnitService.textbookPhraseCount}
                    rowsPerPageOptions={this.settingsService.USROWSPERPAGEOPTIONS}/>
       </div>
     );
   }
 
   onRefresh = (page: number) => {
-    this.subscription.add(this.phrasesTextbookService.getData(page, this.state.rows).subscribe(
+    this.subscription.add(this.phrasesUnitService.getDataInLang(page, this.state.rows).subscribe(
       _ => this.updateServiceState()
     ));
   };
@@ -100,7 +100,7 @@ export default class PhrasesTextbook extends React.Component<any, any> {
   };
 
   updateServiceState() {
-    this.setState({phrasesTextbookService: this.phrasesTextbookService});
+    this.setState({phrasesUnitService: this.phrasesUnitService});
   }
 
   googlePhrase(phrase: string) {

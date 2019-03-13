@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { WordsTextbookService } from '../view-models/words-textbook.service';
 import { Button } from 'primereact/button';
 import './Common.css'
 import { Subscription } from 'rxjs';
@@ -10,14 +9,13 @@ import { Dropdown } from 'primereact/dropdown';
 import { WordsUnitService } from '../view-models/words-unit.service';
 
 export default class WordsTextbookDetail extends React.Component<any, any> {
-  @Inject wordsTextbookService: WordsTextbookService;
   @Inject wordsUnitService: WordsUnitService;
   @Inject settingsService: SettingsService;
   subscription = new Subscription();
 
   componentDidMount() {
     const id = +this.props.match.params.id;
-    const o = this.wordsTextbookService.textbookWords.find(value => value.ID === id);
+    const o = this.wordsUnitService.textbookWords.find(value => value.ID === id);
     this.setState({
       item: o,
     });

@@ -132,7 +132,7 @@ export default class WordsUnit extends React.Component<any, any> {
   }
 
   onRefresh = (e:any) => {
-    this.subscription.add(this.wordsUnitService.getData().subscribe(_ => {
+    this.subscription.add(this.wordsUnitService.getDataInTextbook().subscribe(_ => {
       this.updateServiceState();
       const self = this;
       $("tr").each((i, row) => {

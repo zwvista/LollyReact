@@ -14,6 +14,9 @@ export class WordsUnitService {
 
   unitWords: MUnitWord[] = [];
 
+  textbookWords: MUnitWord[] = [];
+  textbookWordCount = 0;
+
   constructor(@Inject private unitWordService: UnitWordService,
               @Inject private langWordService: LangWordService,
               @Inject private settingsService: SettingsService,
@@ -21,13 +24,25 @@ export class WordsUnitService {
               @Inject private noteService: NoteService) {
   }
 
-  getData(): Observable<void> {
+  getDataInTextbook(): Observable<void> {
     return this.appService.initializeComplete.pipe(
       concatMap(_ => this.unitWordService.getDataByTextbookUnitPart(this.settingsService.selectedTextbook,
         this.settingsService.USUNITPARTFROM, this.settingsService.USUNITPARTTO)),
       map(res => {
         this.settingsService.setColorStyles(res);
         this.unitWords = res
+      }),
+    );
+  }
+
+  getDataInLang(page: number, rows: number) {
+    return this.appService.initializeComplete.pipe(
+      concatMap(_ => this.unitWordService.getDataByLang(this.settingsService.selectedLang.ID,
+        this.settingsService.textbooks, page, rows)),
+      map(res => {
+        this.settingsService.setColorStyles(res.VUNITWORDS);
+        this.textbookWords = res.VUNITWORDS;
+        this.textbookWordCount = res._results
       }),
     );
   }

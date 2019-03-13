@@ -13,17 +13,31 @@ export class PhrasesUnitService {
 
   unitPhrases: MUnitPhrase[] = [];
 
+  textbookPhrases: MUnitPhrase[] = [];
+  textbookPhraseCount = 0;
+
   constructor(@Inject private unitPhraseService: UnitPhraseService,
               @Inject private langPhraseService: LangPhraseService,
               @Inject private settingsService: SettingsService,
               @Inject private appService: AppService) {
   }
 
-  getData() {
+  getDataInTextbook() {
     return this.appService.initializeComplete.pipe(
       concatMap(_ => this.unitPhraseService.getDataByTextbookUnitPart(this.settingsService.selectedTextbook,
         this.settingsService.USUNITPARTFROM, this.settingsService.USUNITPARTTO)),
       map(res => this.unitPhrases = res),
+    );
+  }
+
+  getDataInLang(page: number, rows: number) {
+    return this.appService.initializeComplete.pipe(
+      concatMap(_ => this.unitPhraseService.getDataByLang(this.settingsService.selectedLang.ID,
+        this.settingsService.textbooks, page, rows)),
+      map(res => {
+        this.textbookPhrases = res.VUNITPHRASES;
+        this.textbookPhraseCount = res._results;
+      }),
     );
   }
 

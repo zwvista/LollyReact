@@ -79,7 +79,7 @@ export default class PhrasesUnit extends React.Component<any, any> {
   };
 
   onRefresh = (e:any) => {
-    this.subscription.add(this.phrasesUnitService.getData().subscribe(
+    this.subscription.add(this.phrasesUnitService.getDataInTextbook().subscribe(
       _ => this.updateServiceState()
     ));
   };

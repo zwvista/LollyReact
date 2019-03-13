@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { WordsTextbookService } from '../view-models/words-textbook.service';
 import { Inject } from 'react.di';
 import { DataTable } from 'primereact/datatable';
 import { PageState, Paginator } from 'primereact/paginator';
@@ -13,9 +12,10 @@ import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { SettingsService } from '../view-models/settings.service';
 import * as $ from "jquery";
 import { MWordColor } from '../models/word-color';
+import { WordsUnitService } from '../view-models/words-unit.service';
 
 export default class WordsTextbook extends React.Component<any, any> {
-  @Inject wordsTextbookService: WordsTextbookService;
+  @Inject wordsUnitService: WordsUnitService;
   @Inject settingsService: SettingsService;
   subscription = new Subscription();
 
@@ -76,9 +76,9 @@ export default class WordsTextbook extends React.Component<any, any> {
           </div>
         </Toolbar>
         <Paginator first={this.state.first} rows={this.state.rows} onPageChange={this.onPageChange}
-                   totalRecords={this.wordsTextbookService.textbookWordCount}
+                   totalRecords={this.wordsUnitService.textbookWordCount}
                    rowsPerPageOptions={this.settingsService.USROWSPERPAGEOPTIONS}/>
-        <DataTable value={this.wordsTextbookService.textbookWords} selectionMode="single" autoLayout={true}
+        <DataTable value={this.wordsUnitService.textbookWords} selectionMode="single" autoLayout={true}
                    selection={this.state.selectedRow} onSelectionChange={this.onSelectionChange}>
           <Column style={{width:'80px'}} field="ID" header="ID" />
           <Column style={{width:'150px'}} field="TEXTBOOKNAME" header="TEXTBOOKNAME" />
@@ -92,7 +92,7 @@ export default class WordsTextbook extends React.Component<any, any> {
           <Column style={{width:'30%'}} body={this.actionTemplate} header="ACTIONS" />
         </DataTable>
         <Paginator first={this.state.first} rows={this.state.rows} onPageChange={this.onPageChange}
-                   totalRecords={this.wordsTextbookService.textbookWordCount}
+                   totalRecords={this.wordsUnitService.textbookWordCount}
                    rowsPerPageOptions={this.settingsService.USROWSPERPAGEOPTIONS}/>
       </div>
     );
@@ -110,12 +110,12 @@ export default class WordsTextbook extends React.Component<any, any> {
 
   onRefresh = (page: number) => {
     // https://stackoverflow.com/questions/4228356/integer-division-with-remainder-in-javascript
-    this.subscription.add(this.wordsTextbookService.getData(page, this.state.rows).subscribe(_ => {
+    this.subscription.add(this.wordsUnitService.getDataInLang(page, this.state.rows).subscribe(_ => {
       this.updateServiceState();
       const self = this;
       $("tr").each((i, tr) => {
         if (i === 0) return;
-        this.setRowStyle(self.wordsTextbookService.textbookWords[i - 1], tr);
+        this.setRowStyle(self.wordsUnitService.textbookWords[i - 1], tr);
       });
     }));
   };
@@ -130,7 +130,7 @@ export default class WordsTextbook extends React.Component<any, any> {
 
   getNote(index: number) {
     console.log(index);
-    this.wordsTextbookService.getNote(index).subscribe();
+    this.wordsUnitService.getNote(index).subscribe();
   }
 
   // https://stackoverflow.com/questions/42775017/angular-2-redirect-to-an-external-url-and-open-in-a-new-tab
@@ -139,18 +139,18 @@ export default class WordsTextbook extends React.Component<any, any> {
   }
 
   updateLevel(ID: number, delta: number) {
-    const i = this.wordsTextbookService.textbookWords.findIndex(v => v.ID === ID);
-    const o = this.wordsTextbookService.textbookWords[i];
+    const i = this.wordsUnitService.textbookWords.findIndex(v => v.ID === ID);
+    const o = this.wordsUnitService.textbookWords[i];
     this.settingsService.updateLevel(o, o.WORDID, delta).subscribe(_ => this.setRowStyle(o, $('tr').eq(i + 1)));
   }
 
   dictMean(ID: number) {
-    const index = this.wordsTextbookService.textbookWords.findIndex(value => value.ID === ID);
+    const index = this.wordsUnitService.textbookWords.findIndex(value => value.ID === ID);
     history.push('/words-dict/textbook/' + index);
   }
 
   updateServiceState() {
-    this.setState({wordsTextbookService: this.wordsTextbookService});
+    this.setState({wordsUnitService: this.wordsUnitService});
   }
 };
 
