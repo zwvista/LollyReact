@@ -79,7 +79,7 @@ export default class WordsUnit extends React.Component<any, any> {
         <DataTable value={this.wordsUnitService.unitWords} autoLayout={true}
                    onRowReorder={this.onReorder} selectionMode="single"
                    selection={this.state.selectedRow} onSelectionChange={this.onSelectionChange}>
-          <Column rowReorder={true} style={{width: '3em'}} />
+          <Column rowReorder={this.settingsService.selectedTextbook && this.settingsService.isSingleUnitPart} style={{width: '3em'}} />
           <Column style={{width:'80px'}} field="ID" header="ID" />
           <Column style={{width:'80px'}} field="UNITSTR" header="UNIT" />
           <Column style={{width:'80px'}} field="PARTSTR" header="PART" />

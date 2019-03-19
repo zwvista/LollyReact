@@ -35,7 +35,7 @@ export default class Settings extends React.Component<any, any> {
     return this.settingsService.selectedLang ? (
       <div className="container mt-2">
         <div className="form-inline mb-2">
-          <label htmlFor="lang" className="col-2 control-label">Languages:</label>
+          <label htmlFor="lang" className="col-2 control-label">Language:</label>
           <select id="lang" className="col-4 form-control" value={this.settingsService.selectedLang.ID} onChange={this.onLangChange}>
           {
             this.settingsService.languages.map(o => <option key={o.ID} value={o.ID}>{o.NAME}</option>)

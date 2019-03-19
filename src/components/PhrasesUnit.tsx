@@ -58,7 +58,7 @@ export default class PhrasesUnit extends React.Component<any, any> {
         <DataTable value={this.phrasesUnitService.unitPhrases} selectionMode="single" autoLayout={true}
                    onRowReorder={this.onReorder}
                    selection={this.state.selectedRow} onSelectionChange={this.onSelectionChange}>
-          <Column rowReorder={true} style={{width: '3em'}} />
+          <Column rowReorder={this.settingsService.selectedTextbook && this.settingsService.isSingleUnitPart} style={{width: '3em'}} />
           <Column style={{width:'80px'}} field="ID" header="ID" />
           <Column style={{width:'80px'}} field="UNITSTR" header="UNIT" />
           <Column style={{width:'80px'}} field="PARTSTR" header="PART" />
