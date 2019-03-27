@@ -1,5 +1,6 @@
 import { MSelectItem } from '../common/selectitem';
 import { MWordColor } from './word-color';
+import { MTextbook } from './textbook';
 
 export class MUnitWords {
   VUNITWORDS!: MUnitWord[];
@@ -20,13 +21,12 @@ export class MUnitWord implements MWordColor {
   LEVEL = 0;
   colorStyle: {string: string} | {} = {};
 
-  units: MSelectItem[] = [];
-  parts: MSelectItem[] = [];
+  textbook: MTextbook;
   get UNITSTR(): string {
-    return this.units.find(o => o.value === this.UNIT)!.label;
+    return this.textbook.UNITSTR(this.UNIT);
   }
   get PARTSTR(): string {
-    return this.parts.find(o => o.value === this.PART)!.label;
+    return this.textbook.PARTSTR(this.PART);
   }
   get unitPartSeqnum(): string {
     return String(this.UNIT).padStart(3) +

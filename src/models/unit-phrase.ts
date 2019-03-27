@@ -1,4 +1,5 @@
 import { MSelectItem } from '../common/selectitem';
+import { MTextbook } from './textbook';
 
 export class MUnitPhrases {
   VUNITPHRASES!: MUnitPhrase[];
@@ -16,13 +17,12 @@ export class MUnitPhrase {
   PHRASE = '';
   TRANSLATION: string | null = null;
 
-  units: MSelectItem[] = [];
-  parts: MSelectItem[] = [];
+  textbook: MTextbook;
   get UNITSTR(): string {
-    return this.units.find(o => o.value === this.UNIT)!.label;
+    return this.textbook.UNITSTR(this.UNIT);
   }
   get PARTSTR(): string {
-    return this.parts.find(o => o.value === this.PART)!.label;
+    return this.textbook.PARTSTR(this.PART);
   }
   get unitPartSeqnum(): string {
     return String(this.UNIT).padStart(3) +

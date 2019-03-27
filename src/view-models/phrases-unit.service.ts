@@ -143,8 +143,7 @@ export class PhrasesUnitService {
     o.UNIT = maxElem ? maxElem.UNIT : this.settingsService.USUNITTO;
     o.PART = maxElem ? maxElem.PART : this.settingsService.USPARTTO;
     o.SEQNUM = (maxElem ? maxElem.SEQNUM : 0) + 1;
-    o.units = this.settingsService.units;
-    o.parts = this.settingsService.parts;
+    o.textbook = this.settingsService.selectedTextbook;
     return o;
   }
 
