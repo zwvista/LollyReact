@@ -1,30 +1,26 @@
 import * as React from 'react';
 import { Inject } from 'react.di';
-import { SettingsService } from '../view-models/settings.service';
+import { SettingsListener, SettingsService } from '../view-models/settings.service';
 import './Common.css'
 import { Subscription } from 'rxjs';
 
-export default class Settings extends React.Component<any, any> {
+export default class Settings extends React.Component<any, any> implements SettingsListener {
   @Inject settingsService: SettingsService;
   subscription = new Subscription();
 
   get toTypeIsUnit() {
-    return this.state.toType === 0;
+    return this.settingsService.toType === 0;
   }
   get toTypeIsPart() {
-    return this.state.toType === 1;
+    return this.settingsService.toType === 1;
   }
   get toTypeIsTo() {
-    return this.state.toType === 2;
+    return this.settingsService.toType === 2;
   }
 
-  state = {
-    toTypes: ['Unit', 'Part', 'To'].map((v, i) => ({value: i, label: v})),
-    toType: 0,
-  };
-
   componentDidMount() {
-    this.subscription.add(this.settingsService.getData().subscribe(_ => this.updateTextbook()));
+    this.settingsService.settingsListener = this;
+    this.subscription.add(this.settingsService.getData().subscribe());
   }
 
   componentWillUnmount() {
@@ -88,9 +84,9 @@ export default class Settings extends React.Component<any, any> {
           </select>
         </div>
         <div className="form-inline mb-2">
-          <select id="toType" className="col-1 form-control" value={this.state.toType} onChange={this.onToTypeChange}>
+          <select id="toType" className="col-1 form-control" value={this.settingsService.toType} onChange={this.onToTypeChange}>
             {
-              this.state.toTypes.map(o => <option key={o.value} value={o.value}>{o.label}</option>)
+              this.settingsService.toTypes.map(o => <option key={o.value} value={o.value}>{o.label}</option>)
             }
           </select>
           <label className="col-1 control-label" />
@@ -143,132 +139,72 @@ export default class Settings extends React.Component<any, any> {
     const index = event.target.selectedIndex;
     this.settingsService.selectedTextbook = this.settingsService.textbooks[index];
     this.subscription.add(this.settingsService.updateTextbook().subscribe(_ => this.updateServiceState()));
-    this.updateTextbook();
   };
 
   onUnitFromChange = (event: any) => {
     const index = event.target.selectedIndex;
-    if (!this.updateUnitFrom(this.settingsService.units[index].value, false)) return;
-    if (this.state.toType === 0)
-      this.updateSingleUnit();
-    else if (this.state.toType === 1 || this.settingsService.isInvalidUnitPart)
-      this.updateUnitPartTo();
+    this.settingsService.updateUnitFrom(this.settingsService.units[index].value).subscribe();
   };
 
   onPartFromChange = (event: any) => {
     const index = event.target.selectedIndex;
-    if (!this.updatePartFrom(this.settingsService.parts[index].value, false)) return;
-    if (this.state.toType === 1 || this.settingsService.isInvalidUnitPart)
-      this.updateUnitPartTo();
+    this.settingsService.updatePartFrom(this.settingsService.parts[index].value).subscribe();
   };
 
   onToTypeChange = (event: any) => {
     const index = event.target.selectedIndex;
-    this.setState({toType: index});
-    if (index === 0)
-      this.updateSingleUnit();
-    else if (index === 1)
-      this.updateUnitPartTo();
+    this.settingsService.updateToType(this.settingsService.toTypes[index].value).subscribe();
   };
 
   previousUnitPart = (event: any) => {
-    if (this.state.toType === 0) {
-      if (this.settingsService.USUNITFROM > 1) {
-        this.updateUnitFrom(this.settingsService.USUNITFROM - 1);
-        this.updateUnitTo(this.settingsService.USUNITFROM);
-      }
-    } else if (this.settingsService.USPARTFROM > 1) {
-      this.updatePartFrom(this.settingsService.USPARTFROM - 1);
-      this.updateUnitPartTo();
-    } else if (this.settingsService.USUNITFROM > 1) {
-      this.updateUnitFrom(this.settingsService.USUNITFROM - 1);
-      this.updatePartFrom(this.settingsService.partCount);
-      this.updateUnitPartTo();
-    }
+    this.settingsService.previousUnitPart().subscribe();
   };
 
   nextUnitPart = (event: any) => {
-    if (this.state.toType === 0) {
-      if (this.settingsService.USUNITFROM < this.settingsService.unitCount) {
-        this.updateUnitFrom(this.settingsService.USUNITFROM + 1);
-        this.updateUnitTo(this.settingsService.USUNITFROM);
-      }
-    } else if (this.settingsService.USPARTFROM < this.settingsService.partCount) {
-      this.updatePartFrom(this.settingsService.USPARTFROM + 1);
-      this.updateUnitPartTo();
-    } else if (this.settingsService.USUNITFROM < this.settingsService.unitCount) {
-      this.updateUnitFrom(this.settingsService.USUNITFROM + 1);
-      this.updatePartFrom(1);
-      this.updateUnitPartTo();
-    }
+    this.settingsService.nextUnitPart().subscribe();
   };
 
   onUnitToChange = (event: any) => {
     const index = event.target.selectedIndex;
-    if (!this.updateUnitTo(this.settingsService.units[index].value, false)) return;
-    if (this.state.toType === 1 || this.settingsService.isInvalidUnitPart)
-      this.updateUnitPartFrom();
+    this.settingsService.updateUnitTo(this.settingsService.units[index].value).subscribe();
   };
 
   onPartToChange = (event: any) => {
     const index = event.target.selectedIndex;
-    if (!this.updatePartTo(this.settingsService.parts[index].value, false)) return;
-    if (this.state.toType === 1 || this.settingsService.isInvalidUnitPart)
-      this.updateUnitPartFrom();
+    this.settingsService.updateUnitTo(this.settingsService.parts[index].value).subscribe();
   };
-
-  updateTextbook() {
-    const toType = this.settingsService.isSingleUnit ? 0 : this.settingsService.isSingleUnitPart ? 1 : 2;
-    this.setState({toType});
-    this.updateServiceState();
-  }
 
   updateServiceState() {
     this.setState({settingsService: this.settingsService});
   }
 
-  updateUnitPartFrom() {
-    this.updateUnitFrom(this.settingsService.USUNITTO);
-    this.updatePartFrom(this.settingsService.USPARTTO);
+  onGetData(): void {
   }
 
-  updateUnitPartTo() {
-    this.updateUnitTo(this.settingsService.USUNITFROM);
-    this.updatePartTo(this.settingsService.USPARTFROM);
+  onUpdateDictItem(): void {
   }
 
-  updateSingleUnit() {
-    this.updateUnitTo(this.settingsService.USUNITFROM);
-    this.updatePartFrom(1);
-    this.updatePartTo(this.settingsService.partCount);
+  onUpdateDictNote(): void {
   }
 
-  updateUnitFrom(v: number, check: boolean = true): boolean {
-    if (check && this.settingsService.USUNITFROM === v) return false;
-    this.settingsService.USUNITFROM = v;
-    this.settingsService.updateUnitFrom().subscribe(_ => this.updateServiceState());
-    return true;
+  onUpdateLang(): void {
   }
 
-  updatePartFrom(v: number, check: boolean = true): boolean {
-    if (check && this.settingsService.USPARTFROM === v) return false;
-    this.settingsService.USPARTFROM = v;
-    this.settingsService.updatePartFrom().subscribe(_ => this.updateServiceState());
-    return true;
+  onUpdatePartFrom(): void {
   }
 
-  updateUnitTo(v: number, check: boolean = true): boolean {
-    if (check && this.settingsService.USUNITTO === v) return false;
-    this.settingsService.USUNITTO = v;
-    this.settingsService.updateUnitTo().subscribe(_ => this.updateServiceState());
-    return true;
+  onUpdatePartTo(): void {
   }
 
-  updatePartTo(v: number, check: boolean = true): boolean {
-    if (check && this.settingsService.USPARTTO === v) return false;
-    this.settingsService.USPARTTO = v;
-    this.settingsService.updatePartTo().subscribe(_ => this.updateServiceState());
-    return true;
+  onUpdateTextbook(): void {
   }
 
+  onUpdateUnitFrom(): void {
+  }
+
+  onUpdateUnitTo(): void {
+  }
+
+  onUpdateVoice(): void {
+  }
 };

@@ -1,4 +1,4 @@
-import { map, mergeMap } from 'rxjs/operators';
+import { concatMap, map } from 'rxjs/operators';
 import { Inject, Injectable } from 'react.di';
 import { LanguageService } from '../services/language.service';
 import { UserSettingService } from '../services/user-setting.service';
@@ -6,7 +6,7 @@ import { MUserSetting } from '../models/user-setting';
 import { MLanguage } from '../models/language';
 import { MDictItem, MDictMean, MDictNote } from '../models/dictionary';
 import { MTextbook } from '../models/textbook';
-import { EMPTY as empty, forkJoin, Observable } from 'rxjs';
+import { EMPTY as empty, forkJoin, Observable, of } from 'rxjs';
 import { DictMeanService, DictNoteService } from '../services/dictionary.service';
 import { TextbookService } from '../services/textbook.service';
 import { AutoCorrectService } from '../services/autocorrect.service';
@@ -158,6 +158,7 @@ export class SettingsService {
     this._selectedTextbook = newValue;
     this.USTEXTBOOKID = newValue.ID;
     this.selectedUSTextbook = this.userSettings.find(value => value.KIND === 11 && value.ENTITYID === newValue.ID)!;
+    this.toType = this.isSingleUnit ? 0 : this.isSingleUnitPart ? 1 : 2;
   }
 
   get units(): MSelectItem[] {
@@ -176,7 +177,12 @@ export class SettingsService {
     return this.partCount === 1;
   }
 
+  toTypes = ['Unit', 'Part', 'To'].map((v, i) => new MSelectItem(i, v));
+  toType = 0;
+
   autoCorrects: MAutoCorrect[] = [];
+
+  settingsListener: SettingsListener | null = null;
 
   constructor(@Inject private langService: LanguageService,
               @Inject private userSettingService: UserSettingService,
@@ -189,9 +195,9 @@ export class SettingsService {
     this.speech.init();
   }
 
-  getData(): Observable<void> {
+  getData(): Observable<number> {
     return forkJoin([this.langService.getData(), this.userSettingService.getDataByUser(userid)]).pipe(
-      mergeMap(res => {
+      concatMap(res => {
         this.languages = res[0] as MLanguage[];
         this.userSettings = res[1] as MUserSetting[];
         this.selectedUSUser0 = this.userSettings.find(value => value.KIND === 1 && value.ENTITYID === 0);
@@ -199,11 +205,13 @@ export class SettingsService {
         this.USLEVELCOLORS = {};
         this.selectedUSUser0.VALUE4.split('\r\n').map(v => v.split(','))
           .forEach(v => this.USLEVELCOLORS[+v[0]] = [v[1], v[2]]);
+        if (this.settingsListener) this.settingsListener.onGetData();
         return this.setSelectedLang(this.languages.find(value => value.ID === this.USLANGID)!);
       }));
   }
 
-  setSelectedLang(lang: MLanguage): Observable<void> {
+  setSelectedLang(lang: MLanguage): Observable<number> {
+    const isinit = lang.ID === this.USLANGID;
     this.selectedLang = lang;
     this.USLANGID = this.selectedLang.ID;
     this.selectedUSLang2 = this.userSettings.find(value => value.KIND === 2 && value.ENTITYID === this.USLANGID)!;
@@ -215,7 +223,7 @@ export class SettingsService {
       this.textbookService.getDataByLang(this.USLANGID),
       this.autoCorrectService.getDataByLang(this.USLANGID),
       this.voiceService.getDataByLang(this.USLANGID)]).pipe(
-      map(res => {
+      concatMap(res => {
         this.dictsMean = res[0] as MDictMean[];
         let i = 0;
         this.dictItems = _.flatMap(dicts, d => {
@@ -236,6 +244,11 @@ export class SettingsService {
         this.voices = res[4] as MVoice[];
         this.selectedVoice = this.voices.find(value => value.ID === this.USVOICEID) ||
           (this.voices.length === 0 ? null : this.voices[0]);
+        if (isinit) {
+          if (this.settingsListener) this.settingsListener.onUpdateLang();
+          return of(0);
+        } else
+          return this.updateLang();
       }));
   }
 
@@ -252,39 +265,48 @@ export class SettingsService {
   }
 
   updateLang(): Observable<number> {
-    return this.userSettingService.updateLang(this.selectedUSUser0.ID, this.USLANGID);
+    return this.userSettingService.updateLang(this.selectedUSUser0.ID, this.USLANGID).pipe(
+      map( _ => {
+        if (this.settingsListener) this.settingsListener.onUpdateLang();
+        return 0;
+      }),
+    );
   }
 
   updateTextbook(): Observable<number> {
-    return this.userSettingService.updateTextbook(this.selectedUSLang2.ID, this.USTEXTBOOKID);
+    return this.userSettingService.updateTextbook(this.selectedUSLang2.ID, this.USTEXTBOOKID).pipe(
+      map( _ => {
+        if (this.settingsListener) this.settingsListener.onUpdateTextbook();
+        return 0;
+      }),
+    );
   }
 
   updateDictItem(): Observable<number> {
-    return this.userSettingService.updateDictItem(this.selectedUSLang2.ID, this.USDICTITEM);
+    return this.userSettingService.updateDictItem(this.selectedUSLang2.ID, this.USDICTITEM).pipe(
+      map( _ => {
+        if (this.settingsListener) this.settingsListener.onUpdateDictItem();
+        return 0;
+      }),
+    );
   }
 
   updateDictNote(): Observable<number> {
-    return this.userSettingService.updateDictNote(this.selectedUSLang2.ID, this.USDICTNOTEID);
+    return this.userSettingService.updateDictNote(this.selectedUSLang2.ID, this.USDICTNOTEID).pipe(
+      map( _ => {
+        if (this.settingsListener) this.settingsListener.onUpdateDictNote();
+        return 0;
+      }),
+    );
   }
 
   updateVoice(): Observable<number> {
-    return this.userSettingService.updateVoice(this.selectedUSLang4.ID, this.USVOICEID);
-  }
-
-  updateUnitFrom(): Observable<number> {
-    return this.userSettingService.updateUnitFrom(this.selectedUSTextbook.ID, this.USUNITFROM);
-  }
-
-  updatePartFrom(): Observable<number> {
-    return this.userSettingService.updatePartFrom(this.selectedUSTextbook.ID, this.USPARTFROM);
-  }
-
-  updateUnitTo(): Observable<number> {
-    return this.userSettingService.updateUnitTo(this.selectedUSTextbook.ID, this.USUNITTO);
-  }
-
-  updatePartTo(): Observable<number> {
-    return this.userSettingService.updatePartTo(this.selectedUSTextbook.ID, this.USPARTTO);
+    return this.userSettingService.updateVoice(this.selectedUSLang4.ID, this.USVOICEID).pipe(
+      map( _ => {
+        if (this.settingsListener) this.settingsListener.onUpdateVoice();
+        return 0;
+      }),
+    );
   }
 
   autoCorrectInput(text: string): string {
@@ -321,4 +343,122 @@ export class SettingsService {
       queue: false,
     });
   }
+
+  updateUnitFrom(value: number): Observable<number> {
+    return this.doUpdateUnitFrom(value, false).pipe(
+      concatMap(_ => this.toType === 0 ? this.doUpdateSingleUnit() :
+        this.toType === 1 || this.isInvalidUnitPart ? this.doUpdateUnitPartTo() : empty),
+    );
+  }
+
+  updatePartFrom(value: number): Observable<number> {
+    return this.doUpdatePartFrom(value, false).pipe(
+      concatMap(_ => this.toType === 1 || this.isInvalidUnitPart ? this.doUpdateUnitPartTo() : empty),
+    );
+  }
+
+  updateToType(value: number): Observable<number> {
+    this.toType = value;
+    return this.toType === 0 ? this.doUpdateSingleUnit() :
+      this.toType === 1 ? this.doUpdateUnitPartTo() : empty;
+  }
+
+  previousUnitPart(): Observable<number> {
+    if (this.toType === 0)
+      if (this.USUNITFROM > 1)
+        return forkJoin([this.doUpdateUnitFrom(this.USUNITFROM - 1),
+          this.doUpdateUnitTo(this.USUNITFROM)]).pipe(map(_ => 0));
+      else
+        return empty;
+    else if (this.USPARTFROM > 1)
+      return forkJoin([this.doUpdatePartFrom(this.USPARTFROM - 1),
+        this.doUpdateUnitPartTo()]).pipe(map(_ => 0));
+    else if (this.USUNITFROM > 1)
+      return forkJoin([this.doUpdateUnitFrom(this.USUNITFROM - 1),
+        this.doUpdatePartFrom(this.partCount), this.doUpdateUnitPartTo()]).pipe(map(_ => 0));
+    else
+      return empty;
+  }
+
+  nextUnitPart(): Observable<number> {
+    if (this.toType === 0)
+      if (this.USUNITFROM < this.unitCount)
+        return forkJoin([this.doUpdateUnitFrom(this.USUNITFROM + 1),
+          this.doUpdateUnitTo(this.USUNITFROM)]).pipe(map(_ => 0));
+      else
+        return empty;
+    else if (this.USPARTFROM < this.partCount)
+      return forkJoin([this.doUpdatePartFrom(this.USPARTFROM + 1),
+        this.doUpdateUnitPartTo()]).pipe(map(_ => 0));
+    else if (this.USUNITFROM < this.unitCount)
+      return forkJoin([this.doUpdateUnitFrom(this.USUNITFROM + 1),
+        this.doUpdatePartFrom(1), this.doUpdateUnitPartTo()]).pipe(map(_ => 0));
+    else
+      return empty;
+  }
+
+  updateUnitTo(value: number): Observable<number> {
+    return this.doUpdateUnitTo(value, false).pipe(
+      concatMap(_ => this.toType === 1 || this.isInvalidUnitPart ? this.doUpdateUnitPartFrom() : empty),
+    );
+  }
+
+  updatePartTo(value: number): Observable<number> {
+    return this.doUpdatePartTo(value, false).pipe(
+      concatMap(_ => this.toType === 1 || this.isInvalidUnitPart ? this.doUpdateUnitPartFrom() : empty),
+    );
+  }
+
+  private doUpdateUnitPartFrom(): Observable<number> {
+    return forkJoin([this.doUpdateUnitFrom(this.USUNITTO), this.doUpdatePartFrom(this.USPARTTO)])
+      .pipe(map(_ => 0));
+  }
+
+  private doUpdateUnitPartTo(): Observable<number> {
+    return forkJoin([this.doUpdateUnitTo(this.USUNITFROM), this.doUpdatePartTo(this.USPARTFROM)])
+      .pipe(map(_ => 0));
+  }
+
+  private doUpdateSingleUnit(): Observable<number> {
+    return forkJoin([this.doUpdateUnitTo(this.USUNITFROM), this.doUpdatePartFrom(1),
+      this.doUpdatePartTo(this.partCount)])
+      .pipe(map(_ => 0));
+  }
+
+  private doUpdateUnitFrom(v: number, check: boolean = true): Observable<number> {
+    if (check && this.USUNITFROM === v) return empty;
+    this.USUNITFROM = v;
+    return this.userSettingService.updateUnitFrom(this.selectedUSTextbook.ID, this.USUNITFROM);
+  }
+
+  private doUpdatePartFrom(v: number, check: boolean = true): Observable<number> {
+    if (check && this.USPARTFROM === v) return empty;
+    this.USPARTFROM = v;
+    return this.userSettingService.updatePartFrom(this.selectedUSTextbook.ID, this.USPARTFROM);
+  }
+
+  private doUpdateUnitTo(v: number, check: boolean = true): Observable<number> {
+    if (check && this.USUNITTO === v) return empty;
+    this.USUNITTO = v;
+    return this.userSettingService.updateUnitTo(this.selectedUSTextbook.ID, this.USUNITTO);
+  }
+
+  private doUpdatePartTo(v: number, check: boolean = true): Observable<number> {
+    if (check && this.USPARTTO === v) return empty;
+    this.USPARTTO = v;
+    return this.userSettingService.updatePartTo(this.selectedUSTextbook.ID, this.USPARTTO);
+  }
+}
+
+export interface SettingsListener {
+  onGetData(): void;
+  onUpdateLang(): void;
+  onUpdateTextbook(): void;
+  onUpdateDictItem(): void;
+  onUpdateDictNote(): void;
+  onUpdateVoice(): void;
+  onUpdateUnitFrom(): void;
+  onUpdatePartFrom(): void;
+  onUpdateUnitTo(): void;
+  onUpdatePartTo(): void;
 }
