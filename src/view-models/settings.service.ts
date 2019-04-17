@@ -4,10 +4,10 @@ import { LanguageService } from '../services/language.service';
 import { UserSettingService } from '../services/user-setting.service';
 import { MUserSetting } from '../models/user-setting';
 import { MLanguage } from '../models/language';
-import { MDictItem, MDictMean, MDictNote } from '../models/dictionary';
+import { MDictItem, MDictReference, MDictNote } from '../models/dictionary';
 import { MTextbook } from '../models/textbook';
 import { EMPTY as empty, forkJoin, Observable, of } from 'rxjs';
-import { DictMeanService, DictNoteService } from '../services/dictionary.service';
+import { DictReferenceService, DictNoteService } from '../services/dictionary.service';
 import { TextbookService } from '../services/textbook.service';
 import { AutoCorrectService } from '../services/autocorrect.service';
 import { autoCorrect, MAutoCorrect } from '../models/autocorrect';
@@ -128,7 +128,7 @@ export class SettingsService {
     this.speech.setVoice(newValue ? newValue.VOICENAME : '');
   }
 
-  dictsMean: MDictMean[] = [];
+  dictsReference: MDictReference[] = [];
   dictItems: MDictItem[] = [];
   private _selectedDictItem!: MDictItem;
   get selectedDictItem(): MDictItem {
@@ -186,7 +186,7 @@ export class SettingsService {
 
   constructor(@Inject private langService: LanguageService,
               @Inject private userSettingService: UserSettingService,
-              @Inject private dictMeanService: DictMeanService,
+              @Inject private dictReferenceService: DictReferenceService,
               @Inject private dictNoteService: DictNoteService,
               @Inject private textbookService: TextbookService,
               @Inject private autoCorrectService: AutoCorrectService,
@@ -218,17 +218,17 @@ export class SettingsService {
     this.selectedUSLang4 = this.userSettings.find(value => value.KIND === 4 && value.ENTITYID === this.USLANGID)!;
     const dicts = this.USDICTITEMS.split('\r\n');
     return forkJoin([
-      this.dictMeanService.getDataByLang(this.USLANGID),
+      this.dictReferenceService.getDataByLang(this.USLANGID),
       this.dictNoteService.getDataByLang(this.USLANGID),
       this.textbookService.getDataByLang(this.USLANGID),
       this.autoCorrectService.getDataByLang(this.USLANGID),
       this.voiceService.getDataByLang(this.USLANGID)]).pipe(
       concatMap(res => {
-        this.dictsMean = res[0] as MDictMean[];
+        this.dictsReference = res[0] as MDictReference[];
         let i = 0;
         this.dictItems = _.flatMap(dicts, d => {
           if (d === '0')
-            return _.map(this.dictsMean, d2 => new MDictItem(String(d2.DICTID), d2.DICTNAME));
+            return _.map(this.dictsReference, d2 => new MDictItem(String(d2.DICTID), d2.DICTNAME));
           else {
             i++;
             return [new MDictItem(d, `Custom${i}`)];
@@ -255,7 +255,7 @@ export class SettingsService {
   dictHtml(word: string, dictids: string[]): string {
     let s = '<html><body>\n';
     dictids.forEach((dictid, i) => {
-      const item = this.dictsMean.find(v => String(v.DICTID) === dictid);
+      const item = this.dictsReference.find(v => String(v.DICTID) === dictid);
       const ifrId = `ifr${i + 1}`;
       const url = item.urlString(word, this.autoCorrects);
       s += `<iframe id='$ifrId' frameborder='1' style='width:100%; height:500px; display:block' src='$url'></iframe>\n`;

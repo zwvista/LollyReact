@@ -63,7 +63,7 @@ export default class WordsLang extends React.Component<any, any> {
               tooltip="Level Down" onClick={() => this.updateLevel(rowData.ID, -1)} />
       <Button icon="fa fa-google" onClick={() => this.googleWord(rowData.WORD)}
               tooltip="Google Word" tooltipOptions={{position: 'top'}}/>
-      <Button icon="fa fa-book" onClick={() => this.dictMean(rowData.ID)}
+      <Button icon="fa fa-book" onClick={() => this.dictReference(rowData.ID)}
               tooltip="Dictionary" tooltipOptions={{position: 'top'}}/>
       <Button hidden={!this.settingsService.selectedDictNote} className="p-button-warning" label="Retrieve Note" onClick={() => this.getNote(rowData.ID)} />
     </div>;
@@ -165,7 +165,7 @@ export default class WordsLang extends React.Component<any, any> {
     this.settingsService.updateLevel(o, o.ID, delta).subscribe(_ => this.setRowStyle(o, $('tr').eq(i + 1)));
   }
 
-  dictMean(ID: number) {
+  dictReference(ID: number) {
     const index = this.wordsLangService.langWords.findIndex(value => value.ID === ID);
     history.push('/words-dict/lang/' + index);
   }

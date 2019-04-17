@@ -85,7 +85,7 @@ export default class WordsDict extends React.Component<any, any> {
       });
     }
     else {
-      const item2 = this.settingsService.dictsMean.find(v => v.DICTNAME === item.DICTNAME);
+      const item2 = this.settingsService.dictsReference.find(v => v.DICTNAME === item.DICTNAME);
       const url = item2.urlString(selectedWord, this.settingsService.autoCorrects);
       if (item2.DICTTYPENAME === 'OFFLINE') {
         this.setState({
