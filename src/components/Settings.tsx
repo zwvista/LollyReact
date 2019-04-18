@@ -63,6 +63,14 @@ export default class Settings extends React.Component<any, any> implements Setti
           </select>
         </div>
         <div className="form-inline mb-2">
+          <label htmlFor="dictTranslation" className="col-2 control-label">Dictionary(Translation):</label>
+          <select id="dictTranslation" className="col-4 form-control" value={this.settingsService.selectedDictTranslation ? this.settingsService.selectedDictTranslation.ID : ''} onChange={this.onDictTranslationChange}>
+            {
+              this.settingsService.dictsTranslation.map(o => <option key={o.ID} value={o.ID}>{o.DICTNAME}</option>)
+            }
+          </select>
+        </div>
+        <div className="form-inline mb-2">
           <label htmlFor="textbook" className="col-2 control-label">Textbook:</label>
           <select id="textbook" className="col-4 form-control" value={this.settingsService.selectedTextbook.ID} onChange={this.onTextbookChange}>
           {
@@ -135,6 +143,12 @@ export default class Settings extends React.Component<any, any> implements Setti
     this.subscription.add(this.settingsService.updateDictNote().subscribe(_ => this.updateServiceState()));
   };
 
+  onDictTranslationChange = (event: any) => {
+    const index = event.target.selectedIndex;
+    this.settingsService.selectedDictTranslation = this.settingsService.dictsTranslation[index];
+    this.subscription.add(this.settingsService.updateDictTranslation().subscribe(_ => this.updateServiceState()));
+  };
+
   onTextbookChange = (event: any) => {
     const index = event.target.selectedIndex;
     this.settingsService.selectedTextbook = this.settingsService.textbooks[index];
@@ -185,6 +199,9 @@ export default class Settings extends React.Component<any, any> implements Setti
   }
 
   onUpdateDictNote(): void {
+  }
+
+  onUpdateDictTranslation(): void {
   }
 
   onUpdateLang(): void {

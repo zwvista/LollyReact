@@ -46,3 +46,9 @@ export class MDictsNote {
 }
 export class MDictNote extends MDictionary {
 }
+
+export class MDictsTranslation {
+  VDICTSTRANSLATION!: MDictTranslation[];
+}
+export class MDictTranslation extends MDictionary {
+}

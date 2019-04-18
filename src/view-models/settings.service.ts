@@ -4,10 +4,10 @@ import { LanguageService } from '../services/language.service';
 import { UserSettingService } from '../services/user-setting.service';
 import { MUserSetting } from '../models/user-setting';
 import { MLanguage } from '../models/language';
-import { MDictItem, MDictReference, MDictNote } from '../models/dictionary';
+import { MDictItem, MDictReference, MDictNote, MDictTranslation } from '../models/dictionary';
 import { MTextbook } from '../models/textbook';
 import { EMPTY as empty, forkJoin, Observable, of } from 'rxjs';
-import { DictReferenceService, DictNoteService } from '../services/dictionary.service';
+import { DictReferenceService, DictNoteService, DictTranslationService } from '../services/dictionary.service';
 import { TextbookService } from '../services/textbook.service';
 import { AutoCorrectService } from '../services/autocorrect.service';
 import { autoCorrect, MAutoCorrect } from '../models/autocorrect';
@@ -64,6 +64,13 @@ export class SettingsService {
   }
   set USDICTITEMS(newValue: string) {
     this.selectedUSLang2.VALUE4 = newValue;
+  }
+  private selectedUSLang3!: MUserSetting;
+  get USDICTTRANSLATIONID(): number {
+    return +this.selectedUSLang3.VALUE1 || 0;
+  }
+  set USDICTTRANSLATIONID(newValue: number) {
+    this.selectedUSLang3.VALUE1 = String(newValue);
   }
   private selectedUSLang4!: MUserSetting;
   get USVOICEID(): number {
@@ -149,6 +156,16 @@ export class SettingsService {
     if (newValue) this.USDICTNOTEID = newValue.ID;
   }
 
+  dictsTranslation: MDictTranslation[] = [];
+  private _selectedDictTranslation: MDictTranslation | null = null;
+  get selectedDictTranslation(): MDictTranslation | null {
+    return this._selectedDictTranslation;
+  }
+  set selectedDictTranslation(newValue: MDictTranslation | null) {
+    this._selectedDictTranslation = newValue;
+    if (newValue) this.USDICTTRANSLATIONID = newValue.ID;
+  }
+
   textbooks: MTextbook[] = [];
   private _selectedTextbook: MTextbook;
   get selectedTextbook(): MTextbook {
@@ -188,6 +205,7 @@ export class SettingsService {
               @Inject private userSettingService: UserSettingService,
               @Inject private dictReferenceService: DictReferenceService,
               @Inject private dictNoteService: DictNoteService,
+              @Inject private dictTranslationService: DictTranslationService,
               @Inject private textbookService: TextbookService,
               @Inject private autoCorrectService: AutoCorrectService,
               @Inject private voiceService: VoicesService,
@@ -215,11 +233,13 @@ export class SettingsService {
     this.selectedLang = lang;
     this.USLANGID = this.selectedLang.ID;
     this.selectedUSLang2 = this.userSettings.find(value => value.KIND === 2 && value.ENTITYID === this.USLANGID)!;
+    this.selectedUSLang3 = this.userSettings.find(value => value.KIND === 3 && value.ENTITYID === this.USLANGID)!;
     this.selectedUSLang4 = this.userSettings.find(value => value.KIND === 4 && value.ENTITYID === this.USLANGID)!;
     const dicts = this.USDICTITEMS.split('\r\n');
     return forkJoin([
       this.dictReferenceService.getDataByLang(this.USLANGID),
       this.dictNoteService.getDataByLang(this.USLANGID),
+      this.dictTranslationService.getDataByLang(this.USLANGID),
       this.textbookService.getDataByLang(this.USLANGID),
       this.autoCorrectService.getDataByLang(this.USLANGID),
       this.voiceService.getDataByLang(this.USLANGID)]).pipe(
@@ -238,10 +258,13 @@ export class SettingsService {
         this.dictsNote = res[1] as MDictNote[];
         this.selectedDictNote = this.dictsNote.find(value => value.DICTID === this.USDICTNOTEID) ||
           (this.dictsNote.length === 0 ? null : this.dictsNote[0]);
-        this.textbooks = res[2] as MTextbook[];
+        this.dictsTranslation = res[2] as MDictTranslation[];
+        this.selectedDictTranslation = this.dictsTranslation.find(value => value.DICTID === this.USDICTTRANSLATIONID) ||
+          (this.dictsTranslation.length === 0 ? null : this.dictsTranslation[0]);
+        this.textbooks = res[3] as MTextbook[];
         this.selectedTextbook = this.textbooks.find(value => value.ID === this.USTEXTBOOKID)!;
-        this.autoCorrects = res[3] as MAutoCorrect[];
-        this.voices = res[4] as MVoice[];
+        this.autoCorrects = res[4] as MAutoCorrect[];
+        this.voices = res[5] as MVoice[];
         this.selectedVoice = this.voices.find(value => value.ID === this.USVOICEID) ||
           (this.voices.length === 0 ? null : this.voices[0]);
         if (isinit) {
@@ -295,6 +318,15 @@ export class SettingsService {
     return this.userSettingService.updateDictNote(this.selectedUSLang2.ID, this.USDICTNOTEID).pipe(
       map( _ => {
         if (this.settingsListener) this.settingsListener.onUpdateDictNote();
+        return 0;
+      }),
+    );
+  }
+
+  updateDictTranslation(): Observable<number> {
+    return this.userSettingService.updateDictTranslation(this.selectedUSLang3.ID, this.USDICTNOTEID).pipe(
+      map( _ => {
+        if (this.settingsListener) this.settingsListener.onUpdateDictTranslation();
         return 0;
       }),
     );
@@ -456,6 +488,7 @@ export interface SettingsListener {
   onUpdateTextbook(): void;
   onUpdateDictItem(): void;
   onUpdateDictNote(): void;
+  onUpdateDictTranslation(): void;
   onUpdateVoice(): void;
   onUpdateUnitFrom(): void;
   onUpdatePartFrom(): void;

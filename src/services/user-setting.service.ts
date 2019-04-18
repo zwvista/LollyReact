@@ -39,6 +39,12 @@ export class UserSettingService extends BaseService {
     );
   }
 
+  updateDictTranslation(id: number, dicttranslationid: number): Observable<number> {
+    const url = `${this.baseUrl}USERSETTINGS/${id}`;
+    return this.http.put<number>(url, {VALUE1: String(dicttranslationid)} as MUserSetting).pipe(
+    );
+  }
+
   updateUnitFrom(id: number, unitfrom: number): Observable<number> {
     const url = `${this.baseUrl}USERSETTINGS/${id}`;
     return this.http.put<number>(url, {VALUE1: String(unitfrom)} as MUserSetting).pipe(
