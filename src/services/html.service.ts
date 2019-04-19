@@ -9,28 +9,26 @@ export class HtmlService extends BaseService {
                          templateHandler: (text: string, template: string) => string): string {
     const dic = new Map([['<delete>', ''], ['\\t', '\t'], ['\\r', '\r'], ['\\n', '\n']]);
 
-    let text = '';
+    let text = html;
     do {
-      if (!transform) break;
+      if (transform.length === 0) break;
       const arr = transform.split('\r\n');
-      let regex = new RegExp(arr[0], 'g');
-      const m = regex.exec(html);
-      if (!m) break;
-      text = m[0];
+      if (arr.length % 2 === 1) arr.pop();
 
-      const f = (replacer: string) => {
+      for (let i = 0; i < arr.length; i++) {
+        const regex = new RegExp(arr[i], 'g');
+        let replacer = arr[i + 1];
+        if (replacer.startsWith('<extract>')) {
+          replacer = replacer.substring('<extract>'.length);
+          const ms = regex.exec(html)!;
+          text = ms.reduce((acc, s) => acc + s, '');
+          if (text.length === 0) break;
+        }
         dic.forEach((value, key) => replacer = replacer.replace(key, value));
         text = text.replace(regex, replacer);
-      };
+      }
 
-      f(arr[1]);
-      for (let i = 2; i < arr.length; i++)
-        if (i % 2 === 0)
-          regex = new RegExp(arr[i], 'g');
-        else
-          f(arr[i]);
-
-      if (!template) break;
+      if (template.length === 0) break;
       text = templateHandler(text, template);
 
     } while (false);
