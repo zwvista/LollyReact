@@ -1,7 +1,8 @@
 import * as React from 'react';
 import './App.css';
 
-import { Route, Router, Switch } from 'react-router-dom'
+import { Link, Route, Router, Switch } from 'react-router-dom'
+import { AppBar, Tab, Tabs } from '@material-ui/core';
 
 import { Inject, Module } from 'react.di';
 import { WordsUnitService } from './view-models/words-unit.service';
@@ -52,6 +53,11 @@ import { VoicesService } from './services/voices.service';
 import { WordFamiService } from './services/word-fami.service';
 import { WordsFamiService } from './view-models/words-fami.service';
 
+// https://stackoverflow.com/questions/53375964/using-a-link-component-with-listitem-and-typescript
+// https://stackoverflow.com/questions/51257426/how-do-you-get-material-ui-tabs-to-work-with-react-router
+function LinkTab(props: any) {
+  return <Tab component={Link} {...props} />;
+}
 
 @Module({
   providers: [
@@ -81,6 +87,7 @@ export default class App extends React.Component<any, any> {
     this.state = {
       items,
       activeItem,
+      value: 0,
     };
   }
 
@@ -96,6 +103,22 @@ export default class App extends React.Component<any, any> {
           <div className="content-section implementation">
             <TabMenu model={this.state.items} activeItem={this.state.activeItem} onTabChange={this.onTabChange} />
           </div>
+          <AppBar position="static" color="default">
+            <Tabs
+              value={this.state.value}
+              onChange={this.onTab2Change}
+              indicatorColor="primary"
+              textColor="primary"
+            >
+              <LinkTab label="Words in Unit" to="/words-unit" />
+              <LinkTab label="Phrases in Unit" to="/phrases-unit" />
+              <LinkTab label="Words in Language" to="/words-lang" />
+              <LinkTab label="Phrases in Language" to="/phrases-lang" />
+              <LinkTab label="Words in Textbook" to="/words-textbook" />
+              <LinkTab label="Phrases in Textbook" to="/phrases-textbook" />
+              <LinkTab label="Settings" to="/settings" />
+            </Tabs>
+          </AppBar>
           <Switch>
             <Route path="/" component={WordsUnit} exact />
             <Route path="/words-unit" component={WordsUnit} exact />
@@ -121,6 +144,10 @@ export default class App extends React.Component<any, any> {
   onTabChange = (e: any) => {
     this.setState({activeItem: e.value});
     history.push(e.value.target);
+  };
+
+  onTab2Change = (event: any, value: any) => {
+    this.setState({value})
   };
 
 }
