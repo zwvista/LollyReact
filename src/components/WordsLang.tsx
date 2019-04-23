@@ -30,7 +30,7 @@ export default class WordsLang extends React.Component<any, any> {
   };
 
   componentDidMount() {
-    this.onRefresh(this.state.page);
+    this.onRefresh(this.state.page, this.state.rows);
   }
 
   onPageChange = (e: PageState) => {
@@ -39,7 +39,7 @@ export default class WordsLang extends React.Component<any, any> {
       rows: e.rows,
       page: e.page + 1,
     });
-    this.onRefresh(e.page + 1);
+    this.onRefresh(e.page + 1, this.state.rows);
   };
 
   componentWillUnmount() {
@@ -81,7 +81,7 @@ export default class WordsLang extends React.Component<any, any> {
               <Button hidden={!this.settingsService.selectedVoice} icon="fa fa-volume-up" tooltipOptions={{position: 'top'}}
                       tooltip="Speak" onClick={() => this.settingsService.speak(this.state.newWord)} />
               <Button label="Add" icon="fa fa-plus" onClick={() => history.push('/words-lang-detail/0')} />
-              <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => this.onRefresh(this.state.page)}/>
+              <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => this.onRefresh(this.state.page, this.state.rows)}/>
               <Button label="Dictionary" icon="fa fa-book" onClick={() => history.push('/words-dict/lang/0')} />
             </span>
           </div>
@@ -130,8 +130,8 @@ export default class WordsLang extends React.Component<any, any> {
       $(tr).css('background-color', '').css('color', '');
   }
 
-  onRefresh = (page: number) => {
-    this.subscription.add(this.wordsLangService.getData(page, this.state.rows).subscribe(_ => {
+  onRefresh = (page: number, rows: number) => {
+    this.subscription.add(this.wordsLangService.getData(page, rows).subscribe(_ => {
       this.updateServiceState();
       const self = this;
       $("tr").each((i, tr) => {

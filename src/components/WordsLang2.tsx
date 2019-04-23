@@ -8,8 +8,8 @@ import {
   Fab,
   Table,
   TableBody,
-  TableCell,
-  TableHead,
+  TableCell, TableFooter,
+  TableHead, TablePagination,
   TableRow,
   TextField,
   Toolbar,
@@ -48,7 +48,7 @@ export default class WordsLang2 extends React.Component<any, any> {
   };
 
   componentDidMount() {
-    this.onRefresh(this.state.page);
+    this.onRefresh(this.state.page, this.state.rows);
   }
 
   componentWillUnmount() {
@@ -70,7 +70,7 @@ export default class WordsLang2 extends React.Component<any, any> {
           <Button variant="contained" color="primary" onClick={() => history.push('/words-lang-detail/0')}>
             <span><FontAwesomeIcon icon={faPlus} />Add</span>
           </Button>
-          <Button variant="contained" color="primary" onClick={(e: any) => this.onRefresh(this.state.page)}>
+          <Button variant="contained" color="primary" onClick={(e: any) => this.onRefresh(this.state.page, this.state.rows)}>
             <span><FontAwesomeIcon icon={faSync} />Refresh</span>
           </Button>
           <Button variant="contained" color="primary" onClick={() => history.push('/words-dict/lang/0')}>
@@ -79,6 +79,20 @@ export default class WordsLang2 extends React.Component<any, any> {
         </Toolbar>
         <Table>
           <TableHead>
+            <TableRow>
+              <TablePagination
+                rowsPerPageOptions={this.settingsService.USROWSPERPAGEOPTIONS}
+                colSpan={5}
+                count={this.wordsLangService.langWordsCount}
+                rowsPerPage={this.state.rows}
+                page={this.state.page - 1}
+                SelectProps={{
+                  native: true,
+                }}
+                onChangePage={this.handleChangePage}
+                onChangeRowsPerPage={this.handleChangeRowsPerPage}
+              />
+            </TableRow>
             <TableRow>
               <TableCell>ID</TableCell>
               <TableCell>WORD</TableCell>
@@ -89,12 +103,12 @@ export default class WordsLang2 extends React.Component<any, any> {
           </TableHead>
           <TableBody>
             {this.wordsLangService.langWords.map(row => (
-              <TableRow key={row.ID}>
-                <TableCell>{row.ID}</TableCell>
-                <TableCell>{row.WORD}</TableCell>
-                <TableCell>{row.NOTE}</TableCell>
-                <TableCell>{row.LEVEL}</TableCell>
-                <TableCell>
+              <TableRow key={row.ID} style={{backgroundColor:row.colorStyle['background-color']}}>
+                <TableCell style={{color:row.colorStyle['color']}}>{row.ID}</TableCell>
+                <TableCell style={{color:row.colorStyle['color']}}>{row.WORD}</TableCell>
+                <TableCell style={{color:row.colorStyle['color']}}>{row.NOTE}</TableCell>
+                <TableCell style={{color:row.colorStyle['color']}}>{row.LEVEL}</TableCell>
+                <TableCell style={{color:row.colorStyle['color']}}>
                   <Tooltip title="Delete">
                     <Fab size="small" color="secondary" onClick={() => this.deleteWord(row.ID)}>
                       <FontAwesomeIcon icon={faTrash} />
@@ -146,6 +160,22 @@ export default class WordsLang2 extends React.Component<any, any> {
               </TableRow>
             ))}
           </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+                rowsPerPageOptions={this.settingsService.USROWSPERPAGEOPTIONS}
+                colSpan={5}
+                count={this.wordsLangService.langWordsCount}
+                rowsPerPage={this.state.rows}
+                page={this.state.page - 1}
+                SelectProps={{
+                  native: true,
+                }}
+                onChangePage={this.handleChangePage}
+                onChangeRowsPerPage={this.handleChangeRowsPerPage}
+              />
+            </TableRow>
+          </TableFooter>
         </Table>
       </div>
     );
@@ -167,8 +197,18 @@ export default class WordsLang2 extends React.Component<any, any> {
     }));
   };
 
-  onRefresh = (page: number) => {
-    this.subscription.add(this.wordsLangService.getData(page, this.state.rows).subscribe(_ => {
+  handleChangePage = (event: any, page: any) => {
+    this.setState({ page: page + 1 });
+    this.onRefresh(page + 1, this.state.rows);
+  };
+
+  handleChangeRowsPerPage = (event: any) => {
+    this.setState({ page: 1, rows: event.target.value });
+    this.onRefresh(1, event.target.value);
+  };
+
+  onRefresh = (page: number, rows: number) => {
+    this.subscription.add(this.wordsLangService.getData(page, rows).subscribe(_ => {
       this.updateServiceState();
     }));
   };

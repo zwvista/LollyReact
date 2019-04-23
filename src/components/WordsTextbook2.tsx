@@ -93,7 +93,7 @@ export default class WordsTextbook2 extends React.Component<any, any> {
           </TableHead>
           <TableBody>
             {this.wordsUnitService.textbookWords.map(row => (
-              <TableRow key={row.ID}>
+              <TableRow key={row.ID} style={{backgroundColor:row.colorStyle['background-color']}}>
                 <TableCell style={{color:row.colorStyle['color']}}>{row.ID}</TableCell>
                 <TableCell style={{color:row.colorStyle['color']}}>{row.TEXTBOOKNAME}</TableCell>
                 <TableCell style={{color:row.colorStyle['color']}}>{row.UNITSTR}</TableCell>
