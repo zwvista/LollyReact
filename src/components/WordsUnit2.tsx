@@ -24,7 +24,7 @@ import {
   faArrowUp,
   faArrowDown,
   faBook,
-  faPlus,
+  faPlus, faSync,
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
@@ -67,7 +67,7 @@ export default class WordsUnit2 extends React.Component<any, any> {
             <span><FontAwesomeIcon icon={faPlus} />Add</span>
           </Button>
           <Button variant="contained" color="primary" onClick={this.onRefresh}>
-            <span><FontAwesomeIcon icon={faPlus} />Refresh</span>
+            <span><FontAwesomeIcon icon={faSync} />Refresh</span>
           </Button>
           <Button hidden={!this.settingsService.selectedDictNote} variant="contained">
             Retrieve All Notes

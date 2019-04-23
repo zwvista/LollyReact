@@ -4,7 +4,33 @@ import { Inject } from 'react.di';
 import './Common.css'
 import { Subscription } from 'rxjs';
 import { SettingsService } from '../view-models/settings.service';
-import { Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
+import {
+  Button,
+  Fab,
+  Table,
+  TableBody,
+  TableCell, TableFooter,
+  TableHead, TablePagination,
+  TableRow,
+  TextField,
+  Toolbar,
+  Tooltip
+} from '@material-ui/core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faArrowDown,
+  faArrowUp,
+  faBook,
+  faCopy,
+  faEdit,
+  faPlus, faSync,
+  faTrash,
+  faVolumeUp
+} from '@fortawesome/free-solid-svg-icons';
+import history from '../view-models/history';
+import * as CopyToClipboard from 'react-copy-to-clipboard';
+import { faGoogle } from '@fortawesome/free-brands-svg-icons';
+import * as $ from 'jquery';
 
 export default class WordsTextbook2 extends React.Component<any, any> {
   @Inject wordsUnitService: WordsUnitService;
@@ -18,7 +44,7 @@ export default class WordsTextbook2 extends React.Component<any, any> {
   };
 
   componentDidMount() {
-    this.onRefresh(this.state.page);
+    this.onRefresh(this.state.page, this.state.rows);
   }
 
   componentWillUnmount() {
@@ -28,8 +54,30 @@ export default class WordsTextbook2 extends React.Component<any, any> {
   render() {
     return (
       <div>
+        <Toolbar>
+          <Button variant="contained" color="primary" onClick={(e: any) => this.onRefresh(this.state.page, this.state.rows)}>
+            <span><FontAwesomeIcon icon={faSync} />Refresh</span>
+          </Button>
+          <Button variant="contained" color="primary" onClick={() => history.push('/words-dict/textbook/0')}>
+            <span><FontAwesomeIcon icon={faBook} />Dictionary</span>
+          </Button>
+        </Toolbar>
         <Table>
           <TableHead>
+            <TableRow>
+              <TablePagination
+                rowsPerPageOptions={this.settingsService.USROWSPERPAGEOPTIONS}
+                colSpan={9}
+                count={this.wordsUnitService.textbookWordCount}
+                rowsPerPage={this.state.rows}
+                page={this.state.page - 1}
+                SelectProps={{
+                  native: true,
+                }}
+                onChangePage={this.handleChangePage}
+                onChangeRowsPerPage={this.handleChangeRowsPerPage}
+              />
+            </TableRow>
             <TableRow>
               <TableCell>ID</TableCell>
               <TableCell>TEXTBOOKNAME</TableCell>
@@ -46,29 +94,128 @@ export default class WordsTextbook2 extends React.Component<any, any> {
           <TableBody>
             {this.wordsUnitService.textbookWords.map(row => (
               <TableRow key={row.ID}>
-                <TableCell>{row.ID}</TableCell>
-                <TableCell>{row.TEXTBOOKNAME}</TableCell>
-                <TableCell>{row.UNITSTR}</TableCell>
-                <TableCell>{row.PARTSTR}</TableCell>
-                <TableCell>{row.SEQNUM}</TableCell>
-                <TableCell>{row.WORDID}</TableCell>
-                <TableCell>{row.WORD}</TableCell>
-                <TableCell>{row.NOTE}</TableCell>
-                <TableCell>{row.LEVEL}</TableCell>
-                <TableCell>A</TableCell>
+                <TableCell style={{color:row.colorStyle['color']}}>{row.ID}</TableCell>
+                <TableCell style={{color:row.colorStyle['color']}}>{row.TEXTBOOKNAME}</TableCell>
+                <TableCell style={{color:row.colorStyle['color']}}>{row.UNITSTR}</TableCell>
+                <TableCell style={{color:row.colorStyle['color']}}>{row.PARTSTR}</TableCell>
+                <TableCell style={{color:row.colorStyle['color']}}>{row.SEQNUM}</TableCell>
+                <TableCell style={{color:row.colorStyle['color']}}>{row.WORDID}</TableCell>
+                <TableCell style={{color:row.colorStyle['color']}}>{row.WORD}</TableCell>
+                <TableCell style={{color:row.colorStyle['color']}}>{row.NOTE}</TableCell>
+                <TableCell style={{color:row.colorStyle['color']}}>{row.LEVEL}</TableCell>
+                <TableCell style={{color:row.colorStyle['color']}}>
+                  <Tooltip title="Delete">
+                    <Fab size="small" color="secondary" onClick={() => this.deleteWord(row.ID)}>
+                      <FontAwesomeIcon icon={faTrash} />
+                    </Fab>
+                  </Tooltip>
+                  <Tooltip title="Edit">
+                    <Fab size="small" color="primary" onClick={() => history.push('/words-unit-detail/' + row.ID)}>
+                      <FontAwesomeIcon icon={faEdit} />
+                    </Fab>
+                  </Tooltip>
+                  <Tooltip title="Speak">
+                    <Fab size="small" color="primary" hidden={!this.settingsService.selectedVoice}
+                         onClick={() => this.settingsService.speak(row.WORD)}>
+                      <FontAwesomeIcon icon={faVolumeUp} />
+                    </Fab>
+                  </Tooltip>
+                  <CopyToClipboard text={row.WORD}>
+                    <Tooltip title="Copy">
+                      <Fab size="small" color="primary">
+                        <FontAwesomeIcon icon={faCopy} />
+                      </Fab>
+                    </Tooltip>
+                  </CopyToClipboard>
+                  <Tooltip title="Level Up">
+                    <Fab size="small" onClick={() => this.updateLevel(row.ID, 1)}>
+                      <FontAwesomeIcon icon={faArrowUp} />
+                    </Fab>
+                  </Tooltip>
+                  <Tooltip title="Level Down">
+                    <Fab size="small" onClick={() => this.updateLevel(row.ID, -1)}>
+                      <FontAwesomeIcon icon={faArrowDown} />
+                    </Fab>
+                  </Tooltip>
+                  <Tooltip title="Google Word" onClick={() => this.googleWord(row.WORD)}>
+                    <Fab size="small" color="primary">
+                      <FontAwesomeIcon icon={faGoogle} />
+                    </Fab>
+                  </Tooltip>
+                  <Tooltip title="Dictionary" onClick={() => this.dictReference(row.ID)}>
+                    <Fab size="small" color="primary">
+                      <FontAwesomeIcon icon={faBook} />
+                    </Fab>
+                  </Tooltip>
+                  <Button variant="contained" hidden={!this.settingsService.selectedDictNote}
+                          onClick={() => this.getNote(row.ID)}>
+                    Retrieve Note
+                  </Button>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+                rowsPerPageOptions={this.settingsService.USROWSPERPAGEOPTIONS}
+                colSpan={9}
+                count={this.wordsUnitService.textbookWordCount}
+                rowsPerPage={this.state.rows}
+                page={this.state.page - 1}
+                SelectProps={{
+                  native: true,
+                }}
+                onChangePage={this.handleChangePage}
+                onChangeRowsPerPage={this.handleChangeRowsPerPage}
+              />
+            </TableRow>
+          </TableFooter>
         </Table>
       </div>
     );
   }
 
-  onRefresh = (page: number) => {
-    this.subscription.add(this.wordsUnitService.getDataInLang(page, this.state.rows).subscribe(_ => {
+  handleChangePage = (event: any, page: any) => {
+    this.setState({ page: page + 1 });
+    this.onRefresh(page + 1, this.state.rows);
+  };
+
+  handleChangeRowsPerPage = (event: any) => {
+    this.setState({ page: 1, rows: event.target.value });
+    this.onRefresh(1, event.target.value);
+  };
+
+  onRefresh = (page: number, rows: number) => {
+    this.subscription.add(this.wordsUnitService.getDataInLang(page, rows).subscribe(_ => {
       this.updateServiceState();
     }));
   };
+
+  deleteWord(index: number) {
+    console.log(index);
+  }
+
+  getNote(index: number) {
+    console.log(index);
+    this.wordsUnitService.getNote(index).subscribe();
+  }
+
+  // https://stackoverflow.com/questions/42775017/angular-2-redirect-to-an-external-url-and-open-in-a-new-tab
+  googleWord(WORD: string) {
+    window.open('https://www.google.com/search?q=' + encodeURIComponent(WORD), '_blank');
+  }
+
+  updateLevel(ID: number, delta: number) {
+    const i = this.wordsUnitService.textbookWords.findIndex(v => v.ID === ID);
+    const o = this.wordsUnitService.textbookWords[i];
+    this.settingsService.updateLevel(o, o.WORDID, delta).subscribe();
+  }
+
+  dictReference(ID: number) {
+    const index = this.wordsUnitService.textbookWords.findIndex(value => value.ID === ID);
+    history.push('/words-dict/textbook/' + index);
+  }
 
   updateServiceState() {
     this.setState({wordsUnitService: this.wordsUnitService});

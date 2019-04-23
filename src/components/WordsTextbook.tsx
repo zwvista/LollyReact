@@ -27,7 +27,7 @@ export default class WordsTextbook extends React.Component<any, any> {
   };
 
   componentDidMount() {
-    this.onRefresh(this.state.page);
+    this.onRefresh(this.state.page, this.state.rows);
   }
 
   onPageChange = (e: PageState) => {
@@ -36,7 +36,7 @@ export default class WordsTextbook extends React.Component<any, any> {
       rows: e.rows,
       page: e.page + 1,
     });
-    this.onRefresh(e.page + 1)
+    this.onRefresh(e.page + 1, e.rows);
   };
 
   componentWillUnmount() {
@@ -71,7 +71,7 @@ export default class WordsTextbook extends React.Component<any, any> {
       <div>
         <Toolbar>
           <div className="p-toolbar-group-left">
-            <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => this.onRefresh(this.state.page)}/>
+            <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => this.onRefresh(this.state.page, this.state.rows)}/>
             <Button label="Dictionary" icon="fa fa-book" onClick={() => history.push('/words-dict/textbook/0')} />
           </div>
         </Toolbar>
@@ -108,9 +108,9 @@ export default class WordsTextbook extends React.Component<any, any> {
       $(tr).css('background-color', '').css('color', '');
   }
 
-  onRefresh = (page: number) => {
+  onRefresh = (page: number, rows: number) => {
     // https://stackoverflow.com/questions/4228356/integer-division-with-remainder-in-javascript
-    this.subscription.add(this.wordsUnitService.getDataInLang(page, this.state.rows).subscribe(_ => {
+    this.subscription.add(this.wordsUnitService.getDataInLang(page, rows).subscribe(_ => {
       this.updateServiceState();
       const self = this;
       $("tr").each((i, tr) => {
