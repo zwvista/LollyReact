@@ -44,7 +44,7 @@ export default class WordsTextbook2 extends React.Component<any, any> {
             </TableRow>
           </TableHead>
           <TableBody>
-            {this.wordsUnitService.unitWords.map(row => (
+            {this.wordsUnitService.textbookWords.map(row => (
               <TableRow key={row.ID}>
                 <TableCell>{row.ID}</TableCell>
                 <TableCell>{row.TEXTBOOKNAME}</TableCell>

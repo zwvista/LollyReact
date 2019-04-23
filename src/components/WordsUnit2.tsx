@@ -4,13 +4,35 @@ import { Inject } from 'react.di';
 import './Common.css'
 import { Subscription } from 'rxjs';
 import { SettingsService } from '../view-models/settings.service';
-import { Button, Fab, Table, TableBody, TableCell, TableHead, TableRow, Tooltip } from '@material-ui/core';
-import { faTrash, faEdit, faVolumeUp, faCopy, faArrowUp, faArrowDown, faBook } from '@fortawesome/free-solid-svg-icons'
+import {
+  Button,
+  Fab,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  TextField,
+  Toolbar,
+  Tooltip
+} from '@material-ui/core';
+import {
+  faTrash,
+  faEdit,
+  faVolumeUp,
+  faCopy,
+  faArrowUp,
+  faArrowDown,
+  faBook,
+  faPlus,
+} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { MUnitWord } from '../models/unit-word';
 import history from '../view-models/history';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
+import { SyntheticEvent } from 'react';
+import { KeyboardEvent } from 'react';
 
 export default class WordsUnit2 extends React.Component<any, any> {
   @Inject wordsUnitService: WordsUnitService;
@@ -32,6 +54,31 @@ export default class WordsUnit2 extends React.Component<any, any> {
   render() {
     return (
       <div>
+        <Toolbar>
+          <TextField label="New Word" value={this.state.newWord}
+                     onChange={this.onNewWordChange} onKeyPress={this.onNewWordKeyPress}/>
+          <Tooltip title="Speak">
+            <Fab size="small" color="primary" hidden={!this.settingsService.selectedVoice}
+                 onClick={() => this.settingsService.speak(this.state.newWord)}>
+              <FontAwesomeIcon icon={faVolumeUp} />
+            </Fab>
+          </Tooltip>
+          <Button variant="contained" color="primary" onClick={() => history.push('/words-unit-detail/0')}>
+            <span><FontAwesomeIcon icon={faPlus} />Add</span>
+          </Button>
+          <Button variant="contained" color="primary" onClick={this.onRefresh}>
+            <span><FontAwesomeIcon icon={faPlus} />Refresh</span>
+          </Button>
+          <Button hidden={!this.settingsService.selectedDictNote} variant="contained">
+            Retrieve All Notes
+          </Button>
+          <Button hidden={!this.settingsService.selectedDictNote} variant="contained">
+            Retrieve Notes If Empty
+          </Button>
+          <Button variant="contained" color="primary" onClick={() => history.push('/words-dict/unit/0')}>
+            <span><FontAwesomeIcon icon={faBook} />Dictionary</span>
+          </Button>
+        </Toolbar>
         <Table>
           <TableHead>
             <TableRow>
@@ -113,6 +160,23 @@ export default class WordsUnit2 extends React.Component<any, any> {
       </div>
     );
   }
+
+  onNewWordChange = (e: SyntheticEvent) => {
+    this.setState({newWord: (e.nativeEvent.target as HTMLInputElement).value});
+  };
+
+  onNewWordKeyPress = (e: KeyboardEvent) => {
+    if (e.key !== 'Enter' || !this.state.newWord) return;
+    const o = this.wordsUnitService.newUnitWord();
+    o.WORD = this.settingsService.autoCorrectInput(this.state.newWord);
+    this.setState({newWord: ''});
+    this.updateServiceState();
+    this.subscription.add(this.wordsUnitService.create(o).subscribe(id => {
+      o.ID = id as number;
+      this.wordsUnitService.unitWords.push(o);
+      this.updateServiceState();
+    }));
+  };
 
   onRefresh = (e:any) => {
     this.subscription.add(this.wordsUnitService.getDataInTextbook().subscribe(_ => {
