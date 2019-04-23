@@ -16,6 +16,9 @@ import * as $ from "jquery";
 import { MWordColor } from '../models/word-color';
 import { MUnitWord } from '../models/unit-word';
 
+import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 export default class WordsUnit extends React.Component<any, any> {
   @Inject wordsUnitService: WordsUnitService;
   @Inject settingsService: SettingsService;
@@ -134,10 +137,9 @@ export default class WordsUnit extends React.Component<any, any> {
   onRefresh = (e:any) => {
     this.subscription.add(this.wordsUnitService.getDataInTextbook().subscribe(_ => {
       this.updateServiceState();
-      const self = this;
       $("tr").each((i, row) => {
         if (i === 0) return;
-        this.setRowStyle(self.wordsUnitService.unitWords[i - 1], $(row));
+        this.setRowStyle(this.wordsUnitService.unitWords[i - 1], $(row));
       });
     }));
   };

@@ -17,12 +17,26 @@ import { LanguageService } from './services/language.service';
 import { UnitWordService } from './services/unit-word.service';
 import { SettingsService } from './view-models/settings.service';
 
-import WordsUnit from './components/WordsUnit';
-import WordsUnitDetail from './components/WordsUnitDetail';
-import WordsDict from './components/WordsDict';
+import PhrasesLang from './components/PhrasesLang';
+import PhrasesLang2 from './components/PhrasesLang2';
+import PhrasesLangDetail from './components/PhrasesLangDetail';
+import PhrasesTextbook from './components/PhrasesTextbook';
+import PhrasesTextbook2 from './components/PhrasesTextbook2';
+import PhrasesTextbookDetail from './components/PhrasesTextbookDetail';
 import PhrasesUnit from './components/PhrasesUnit';
+import PhrasesUnit2 from './components/PhrasesUnit2';
 import PhrasesUnitDetail from './components/PhrasesUnitDetail';
 import Settings from './components/Settings';
+import WordsDict from './components/WordsDict';
+import WordsLang from './components/WordsLang';
+import WordsLang2 from './components/WordsLang2';
+import WordsLangDetail from './components/WordsLangDetail';
+import WordsTextbook from './components/WordsTextbook';
+import WordsTextbook2 from './components/WordsTextbook2';
+import WordsTextbookDetail from './components/WordsTextbookDetail';
+import WordsUnit from './components/WordsUnit';
+import WordsUnit2 from './components/WordsUnit2';
+import WordsUnitDetail from './components/WordsUnitDetail';
 
 import 'primereact/resources/themes/nova-light/theme.css';
 import 'primereact/resources/primereact.min.css';
@@ -35,29 +49,20 @@ import history from './view-models/history';
 
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
+
 import { AutoCorrectService } from './services/autocorrect.service';
 import { LangPhraseService } from './services/lang-phrase.service';
 import { LangWordService } from './services/lang-word.service';
 import { WordsLangService } from './view-models/words-lang.service';
 import { PhrasesLangService } from './view-models/phrases-lang.service';
-import WordsLang from './components/WordsLang';
-import PhrasesLangDetail from './components/PhrasesLangDetail';
-import WordsLangDetail from './components/WordsLangDetail';
-import PhrasesLang from './components/PhrasesLang';
 import { NoteService } from './view-models/note.service';
-import WordsTextbook from './components/WordsTextbook';
-import WordsTextbookDetail from './components/WordsTextbookDetail';
-import PhrasesTextbookDetail from './components/PhrasesTextbookDetail';
-import PhrasesTextbook from './components/PhrasesTextbook';
 import { VoicesService } from './services/voices.service';
 import { WordFamiService } from './services/word-fami.service';
 import { WordsFamiService } from './view-models/words-fami.service';
-import WordsUnit2 from './components/WordsUnit2';
-import PhrasesUnit2 from './components/PhrasesUnit2';
-import WordsLang2 from './components/WordsLang2';
-import PhrasesTextbook2 from './components/PhrasesTextbook2';
-import PhrasesLang2 from './components/PhrasesLang2';
-import WordsTextbook2 from './components/WordsTextbook2';
+
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faDollarSign, faEuroSign, faBus, faTrain, faPlane, faRocket, faCar, faTaxi, faCog } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 // https://stackoverflow.com/questions/53375964/using-a-link-component-with-listitem-and-typescript
 // https://stackoverflow.com/questions/51257426/how-do-you-get-material-ui-tabs-to-work-with-react-router
@@ -80,23 +85,24 @@ export default class App extends React.Component<any, any> {
 
   constructor(props: any) {
     super(props);
+    library.add(faDollarSign, faEuroSign, faBus, faTrain, faPlane, faRocket, faCar, faTaxi, faCog);
     const items = [
       {label: 'Words in Unit', icon: 'fa fa-bus fa-lg', target: '/words-unit'},
-      {label: 'Phrases in Unit', icon: 'fa fa-bus fa-lg', target: '/phrases-unit'},
+      {label: 'Phrases in Unit', icon: 'fa fa-train fa-lg', target: '/phrases-unit'},
       {label: 'Words in Language', icon: 'fa fa-plane fa-lg', target: '/words-lang'},
-      {label: 'Phrases in Language', icon: 'fa fa-plane fa-lg', target: '/phrases-lang'},
-      {label: 'Words in Textbook', icon: 'fa fa-taxi fa-lg', target: '/words-textbook'},
+      {label: 'Phrases in Language', icon: 'fa fa-rocket fa-lg', target: '/phrases-lang'},
+      {label: 'Words in Textbook', icon: 'fa fa-car fa-lg', target: '/words-textbook'},
       {label: 'Phrases in Textbook', icon: 'fa fa-taxi fa-lg', target: '/phrases-textbook'},
-      {label: 'Settings', icon: 'fa fa-cog fa-lg', target: '/settings'},
+      {label: 'Settings', icon: 'fa fa-gear fa-lg', target: '/settings'},
     ];
     const items2 = [
-      {label: 'Words in Unit', icon: 'fa fa-bus fa-lg', target: '/words-unit2'},
-      {label: 'Phrases in Unit', icon: 'fa fa-bus fa-lg', target: '/phrases-unit2'},
-      {label: 'Words in Language', icon: 'fa fa-plane fa-lg', target: '/words-lang2'},
-      {label: 'Phrases in Language', icon: 'fa fa-plane fa-lg', target: '/phrases-lang2'},
-      {label: 'Words in Textbook', icon: 'fa fa-taxi fa-lg', target: '/words-textbook2'},
-      {label: 'Phrases in Textbook', icon: 'fa fa-taxi fa-lg', target: '/phrases-textbook2'},
-      {label: 'Settings', icon: 'fa fa-cog fa-lg', target: '/settings'},
+      {label: 'Words in Unit', icon: 'bus', target: '/words-unit2'},
+      {label: 'Phrases in Unit', icon: 'train', target: '/phrases-unit2'},
+      {label: 'Words in Language', icon: 'plane', target: '/words-lang2'},
+      {label: 'Phrases in Language', icon: 'rocket', target: '/phrases-lang2'},
+      {label: 'Words in Textbook', icon: 'car', target: '/words-textbook2'},
+      {label: 'Phrases in Textbook', icon: 'taxi', target: '/phrases-textbook2'},
+      {label: 'Settings', icon: 'cog', target: '/settings'},
     ];
     const activeItem = items.find((value: any) => window.location.href.includes(value.target));
     this.state = {
@@ -119,8 +125,8 @@ export default class App extends React.Component<any, any> {
           <h2>Lolly React</h2>
           <AppBar position="static" color="default">
             <Tabs value={this.state.valueApp} onChange={this.onTabAppChange} indicatorColor="primary" textColor="primary">
-              <Tab label="App1" />
-              <Tab label="App2" />
+              <Tab label={<span><FontAwesomeIcon icon="dollar-sign" size="lg"/> App1</span>} />
+              <Tab label={<span><FontAwesomeIcon icon="euro-sign" size="lg"/> App2</span>} />
             </Tabs>
           </AppBar>
           {this.state.valueApp === 0 && <div className="content-section implementation">
@@ -129,7 +135,7 @@ export default class App extends React.Component<any, any> {
           {this.state.valueApp === 1 && <AppBar position="static" color="default">
             <Tabs value={this.state.value} onChange={this.onTab2Change} indicatorColor="primary" textColor="primary">
               {this.state.items2.map((row: any) =>
-                <LinkTab key={row.label} label={row.label} to={row.target} />
+                <LinkTab key={row.label} label={<span><FontAwesomeIcon icon={row.icon} size="lg"/> {row.label}</span>} to={row.target} />
               )}
             </Tabs>
           </AppBar>}
@@ -174,10 +180,13 @@ export default class App extends React.Component<any, any> {
     let index = this.state.valueApp === 0 ? this.state.items.indexOf(this.state.activeItem) : this.state.value;
     if (index === -1) index = 0;
     this.setState({valueApp});
-    if (valueApp === 0)
+    if (valueApp === 0) {
       this.setState({activeItem: this.state.items[index]});
-    else
+      history.push(this.state.items[index].target);
+    } else {
       this.setState({value: index});
+      history.push(this.state.items2[index].target);
+    }
   };
 
 }
