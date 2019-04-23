@@ -52,6 +52,12 @@ import PhrasesTextbook from './components/PhrasesTextbook';
 import { VoicesService } from './services/voices.service';
 import { WordFamiService } from './services/word-fami.service';
 import { WordsFamiService } from './view-models/words-fami.service';
+import WordsUnit2 from './components/WordsUnit2';
+import PhrasesUnit2 from './components/PhrasesUnit2';
+import WordsLang2 from './components/WordsLang2';
+import PhrasesTextbook2 from './components/PhrasesTextbook2';
+import PhrasesLang2 from './components/PhrasesLang2';
+import WordsTextbook2 from './components/WordsTextbook2';
 
 // https://stackoverflow.com/questions/53375964/using-a-link-component-with-listitem-and-typescript
 // https://stackoverflow.com/questions/51257426/how-do-you-get-material-ui-tabs-to-work-with-react-router
@@ -83,11 +89,22 @@ export default class App extends React.Component<any, any> {
       {label: 'Phrases in Textbook', icon: 'fa fa-taxi fa-lg', target: '/phrases-textbook'},
       {label: 'Settings', icon: 'fa fa-cog fa-lg', target: '/settings'},
     ];
+    const items2 = [
+      {label: 'Words in Unit', icon: 'fa fa-bus fa-lg', target: '/words-unit2'},
+      {label: 'Phrases in Unit', icon: 'fa fa-bus fa-lg', target: '/phrases-unit2'},
+      {label: 'Words in Language', icon: 'fa fa-plane fa-lg', target: '/words-lang2'},
+      {label: 'Phrases in Language', icon: 'fa fa-plane fa-lg', target: '/phrases-lang2'},
+      {label: 'Words in Textbook', icon: 'fa fa-taxi fa-lg', target: '/words-textbook2'},
+      {label: 'Phrases in Textbook', icon: 'fa fa-taxi fa-lg', target: '/phrases-textbook2'},
+      {label: 'Settings', icon: 'fa fa-cog fa-lg', target: '/settings'},
+    ];
     const activeItem = items.find((value: any) => window.location.href.includes(value.target));
     this.state = {
       items,
+      items2,
       activeItem,
       value: 0,
+      valueApp: 0,
     };
   }
 
@@ -100,38 +117,41 @@ export default class App extends React.Component<any, any> {
       <Router history={history}>
         <div className="App">
           <h2>Lolly React</h2>
-          <div className="content-section implementation">
-            <TabMenu model={this.state.items} activeItem={this.state.activeItem} onTabChange={this.onTabChange} />
-          </div>
           <AppBar position="static" color="default">
-            <Tabs
-              value={this.state.value}
-              onChange={this.onTab2Change}
-              indicatorColor="primary"
-              textColor="primary"
-            >
-              <LinkTab label="Words in Unit" to="/words-unit" />
-              <LinkTab label="Phrases in Unit" to="/phrases-unit" />
-              <LinkTab label="Words in Language" to="/words-lang" />
-              <LinkTab label="Phrases in Language" to="/phrases-lang" />
-              <LinkTab label="Words in Textbook" to="/words-textbook" />
-              <LinkTab label="Phrases in Textbook" to="/phrases-textbook" />
-              <LinkTab label="Settings" to="/settings" />
+            <Tabs value={this.state.valueApp} onChange={this.onTabAppChange} indicatorColor="primary" textColor="primary">
+              <Tab label="App1" />
+              <Tab label="App2" />
             </Tabs>
           </AppBar>
+          {this.state.valueApp === 0 && <div className="content-section implementation">
+            <TabMenu model={this.state.items} activeItem={this.state.activeItem} onTabChange={this.onTabChange} />
+          </div>}
+          {this.state.valueApp === 1 && <AppBar position="static" color="default">
+            <Tabs value={this.state.value} onChange={this.onTab2Change} indicatorColor="primary" textColor="primary">
+              {this.state.items2.map((row: any) =>
+                <LinkTab key={row.label} label={row.label} to={row.target} />
+              )}
+            </Tabs>
+          </AppBar>}
           <Switch>
             <Route path="/" component={WordsUnit} exact />
             <Route path="/words-unit" component={WordsUnit} exact />
+            <Route path="/words-unit2" component={WordsUnit2} exact />
             <Route path="/words-unit-detail/:id" component={WordsUnitDetail} exact />
             <Route path="/phrases-unit" component={PhrasesUnit} exact />
+            <Route path="/phrases-unit2" component={PhrasesUnit2} exact />
             <Route path="/phrases-unit-detail/:id" component={PhrasesUnitDetail} exact />
             <Route path="/words-lang" component={WordsLang} exact />
+            <Route path="/words-lang2" component={WordsLang2} exact />
             <Route path="/words-lang-detail/:id" component={WordsLangDetail} exact />
             <Route path="/phrases-lang" component={PhrasesLang} exact />
+            <Route path="/phrases-lang2" component={PhrasesLang2} exact />
             <Route path="/phrases-lang-detail/:id" component={PhrasesLangDetail} exact />
             <Route path="/words-textbook" component={WordsTextbook} exact />
+            <Route path="/words-textbook2" component={WordsTextbook2} exact />
             <Route path="/words-textbook-detail/:id" component={WordsTextbookDetail} exact />
             <Route path="/phrases-textbook" component={PhrasesTextbook} exact />
+            <Route path="/phrases-textbook2" component={PhrasesTextbook2} exact />
             <Route path="/phrases-textbook-detail/:id" component={PhrasesTextbookDetail} exact />
             <Route path="/words-dict/:type/:index" component={WordsDict} exact />
             <Route path="/settings" component={Settings} exact />
@@ -147,7 +167,17 @@ export default class App extends React.Component<any, any> {
   };
 
   onTab2Change = (event: any, value: any) => {
-    this.setState({value})
+    this.setState({value});
+  };
+
+  onTabAppChange = (event: any, valueApp: any) => {
+    let index = this.state.valueApp === 0 ? this.state.items.indexOf(this.state.activeItem) : this.state.value;
+    if (index === -1) index = 0;
+    this.setState({valueApp});
+    if (valueApp === 0)
+      this.setState({activeItem: this.state.items[index]});
+    else
+      this.setState({value: index});
   };
 
 }
