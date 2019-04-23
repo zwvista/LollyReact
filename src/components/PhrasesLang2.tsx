@@ -3,9 +3,20 @@ import { Inject } from 'react.di';
 import './Common.css'
 import { Subscription } from 'rxjs';
 import { SettingsService } from '../view-models/settings.service';
-import { Fab, Table, TableBody, TableCell, TableHead, TableRow, Tooltip } from '@material-ui/core';
+import {
+  Button,
+  Fab,
+  Table,
+  TableBody,
+  TableCell, TableFooter,
+  TableHead,
+  TablePagination,
+  TableRow,
+  Toolbar,
+  Tooltip
+} from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCopy, faEdit, faTrash, faVolumeUp } from '@fortawesome/free-solid-svg-icons';
+import { faCopy, faEdit, faPlus, faSync, faTrash, faVolumeUp } from '@fortawesome/free-solid-svg-icons';
 import history from '../view-models/history';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
@@ -18,7 +29,6 @@ export default class PhrasesLang2 extends React.Component<any, any> {
   subscription = new Subscription();
 
   state = {
-    first: 0,
     rows: this.settingsService.USROWSPERPAGE,
     page: 1,
   };
@@ -34,14 +44,32 @@ export default class PhrasesLang2 extends React.Component<any, any> {
   render() {
     return (
       <div>
+        <Toolbar>
+          <Button variant="contained" color="primary" onClick={() => history.push('/phrases-unit-detail/0')}>
+            <span><FontAwesomeIcon icon={faPlus} />Add</span>
+          </Button>
+          <Button variant="contained" color="primary" onClick={(e: any) => this.onRefresh(this.state.page, this.state.rows)}>
+            <span><FontAwesomeIcon icon={faSync} />Refresh</span>
+          </Button>
+        </Toolbar>
         <Table>
           <TableHead>
             <TableRow>
+              <TablePagination
+                rowsPerPageOptions={this.settingsService.USROWSPERPAGEOPTIONS}
+                colSpan={4}
+                count={this.phrasesLangService.langPhraseCount}
+                rowsPerPage={this.state.rows}
+                page={this.state.page - 1}
+                SelectProps={{
+                  native: true,
+                }}
+                onChangePage={this.handleChangePage}
+                onChangeRowsPerPage={this.handleChangeRowsPerPage}
+              />
+            </TableRow>
+            <TableRow>
               <TableCell>ID</TableCell>
-              <TableCell>UNIT</TableCell>
-              <TableCell>PART</TableCell>
-              <TableCell>SEQNUM</TableCell>
-              <TableCell>PHRASEID</TableCell>
               <TableCell>PHRASE</TableCell>
               <TableCell>TRANSLATION</TableCell>
               <TableCell>ACTIONS</TableCell>
@@ -86,10 +114,36 @@ export default class PhrasesLang2 extends React.Component<any, any> {
               </TableRow>
             ))}
           </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+                rowsPerPageOptions={this.settingsService.USROWSPERPAGEOPTIONS}
+                colSpan={4}
+                count={this.phrasesLangService.langPhraseCount}
+                rowsPerPage={this.state.rows}
+                page={this.state.page - 1}
+                SelectProps={{
+                  native: true,
+                }}
+                onChangePage={this.handleChangePage}
+                onChangeRowsPerPage={this.handleChangeRowsPerPage}
+              />
+            </TableRow>
+          </TableFooter>
         </Table>
       </div>
     );
   }
+
+  handleChangePage = (event: any, page: any) => {
+    this.setState({ page: page + 1 });
+    this.onRefresh(page + 1, this.state.rows);
+  };
+
+  handleChangeRowsPerPage = (event: any) => {
+    this.setState({ page: 1, rows: event.target.value });
+    this.onRefresh(1, event.target.value);
+  };
 
   onRefresh = (page: number, rows: number) => {
     this.subscription.add(this.phrasesLangService.getData(page, rows).subscribe(

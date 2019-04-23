@@ -4,10 +4,21 @@ import { Inject } from 'react.di';
 import './Common.css'
 import { Subscription } from 'rxjs';
 import { SettingsService } from '../view-models/settings.service';
-import { Fab, Table, TableBody, TableCell, TableHead, TableRow, Tooltip } from '@material-ui/core';
+import {
+  Button,
+  Fab,
+  Table,
+  TableBody,
+  TableCell, TableFooter,
+  TableHead,
+  TablePagination,
+  TableRow,
+  Toolbar,
+  Tooltip
+} from '@material-ui/core';
 import { PhrasesUnitService } from '../view-models/phrases-unit.service';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCopy, faEdit, faTrash, faVolumeUp } from '@fortawesome/free-solid-svg-icons';
+import { faCopy, faEdit, faPlus, faSync, faTrash, faVolumeUp } from '@fortawesome/free-solid-svg-icons';
 import history from '../view-models/history';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
@@ -20,10 +31,12 @@ export default class PhrasesTextbook2 extends React.Component<any, any> {
   subscription = new Subscription();
 
   state = {
+    rows: this.settingsService.USROWSPERPAGE,
+    page: 1,
   };
 
   componentDidMount() {
-    this.onRefresh(null);
+    this.onRefresh(this.state.page, this.state.rows);
   }
 
   componentWillUnmount() {
@@ -33,10 +46,33 @@ export default class PhrasesTextbook2 extends React.Component<any, any> {
   render() {
     return (
       <div>
+        <Toolbar>
+          <Button variant="contained" color="primary" onClick={() => history.push('/phrases-unit-detail/0')}>
+            <span><FontAwesomeIcon icon={faPlus} />Add</span>
+          </Button>
+          <Button variant="contained" color="primary" onClick={(e: any) => this.onRefresh(this.state.page, this.state.rows)}>
+            <span><FontAwesomeIcon icon={faSync} />Refresh</span>
+          </Button>
+        </Toolbar>
         <Table>
           <TableHead>
             <TableRow>
+              <TablePagination
+                rowsPerPageOptions={this.settingsService.USROWSPERPAGEOPTIONS}
+                colSpan={9}
+                count={this.phrasesUnitService.textbookPhraseCount}
+                rowsPerPage={this.state.rows}
+                page={this.state.page - 1}
+                SelectProps={{
+                  native: true,
+                }}
+                onChangePage={this.handleChangePage}
+                onChangeRowsPerPage={this.handleChangeRowsPerPage}
+              />
+            </TableRow>
+            <TableRow>
               <TableCell>ID</TableCell>
+              <TableCell>TEXTBOOKNAME</TableCell>
               <TableCell>UNIT</TableCell>
               <TableCell>PART</TableCell>
               <TableCell>SEQNUM</TableCell>
@@ -47,9 +83,10 @@ export default class PhrasesTextbook2 extends React.Component<any, any> {
             </TableRow>
           </TableHead>
           <TableBody>
-            {this.phrasesUnitService.unitPhrases.map(row => (
+            {this.phrasesUnitService.textbookPhrases.map(row => (
               <TableRow key={row.ID}>
                 <TableCell>{row.ID}</TableCell>
+                <TableCell>{row.TEXTBOOKNAME}</TableCell>
                 <TableCell>{row.UNITSTR}</TableCell>
                 <TableCell>{row.PARTSTR}</TableCell>
                 <TableCell>{row.SEQNUM}</TableCell>
@@ -89,13 +126,39 @@ export default class PhrasesTextbook2 extends React.Component<any, any> {
               </TableRow>
             ))}
           </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+                rowsPerPageOptions={this.settingsService.USROWSPERPAGEOPTIONS}
+                colSpan={9}
+                count={this.phrasesUnitService.textbookPhraseCount}
+                rowsPerPage={this.state.rows}
+                page={this.state.page - 1}
+                SelectProps={{
+                  native: true,
+                }}
+                onChangePage={this.handleChangePage}
+                onChangeRowsPerPage={this.handleChangeRowsPerPage}
+              />
+            </TableRow>
+          </TableFooter>
         </Table>
       </div>
     );
   }
 
-  onRefresh = (e:any) => {
-    this.subscription.add(this.phrasesUnitService.getDataInTextbook().subscribe(
+  handleChangePage = (event: any, page: any) => {
+    this.setState({ page: page + 1 });
+    this.onRefresh(page + 1, this.state.rows);
+  };
+
+  handleChangeRowsPerPage = (event: any) => {
+    this.setState({ page: 1, rows: event.target.value });
+    this.onRefresh(1, event.target.value);
+  };
+
+  onRefresh = (page: number, rows: number) => {
+    this.subscription.add(this.phrasesUnitService.getDataInLang(page, rows).subscribe(
       _ => this.updateServiceState()
     ));
   };

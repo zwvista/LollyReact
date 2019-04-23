@@ -42,7 +42,6 @@ export default class WordsLang2 extends React.Component<any, any> {
 
   state = {
     newWord: '',
-    first: 0,
     rows: this.settingsService.USROWSPERPAGE,
     page: 1,
   };

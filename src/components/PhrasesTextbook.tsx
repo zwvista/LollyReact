@@ -27,7 +27,7 @@ export default class PhrasesTextbook extends React.Component<any, any> {
   };
 
   componentDidMount() {
-    this.onRefresh(this.state.page);
+    this.onRefresh(this.state.page, this.state.rows);
   }
 
   onPageChange = (e: PageState) => {
@@ -36,7 +36,7 @@ export default class PhrasesTextbook extends React.Component<any, any> {
       rows: e.rows,
       page: e.page + 1,
     });
-    this.onRefresh(e.page + 1);
+    this.onRefresh(e.page + 1, e.rows);
   };
 
   componentWillUnmount() {
@@ -64,7 +64,7 @@ export default class PhrasesTextbook extends React.Component<any, any> {
       <div>
         <Toolbar>
           <div className="p-toolbar-group-left">
-            <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => this.onRefresh(this.state.page)}/>
+            <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => this.onRefresh(this.state.page, this.state.rows)}/>
           </div>
         </Toolbar>
         <Paginator first={this.state.first} rows={this.state.rows} onPageChange={this.onPageChange}
@@ -89,8 +89,8 @@ export default class PhrasesTextbook extends React.Component<any, any> {
     );
   }
 
-  onRefresh = (page: number) => {
-    this.subscription.add(this.phrasesUnitService.getDataInLang(page, this.state.rows).subscribe(
+  onRefresh = (page: number, rows: number) => {
+    this.subscription.add(this.phrasesUnitService.getDataInLang(page, rows).subscribe(
       _ => this.updateServiceState()
     ));
   };

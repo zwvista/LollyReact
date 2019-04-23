@@ -38,7 +38,6 @@ export default class WordsTextbook2 extends React.Component<any, any> {
   subscription = new Subscription();
 
   state = {
-    first: 0,
     rows: this.settingsService.USROWSPERPAGE,
     page: 1,
   };
@@ -67,7 +66,7 @@ export default class WordsTextbook2 extends React.Component<any, any> {
             <TableRow>
               <TablePagination
                 rowsPerPageOptions={this.settingsService.USROWSPERPAGEOPTIONS}
-                colSpan={9}
+                colSpan={10}
                 count={this.wordsUnitService.textbookWordCount}
                 rowsPerPage={this.state.rows}
                 page={this.state.page - 1}
@@ -159,7 +158,7 @@ export default class WordsTextbook2 extends React.Component<any, any> {
             <TableRow>
               <TablePagination
                 rowsPerPageOptions={this.settingsService.USROWSPERPAGEOPTIONS}
-                colSpan={9}
+                colSpan={10}
                 count={this.wordsUnitService.textbookWordCount}
                 rowsPerPage={this.state.rows}
                 page={this.state.page - 1}
