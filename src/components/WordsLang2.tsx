@@ -34,6 +34,7 @@ import { KeyboardEvent } from 'react';
 import * as $ from 'jquery';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
+import { MLangWord } from '../models/lang-word';
 
 export default class WordsLang2 extends React.Component<any, any> {
   @Inject wordsLangService: WordsLangService;
@@ -132,12 +133,12 @@ export default class WordsLang2 extends React.Component<any, any> {
                     </Tooltip>
                   </CopyToClipboard>
                   <Tooltip title="Level Up">
-                    <Fab size="small" onClick={() => this.updateLevel(row.ID, 1)}>
+                    <Fab size="small" onClick={() => this.updateLevel(row, 1)}>
                       <FontAwesomeIcon icon={faArrowUp} />
                     </Fab>
                   </Tooltip>
                   <Tooltip title="Level Down">
-                    <Fab size="small" onClick={() => this.updateLevel(row.ID, -1)}>
+                    <Fab size="small" onClick={() => this.updateLevel(row, -1)}>
                       <FontAwesomeIcon icon={faArrowDown} />
                     </Fab>
                   </Tooltip>
@@ -146,7 +147,7 @@ export default class WordsLang2 extends React.Component<any, any> {
                       <FontAwesomeIcon icon={faGoogle} />
                     </Fab>
                   </Tooltip>
-                  <Tooltip title="Dictionary" onClick={() => this.dictReference(row.ID)}>
+                  <Tooltip title="Dictionary" onClick={() => this.dictReference(row)}>
                     <Fab size="small" color="primary">
                       <FontAwesomeIcon icon={faBook} />
                     </Fab>
@@ -212,8 +213,8 @@ export default class WordsLang2 extends React.Component<any, any> {
     }));
   };
 
-  deleteWord(index: number) {
-    console.log(index);
+  deleteWord(ID: number) {
+    this.wordsLangService.delete(ID);
   }
 
   getNote(index: number) {
@@ -226,14 +227,13 @@ export default class WordsLang2 extends React.Component<any, any> {
     window.open('https://www.google.com/search?q=' + encodeURIComponent(WORD), '_blank');
   }
 
-  updateLevel(ID: number, delta: number) {
-    const i = this.wordsLangService.langWords.findIndex(v => v.ID === ID);
-    const o = this.wordsLangService.langWords[i];
-    this.settingsService.updateLevel(o, o.ID, delta).subscribe();
+  updateLevel(item: MLangWord, delta: number) {
+    const i = this.wordsLangService.langWords.indexOf(item);
+    this.settingsService.updateLevel(item, item.ID, delta).subscribe();
   }
 
-  dictReference(ID: number) {
-    const index = this.wordsLangService.langWords.findIndex(value => value.ID === ID);
+  dictReference(item: MLangWord) {
+    const index = this.wordsLangService.langWords.indexOf(item);
     history.push('/words-dict/lang/' + index);
   }
 

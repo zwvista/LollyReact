@@ -13,6 +13,7 @@ import { googleString } from '../common/common';
 import { SettingsService } from '../view-models/settings.service';
 import { MUnitPhrase } from '../models/unit-phrase';
 import { PhrasesUnitService } from '../view-models/phrases-unit.service';
+import { Fab } from '@material-ui/core';
 
 export default class PhrasesTextbook extends React.Component<any, any> {
   @Inject phrasesUnitService: PhrasesUnitService;
@@ -46,7 +47,7 @@ export default class PhrasesTextbook extends React.Component<any, any> {
   actionTemplate = (rowData: any, column: any) => {
     return <div>
       <Button className="p-button-danger button-margin-right" icon="fa fa-trash"
-              tooltip="Delete" tooltipOptions={{position: 'top'}} />
+              tooltip="Delete" tooltipOptions={{position: 'top'}} onClick={() => this.deletePhrase(rowData)} />
       <Button icon="fa fa-edit" tooltip="Edit" tooltipOptions={{position: 'top'}}
               onClick={() => history.push('/phrases-textbook-detail/' + rowData.ID)}/>
       <Button icon="fa fa-volume-up" tooltipOptions={{position: 'top'}}
@@ -94,6 +95,10 @@ export default class PhrasesTextbook extends React.Component<any, any> {
       _ => this.updateServiceState()
     ));
   };
+
+  deletePhrase(item: MUnitPhrase) {
+    this.phrasesUnitService.delete(item);
+  }
 
   onSelectionChange = (e: any) => {
     this.setState({selectedRow: e.data});

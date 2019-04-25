@@ -31,6 +31,7 @@ import history from '../view-models/history';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import * as $ from 'jquery';
+import { MUnitWord } from '../models/unit-word';
 
 export default class WordsTextbook2 extends React.Component<any, any> {
   @Inject wordsUnitService: WordsUnitService;
@@ -104,7 +105,7 @@ export default class WordsTextbook2 extends React.Component<any, any> {
                 <TableCell style={{color:row.colorStyle['color']}}>{row.LEVEL}</TableCell>
                 <TableCell style={{color:row.colorStyle['color']}}>
                   <Tooltip title="Delete">
-                    <Fab size="small" color="secondary" onClick={() => this.deleteWord(row.ID)}>
+                    <Fab size="small" color="secondary" onClick={() => this.deleteWord(row)}>
                       <FontAwesomeIcon icon={faTrash} />
                     </Fab>
                   </Tooltip>
@@ -127,12 +128,12 @@ export default class WordsTextbook2 extends React.Component<any, any> {
                     </Tooltip>
                   </CopyToClipboard>
                   <Tooltip title="Level Up">
-                    <Fab size="small" onClick={() => this.updateLevel(row.ID, 1)}>
+                    <Fab size="small" onClick={() => this.updateLevel(row, 1)}>
                       <FontAwesomeIcon icon={faArrowUp} />
                     </Fab>
                   </Tooltip>
                   <Tooltip title="Level Down">
-                    <Fab size="small" onClick={() => this.updateLevel(row.ID, -1)}>
+                    <Fab size="small" onClick={() => this.updateLevel(row, -1)}>
                       <FontAwesomeIcon icon={faArrowDown} />
                     </Fab>
                   </Tooltip>
@@ -141,7 +142,7 @@ export default class WordsTextbook2 extends React.Component<any, any> {
                       <FontAwesomeIcon icon={faGoogle} />
                     </Fab>
                   </Tooltip>
-                  <Tooltip title="Dictionary" onClick={() => this.dictReference(row.ID)}>
+                  <Tooltip title="Dictionary" onClick={() => this.dictReference(row)}>
                     <Fab size="small" color="primary">
                       <FontAwesomeIcon icon={faBook} />
                     </Fab>
@@ -191,8 +192,8 @@ export default class WordsTextbook2 extends React.Component<any, any> {
     }));
   };
 
-  deleteWord(index: number) {
-    console.log(index);
+  deleteWord(item: MUnitWord) {
+    this.wordsUnitService.delete(item);
   }
 
   getNote(index: number) {
@@ -205,14 +206,13 @@ export default class WordsTextbook2 extends React.Component<any, any> {
     window.open('https://www.google.com/search?q=' + encodeURIComponent(WORD), '_blank');
   }
 
-  updateLevel(ID: number, delta: number) {
-    const i = this.wordsUnitService.textbookWords.findIndex(v => v.ID === ID);
-    const o = this.wordsUnitService.textbookWords[i];
-    this.settingsService.updateLevel(o, o.WORDID, delta).subscribe();
+  updateLevel(item: MUnitWord, delta: number) {
+    const i = this.wordsUnitService.textbookWords.indexOf(item);
+    this.settingsService.updateLevel(item, item.WORDID, delta).subscribe();
   }
 
-  dictReference(ID: number) {
-    const index = this.wordsUnitService.textbookWords.findIndex(value => value.ID === ID);
+  dictReference(item: MUnitWord) {
+    const index = this.wordsUnitService.textbookWords.indexOf(item);
     history.push('/words-dict/textbook/' + index);
   }
 

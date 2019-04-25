@@ -15,6 +15,7 @@ import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { SettingsService } from '../view-models/settings.service';
 import * as $ from "jquery";
 import { MWordColor } from '../models/word-color';
+import { MLangWord } from '../models/lang-word';
 
 export default class WordsLang extends React.Component<any, any> {
   @Inject wordsLangService: WordsLangService;
@@ -49,7 +50,7 @@ export default class WordsLang extends React.Component<any, any> {
   actionTemplate = (rowData: any, column: any) => {
     return <div>
       <Button className="p-button-danger button-margin-right" icon="fa fa-trash"
-              tooltip="Delete" tooltipOptions={{position: 'top'}} />
+              tooltip="Delete" tooltipOptions={{position: 'top'}} onClick={() => this.deleteWord(rowData.ID)} />
       <Button icon="fa fa-edit" tooltip="Edit" tooltipOptions={{position: 'top'}}
               onClick={() => history.push('/words-lang-detail/' + rowData.ID)} />
       <Button hidden={!this.settingsService.selectedVoice} icon="fa fa-volume-up" tooltipOptions={{position: 'top'}}
@@ -58,12 +59,12 @@ export default class WordsLang extends React.Component<any, any> {
         <Button icon="fa fa-copy" tooltip="Copy" tooltipOptions={{position: 'top'}}/>
       </CopyToClipboard>
       <Button icon="fa fa-arrow-up" tooltipOptions={{position: 'top'}} className="p-button-warning"
-              tooltip="Level Up" onClick={() => this.updateLevel(rowData.ID, 1)} />
+              tooltip="Level Up" onClick={() => this.updateLevel(rowData, 1)} />
       <Button icon="fa fa-arrow-down" tooltipOptions={{position: 'top'}} className="p-button-warning"
-              tooltip="Level Down" onClick={() => this.updateLevel(rowData.ID, -1)} />
+              tooltip="Level Down" onClick={() => this.updateLevel(rowData, -1)} />
       <Button icon="fa fa-google" onClick={() => this.googleWord(rowData.WORD)}
               tooltip="Google Word" tooltipOptions={{position: 'top'}}/>
-      <Button icon="fa fa-book" onClick={() => this.dictReference(rowData.ID)}
+      <Button icon="fa fa-book" onClick={() => this.dictReference(rowData)}
               tooltip="Dictionary" tooltipOptions={{position: 'top'}}/>
       <Button hidden={!this.settingsService.selectedDictNote} className="p-button-warning" label="Retrieve Note" onClick={() => this.getNote(rowData.ID)} />
     </div>;
@@ -145,8 +146,8 @@ export default class WordsLang extends React.Component<any, any> {
     this.setState({selectedRow: e.data});
   };
 
-  deleteWord(index: number) {
-    console.log(index);
+  deleteWord(ID: number) {
+    this.wordsLangService.delete(ID);
   }
 
   getNote(index: number) {
@@ -159,14 +160,14 @@ export default class WordsLang extends React.Component<any, any> {
     window.open('https://www.google.com/search?q=' + encodeURIComponent(WORD), '_blank');
   }
 
-  updateLevel(ID: number, delta: number) {
-    const i = this.wordsLangService.langWords.findIndex(v => v.ID === ID);
-    const o = this.wordsLangService.langWords[i];
-    this.settingsService.updateLevel(o, o.ID, delta).subscribe(_ => this.setRowStyle(o, $('tr').eq(i + 1)));
+  updateLevel(item: MLangWord, delta: number) {
+    const i = this.wordsLangService.langWords.indexOf(item);
+    this.settingsService.updateLevel(item, item.ID, delta).subscribe(
+      _ => this.setRowStyle(item, $('tr').eq(i + 1)));
   }
 
-  dictReference(ID: number) {
-    const index = this.wordsLangService.langWords.findIndex(value => value.ID === ID);
+  dictReference(item: MLangWord) {
+    const index = this.wordsLangService.langWords.indexOf(item);
     history.push('/words-dict/lang/' + index);
   }
 

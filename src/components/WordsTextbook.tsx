@@ -13,6 +13,7 @@ import { SettingsService } from '../view-models/settings.service';
 import * as $ from "jquery";
 import { MWordColor } from '../models/word-color';
 import { WordsUnitService } from '../view-models/words-unit.service';
+import { MUnitWord } from '../models/unit-word';
 
 export default class WordsTextbook extends React.Component<any, any> {
   @Inject wordsUnitService: WordsUnitService;
@@ -46,7 +47,7 @@ export default class WordsTextbook extends React.Component<any, any> {
   actionTemplate = (rowData: any, column: any) => {
     return <div>
       <Button className="p-button-danger button-margin-right" icon="fa fa-trash"
-              tooltip="Delete" tooltipOptions={{position: 'top'}} />
+              tooltip="Delete" tooltipOptions={{position: 'top'}} onClick={() => this.deleteWord(rowData)} />
       <Button icon="fa fa-edit" tooltip="Edit" tooltipOptions={{position: 'top'}}
               onClick={() => history.push('/words-textbook-detail/' + rowData.ID)} />
       <Button hidden={!this.settingsService.selectedVoice} icon="fa fa-volume-up" tooltipOptions={{position: 'top'}}
@@ -55,9 +56,9 @@ export default class WordsTextbook extends React.Component<any, any> {
         <Button icon="fa fa-copy" tooltip="Copy" tooltipOptions={{position: 'top'}}/>
       </CopyToClipboard>
       <Button icon="fa fa-arrow-up" tooltipOptions={{position: 'top'}} className="p-button-warning"
-              tooltip="Level Up" onClick={() => this.updateLevel(rowData.ID, 1)} />
+              tooltip="Level Up" onClick={() => this.updateLevel(rowData, 1)} />
       <Button icon="fa fa-arrow-down" tooltipOptions={{position: 'top'}} className="p-button-warning"
-              tooltip="Level Down" onClick={() => this.updateLevel(rowData.ID, -1)} />
+              tooltip="Level Down" onClick={() => this.updateLevel(rowData, -1)} />
       <Button icon="fa fa-google" onClick={() => this.googleWord(rowData.WORD)}
               tooltip="Google Word" tooltipOptions={{position: 'top'}}/>
       <Button icon="fa fa-book" onClick={() => this.dictReference(rowData.ID)}
@@ -124,8 +125,8 @@ export default class WordsTextbook extends React.Component<any, any> {
     this.setState({selectedRow: e.data});
   };
 
-  deleteWord(index: number) {
-    console.log(index);
+  deleteWord(item: MUnitWord) {
+    this.wordsUnitService.delete(item);
   }
 
   getNote(index: number) {
@@ -138,14 +139,14 @@ export default class WordsTextbook extends React.Component<any, any> {
     window.open('https://www.google.com/search?q=' + encodeURIComponent(WORD), '_blank');
   }
 
-  updateLevel(ID: number, delta: number) {
-    const i = this.wordsUnitService.textbookWords.findIndex(v => v.ID === ID);
-    const o = this.wordsUnitService.textbookWords[i];
-    this.settingsService.updateLevel(o, o.WORDID, delta).subscribe(_ => this.setRowStyle(o, $('tr').eq(i + 1)));
+  updateLevel(item: MUnitWord, delta: number) {
+    const i = this.wordsUnitService.textbookWords.indexOf(item);
+    this.settingsService.updateLevel(item, item.WORDID, delta).subscribe(
+      _ => this.setRowStyle(item, $('tr').eq(i + 1)));
   }
 
-  dictReference(ID: number) {
-    const index = this.wordsUnitService.textbookWords.findIndex(value => value.ID === ID);
+  dictReference(item: MUnitWord) {
+    const index = this.wordsUnitService.textbookWords.indexOf(item);
     history.push('/words-dict/textbook/' + index);
   }
 
