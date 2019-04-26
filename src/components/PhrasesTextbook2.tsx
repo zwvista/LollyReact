@@ -47,7 +47,7 @@ export default class PhrasesTextbook2 extends React.Component<any, any> {
     return (
       <div>
         <Toolbar>
-          <Button variant="contained" color="primary" onClick={() => history.push('/phrases-unit-detail/0')}>
+          <Button variant="contained" color="primary" onClick={() => history.push('/phrases-textbook-detail/0')}>
             <span><FontAwesomeIcon icon={faPlus} />Add</span>
           </Button>
           <Button variant="contained" color="primary" onClick={(e: any) => this.onRefresh(this.state.page, this.state.rows)}>
@@ -100,7 +100,7 @@ export default class PhrasesTextbook2 extends React.Component<any, any> {
                     </Fab>
                   </Tooltip>
                   <Tooltip title="Edit">
-                    <Fab size="small" color="primary" onClick={() => history.push('/phrases-unit-detail/' + row.ID)}>
+                    <Fab size="small" color="primary" onClick={() => history.push('/phrases-textbook-detail/' + row.ID)}>
                       <FontAwesomeIcon icon={faEdit} />
                     </Fab>
                   </Tooltip>

@@ -110,7 +110,7 @@ export default class WordsTextbook2 extends React.Component<any, any> {
                     </Fab>
                   </Tooltip>
                   <Tooltip title="Edit">
-                    <Fab size="small" color="primary" onClick={() => history.push('/words-unit-detail/' + row.ID)}>
+                    <Fab size="small" color="primary" onClick={() => history.push('/words-textbook-detail/' + row.ID)}>
                       <FontAwesomeIcon icon={faEdit} />
                     </Fab>
                   </Tooltip>
