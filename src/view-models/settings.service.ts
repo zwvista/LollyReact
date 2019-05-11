@@ -6,7 +6,7 @@ import { MUserSetting } from '../models/user-setting';
 import { MLanguage } from '../models/language';
 import { MDictItem, MDictReference, MDictNote, MDictTranslation } from '../models/dictionary';
 import { MTextbook } from '../models/textbook';
-import { EMPTY as empty, forkJoin, Observable, of } from 'rxjs';
+import { forkJoin, Observable, of } from 'rxjs';
 import { DictReferenceService, DictNoteService, DictTranslationService } from '../services/dictionary.service';
 import { TextbookService } from '../services/textbook.service';
 import { AutoCorrectService } from '../services/autocorrect.service';
@@ -365,7 +365,7 @@ export class SettingsService {
     else {
       o.LEVEL -= delta;
       this.setColorStyle(o);
-      return empty;
+      return of();
     }
   }
 
@@ -377,22 +377,22 @@ export class SettingsService {
   }
 
   updateUnitFrom(value: number): Observable<number> {
-    return this.doUpdateUnitFrom(value, false).pipe(
+    return this.doUpdateUnitFrom(value).pipe(
       concatMap(_ => this.toType === 0 ? this.doUpdateSingleUnit() :
-        this.toType === 1 || this.isInvalidUnitPart ? this.doUpdateUnitPartTo() : empty),
+        this.toType === 1 || this.isInvalidUnitPart ? this.doUpdateUnitPartTo() : of(0)),
     );
   }
 
   updatePartFrom(value: number): Observable<number> {
-    return this.doUpdatePartFrom(value, false).pipe(
-      concatMap(_ => this.toType === 1 || this.isInvalidUnitPart ? this.doUpdateUnitPartTo() : empty),
+    return this.doUpdatePartFrom(value).pipe(
+      concatMap(_ => this.toType === 1 || this.isInvalidUnitPart ? this.doUpdateUnitPartTo() : of(0)),
     );
   }
 
   updateToType(value: number): Observable<number> {
     this.toType = value;
     return this.toType === 0 ? this.doUpdateSingleUnit() :
-      this.toType === 1 ? this.doUpdateUnitPartTo() : empty;
+      this.toType === 1 ? this.doUpdateUnitPartTo() : of(0);
   }
 
   previousUnitPart(): Observable<number> {
@@ -401,7 +401,7 @@ export class SettingsService {
         return forkJoin([this.doUpdateUnitFrom(this.USUNITFROM - 1),
           this.doUpdateUnitTo(this.USUNITFROM)]).pipe(map(_ => 0));
       else
-        return empty;
+        return of(0);
     else if (this.USPARTFROM > 1)
       return forkJoin([this.doUpdatePartFrom(this.USPARTFROM - 1),
         this.doUpdateUnitPartTo()]).pipe(map(_ => 0));
@@ -409,7 +409,7 @@ export class SettingsService {
       return forkJoin([this.doUpdateUnitFrom(this.USUNITFROM - 1),
         this.doUpdatePartFrom(this.partCount), this.doUpdateUnitPartTo()]).pipe(map(_ => 0));
     else
-      return empty;
+      return of(0);
   }
 
   nextUnitPart(): Observable<number> {
@@ -418,7 +418,7 @@ export class SettingsService {
         return forkJoin([this.doUpdateUnitFrom(this.USUNITFROM + 1),
           this.doUpdateUnitTo(this.USUNITFROM)]).pipe(map(_ => 0));
       else
-        return empty;
+        return of(0);
     else if (this.USPARTFROM < this.partCount)
       return forkJoin([this.doUpdatePartFrom(this.USPARTFROM + 1),
         this.doUpdateUnitPartTo()]).pipe(map(_ => 0));
@@ -426,18 +426,18 @@ export class SettingsService {
       return forkJoin([this.doUpdateUnitFrom(this.USUNITFROM + 1),
         this.doUpdatePartFrom(1), this.doUpdateUnitPartTo()]).pipe(map(_ => 0));
     else
-      return empty;
+      return of(0);
   }
 
   updateUnitTo(value: number): Observable<number> {
-    return this.doUpdateUnitTo(value, false).pipe(
-      concatMap(_ => this.toType === 1 || this.isInvalidUnitPart ? this.doUpdateUnitPartFrom() : empty),
+    return this.doUpdateUnitTo(value).pipe(
+      concatMap(_ => this.toType === 1 || this.isInvalidUnitPart ? this.doUpdateUnitPartFrom() : of(0)),
     );
   }
 
   updatePartTo(value: number): Observable<number> {
-    return this.doUpdatePartTo(value, false).pipe(
-      concatMap(_ => this.toType === 1 || this.isInvalidUnitPart ? this.doUpdateUnitPartFrom() : empty),
+    return this.doUpdatePartTo(value).pipe(
+      concatMap(_ => this.toType === 1 || this.isInvalidUnitPart ? this.doUpdateUnitPartFrom() : of(0)),
     );
   }
 
@@ -457,28 +457,48 @@ export class SettingsService {
       .pipe(map(_ => 0));
   }
 
-  private doUpdateUnitFrom(v: number, check: boolean = true): Observable<number> {
-    if (check && this.USUNITFROM === v) return empty;
+  private doUpdateUnitFrom(v: number): Observable<number> {
+    if (this.USUNITFROM === v) return of(0);
     this.USUNITFROM = v;
-    return this.userSettingService.updateUnitFrom(this.selectedUSTextbook.ID, this.USUNITFROM);
+    return this.userSettingService.updateUnitFrom(this.selectedUSTextbook.ID, this.USUNITFROM).pipe(
+      map( _ => {
+        if (this.settingsListener) this.settingsListener.onUpdateUnitFrom();
+        return 0;
+      }),
+    );
   }
 
-  private doUpdatePartFrom(v: number, check: boolean = true): Observable<number> {
-    if (check && this.USPARTFROM === v) return empty;
+  private doUpdatePartFrom(v: number): Observable<number> {
+    if (this.USPARTFROM === v) return of(0);
     this.USPARTFROM = v;
-    return this.userSettingService.updatePartFrom(this.selectedUSTextbook.ID, this.USPARTFROM);
+    return this.userSettingService.updatePartFrom(this.selectedUSTextbook.ID, this.USPARTFROM).pipe(
+      map( _ => {
+        if (this.settingsListener) this.settingsListener.onUpdatePartFrom();
+        return 0;
+      }),
+    );
   }
 
-  private doUpdateUnitTo(v: number, check: boolean = true): Observable<number> {
-    if (check && this.USUNITTO === v) return empty;
+  private doUpdateUnitTo(v: number): Observable<number> {
+    if (this.USUNITTO === v) return of(0);
     this.USUNITTO = v;
-    return this.userSettingService.updateUnitTo(this.selectedUSTextbook.ID, this.USUNITTO);
+    return this.userSettingService.updateUnitTo(this.selectedUSTextbook.ID, this.USUNITTO).pipe(
+      map( _ => {
+        if (this.settingsListener) this.settingsListener.onUpdateUnitTo();
+        return 0;
+      }),
+    );
   }
 
-  private doUpdatePartTo(v: number, check: boolean = true): Observable<number> {
-    if (check && this.USPARTTO === v) return empty;
+  private doUpdatePartTo(v: number): Observable<number> {
+    if (this.USPARTTO === v) return of(0);
     this.USPARTTO = v;
-    return this.userSettingService.updatePartTo(this.selectedUSTextbook.ID, this.USPARTTO);
+    return this.userSettingService.updatePartTo(this.selectedUSTextbook.ID, this.USPARTTO).pipe(
+      map( _ => {
+        if (this.settingsListener) this.settingsListener.onUpdatePartTo();
+        return 0;
+      }),
+    );
   }
 }
 

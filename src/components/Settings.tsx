@@ -157,35 +157,35 @@ export default class Settings extends React.Component<any, any> implements Setti
 
   onUnitFromChange = (event: any) => {
     const index = event.target.selectedIndex;
-    this.settingsService.updateUnitFrom(this.settingsService.units[index].value).subscribe();
+    this.subscription.add(this.settingsService.updateUnitFrom(this.settingsService.units[index].value).subscribe(_ => this.updateServiceState()));
   };
 
   onPartFromChange = (event: any) => {
     const index = event.target.selectedIndex;
-    this.settingsService.updatePartFrom(this.settingsService.parts[index].value).subscribe();
+    this.subscription.add(this.settingsService.updatePartFrom(this.settingsService.parts[index].value).subscribe(_ => this.updateServiceState()));
   };
 
   onToTypeChange = (event: any) => {
     const index = event.target.selectedIndex;
-    this.settingsService.updateToType(this.settingsService.toTypes[index].value).subscribe();
+    this.subscription.add(this.settingsService.updateToType(this.settingsService.toTypes[index].value).subscribe(_ => this.updateServiceState()));
   };
 
   previousUnitPart = (event: any) => {
-    this.settingsService.previousUnitPart().subscribe();
+    this.subscription.add(this.settingsService.previousUnitPart().subscribe(_ => this.updateServiceState()));
   };
 
   nextUnitPart = (event: any) => {
-    this.settingsService.nextUnitPart().subscribe();
+    this.subscription.add(this.settingsService.nextUnitPart().subscribe(_ => this.updateServiceState()));
   };
 
   onUnitToChange = (event: any) => {
     const index = event.target.selectedIndex;
-    this.settingsService.updateUnitTo(this.settingsService.units[index].value).subscribe();
+    this.subscription.add(this.settingsService.updateUnitTo(this.settingsService.units[index].value).subscribe(_ => this.updateServiceState()));
   };
 
   onPartToChange = (event: any) => {
     const index = event.target.selectedIndex;
-    this.settingsService.updateUnitTo(this.settingsService.parts[index].value).subscribe();
+    this.subscription.add(this.settingsService.updateUnitTo(this.settingsService.parts[index].value).subscribe(_ => this.updateServiceState()));
   };
 
   updateServiceState() {

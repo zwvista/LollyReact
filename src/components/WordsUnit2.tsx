@@ -199,7 +199,7 @@ export default class WordsUnit2 extends React.Component<any, any> {
 
   updateLevel(item: MUnitWord, delta: number) {
     const i = this.wordsUnitService.unitWords.indexOf(item);
-    this.settingsService.updateLevel(item, item.WORDID, delta).subscribe();
+    this.settingsService.updateLevel(item, item.WORDID, delta).subscribe(_ => this.updateServiceState());
   }
 
   dictReference(item: MUnitWord) {
