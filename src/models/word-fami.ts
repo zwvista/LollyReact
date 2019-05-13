@@ -6,4 +6,6 @@ export class MWordFami {
   USERID = 0;
   WORDID = 0;
   LEVEL = 0;
+  CORRECT = 0;
+  TOTAL = 0;
 }

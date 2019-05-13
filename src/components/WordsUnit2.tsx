@@ -90,6 +90,7 @@ export default class WordsUnit2 extends React.Component<any, any> {
               <TableCell>WORD</TableCell>
               <TableCell>NOTE</TableCell>
               <TableCell>LEVEL</TableCell>
+              <TableCell>ACCURACY</TableCell>
               <TableCell>ACTIONS</TableCell>
             </TableRow>
           </TableHead>
@@ -104,6 +105,7 @@ export default class WordsUnit2 extends React.Component<any, any> {
                 <TableCell style={{color:row.colorStyle['color']}}>{row.WORD}</TableCell>
                 <TableCell style={{color:row.colorStyle['color']}}>{row.NOTE}</TableCell>
                 <TableCell style={{color:row.colorStyle['color']}}>{row.LEVEL}</TableCell>
+                <TableCell style={{color:row.colorStyle['color']}}>{row.ACCURACY}</TableCell>
                 <TableCell>
                   <Tooltip title="Delete">
                     <Fab size="small" color="secondary" onClick={() => this.deleteWord(row)}>

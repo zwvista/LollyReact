@@ -13,6 +13,12 @@ export class MLangWord implements MWordColor {
   FAMIID = 0;
   LEVEL = 0;
   colorStyle: {string: string} | {} = {};
+  CORRECT = 0;
+  TOTAL = 0;
+
+  get ACCURACY(): string {
+    return this.TOTAL === 0 ? 'N/A' : `${Math.floor(this.CORRECT / this.TOTAL * 10) / 10}%`;
+  }
 
   constructor() {}
 

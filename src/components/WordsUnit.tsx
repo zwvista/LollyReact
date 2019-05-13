@@ -91,6 +91,7 @@ export default class WordsUnit extends React.Component<any, any> {
           <Column field="WORD" header="WORD" />
           <Column field="NOTE" header="NOTE" />
           <Column style={{width:'80px'}} field="LEVEL" header="LEVEL" />
+          <Column style={{width:'80px'}} field="ACCURACY" header="ACCURACY" />
           <Column style={{width:'30%'}} body={this.actionTemplate} header="ACTIONS" />
         </DataTable>
       </div>

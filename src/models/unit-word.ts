@@ -20,6 +20,8 @@ export class MUnitWord implements MWordColor {
   FAMIID = 0;
   LEVEL = 0;
   colorStyle: {string: string} | {} = {};
+  CORRECT = 0;
+  TOTAL = 0;
 
   textbook: MTextbook;
   get UNITSTR(): string {
@@ -32,5 +34,8 @@ export class MUnitWord implements MWordColor {
     return String(this.UNIT).padStart(3) +
       String(this.PART).padStart(3) +
       String(this.SEQNUM).padStart(3);
+  }
+  get ACCURACY(): string {
+    return this.TOTAL === 0 ? 'N/A' : `${Math.floor(this.CORRECT / this.TOTAL * 10) / 10}%`;
   }
 }
