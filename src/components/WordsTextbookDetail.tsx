@@ -68,6 +68,10 @@ export default class WordsTextbookDetail extends React.Component<any, any> {
           <label className="p-col-1" htmlFor="LEVEL">LEVEL:</label>
           <InputText className="p-col-3" id="LEVEL" value={this.state.item.LEVEL} onChange={this.onChangeInput} />
         </div>
+        <div className="p-grid mb-2">
+          <label className="p-col-1" htmlFor="ACCURACY">ACCURACY:</label>
+          <InputText className="p-col-3" id="ACCURACY" value={this.state.item.ACCURACY} disabled />
+        </div>
         <div>
           <Button label="Back" onClick={this.goBack} />
           <Button label="Save" onClick={this.save} />

@@ -17,7 +17,7 @@ export default class WordsUnitDetail extends React.Component<any, any> {
     const id = +this.props.match.params.id;
     const o = this.wordsUnitService.unitWords.find(value => value.ID === id);
     this.setState({
-      item: o ? {...o} : this.wordsUnitService.newUnitWord(),
+      item: o || this.wordsUnitService.newUnitWord(),
     });
   }
 
@@ -63,6 +63,10 @@ export default class WordsUnitDetail extends React.Component<any, any> {
         <div className="p-grid mb-2">
           <label className="p-col-1" htmlFor="LEVEL">LEVEL:</label>
           <InputText className="p-col-3" id="LEVEL" value={this.state.item.LEVEL} onChange={this.onChangeInput} />
+        </div>
+        <div className="p-grid mb-2">
+          <label className="p-col-1" htmlFor="ACCURACY">ACCURACY:</label>
+          <InputText className="p-col-3" id="ACCURACY" value={this.state.item.ACCURACY} disabled />
         </div>
         <div>
           <Button label="Back" onClick={this.goBack} />
