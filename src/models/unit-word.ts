@@ -36,6 +36,6 @@ export class MUnitWord implements MWordColor {
       String(this.SEQNUM).padStart(3);
   }
   get ACCURACY(): string {
-    return this.TOTAL === 0 ? 'N/A' : `${Math.floor(this.CORRECT / this.TOTAL * 10) / 10}%`;
+    return this.TOTAL === 0 ? 'N/A' : `${Math.floor(this.CORRECT / this.TOTAL * 1000) / 10}%`;
   }
 }
