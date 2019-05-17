@@ -50,7 +50,7 @@ export default class WordsLang extends React.Component<any, any> {
   actionTemplate = (rowData: any, column: any) => {
     return <div>
       <Button className="p-button-danger button-margin-right" icon="fa fa-trash"
-              tooltip="Delete" tooltipOptions={{position: 'top'}} onClick={() => this.deleteWord(rowData.ID)} />
+              tooltip="Delete" tooltipOptions={{position: 'top'}} onClick={() => this.deleteWord(rowData)} />
       <Button icon="fa fa-edit" tooltip="Edit" tooltipOptions={{position: 'top'}}
               onClick={() => history.push('/words-lang-detail/' + rowData.ID)} />
       <Button hidden={!this.settingsService.selectedVoice} icon="fa fa-volume-up" tooltipOptions={{position: 'top'}}
@@ -147,8 +147,8 @@ export default class WordsLang extends React.Component<any, any> {
     this.setState({selectedRow: e.data});
   };
 
-  deleteWord(ID: number) {
-    this.wordsLangService.delete(ID);
+  deleteWord(item: MLangWord) {
+    this.wordsLangService.delete(item);
   }
 
   getNote(index: number) {

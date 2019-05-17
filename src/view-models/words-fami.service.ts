@@ -11,6 +11,10 @@ export class WordsFamiService {
 
   constructor(private wordFamiService: WordFamiService) { }
 
+  delete(id: number): Observable<number> {
+    return this.wordFamiService.delete(id);
+  }
+
   update(wordid: number, level: number): Observable<number | any> {
     return this.wordFamiService.getDataByUserWord(this.userid, wordid).pipe(
       concatMap(arr => {

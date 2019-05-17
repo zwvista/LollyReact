@@ -112,7 +112,7 @@ export default class WordsLang2 extends React.Component<any, any> {
                 <TableCell style={{color:row.colorStyle['color']}}>{row.ACCURACY}</TableCell>
                 <TableCell style={{color:row.colorStyle['color']}}>
                   <Tooltip title="Delete">
-                    <Fab size="small" color="secondary" onClick={() => this.deleteWord(row.ID)}>
+                    <Fab size="small" color="secondary" onClick={() => this.deleteWord(row)}>
                       <FontAwesomeIcon icon={faTrash} />
                     </Fab>
                   </Tooltip>
@@ -215,8 +215,8 @@ export default class WordsLang2 extends React.Component<any, any> {
     }));
   };
 
-  deleteWord(ID: number) {
-    this.wordsLangService.delete(ID);
+  deleteWord(item: MLangWord) {
+    this.wordsLangService.delete(item);
   }
 
   getNote(index: number) {
