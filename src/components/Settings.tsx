@@ -47,7 +47,7 @@ export default class Settings extends React.Component<any, any> implements Setti
           </select>
         </div>
         <div className="form-inline mb-2">
-          <label htmlFor="dictItem" className="col-2 control-label">Dictionary(Word):</label>
+          <label htmlFor="dictItem" className="col-2 control-label">Dictionary(Reference):</label>
           <select id="dictItem" className="col-4 form-control" value={this.settingsService.selectedDictItem.DICTID} onChange={this.onDictItemChange}>
           {
             this.settingsService.dictItems.map(o => <option key={o.DICTID} value={o.DICTID}>{o.DICTNAME}</option>)
