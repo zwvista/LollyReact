@@ -25,8 +25,8 @@ export class WordsLangService {
     return this.appService.initializeComplete.pipe(
       concatMap(_ => this.langWordService.getDataByLang(this.settingsService.selectedLang.ID, page, rows)),
       map(res => {
-        this.settingsService.setColorStyles(res.VLANGWORDS);
-        this.langWords = res.VLANGWORDS;
+        this.settingsService.setColorStyles(res.records);
+        this.langWords = res.records;
         this.langWordsCount = res._results;
       }),
     );

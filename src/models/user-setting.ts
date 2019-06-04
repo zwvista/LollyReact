@@ -1,5 +1,5 @@
 export class MUserSettings {
-  USERSETTINGS!: MUserSetting[];
+  records!: MUserSetting[];
 }
 export class MUserSetting {
   ID!: number;

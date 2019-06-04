@@ -2,7 +2,7 @@ import { MSelectItem } from '../common/selectitem';
 import { MTextbook } from './textbook';
 
 export class MUnitPhrases {
-  VUNITPHRASES!: MUnitPhrase[];
+  records!: MUnitPhrase[];
   _results = 0;
 }
 export class MUnitPhrase {

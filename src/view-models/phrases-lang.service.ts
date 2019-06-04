@@ -21,7 +21,7 @@ export class PhrasesLangService {
     return this.appService.initializeComplete.pipe(
       concatMap(_ => this.langPhraseService.getDataByLang(this.settingsService.selectedLang.ID, page, rows)),
       map(res => {
-        this.langPhrases = res.LANGPHRASES;
+        this.langPhrases = res.records;
         this.langPhraseCount = res._results;
       }),
     );

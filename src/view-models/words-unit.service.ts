@@ -42,8 +42,8 @@ export class WordsUnitService {
       concatMap(_ => this.unitWordService.getDataByLang(this.settingsService.selectedLang.ID,
         this.settingsService.textbooks, page, rows)),
       map(res => {
-        this.settingsService.setColorStyles(res.VUNITWORDS);
-        this.textbookWords = res.VUNITWORDS;
+        this.settingsService.setColorStyles(res.records);
+        this.textbookWords = res.records;
         this.textbookWordCount = res._results
       }),
     );

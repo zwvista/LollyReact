@@ -3,7 +3,7 @@ import { MWordColor } from './word-color';
 import { MTextbook } from './textbook';
 
 export class MUnitWords {
-  VUNITWORDS!: MUnitWord[];
+  records!: MUnitWord[];
   _results = 0;
 }
 export class MUnitWord implements MWordColor {

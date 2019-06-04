@@ -9,11 +9,11 @@ import { MTextbook } from '../models/textbook';
 export class UnitWordService extends BaseService {
 
   getDataByTextbookUnitPart(textbook: MTextbook, unitPartFrom: number, unitPartTo: number): Observable<MUnitWord[]> {
-    const url = `${this.baseUrl}VUNITWORDS?transform=1&filter[]=TEXTBOOKID,eq,${textbook.ID}&filter[]=UNITPART,bt,${unitPartFrom},${unitPartTo}&order[]=UNITPART&order[]=SEQNUM`;
+    const url = `${this.baseUrl}VUNITWORDS?filter=TEXTBOOKID,eq,${textbook.ID}&filter=UNITPART,bt,${unitPartFrom},${unitPartTo}&order=UNITPART&order=SEQNUM`;
     return this.http.get<MUnitWords>(url)
       .pipe(
         map(result => {
-          const result2 = result.VUNITWORDS.map(value => Object.assign(new MUnitWord(), value));
+          const result2 = result.records.map(value => Object.assign(new MUnitWord(), value));
           result2.forEach(o => o.textbook = textbook);
           return result2;
         }),
@@ -21,11 +21,11 @@ export class UnitWordService extends BaseService {
   }
 
   getDataByLang(langid: number, textbooks: MTextbook[], page: number, rows: number): Observable<MUnitWords> {
-    const url = `${this.baseUrl}VUNITWORDS?transform=1&filter=LANGID,eq,${langid}&order[]=TEXTBOOKID&order[]=UNIT&order[]=PART&order[]=SEQNUM&page=${page},${rows}`;
+    const url = `${this.baseUrl}VUNITWORDS?filter=LANGID,eq,${langid}&order=TEXTBOOKID&order=UNIT&order=PART&order=SEQNUM&page=${page},${rows}`;
     return this.http.get<MUnitWords>(url)
       .pipe(
         map(result => ({
-          VUNITWORDS: result.VUNITWORDS.map(value => {
+          records: result.records.map(value => {
             const v = Object.assign(new MUnitWord(), value);
             v.textbook = textbooks.find(o => o.ID === v.TEXTBOOKID);
             return v;
@@ -36,10 +36,10 @@ export class UnitWordService extends BaseService {
   }
 
   getDataByLangWord(wordid: number): Observable<MUnitWord[]> {
-    const url = `${this.baseUrl}VUNITWORDS?transform=1&filter=WORDID,eq,${wordid}`;
+    const url = `${this.baseUrl}VUNITWORDS?filter=WORDID,eq,${wordid}`;
     return this.http.get<MUnitWords>(url)
       .pipe(
-        map(result => result.VUNITWORDS.map(value => Object.assign(new MUnitWord(), value))),
+        map(result => result.records.map(value => Object.assign(new MUnitWord(), value))),
       );
   }
 

@@ -40,6 +40,12 @@ export class SettingsService {
     return +this.selectedUSUser0.VALUE3;
   }
   USLEVELCOLORS!: {number: [string]} | {};
+  get USREADINTERVAL(): number {
+    return +this.selectedUSUser1.VALUE1;
+  }
+  get USREVIEWINTERVAL(): number {
+    return +this.selectedUSUser1.VALUE2;
+  }
   private selectedUSLang2!: MUserSetting;
   get USTEXTBOOKID(): number {
     return +this.selectedUSLang2.VALUE1;

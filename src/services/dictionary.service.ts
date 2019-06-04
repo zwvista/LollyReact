@@ -15,10 +15,10 @@ import {
 export class DictReferenceService extends BaseService {
 
   getDataByLang(langid: number): Observable<MDictReference[]> {
-    const url = `${this.baseUrl}VDICTSREFERENCE?transform=1&filter[]=LANGIDFROM,eq,${langid}`;
+    const url = `${this.baseUrl}VDICTSREFERENCE?filter=LANGIDFROM,eq,${langid}`;
     return this.http.get<MDictsReference>(url)
       .pipe(
-        map(result => result.VDICTSREFERENCE.map(value => Object.assign(new MDictReference(), value))),
+        map(result => result.records.map(value => Object.assign(new MDictReference(), value))),
       );
   }
 
@@ -28,10 +28,10 @@ export class DictReferenceService extends BaseService {
 export class DictNoteService extends BaseService {
 
   getDataByLang(langid: number): Observable<MDictNote[]> {
-    const url = `${this.baseUrl}VDICTSNOTE?transform=1&filter=LANGIDFROM,eq,${langid}`;
+    const url = `${this.baseUrl}VDICTSNOTE?filter=LANGIDFROM,eq,${langid}`;
     return this.http.get<MDictsNote>(url)
       .pipe(
-        map(result => result.VDICTSNOTE.map(value => Object.assign(new MDictNote(), value))),
+        map(result => result.records.map(value => Object.assign(new MDictNote(), value))),
       );
   }
 
@@ -41,10 +41,10 @@ export class DictNoteService extends BaseService {
 export class DictTranslationService extends BaseService {
 
   getDataByLang(langid: number): Observable<MDictTranslation[]> {
-    const url = `${this.baseUrl}VDICTSTRANSLATION?transform=1&filter=LANGIDFROM,eq,${langid}`;
+    const url = `${this.baseUrl}VDICTSTRANSLATION?filter=LANGIDFROM,eq,${langid}`;
     return this.http.get<MDictsTranslation>(url)
       .pipe(
-        map(result => result.VDICTSTRANSLATION.map(value => Object.assign(new MDictTranslation(), value))),
+        map(result => result.records.map(value => Object.assign(new MDictTranslation(), value))),
       );
   }
 

@@ -24,7 +24,7 @@ class MDictionary {
 }
 
 export class MDictsReference {
-  VDICTSREFERENCE!: MDictReference[];
+  records!: MDictReference[];
 }
 const cssFolder = 'http://zwvista.tk/lolly/css/';
 export class MDictReference extends MDictionary {
@@ -42,13 +42,13 @@ export class MDictItem {
 }
 
 export class MDictsNote {
-  VDICTSNOTE!: MDictNote[];
+  records!: MDictNote[];
 }
 export class MDictNote extends MDictionary {
 }
 
 export class MDictsTranslation {
-  VDICTSTRANSLATION!: MDictTranslation[];
+  records!: MDictTranslation[];
 }
 export class MDictTranslation extends MDictionary {
 }

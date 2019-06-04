@@ -2,7 +2,7 @@ import { MUnitWord } from './unit-word';
 import { MWordColor } from './word-color';
 
 export class MLangWords {
-  VLANGWORDS: MLangWord[];
+  records: MLangWord[];
   _results = 0;
 }
 export class MLangWord implements MWordColor {

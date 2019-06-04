@@ -8,21 +8,21 @@ import { map } from 'rxjs/operators';
 export class LangWordService extends BaseService {
 
   getDataByLang(langid: number, page: number, rows: number): Observable<MLangWords> {
-    const url = `${this.baseUrl}VLANGWORDS?transform=1&filter=LANGID,eq,${langid}&order=WORD&page=${page},${rows}`;
+    const url = `${this.baseUrl}VLANGWORDS?filter=LANGID,eq,${langid}&order=WORD&page=${page},${rows}`;
     return this.http.get<MLangWords>(url)
       .pipe(
         map(result => ({
-          VLANGWORDS: result.VLANGWORDS.map(value => Object.assign(new MLangWord(), value)),
+          records: result.records.map(value => Object.assign(new MLangWord(), value)),
           _results: result._results,
         })),
       );
   }
 
   getDataByLangWord(langid: number, word: string): Observable<MLangWord[]> {
-    const url = `${this.baseUrl}VLANGWORDS?transform=1&filter[]=LANGID,eq,${langid}&filter[]=WORD,eq,${encodeURIComponent(word)}`;
+    const url = `${this.baseUrl}VLANGWORDS?filter=LANGID,eq,${langid}&filter=WORD,eq,${encodeURIComponent(word)}`;
     return this.http.get<MLangWords>(url)
       .pipe(
-        map(result => result.VLANGWORDS.map(value => Object.assign(new MLangWord(), value))
+        map(result => result.records.map(value => Object.assign(new MLangWord(), value))
           // Api is case insensitive
           .filter(value => value.WORD === word)
         ),
@@ -30,10 +30,10 @@ export class LangWordService extends BaseService {
   }
 
   getDataById(id: number): Observable<MLangWord[]> {
-    const url = `${this.baseUrl}VLANGWORDS?transform=1&filter=ID,eq,${id}`;
+    const url = `${this.baseUrl}VLANGWORDS?filter=ID,eq,${id}`;
     return this.http.get<MLangWords>(url)
       .pipe(
-        map(result => result.VLANGWORDS.map(value => Object.assign(new MLangWord(), value))),
+        map(result => result.records.map(value => Object.assign(new MLangWord(), value))),
       );
   }
 

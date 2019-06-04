@@ -35,7 +35,7 @@ export class PhrasesUnitService {
       concatMap(_ => this.unitPhraseService.getDataByLang(this.settingsService.selectedLang.ID,
         this.settingsService.textbooks, page, rows)),
       map(res => {
-        this.textbookPhrases = res.VUNITPHRASES;
+        this.textbookPhrases = res.records;
         this.textbookPhraseCount = res._results;
       }),
     );

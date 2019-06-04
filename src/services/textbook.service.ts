@@ -9,7 +9,7 @@ import { MSelectItem } from '../common/selectitem';
 export class TextbookService extends BaseService {
 
   getDataByLang(langid: number): Observable<MTextbook[]> {
-    const url = `${this.baseUrl}TEXTBOOKS?transform=1&filter=LANGID,eq,${langid}`;
+    const url = `${this.baseUrl}TEXTBOOKS?filter=LANGID,eq,${langid}`;
     const f = (UNITS: string) => {
       let m = /UNITS,(\d+)/g.exec(UNITS);
       if (m) {
@@ -31,7 +31,7 @@ export class TextbookService extends BaseService {
     };
     return this.http.get<MTextbooks>(url)
       .pipe(
-        map(result => result.TEXTBOOKS.map(value => {
+        map(result => result.records.map(value => {
             const o = Object.assign(new MTextbook(), value);
             o.units = f(o.UNITS).map((v, i) => new MSelectItem(i + 1, v));
             o.parts = o.PARTS.split(',').map((v, i) => new MSelectItem(i + 1, v));

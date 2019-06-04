@@ -8,10 +8,10 @@ import { MWordFami, MWordsFami } from '../models/word-fami';
 export class WordFamiService extends BaseService {
 
   getDataByUserWord(userid: number, wordid: number): Observable<MWordFami[]> {
-    const url = `${this.baseUrl}WORDSFAMI?transform=1&filter[]=USERID,eq,${userid}&filter[]=WORDID,eq,${wordid}`;
+    const url = `${this.baseUrl}WORDSFAMI?filter=USERID,eq,${userid}&filter=WORDID,eq,${wordid}`;
     return this.http.get<MWordsFami>(url)
       .pipe(
-        map(result => result.WORDSFAMI.map(value => Object.assign(new MWordFami(), value))),
+        map(result => result.records.map(value => Object.assign(new MWordFami(), value))),
       );
   }
 

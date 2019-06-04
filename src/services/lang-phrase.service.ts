@@ -8,21 +8,21 @@ import { map } from 'rxjs/operators';
 export class LangPhraseService extends BaseService {
 
   getDataByLang(langid: number, page: number, rows: number): Observable<MLangPhrases> {
-    const url = `${this.baseUrl}LANGPHRASES?transform=1&filter=LANGID,eq,${langid}&order=PHRASE&page=${page},${rows}`;
+    const url = `${this.baseUrl}LANGPHRASES?filter=LANGID,eq,${langid}&order=PHRASE&page=${page},${rows}`;
     return this.http.get<MLangPhrases>(url)
       .pipe(
         map(result => ({
-          LANGPHRASES: result.LANGPHRASES.map(value => Object.assign(new MLangPhrase(), value)),
+          records: result.records.map(value => Object.assign(new MLangPhrase(), value)),
           _results: result._results,
         })),
       );
   }
 
   getDataByLangPhrase(langid: number, phrase: string): Observable<MLangPhrase[]> {
-    const url = `${this.baseUrl}LANGPHRASES?transform=1&filter[]=LANGID,eq,${langid}&filter[]=PHRASE,eq,${encodeURIComponent(phrase)}`;
+    const url = `${this.baseUrl}LANGPHRASES?filter=LANGID,eq,${langid}&filter=PHRASE,eq,${encodeURIComponent(phrase)}`;
     return this.http.get<MLangPhrases>(url)
       .pipe(
-        map(result => result.LANGPHRASES.map(value => Object.assign(new MLangPhrase(), value))
+        map(result => result.records.map(value => Object.assign(new MLangPhrase(), value))
           // Api is case insensitive
           .filter(value => value.PHRASE === phrase)
         ),
@@ -30,10 +30,10 @@ export class LangPhraseService extends BaseService {
   }
 
   getDataById(id: number): Observable<MLangPhrase[]> {
-    const url = `${this.baseUrl}LANGPHRASES?transform=1&filter=ID,eq,${id}`;
+    const url = `${this.baseUrl}LANGPHRASES?filter=ID,eq,${id}`;
     return this.http.get<MLangPhrases>(url)
       .pipe(
-        map(result => result.LANGPHRASES.map(value => Object.assign(new MLangPhrase(), value))),
+        map(result => result.records.map(value => Object.assign(new MLangPhrase(), value))),
       );
   }
 
