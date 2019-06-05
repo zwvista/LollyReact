@@ -45,6 +45,7 @@ export class UnitPhraseService extends BaseService {
 
   create(item: MUnitPhrase): Observable<number | any[]> {
     const url = `${this.baseUrl}UNITPHRASES`;
+    (item as any).ID = null;
     return this.http.post<number | any[]>(url, item)
       .pipe(
       );

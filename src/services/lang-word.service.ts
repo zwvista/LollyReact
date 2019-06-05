@@ -39,6 +39,7 @@ export class LangWordService extends BaseService {
 
   create(item: MLangWord): Observable<number | any[]> {
     const url = `${this.baseUrl}LANGWORDS`;
+    (item as any).ID = null;
     return this.http.post<number | any[]>(url, item)
       .pipe(
       );

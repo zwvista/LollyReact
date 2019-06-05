@@ -45,6 +45,7 @@ export class UnitWordService extends BaseService {
 
   create(item: MUnitWord): Observable<number | any[]> {
     const url = `${this.baseUrl}UNITWORDS`;
+    (item as any).ID = null;
     return this.http.post<number | any[]>(url, item)
       .pipe(
       );
