@@ -30,7 +30,7 @@ export class UnitPhraseService extends BaseService {
             v.textbook = textbooks.find(o => o.ID === v.TEXTBOOKID);
             return v;
           }),
-          _results: result._results,
+          results: result.results,
         })),
       );
   }

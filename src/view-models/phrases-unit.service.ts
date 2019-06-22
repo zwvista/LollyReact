@@ -36,7 +36,7 @@ export class PhrasesUnitService {
         this.settingsService.textbooks, page, rows)),
       map(res => {
         this.textbookPhrases = res.records;
-        this.textbookPhraseCount = res._results;
+        this.textbookPhraseCount = res.results;
       }),
     );
   }

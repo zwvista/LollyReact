@@ -27,7 +27,7 @@ export class WordsLangService {
       map(res => {
         this.settingsService.setColorStyles(res.records);
         this.langWords = res.records;
-        this.langWordsCount = res._results;
+        this.langWordsCount = res.results;
       }),
     );
   }

@@ -2,7 +2,7 @@ import { MUnitPhrase } from './unit-phrase';
 
 export class MLangPhrases {
   records: MLangPhrase[];
-  _results = 0;
+  results = 0;
 }
 export class MLangPhrase {
   ID = 0;

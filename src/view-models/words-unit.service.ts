@@ -44,7 +44,7 @@ export class WordsUnitService {
       map(res => {
         this.settingsService.setColorStyles(res.records);
         this.textbookWords = res.records;
-        this.textbookWordCount = res._results
+        this.textbookWordCount = res.results
       }),
     );
   }

@@ -22,7 +22,7 @@ export class PhrasesLangService {
       concatMap(_ => this.langPhraseService.getDataByLang(this.settingsService.selectedLang.ID, page, rows)),
       map(res => {
         this.langPhrases = res.records;
-        this.langPhraseCount = res._results;
+        this.langPhraseCount = res.results;
       }),
     );
   }

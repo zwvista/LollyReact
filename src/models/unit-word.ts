@@ -4,7 +4,7 @@ import { MTextbook } from './textbook';
 
 export class MUnitWords {
   records!: MUnitWord[];
-  _results = 0;
+  results = 0;
 }
 export class MUnitWord implements MWordColor {
   ID = 0;

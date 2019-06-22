@@ -3,7 +3,7 @@ import { MTextbook } from './textbook';
 
 export class MUnitPhrases {
   records!: MUnitPhrase[];
-  _results = 0;
+  results = 0;
 }
 export class MUnitPhrase {
   ID = 0;
