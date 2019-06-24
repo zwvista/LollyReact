@@ -37,8 +37,10 @@ import { SyntheticEvent } from 'react';
 import { KeyboardEvent } from 'react';
 import { ChangeEvent } from 'react';
 import { ReactNode } from 'react';
+import { AppService } from '../view-models/app.service';
 
 export default class PhrasesUnit2 extends React.Component<any, any> {
+  @Inject appService: AppService;
   @Inject phrasesUnitService: PhrasesUnitService;
   @Inject settingsService: SettingsService;
   subscription = new Subscription();
@@ -49,7 +51,9 @@ export default class PhrasesUnit2 extends React.Component<any, any> {
   };
 
   componentDidMount() {
-    this.onRefresh();
+    this.subscription.add(this.appService.initializeComplete.subscribe(_ => {
+      this.onRefresh();
+    }));
   }
 
   componentWillUnmount() {

@@ -16,8 +16,10 @@ import * as $ from "jquery";
 import { MWordColor } from '../models/word-color';
 import { MUnitWord } from '../models/unit-word';
 import { Dropdown } from 'primereact/dropdown';
+import { AppService } from '../view-models/app.service';
 
 export default class WordsUnit extends React.Component<any, any> {
+  @Inject appService: AppService;
   @Inject wordsUnitService: WordsUnitService;
   @Inject settingsService: SettingsService;
   subscription = new Subscription();
@@ -30,7 +32,9 @@ export default class WordsUnit extends React.Component<any, any> {
   };
 
   componentDidMount() {
-    this.onRefresh();
+    this.subscription.add(this.appService.initializeComplete.subscribe(_ => {
+      this.onRefresh();
+    }));
   }
 
   componentWillUnmount() {

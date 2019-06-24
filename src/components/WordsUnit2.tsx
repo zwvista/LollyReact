@@ -33,8 +33,10 @@ import history from '../view-models/history';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { ChangeEvent, ReactNode, SyntheticEvent } from 'react';
 import { KeyboardEvent } from 'react';
+import { AppService } from '../view-models/app.service';
 
 export default class WordsUnit2 extends React.Component<any, any> {
+  @Inject appService: AppService;
   @Inject wordsUnitService: WordsUnitService;
   @Inject settingsService: SettingsService;
   subscription = new Subscription();
@@ -46,7 +48,9 @@ export default class WordsUnit2 extends React.Component<any, any> {
   };
 
   componentDidMount() {
-    this.onRefresh();
+    this.subscription.add(this.appService.initializeComplete.subscribe(_ => {
+      this.onRefresh();
+    }));
   }
 
   componentWillUnmount() {
