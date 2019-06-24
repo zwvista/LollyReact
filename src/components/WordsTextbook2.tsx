@@ -47,6 +47,7 @@ export default class WordsTextbook2 extends React.Component<any, any> {
     page: 1,
     filter: '',
     filterType: 0,
+    textbookFilter: 0,
   };
 
   componentDidMount() {
@@ -71,6 +72,14 @@ export default class WordsTextbook2 extends React.Component<any, any> {
           </Select>
           <TextField label="Filter" value={this.state.filter}
                      onChange={this.onFilterChange} onKeyPress={this.onFilterKeyPress}/>
+          <Select
+            value={this.state.textbookFilter}
+            onChange={this.onTextbookFilterChange}
+          >
+            {this.settingsService.textbookFilters.map(row =>
+              <MenuItem value={row.value} key={row.value}>{row.label}</MenuItem>
+            )}
+          </Select>
           <Button variant="contained" color="primary" onClick={(e: any) => this.onRefresh}>
             <span><FontAwesomeIcon icon={faSync} />Refresh</span>
           </Button>
@@ -205,7 +214,7 @@ export default class WordsTextbook2 extends React.Component<any, any> {
   };
 
   onRefresh = () => {
-    this.subscription.add(this.wordsUnitService.getDataInLang(this.state.page, this.state.rows, this.state.filter, this.state.filterType).subscribe(_ => {
+    this.subscription.add(this.wordsUnitService.getDataInLang(this.state.page, this.state.rows, this.state.filter, this.state.filterType, this.state.textbookFilter).subscribe(_ => {
       this.updateServiceState();
     }));
   };
@@ -225,6 +234,11 @@ export default class WordsTextbook2 extends React.Component<any, any> {
 
   onFilterTypeChange = (e: ChangeEvent<HTMLSelectElement>, child: ReactNode) => {
     this.setState({filterType: this.state.filterType = Number(e.target.value)});
+    this.onRefresh();
+  };
+
+  onTextbookFilterChange = (e: ChangeEvent<HTMLSelectElement>, child: ReactNode) => {
+    this.setState({textbookFilter: this.state.textbookFilter = Number(e.target.value)});
     this.onRefresh();
   };
 

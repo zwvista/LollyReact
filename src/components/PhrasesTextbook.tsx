@@ -13,7 +13,6 @@ import { googleString } from '../common/common';
 import { SettingsService } from '../view-models/settings.service';
 import { MUnitPhrase } from '../models/unit-phrase';
 import { PhrasesUnitService } from '../view-models/phrases-unit.service';
-import { Fab } from '@material-ui/core';
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 import { SyntheticEvent } from 'react';
@@ -31,6 +30,7 @@ export default class PhrasesTextbook extends React.Component<any, any> {
     selectedRow: null as MUnitPhrase,
     filter: '',
     filterType: 0,
+    textbookFilter: 0,
   };
 
   componentDidMount() {
@@ -77,6 +77,7 @@ export default class PhrasesTextbook extends React.Component<any, any> {
                          onChange={this.onFilterChange} onKeyPress={this.onFilterKeyPress}/>
               <label htmlFor="float-input">New Word</label>
             </span>
+            <Dropdown id="textbookFilter" options={this.settingsService.textbookFilters} value={this.state.textbookFilter} onChange={this.onTextbookFilterChange} />
             <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => this.onRefresh}/>
           </div>
         </Toolbar>
@@ -103,7 +104,7 @@ export default class PhrasesTextbook extends React.Component<any, any> {
   }
 
   onRefresh = () => {
-    this.subscription.add(this.phrasesUnitService.getDataInLang(this.state.page, this.state.rows, this.state.filter, this.state.filterType).subscribe(
+    this.subscription.add(this.phrasesUnitService.getDataInLang(this.state.page, this.state.rows, this.state.filter, this.state.filterType, this.state.textbookFilter).subscribe(
       _ => this.updateServiceState()
     ));
   };
@@ -123,6 +124,11 @@ export default class PhrasesTextbook extends React.Component<any, any> {
 
   onFilterTypeChange = (e: {originalEvent: Event, value: any}) => {
     this.setState({filterType: this.state.filterType = e.value});
+    this.onRefresh();
+  };
+
+  onTextbookFilterChange = (e: {originalEvent: Event, value: any}) => {
+    this.setState({textbookFilter: this.state.textbookFilter = e.value});
     this.onRefresh();
   };
 

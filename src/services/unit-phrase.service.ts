@@ -22,10 +22,12 @@ export class UnitPhraseService extends BaseService {
       );
   }
 
-  getDataByLang(langid: number, textbooks: MTextbook[], page: number, rows: number, filter: string, filterType: number): Observable<MUnitPhrases> {
+  getDataByLang(langid: number, textbooks: MTextbook[], page: number, rows: number, filter: string, filterType: number, textbookFilter: number): Observable<MUnitPhrases> {
     let url = `${this.baseUrl}VUNITPHRASES?filter=LANGID,eq,${langid}&order=TEXTBOOKID&order=UNIT&order=PART&order=SEQNUM&page=${page},${rows}`;
     if (filterType !== 0 && filter)
       url += `&filter=${filterType === 1 ? 'PHRASE' : 'TRANSLATION'},cs,${encodeURIComponent(filter)}`;
+    if (textbookFilter !== 0)
+      url += `&filter=TEXTBOOKID,eq,${textbookFilter}`;
     return this.http.get<MUnitPhrases>(url)
       .pipe(
         map(result => ({

@@ -31,6 +31,7 @@ export default class WordsTextbook extends React.Component<any, any> {
     selectedRow: null as any,
     filter: '',
     filterType: 0,
+    textbookFilter: 0,
   };
 
   componentDidMount() {
@@ -84,6 +85,7 @@ export default class WordsTextbook extends React.Component<any, any> {
                          onChange={this.onFilterChange} onKeyPress={this.onFilterKeyPress}/>
               <label htmlFor="float-input">New Word</label>
             </span>
+            <Dropdown id="textbookFilter" options={this.settingsService.textbookFilters} value={this.state.textbookFilter} onChange={this.onTextbookFilterChange} />
             <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => this.onRefresh}/>
             <Button label="Dictionary" icon="fa fa-book" onClick={() => history.push('/words-dict/textbook/0')} />
           </div>
@@ -124,7 +126,7 @@ export default class WordsTextbook extends React.Component<any, any> {
 
   onRefresh = () => {
     // https://stackoverflow.com/questions/4228356/integer-division-with-remainder-in-javascript
-    this.subscription.add(this.wordsUnitService.getDataInLang(this.state.page, this.state.rows, this.state.filter, this.state.filterType).subscribe(_ => {
+    this.subscription.add(this.wordsUnitService.getDataInLang(this.state.page, this.state.rows, this.state.filter, this.state.filterType, this.state.textbookFilter).subscribe(_ => {
       this.updateServiceState();
       if (this.wordsUnitService.textbookWords.length === 0) return;
       $("tr").each((i, tr) => {
@@ -153,6 +155,11 @@ export default class WordsTextbook extends React.Component<any, any> {
 
   onFilterTypeChange = (e: {originalEvent: Event, value: any}) => {
     this.setState({filterType: this.state.filterType = e.value});
+    this.onRefresh();
+  };
+
+  onTextbookFilterChange = (e: {originalEvent: Event, value: any}) => {
+    this.setState({textbookFilter: this.state.textbookFilter = e.value});
     this.onRefresh();
   };
 

@@ -183,6 +183,7 @@ export class SettingsService {
     this.selectedUSTextbook = this.userSettings.find(value => value.KIND === 11 && value.ENTITYID === newValue.ID)!;
     this.toType = this.isSingleUnit ? 0 : this.isSingleUnitPart ? 1 : 2;
   }
+  textbookFilters: MSelectItem[] = [];
 
   get units(): MSelectItem[] {
     return this.selectedTextbook.units;
@@ -272,6 +273,8 @@ export class SettingsService {
           (this.dictsTranslation.length === 0 ? null : this.dictsTranslation[0]);
         this.textbooks = res[3] as MTextbook[];
         this.selectedTextbook = this.textbooks.find(value => value.ID === this.USTEXTBOOKID)!;
+        this.textbookFilters = this.textbooks.map(value => new MSelectItem(value.ID, value.NAME));
+        this.textbookFilters = [new MSelectItem(0, 'All Textbooks')].concat(this.textbookFilters);
         this.autoCorrects = res[4] as MAutoCorrect[];
         this.voices = res[5] as MVoice[];
         this.selectedVoice = this.voices.find(value => value.ID === this.USVOICEID) ||

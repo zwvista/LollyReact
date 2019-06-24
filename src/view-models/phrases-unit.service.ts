@@ -30,10 +30,10 @@ export class PhrasesUnitService {
     );
   }
 
-  getDataInLang(page: number, rows: number, filter: string, filterType: number) {
+  getDataInLang(page: number, rows: number, filter: string, filterType: number, textbookFilter: number) {
     return this.appService.initializeComplete.pipe(
       concatMap(_ => this.unitPhraseService.getDataByLang(this.settingsService.selectedLang.ID,
-        this.settingsService.textbooks, page, rows, filter, filterType)),
+        this.settingsService.textbooks, page, rows, filter, filterType, textbookFilter)),
       map(res => {
         this.textbookPhrases = res.records;
         this.textbookPhraseCount = res.results;
