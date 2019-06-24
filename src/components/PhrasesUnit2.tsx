@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 import { SettingsService } from '../view-models/settings.service';
 import {
   Button,
-  Fab,
+  Fab, MenuItem, Select,
   Table,
   TableBody,
   TableCell,
@@ -33,6 +33,10 @@ import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { MUnitPhrase } from '../models/unit-phrase';
 import { googleString } from '../common/common';
+import { SyntheticEvent } from 'react';
+import { KeyboardEvent } from 'react';
+import { ChangeEvent } from 'react';
+import { ReactNode } from 'react';
 
 export default class PhrasesUnit2 extends React.Component<any, any> {
   @Inject phrasesUnitService: PhrasesUnitService;
@@ -40,10 +44,12 @@ export default class PhrasesUnit2 extends React.Component<any, any> {
   subscription = new Subscription();
 
   state = {
+    filter: '',
+    filterType: 0,
   };
 
   componentDidMount() {
-    this.onRefresh(null);
+    this.onRefresh();
   }
 
   componentWillUnmount() {
@@ -54,6 +60,16 @@ export default class PhrasesUnit2 extends React.Component<any, any> {
     return (
       <div>
         <Toolbar>
+          <Select
+            value={this.state.filterType}
+            onChange={this.onFilterTypeChange}
+          >
+            {this.settingsService.phraseFilterTypes.map(row =>
+              <MenuItem value={row.value} key={row.value}>{row.label}</MenuItem>
+            )}
+          </Select>
+          <TextField label="Filter" value={this.state.filter}
+                     onChange={this.onFilterChange} onKeyPress={this.onFilterKeyPress}/>
           <Button variant="contained" color="primary" onClick={() => history.push('/phrases-unit-detail/0')}>
             <span><FontAwesomeIcon icon={faPlus} />Add</span>
           </Button>
@@ -122,10 +138,28 @@ export default class PhrasesUnit2 extends React.Component<any, any> {
     );
   }
 
-  onRefresh = (e:any) => {
-    this.subscription.add(this.phrasesUnitService.getDataInTextbook().subscribe(
+  onRefresh = () => {
+    this.subscription.add(this.phrasesUnitService.getDataInTextbook(this.state.filter, this.state.filterType).subscribe(
       _ => this.updateServiceState()
     ));
+  };
+
+  onFilterChange = (e: SyntheticEvent) => {
+    this.setState({filter: (e.nativeEvent.target as HTMLInputElement).value});
+  };
+
+  onFilterKeyPress = (e: KeyboardEvent) => {
+    if (e.key !== 'Enter') return;
+    if (this.state.filter && this.state.filterType === 0)
+      this.setState({filterType: this.state.filterType = 1});
+    else if (!this.state.filter && this.state.filterType !== 0)
+      this.setState({filterType: this.state.filterType = 0});
+    this.onRefresh();
+  };
+
+  onFilterTypeChange = (e: ChangeEvent<HTMLSelectElement>, child: ReactNode) => {
+    this.setState({filterType: this.state.filterType = Number(e.target.value)});
+    this.onRefresh();
   };
 
   deletePhrase(item: MUnitPhrase) {

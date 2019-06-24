@@ -21,9 +21,9 @@ export class WordsLangService {
               @Inject private noteService: NoteService) {
   }
 
-  getData(page: number, rows: number): Observable<void> {
+  getData(page: number, rows: number, filter: string, filterType: number): Observable<void> {
     return this.appService.initializeComplete.pipe(
-      concatMap(_ => this.langWordService.getDataByLang(this.settingsService.selectedLang.ID, page, rows)),
+      concatMap(_ => this.langWordService.getDataByLang(this.settingsService.selectedLang.ID, page, rows, filter, filterType)),
       map(res => {
         this.settingsService.setColorStyles(res.records);
         this.langWords = res.records;

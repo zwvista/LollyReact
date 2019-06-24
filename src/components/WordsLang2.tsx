@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { SettingsService } from '../view-models/settings.service';
 import {
   Button,
-  Fab,
+  Fab, MenuItem, Select,
   Table,
   TableBody,
   TableCell, TableFooter,
@@ -35,6 +35,8 @@ import * as $ from 'jquery';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { MLangWord } from '../models/lang-word';
+import { ChangeEvent } from 'react';
+import { ReactNode } from 'react';
 
 export default class WordsLang2 extends React.Component<any, any> {
   @Inject wordsLangService: WordsLangService;
@@ -45,10 +47,12 @@ export default class WordsLang2 extends React.Component<any, any> {
     newWord: '',
     rows: this.settingsService.USROWSPERPAGE,
     page: 1,
+    filter: '',
+    filterType: 0,
   };
 
   componentDidMount() {
-    this.onRefresh(this.state.page, this.state.rows);
+    this.onRefresh();
   }
 
   componentWillUnmount() {
@@ -67,10 +71,20 @@ export default class WordsLang2 extends React.Component<any, any> {
               <FontAwesomeIcon icon={faVolumeUp} />
             </Fab>
           </Tooltip>
+          <Select
+            value={this.state.filterType}
+            onChange={this.onFilterTypeChange}
+          >
+            {this.settingsService.wordFilterTypes.map(row =>
+              <MenuItem value={row.value} key={row.value}>{row.label}</MenuItem>
+            )}
+          </Select>
+          <TextField label="Filter" value={this.state.filter}
+                     onChange={this.onFilterChange} onKeyPress={this.onFilterKeyPress}/>
           <Button variant="contained" color="primary" onClick={() => history.push('/words-lang-detail/0')}>
             <span><FontAwesomeIcon icon={faPlus} />Add</span>
           </Button>
-          <Button variant="contained" color="primary" onClick={(e: any) => this.onRefresh(this.state.page, this.state.rows)}>
+          <Button variant="contained" color="primary" onClick={(e: any) => this.onRefresh}>
             <span><FontAwesomeIcon icon={faSync} />Refresh</span>
           </Button>
           <Button variant="contained" color="primary" onClick={() => history.push('/words-dict/lang/0')}>
@@ -200,19 +214,37 @@ export default class WordsLang2 extends React.Component<any, any> {
   };
 
   handleChangePage = (event: any, page: any) => {
-    this.setState({ page: page + 1 });
-    this.onRefresh(page + 1, this.state.rows);
+    this.setState({ page: this.state.page = page + 1 });
+    this.onRefresh();
   };
 
   handleChangeRowsPerPage = (event: any) => {
-    this.setState({ page: 1, rows: event.target.value });
-    this.onRefresh(1, event.target.value);
+    this.setState({ page: this.state.page = 1, rows: this.state.rows = event.target.value });
+    this.onRefresh();
   };
 
-  onRefresh = (page: number, rows: number) => {
-    this.subscription.add(this.wordsLangService.getData(page, rows).subscribe(_ => {
+  onRefresh = () => {
+    this.subscription.add(this.wordsLangService.getData(this.state.page, this.state.rows, this.state.filter, this.state.filterType).subscribe(_ => {
       this.updateServiceState();
     }));
+  };
+
+  onFilterChange = (e: SyntheticEvent) => {
+    this.setState({filter: (e.nativeEvent.target as HTMLInputElement).value});
+  };
+
+  onFilterKeyPress = (e: KeyboardEvent) => {
+    if (e.key !== 'Enter') return;
+    if (this.state.filter && this.state.filterType === 0)
+      this.setState({filterType: this.state.filterType = 1});
+    else if (!this.state.filter && this.state.filterType !== 0)
+      this.setState({filterType: this.state.filterType = 0});
+    this.onRefresh();
+  };
+
+  onFilterTypeChange = (e: ChangeEvent<HTMLSelectElement>, child: ReactNode) => {
+    this.setState({filterType: this.state.filterType = Number(e.target.value)});
+    this.onRefresh();
   };
 
   deleteWord(item: MLangWord) {

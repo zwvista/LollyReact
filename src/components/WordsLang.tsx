@@ -16,6 +16,7 @@ import { SettingsService } from '../view-models/settings.service';
 import * as $ from "jquery";
 import { MWordColor } from '../models/word-color';
 import { MLangWord } from '../models/lang-word';
+import { Dropdown } from 'primereact/dropdown';
 
 export default class WordsLang extends React.Component<any, any> {
   @Inject wordsLangService: WordsLangService;
@@ -28,19 +29,21 @@ export default class WordsLang extends React.Component<any, any> {
     rows: this.settingsService.USROWSPERPAGE,
     page: 1,
     selectedRow: null as any,
+    filter: '',
+    filterType: 0,
   };
 
   componentDidMount() {
-    this.onRefresh(this.state.page, this.state.rows);
+    this.onRefresh();
   }
 
   onPageChange = (e: PageState) => {
     this.setState({
       first: e.first,
-      rows: e.rows,
-      page: e.page + 1,
+      rows: this.state.rows = e.rows,
+      page: this.state.page = e.page + 1,
     });
-    this.onRefresh(e.page + 1, this.state.rows);
+    this.onRefresh();
   };
 
   componentWillUnmount() {
@@ -79,12 +82,18 @@ export default class WordsLang extends React.Component<any, any> {
               <InputText id="float-input" type="text" value={this.state.newWord}
                          onChange={this.onNewWordChange} onKeyPress={this.onNewWordKeyPress}/>
               <label htmlFor="float-input">New Word</label>
-              <Button hidden={!this.settingsService.selectedVoice} icon="fa fa-volume-up" tooltipOptions={{position: 'top'}}
-                      tooltip="Speak" onClick={() => this.settingsService.speak(this.state.newWord)} />
-              <Button label="Add" icon="fa fa-plus" onClick={() => history.push('/words-lang-detail/0')} />
-              <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => this.onRefresh(this.state.page, this.state.rows)}/>
-              <Button label="Dictionary" icon="fa fa-book" onClick={() => history.push('/words-dict/lang/0')} />
             </span>
+            <Dropdown id="filterType" options={this.settingsService.wordFilterTypes} value={this.state.filterType} onChange={this.onFilterTypeChange} />
+            <span className="p-float-label">
+              <InputText id="float-input" type="text" value={this.state.filter}
+                         onChange={this.onFilterChange} onKeyPress={this.onFilterKeyPress}/>
+              <label htmlFor="float-input">New Word</label>
+            </span>
+            <Button hidden={!this.settingsService.selectedVoice} icon="fa fa-volume-up" tooltipOptions={{position: 'top'}}
+                    tooltip="Speak" onClick={() => this.settingsService.speak(this.state.newWord)} />
+            <Button label="Add" icon="fa fa-plus" onClick={() => history.push('/words-lang-detail/0')} />
+            <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => this.onRefresh()}/>
+            <Button label="Dictionary" icon="fa fa-book" onClick={() => history.push('/words-dict/lang/0')} />
           </div>
         </Toolbar>
         <Paginator first={this.state.first} rows={this.state.rows} onPageChange={this.onPageChange}
@@ -132,10 +141,10 @@ export default class WordsLang extends React.Component<any, any> {
       $(tr).css('background-color', '').css('color', '');
   }
 
-  onRefresh = (page: number, rows: number) => {
-    this.subscription.add(this.wordsLangService.getData(page, rows).subscribe(_ => {
+  onRefresh = () => {
+    this.subscription.add(this.wordsLangService.getData(this.state.page, this.state.rows, this.state.filter, this.state.filterType).subscribe(_ => {
       this.updateServiceState();
-      const self = this;
+      if (this.wordsLangService.langWords.length === 0) return;
       $("tr").each((i, tr) => {
         if (i === 0) return;
         this.setRowStyle(this.wordsLangService.langWords[i - 1], tr);
@@ -145,6 +154,24 @@ export default class WordsLang extends React.Component<any, any> {
 
   onSelectionChange = (e: any) => {
     this.setState({selectedRow: e.data});
+  };
+
+  onFilterChange = (e: SyntheticEvent) => {
+    this.setState({filter: (e.nativeEvent.target as HTMLInputElement).value});
+  };
+
+  onFilterKeyPress = (e: KeyboardEvent) => {
+    if (e.key !== 'Enter') return;
+    if (this.state.filter && this.state.filterType === 0)
+      this.setState({filterType: this.state.filterType = 1});
+    else if (!this.state.filter && this.state.filterType !== 0)
+      this.setState({filterType: this.state.filterType = 0});
+    this.onRefresh();
+  };
+
+  onFilterTypeChange = (e: {originalEvent: Event, value: any}) => {
+    this.setState({filterType: this.state.filterType = e.value});
+    this.onRefresh();
   };
 
   deleteWord(item: MLangWord) {

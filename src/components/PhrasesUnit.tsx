@@ -12,6 +12,10 @@ import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { googleString } from '../common/common';
 import { SettingsService } from '../view-models/settings.service';
 import { MUnitPhrase } from '../models/unit-phrase';
+import { Dropdown } from 'primereact/dropdown';
+import { InputText } from 'primereact/inputtext';
+import { SyntheticEvent } from 'react';
+import { KeyboardEvent } from 'react';
 
 export default class PhrasesUnit extends React.Component<any, any> {
   @Inject phrasesUnitService: PhrasesUnitService;
@@ -20,10 +24,12 @@ export default class PhrasesUnit extends React.Component<any, any> {
 
   state = {
     selectedRow: null as MUnitPhrase,
+    filter: '',
+    filterType: 0,
   };
 
   componentDidMount() {
-    this.onRefresh(null);
+    this.onRefresh();
   }
 
   componentWillUnmount() {
@@ -51,6 +57,12 @@ export default class PhrasesUnit extends React.Component<any, any> {
       <div>
         <Toolbar>
           <div className="p-toolbar-group-left">
+            <Dropdown id="filterType" options={this.settingsService.phraseFilterTypes} value={this.state.filterType} onChange={this.onFilterTypeChange} />
+            <span className="p-float-label">
+              <InputText id="float-input" type="text" value={this.state.filter}
+                         onChange={this.onFilterChange} onKeyPress={this.onFilterKeyPress}/>
+              <label htmlFor="float-input">New Word</label>
+            </span>
             <Button label="Add" icon="fa fa-plus" onClick={() => history.push('/phrases-unit-detail/0')} />
             <Button label="Refresh" icon="fa fa-refresh" onClick={this.onRefresh}/>
           </div>
@@ -78,10 +90,28 @@ export default class PhrasesUnit extends React.Component<any, any> {
     this.phrasesUnitService.reindex(index => this.updateServiceState());
   };
 
-  onRefresh = (e:any) => {
-    this.subscription.add(this.phrasesUnitService.getDataInTextbook().subscribe(
+  onRefresh = () => {
+    this.subscription.add(this.phrasesUnitService.getDataInTextbook(this.state.filter, this.state.filterType).subscribe(
       _ => this.updateServiceState()
     ));
+  };
+
+  onFilterChange = (e: SyntheticEvent) => {
+    this.setState({filter: (e.nativeEvent.target as HTMLInputElement).value});
+  };
+
+  onFilterKeyPress = (e: KeyboardEvent) => {
+    if (e.key !== 'Enter') return;
+    if (this.state.filter && this.state.filterType === 0)
+      this.setState({filterType: this.state.filterType = 1});
+    else if (!this.state.filter && this.state.filterType !== 0)
+      this.setState({filterType: this.state.filterType = 0});
+    this.onRefresh();
+  };
+
+  onFilterTypeChange = (e: {originalEvent: Event, value: any}) => {
+    this.setState({filterType: this.state.filterType = e.value});
+    this.onRefresh();
   };
 
   deletePhrase(item: MUnitPhrase) {

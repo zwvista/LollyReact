@@ -13,6 +13,10 @@ import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { googleString } from '../common/common';
 import { SettingsService } from '../view-models/settings.service';
 import { MLangPhrase } from '../models/lang-phrase';
+import { Dropdown } from 'primereact/dropdown';
+import { InputText } from 'primereact/inputtext';
+import { SyntheticEvent } from 'react';
+import { KeyboardEvent } from 'react';
 
 export default class PhrasesLang extends React.Component<any, any> {
   @Inject phrasesLangService: PhrasesLangService;
@@ -24,19 +28,21 @@ export default class PhrasesLang extends React.Component<any, any> {
     rows: this.settingsService.USROWSPERPAGE,
     page: 1,
     selectedRow: null as MLangPhrase,
+    filter: '',
+    filterType: 0,
   };
 
   componentDidMount() {
-    this.onRefresh(this.state.page, this.state.rows);
+    this.onRefresh();
   }
 
   onPageChange = (e: PageState) => {
     this.setState({
       first: e.first,
-      rows: e.rows,
-      page: e.page + 1,
+      rows: this.state.rows = e.rows,
+      page: this.state.page = e.page + 1,
     });
-    this.onRefresh(e.page + 1, this.state.rows);
+    this.onRefresh();
   };
 
   componentWillUnmount() {
@@ -64,8 +70,14 @@ export default class PhrasesLang extends React.Component<any, any> {
       <div>
         <Toolbar>
           <div className="p-toolbar-group-left">
+            <Dropdown id="filterType" options={this.settingsService.phraseFilterTypes} value={this.state.filterType} onChange={this.onFilterTypeChange} />
+            <span className="p-float-label">
+              <InputText id="float-input" type="text" value={this.state.filter}
+                         onChange={this.onFilterChange} onKeyPress={this.onFilterKeyPress}/>
+              <label htmlFor="float-input">New Word</label>
+            </span>
             <Button label="Add" icon="fa fa-plus" onClick={() => history.push('/phrases-lang-detail/0')} />
-            <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => this.onRefresh(this.state.page, this.state.rows)}/>
+            <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => this.onRefresh}/>
           </div>
         </Toolbar>
         <Paginator first={this.state.first} rows={this.state.rows} onPageChange={this.onPageChange}
@@ -85,14 +97,32 @@ export default class PhrasesLang extends React.Component<any, any> {
     );
   }
 
-  onRefresh = (page: number, rows: number) => {
-    this.subscription.add(this.phrasesLangService.getData(page, rows).subscribe(
+  onRefresh = () => {
+    this.subscription.add(this.phrasesLangService.getData(this.state.page, this.state.rows, this.state.filter, this.state.filterType).subscribe(
       _ => this.updateServiceState()
     ));
   };
 
   onSelectionChange = (e: any) => {
     this.setState({selectedRow: e.data});
+  };
+
+  onFilterChange = (e: SyntheticEvent) => {
+    this.setState({filter: (e.nativeEvent.target as HTMLInputElement).value});
+  };
+
+  onFilterKeyPress = (e: KeyboardEvent) => {
+    if (e.key !== 'Enter') return;
+    if (this.state.filter && this.state.filterType === 0)
+      this.setState({filterType: this.state.filterType = 1});
+    else if (!this.state.filter && this.state.filterType !== 0)
+      this.setState({filterType: this.state.filterType = 0});
+    this.onRefresh();
+  };
+
+  onFilterTypeChange = (e: {originalEvent: Event, value: any}) => {
+    this.setState({filterType: this.state.filterType = e.value});
+    this.onRefresh();
   };
 
   deletePhrase(id: number) {

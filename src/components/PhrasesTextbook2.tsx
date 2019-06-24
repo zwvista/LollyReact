@@ -6,13 +6,13 @@ import { Subscription } from 'rxjs';
 import { SettingsService } from '../view-models/settings.service';
 import {
   Button,
-  Fab,
+  Fab, MenuItem, Select,
   Table,
   TableBody,
   TableCell, TableFooter,
   TableHead,
   TablePagination,
-  TableRow,
+  TableRow, TextField,
   Toolbar,
   Tooltip
 } from '@material-ui/core';
@@ -24,6 +24,10 @@ import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { googleString } from '../common/common';
 import { MUnitPhrase } from '../models/unit-phrase';
+import { SyntheticEvent } from 'react';
+import { KeyboardEvent } from 'react';
+import { ChangeEvent } from 'react';
+import { ReactNode } from 'react';
 
 export default class PhrasesTextbook2 extends React.Component<any, any> {
   @Inject phrasesUnitService: PhrasesUnitService;
@@ -33,10 +37,12 @@ export default class PhrasesTextbook2 extends React.Component<any, any> {
   state = {
     rows: this.settingsService.USROWSPERPAGE,
     page: 1,
+    filter: '',
+    filterType: 0,
   };
 
   componentDidMount() {
-    this.onRefresh(this.state.page, this.state.rows);
+    this.onRefresh();
   }
 
   componentWillUnmount() {
@@ -47,10 +53,20 @@ export default class PhrasesTextbook2 extends React.Component<any, any> {
     return (
       <div>
         <Toolbar>
+          <Select
+            value={this.state.filterType}
+            onChange={this.onFilterTypeChange}
+          >
+            {this.settingsService.phraseFilterTypes.map(row =>
+              <MenuItem value={row.value} key={row.value}>{row.label}</MenuItem>
+            )}
+          </Select>
+          <TextField label="Filter" value={this.state.filter}
+                     onChange={this.onFilterChange} onKeyPress={this.onFilterKeyPress}/>
           <Button variant="contained" color="primary" onClick={() => history.push('/phrases-textbook-detail/0')}>
             <span><FontAwesomeIcon icon={faPlus} />Add</span>
           </Button>
-          <Button variant="contained" color="primary" onClick={(e: any) => this.onRefresh(this.state.page, this.state.rows)}>
+          <Button variant="contained" color="primary" onClick={(e: any) => this.onRefresh}>
             <span><FontAwesomeIcon icon={faSync} />Refresh</span>
           </Button>
         </Toolbar>
@@ -148,19 +164,37 @@ export default class PhrasesTextbook2 extends React.Component<any, any> {
   }
 
   handleChangePage = (event: any, page: any) => {
-    this.setState({ page: page + 1 });
-    this.onRefresh(page + 1, this.state.rows);
+    this.setState({ page: this.state.page = page + 1 });
+    this.onRefresh();
   };
 
   handleChangeRowsPerPage = (event: any) => {
-    this.setState({ page: 1, rows: event.target.value });
-    this.onRefresh(1, event.target.value);
+    this.setState({ page: this.state.page = 1, rows: this.state.rows = event.target.value });
+    this.onRefresh();
   };
 
-  onRefresh = (page: number, rows: number) => {
-    this.subscription.add(this.phrasesUnitService.getDataInLang(page, rows).subscribe(
+  onRefresh = () => {
+    this.subscription.add(this.phrasesUnitService.getDataInLang(this.state.page, this.state.rows, this.state.filter, this.state.filterType).subscribe(
       _ => this.updateServiceState()
     ));
+  };
+
+  onFilterChange = (e: SyntheticEvent) => {
+    this.setState({filter: (e.nativeEvent.target as HTMLInputElement).value});
+  };
+
+  onFilterKeyPress = (e: KeyboardEvent) => {
+    if (e.key !== 'Enter') return;
+    if (this.state.filter && this.state.filterType === 0)
+      this.setState({filterType: this.state.filterType = 1});
+    else if (!this.state.filter && this.state.filterType !== 0)
+      this.setState({filterType: this.state.filterType = 0});
+    this.onRefresh();
+  };
+
+  onFilterTypeChange = (e: ChangeEvent<HTMLSelectElement>, child: ReactNode) => {
+    this.setState({filterType: this.state.filterType = Number(e.target.value)});
+    this.onRefresh();
   };
 
   deletePhrase(item: MUnitPhrase) {

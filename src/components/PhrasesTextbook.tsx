@@ -14,6 +14,10 @@ import { SettingsService } from '../view-models/settings.service';
 import { MUnitPhrase } from '../models/unit-phrase';
 import { PhrasesUnitService } from '../view-models/phrases-unit.service';
 import { Fab } from '@material-ui/core';
+import { Dropdown } from 'primereact/dropdown';
+import { InputText } from 'primereact/inputtext';
+import { SyntheticEvent } from 'react';
+import { KeyboardEvent } from 'react';
 
 export default class PhrasesTextbook extends React.Component<any, any> {
   @Inject phrasesUnitService: PhrasesUnitService;
@@ -25,19 +29,21 @@ export default class PhrasesTextbook extends React.Component<any, any> {
     rows: this.settingsService.USROWSPERPAGE,
     page: 1,
     selectedRow: null as MUnitPhrase,
+    filter: '',
+    filterType: 0,
   };
 
   componentDidMount() {
-    this.onRefresh(this.state.page, this.state.rows);
+    this.onRefresh();
   }
 
   onPageChange = (e: PageState) => {
     this.setState({
       first: e.first,
-      rows: e.rows,
-      page: e.page + 1,
+      rows: this.state.rows = e.rows,
+      page: this.state.page = e.page + 1,
     });
-    this.onRefresh(e.page + 1, e.rows);
+    this.onRefresh();
   };
 
   componentWillUnmount() {
@@ -65,7 +71,13 @@ export default class PhrasesTextbook extends React.Component<any, any> {
       <div>
         <Toolbar>
           <div className="p-toolbar-group-left">
-            <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => this.onRefresh(this.state.page, this.state.rows)}/>
+            <Dropdown id="filterType" options={this.settingsService.phraseFilterTypes} value={this.state.filterType} onChange={this.onFilterTypeChange} />
+            <span className="p-float-label">
+              <InputText id="float-input" type="text" value={this.state.filter}
+                         onChange={this.onFilterChange} onKeyPress={this.onFilterKeyPress}/>
+              <label htmlFor="float-input">New Word</label>
+            </span>
+            <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => this.onRefresh}/>
           </div>
         </Toolbar>
         <Paginator first={this.state.first} rows={this.state.rows} onPageChange={this.onPageChange}
@@ -90,10 +102,28 @@ export default class PhrasesTextbook extends React.Component<any, any> {
     );
   }
 
-  onRefresh = (page: number, rows: number) => {
-    this.subscription.add(this.phrasesUnitService.getDataInLang(page, rows).subscribe(
+  onRefresh = () => {
+    this.subscription.add(this.phrasesUnitService.getDataInLang(this.state.page, this.state.rows, this.state.filter, this.state.filterType).subscribe(
       _ => this.updateServiceState()
     ));
+  };
+
+  onFilterChange = (e: SyntheticEvent) => {
+    this.setState({filter: (e.nativeEvent.target as HTMLInputElement).value});
+  };
+
+  onFilterKeyPress = (e: KeyboardEvent) => {
+    if (e.key !== 'Enter') return;
+    if (this.state.filter && this.state.filterType === 0)
+      this.setState({filterType: this.state.filterType = 1});
+    else if (!this.state.filter && this.state.filterType !== 0)
+      this.setState({filterType: this.state.filterType = 0});
+    this.onRefresh();
+  };
+
+  onFilterTypeChange = (e: {originalEvent: Event, value: any}) => {
+    this.setState({filterType: this.state.filterType = e.value});
+    this.onRefresh();
   };
 
   deletePhrase(item: MUnitPhrase) {

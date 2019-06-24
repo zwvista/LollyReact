@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 import { SettingsService } from '../view-models/settings.service';
 import {
   Button,
-  Fab,
+  Fab, MenuItem, Select,
   Table,
   TableBody,
   TableCell,
@@ -31,7 +31,7 @@ import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { MUnitWord } from '../models/unit-word';
 import history from '../view-models/history';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
-import { SyntheticEvent } from 'react';
+import { ChangeEvent, ReactNode, SyntheticEvent } from 'react';
 import { KeyboardEvent } from 'react';
 
 export default class WordsUnit2 extends React.Component<any, any> {
@@ -41,10 +41,12 @@ export default class WordsUnit2 extends React.Component<any, any> {
 
   state = {
     newWord: '',
+    filter: '',
+    filterType: 0,
   };
 
   componentDidMount() {
-    this.onRefresh(null);
+    this.onRefresh();
   }
 
   componentWillUnmount() {
@@ -63,6 +65,16 @@ export default class WordsUnit2 extends React.Component<any, any> {
               <FontAwesomeIcon icon={faVolumeUp} />
             </Fab>
           </Tooltip>
+          <Select
+            value={this.state.filterType}
+            onChange={this.onFilterTypeChange}
+          >
+            {this.settingsService.wordFilterTypes.map(row =>
+              <MenuItem value={row.value} key={row.value}>{row.label}</MenuItem>
+            )}
+          </Select>
+          <TextField label="Filter" value={this.state.filter}
+                     onChange={this.onFilterChange} onKeyPress={this.onFilterKeyPress}/>
           <Button variant="contained" color="primary" onClick={() => history.push('/words-unit-detail/0')}>
             <span><FontAwesomeIcon icon={faPlus} />Add</span>
           </Button>
@@ -180,10 +192,28 @@ export default class WordsUnit2 extends React.Component<any, any> {
     }));
   };
 
-  onRefresh = (e:any) => {
-    this.subscription.add(this.wordsUnitService.getDataInTextbook().subscribe(_ => {
+  onRefresh = () => {
+    this.subscription.add(this.wordsUnitService.getDataInTextbook(this.state.filter, this.state.filterType).subscribe(_ => {
       this.updateServiceState();
     }));
+  };
+
+  onFilterChange = (e: SyntheticEvent) => {
+    this.setState({filter: (e.nativeEvent.target as HTMLInputElement).value});
+  };
+
+  onFilterKeyPress = (e: KeyboardEvent) => {
+    if (e.key !== 'Enter') return;
+    if (this.state.filter && this.state.filterType === 0)
+      this.setState({filterType: this.state.filterType = 1});
+    else if (!this.state.filter && this.state.filterType !== 0)
+      this.setState({filterType: this.state.filterType = 0});
+    this.onRefresh();
+  };
+
+  onFilterTypeChange = (e: ChangeEvent<HTMLSelectElement>, child: ReactNode) => {
+    this.setState({filterType: this.state.filterType = Number(e.target.value)});
+    this.onRefresh();
   };
 
   deleteWord(item: MUnitWord) {

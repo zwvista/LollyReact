@@ -22,18 +22,18 @@ export class PhrasesUnitService {
               @Inject private appService: AppService) {
   }
 
-  getDataInTextbook() {
+  getDataInTextbook(filter: string, filterType: number) {
     return this.appService.initializeComplete.pipe(
       concatMap(_ => this.unitPhraseService.getDataByTextbookUnitPart(this.settingsService.selectedTextbook,
-        this.settingsService.USUNITPARTFROM, this.settingsService.USUNITPARTTO)),
+        this.settingsService.USUNITPARTFROM, this.settingsService.USUNITPARTTO, filter, filterType)),
       map(res => this.unitPhrases = res),
     );
   }
 
-  getDataInLang(page: number, rows: number) {
+  getDataInLang(page: number, rows: number, filter: string, filterType: number) {
     return this.appService.initializeComplete.pipe(
       concatMap(_ => this.unitPhraseService.getDataByLang(this.settingsService.selectedLang.ID,
-        this.settingsService.textbooks, page, rows)),
+        this.settingsService.textbooks, page, rows, filter, filterType)),
       map(res => {
         this.textbookPhrases = res.records;
         this.textbookPhraseCount = res.results;

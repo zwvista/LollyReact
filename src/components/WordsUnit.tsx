@@ -15,9 +15,7 @@ import { SettingsService } from '../view-models/settings.service';
 import * as $ from "jquery";
 import { MWordColor } from '../models/word-color';
 import { MUnitWord } from '../models/unit-word';
-
-import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Dropdown } from 'primereact/dropdown';
 
 export default class WordsUnit extends React.Component<any, any> {
   @Inject wordsUnitService: WordsUnitService;
@@ -27,10 +25,12 @@ export default class WordsUnit extends React.Component<any, any> {
   state = {
     newWord: '',
     selectedRow: null as any,
+    filter: '',
+    filterType: 0,
   };
 
   componentDidMount() {
-    this.onRefresh(null);
+    this.onRefresh();
   }
 
   componentWillUnmount() {
@@ -65,18 +65,24 @@ export default class WordsUnit extends React.Component<any, any> {
       <div>
         <Toolbar>
           <div className="p-toolbar-group-left">
-          <span className="p-float-label">
-            <InputText id="float-input" type="text" value={this.state.newWord}
-                       onChange={this.onNewWordChange} onKeyPress={this.onNewWordKeyPress}/>
-            <label htmlFor="float-input">New Word</label>
-            <Button hidden={!this.settingsService.selectedVoice} icon="fa fa-volume-up" tooltipOptions={{position: 'top'}}
-              tooltip="Speak" onClick={() => this.settingsService.speak(this.state.newWord)} />
+            <span className="p-float-label">
+              <InputText id="float-input" type="text" value={this.state.newWord}
+                         onChange={this.onNewWordChange} onKeyPress={this.onNewWordKeyPress}/>
+              <label htmlFor="float-input">New Word</label>
+            </span>
+            <Dropdown id="filterType" options={this.settingsService.wordFilterTypes} value={this.state.filterType} onChange={this.onFilterTypeChange} />
+            <span className="p-float-label">
+              <InputText id="float-input" type="text" value={this.state.filter}
+                         onChange={this.onFilterChange} onKeyPress={this.onFilterKeyPress}/>
+              <label htmlFor="float-input">New Word</label>
+            </span>
+            <Button hidden={!this.settingsService.selectedVoice} icon="fa fa-volumeooltipOptions={{position: 'top'}}"
+                    tooltip="Speak" onClick={() => this.settingsService.speak(this.state.newWord)} />
             <Button label="Add" icon="fa fa-plus" onClick={() => history.push('/words-unit-detail/0')} />
             <Button label="Refresh" icon="fa fa-refresh" onClick={this.onRefresh}/>
             <Button hidden={!this.settingsService.selectedDictNote} className="p-button-warning" label="Retrieve All Notes" />
             <Button hidden={!this.settingsService.selectedDictNote} className="p-button-warning" label="Retrieve Notes If Empty" />
             <Button label="Dictionary" icon="fa fa-book" onClick={() => history.push('/words-dict/unit/0')} />
-          </span>
           </div>
         </Toolbar>
         <DataTable value={this.wordsUnitService.unitWords} autoLayout={true}
@@ -135,14 +141,33 @@ export default class WordsUnit extends React.Component<any, any> {
       $(tr).css('background-color', '').css('color', '');
   }
 
-  onRefresh = (e:any) => {
-    this.subscription.add(this.wordsUnitService.getDataInTextbook().subscribe(_ => {
+  onRefresh = () => {
+    this.subscription.add(this.wordsUnitService.getDataInTextbook(this.state.filter, this.state.filterType).subscribe(_ => {
       this.updateServiceState();
+      if (this.wordsUnitService.unitWords.length === 0) return;
       $("tr").each((i, row) => {
         if (i === 0) return;
         this.setRowStyle(this.wordsUnitService.unitWords[i - 1], $(row));
       });
     }));
+  };
+
+  onFilterChange = (e: SyntheticEvent) => {
+    this.setState({filter: (e.nativeEvent.target as HTMLInputElement).value});
+  };
+
+  onFilterKeyPress = (e: KeyboardEvent) => {
+    if (e.key !== 'Enter') return;
+    if (this.state.filter && this.state.filterType === 0)
+      this.setState({filterType: this.state.filterType = 1});
+    else if (!this.state.filter && this.state.filterType !== 0)
+      this.setState({filterType: this.state.filterType = 0});
+    this.onRefresh();
+  };
+
+  onFilterTypeChange = (e: {originalEvent: Event, value: any}) => {
+    this.setState({filterType: this.state.filterType = e.value});
+    this.onRefresh();
   };
 
   deleteWord(item: MUnitWord) {

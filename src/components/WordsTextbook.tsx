@@ -14,6 +14,10 @@ import * as $ from "jquery";
 import { MWordColor } from '../models/word-color';
 import { WordsUnitService } from '../view-models/words-unit.service';
 import { MUnitWord } from '../models/unit-word';
+import { Dropdown } from 'primereact/dropdown';
+import { InputText } from 'primereact/inputtext';
+import { SyntheticEvent } from 'react';
+import { KeyboardEvent } from 'react';
 
 export default class WordsTextbook extends React.Component<any, any> {
   @Inject wordsUnitService: WordsUnitService;
@@ -25,19 +29,21 @@ export default class WordsTextbook extends React.Component<any, any> {
     rows: this.settingsService.USROWSPERPAGE,
     page: 1,
     selectedRow: null as any,
+    filter: '',
+    filterType: 0,
   };
 
   componentDidMount() {
-    this.onRefresh(this.state.page, this.state.rows);
+    this.onRefresh();
   }
 
   onPageChange = (e: PageState) => {
     this.setState({
       first: e.first,
-      rows: e.rows,
-      page: e.page + 1,
+      rows: this.state.rows = e.rows,
+      page: this.state.page = e.page + 1,
     });
-    this.onRefresh(e.page + 1, e.rows);
+    this.onRefresh();
   };
 
   componentWillUnmount() {
@@ -72,7 +78,13 @@ export default class WordsTextbook extends React.Component<any, any> {
       <div>
         <Toolbar>
           <div className="p-toolbar-group-left">
-            <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => this.onRefresh(this.state.page, this.state.rows)}/>
+            <Dropdown id="filterType" options={this.settingsService.wordFilterTypes} value={this.state.filterType} onChange={this.onFilterTypeChange} />
+            <span className="p-float-label">
+              <InputText id="float-input" type="text" value={this.state.filter}
+                         onChange={this.onFilterChange} onKeyPress={this.onFilterKeyPress}/>
+              <label htmlFor="float-input">New Word</label>
+            </span>
+            <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => this.onRefresh}/>
             <Button label="Dictionary" icon="fa fa-book" onClick={() => history.push('/words-dict/textbook/0')} />
           </div>
         </Toolbar>
@@ -110,20 +122,38 @@ export default class WordsTextbook extends React.Component<any, any> {
       $(tr).css('background-color', '').css('color', '');
   }
 
-  onRefresh = (page: number, rows: number) => {
+  onRefresh = () => {
     // https://stackoverflow.com/questions/4228356/integer-division-with-remainder-in-javascript
-    this.subscription.add(this.wordsUnitService.getDataInLang(page, rows).subscribe(_ => {
+    this.subscription.add(this.wordsUnitService.getDataInLang(this.state.page, this.state.rows, this.state.filter, this.state.filterType).subscribe(_ => {
       this.updateServiceState();
-      const self = this;
+      if (this.wordsUnitService.textbookWords.length === 0) return;
       $("tr").each((i, tr) => {
         if (i === 0) return;
-        this.setRowStyle(self.wordsUnitService.textbookWords[i - 1], tr);
+        this.setRowStyle(this.wordsUnitService.textbookWords[i - 1], tr);
       });
     }));
   };
 
   onSelectionChange = (e: any) => {
     this.setState({selectedRow: e.data});
+  };
+
+  onFilterChange = (e: SyntheticEvent) => {
+    this.setState({filter: (e.nativeEvent.target as HTMLInputElement).value});
+  };
+
+  onFilterKeyPress = (e: KeyboardEvent) => {
+    if (e.key !== 'Enter') return;
+    if (this.state.filter && this.state.filterType === 0)
+      this.setState({filterType: this.state.filterType = 1});
+    else if (!this.state.filter && this.state.filterType !== 0)
+      this.setState({filterType: this.state.filterType = 0});
+    this.onRefresh();
+  };
+
+  onFilterTypeChange = (e: {originalEvent: Event, value: any}) => {
+    this.setState({filterType: this.state.filterType = e.value});
+    this.onRefresh();
   };
 
   deleteWord(item: MUnitWord) {

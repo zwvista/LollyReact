@@ -8,8 +8,10 @@ import { MTextbook } from '../models/textbook';
 @Injectable
 export class UnitWordService extends BaseService {
 
-  getDataByTextbookUnitPart(textbook: MTextbook, unitPartFrom: number, unitPartTo: number): Observable<MUnitWord[]> {
-    const url = `${this.baseUrl}VUNITWORDS?filter=TEXTBOOKID,eq,${textbook.ID}&filter=UNITPART,bt,${unitPartFrom},${unitPartTo}&order=UNITPART&order=SEQNUM`;
+  getDataByTextbookUnitPart(textbook: MTextbook, unitPartFrom: number, unitPartTo: number, filter: string, filterType: number): Observable<MUnitWord[]> {
+    let url = `${this.baseUrl}VUNITWORDS?filter=TEXTBOOKID,eq,${textbook.ID}&filter=UNITPART,bt,${unitPartFrom},${unitPartTo}&order=UNITPART&order=SEQNUM`;
+    if (filterType !== 0 && filter)
+      url += `&filter=${filterType === 1 ? 'WORD' : 'NOTE'},cs,${encodeURIComponent(filter)}`;
     return this.http.get<MUnitWords>(url)
       .pipe(
         map(result => {
@@ -20,8 +22,10 @@ export class UnitWordService extends BaseService {
       );
   }
 
-  getDataByLang(langid: number, textbooks: MTextbook[], page: number, rows: number): Observable<MUnitWords> {
-    const url = `${this.baseUrl}VUNITWORDS?filter=LANGID,eq,${langid}&order=TEXTBOOKID&order=UNIT&order=PART&order=SEQNUM&page=${page},${rows}`;
+  getDataByLang(langid: number, textbooks: MTextbook[], page: number, rows: number, filter: string, filterType: number): Observable<MUnitWords> {
+    let url = `${this.baseUrl}VUNITWORDS?filter=LANGID,eq,${langid}&order=TEXTBOOKID&order=UNIT&order=PART&order=SEQNUM&page=${page},${rows}`;
+    if (filterType !== 0 && filter)
+      url += `&filter=${filterType === 1 ? 'WORD' : 'NOTE'},cs,${encodeURIComponent(filter)}`;
     return this.http.get<MUnitWords>(url)
       .pipe(
         map(result => ({

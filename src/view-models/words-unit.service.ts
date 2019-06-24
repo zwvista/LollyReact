@@ -26,10 +26,10 @@ export class WordsUnitService {
               @Inject private noteService: NoteService) {
   }
 
-  getDataInTextbook(): Observable<void> {
+  getDataInTextbook(filter: string, filterType: number): Observable<void> {
     return this.appService.initializeComplete.pipe(
       concatMap(_ => this.unitWordService.getDataByTextbookUnitPart(this.settingsService.selectedTextbook,
-        this.settingsService.USUNITPARTFROM, this.settingsService.USUNITPARTTO)),
+        this.settingsService.USUNITPARTFROM, this.settingsService.USUNITPARTTO, filter, filterType)),
       map(res => {
         this.settingsService.setColorStyles(res);
         this.unitWords = res
@@ -37,10 +37,10 @@ export class WordsUnitService {
     );
   }
 
-  getDataInLang(page: number, rows: number) {
+  getDataInLang(page: number, rows: number, filter: string, filterType: number) {
     return this.appService.initializeComplete.pipe(
       concatMap(_ => this.unitWordService.getDataByLang(this.settingsService.selectedLang.ID,
-        this.settingsService.textbooks, page, rows)),
+        this.settingsService.textbooks, page, rows, filter, filterType)),
       map(res => {
         this.settingsService.setColorStyles(res.records);
         this.textbookWords = res.records;

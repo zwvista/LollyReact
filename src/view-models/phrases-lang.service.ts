@@ -17,9 +17,9 @@ export class PhrasesLangService {
               @Inject private appService: AppService) {
   }
 
-  getData(page: number, rows: number) {
+  getData(page: number, rows: number, filter: string, filterType: number) {
     return this.appService.initializeComplete.pipe(
-      concatMap(_ => this.langPhraseService.getDataByLang(this.settingsService.selectedLang.ID, page, rows)),
+      concatMap(_ => this.langPhraseService.getDataByLang(this.settingsService.selectedLang.ID, page, rows, filter, filterType)),
       map(res => {
         this.langPhrases = res.records;
         this.langPhraseCount = res.results;
