@@ -15,7 +15,7 @@ import {
 export class DictReferenceService extends BaseService {
 
   getDataByLang(langid: number): Observable<MDictReference[]> {
-    const url = `${this.baseUrl}VDICTSREFERENCE?filter=LANGIDFROM,eq,${langid}`;
+    const url = `${this.baseUrl}VDICTSREFERENCE?filter=LANGIDFROM,eq,${langid}&order=SEQNUM&order=DICTNAME`;
     return this.http.get<MDictsReference>(url)
       .pipe(
         map(result => result.records.map(value => Object.assign(new MDictReference(), value))),
