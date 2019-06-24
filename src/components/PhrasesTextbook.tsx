@@ -17,15 +17,17 @@ import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 import { SyntheticEvent } from 'react';
 import { KeyboardEvent } from 'react';
+import { AppService } from '../view-models/app.service';
 
 export default class PhrasesTextbook extends React.Component<any, any> {
+  @Inject appService: AppService;
   @Inject phrasesUnitService: PhrasesUnitService;
   @Inject settingsService: SettingsService;
   subscription = new Subscription();
 
   state = {
     first: 0,
-    rows: this.settingsService.USROWSPERPAGE,
+    rows: 0,
     page: 1,
     selectedRow: null as MUnitPhrase,
     filter: '',
@@ -34,7 +36,10 @@ export default class PhrasesTextbook extends React.Component<any, any> {
   };
 
   componentDidMount() {
-    this.onRefresh();
+    this.subscription.add(this.appService.initializeComplete.subscribe(_ => {
+      this.setState({rows: this.state.rows = this.settingsService.USROWSPERPAGE});
+      this.onRefresh();
+    }));
   }
 
   onPageChange = (e: PageState) => {
@@ -67,7 +72,7 @@ export default class PhrasesTextbook extends React.Component<any, any> {
   };
 
   render() {
-    return (
+    return !this.appService.isInitialized ? (<div/>) : (
       <div>
         <Toolbar>
           <div className="p-toolbar-group-left">

@@ -37,22 +37,27 @@ import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { MLangWord } from '../models/lang-word';
 import { ChangeEvent } from 'react';
 import { ReactNode } from 'react';
+import { AppService } from '../view-models/app.service';
 
 export default class WordsLang2 extends React.Component<any, any> {
+  @Inject appService: AppService;
   @Inject wordsLangService: WordsLangService;
   @Inject settingsService: SettingsService;
   subscription = new Subscription();
 
   state = {
     newWord: '',
-    rows: this.settingsService.USROWSPERPAGE,
+    rows: 0,
     page: 1,
     filter: '',
     filterType: 0,
   };
 
   componentDidMount() {
-    this.onRefresh();
+    this.subscription.add(this.appService.initializeComplete.subscribe(_ => {
+      this.setState({rows: this.state.rows = this.settingsService.USROWSPERPAGE});
+      this.onRefresh();
+    }));
   }
 
   componentWillUnmount() {
@@ -60,7 +65,7 @@ export default class WordsLang2 extends React.Component<any, any> {
   }
 
   render() {
-    return (
+    return !this.appService.isInitialized ? (<div/>) : (
       <div>
         <Toolbar>
           <TextField label="New Word" value={this.state.newWord}
