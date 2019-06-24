@@ -22,7 +22,7 @@ export class WordsLangService {
   }
 
   getData(page: number, rows: number, filter: string, filterType: number): Observable<void> {
-    return this.appService.initializeComplete.pipe(
+    return this.appService.initializeObject.pipe(
       concatMap(_ => this.langWordService.getDataByLang(this.settingsService.selectedLang.ID, page, rows, filter, filterType)),
       map(res => {
         this.settingsService.setColorStyles(res.records);

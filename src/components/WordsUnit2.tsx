@@ -48,7 +48,7 @@ export default class WordsUnit2 extends React.Component<any, any> {
   };
 
   componentDidMount() {
-    this.subscription.add(this.appService.initializeComplete.subscribe(_ => {
+    this.subscription.add(this.appService.initializeObject.subscribe(_ => {
       this.onRefresh();
     }));
   }

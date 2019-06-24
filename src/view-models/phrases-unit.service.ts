@@ -23,7 +23,7 @@ export class PhrasesUnitService {
   }
 
   getDataInTextbook(filter: string, filterType: number) {
-    return this.appService.initializeComplete.pipe(
+    return this.appService.initializeObject.pipe(
       concatMap(_ => this.unitPhraseService.getDataByTextbookUnitPart(this.settingsService.selectedTextbook,
         this.settingsService.USUNITPARTFROM, this.settingsService.USUNITPARTTO, filter, filterType)),
       map(res => this.unitPhrases = res),
@@ -31,7 +31,7 @@ export class PhrasesUnitService {
   }
 
   getDataInLang(page: number, rows: number, filter: string, filterType: number, textbookFilter: number) {
-    return this.appService.initializeComplete.pipe(
+    return this.appService.initializeObject.pipe(
       concatMap(_ => this.unitPhraseService.getDataByLang(this.settingsService.selectedLang.ID,
         this.settingsService.textbooks, page, rows, filter, filterType, textbookFilter)),
       map(res => {

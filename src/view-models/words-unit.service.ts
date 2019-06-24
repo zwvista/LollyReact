@@ -27,7 +27,7 @@ export class WordsUnitService {
   }
 
   getDataInTextbook(filter: string, filterType: number): Observable<void> {
-    return this.appService.initializeComplete.pipe(
+    return this.appService.initializeObject.pipe(
       concatMap(_ => this.unitWordService.getDataByTextbookUnitPart(this.settingsService.selectedTextbook,
         this.settingsService.USUNITPARTFROM, this.settingsService.USUNITPARTTO, filter, filterType)),
       map(res => {
@@ -38,7 +38,7 @@ export class WordsUnitService {
   }
 
   getDataInLang(page: number, rows: number, filter: string, filterType: number, textbookFilter: number) {
-    return this.appService.initializeComplete.pipe(
+    return this.appService.initializeObject.pipe(
       concatMap(_ => this.unitWordService.getDataByLang(this.settingsService.selectedLang.ID,
         this.settingsService.textbooks, page, rows, filter, filterType, textbookFilter)),
       map(res => {

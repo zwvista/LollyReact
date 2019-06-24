@@ -54,7 +54,7 @@ export default class WordsLang2 extends React.Component<any, any> {
   };
 
   componentDidMount() {
-    this.subscription.add(this.appService.initializeComplete.subscribe(_ => {
+    this.subscription.add(this.appService.initializeObject.subscribe(_ => {
       this.setState({rows: this.state.rows = this.settingsService.USROWSPERPAGE});
       this.onRefresh();
     }));
