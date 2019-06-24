@@ -75,7 +75,7 @@ export default class PhrasesTextbook extends React.Component<any, any> {
             <span className="p-float-label">
               <InputText id="float-input" type="text" value={this.state.filter}
                          onChange={this.onFilterChange} onKeyPress={this.onFilterKeyPress}/>
-              <label htmlFor="float-input">New Word</label>
+              <label htmlFor="float-input">Filter</label>
             </span>
             <Dropdown id="textbookFilter" options={this.settingsService.textbookFilters} value={this.state.textbookFilter} onChange={this.onTextbookFilterChange} />
             <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => this.onRefresh}/>

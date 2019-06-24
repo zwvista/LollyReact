@@ -74,7 +74,7 @@ export default class PhrasesLang extends React.Component<any, any> {
             <span className="p-float-label">
               <InputText id="float-input" type="text" value={this.state.filter}
                          onChange={this.onFilterChange} onKeyPress={this.onFilterKeyPress}/>
-              <label htmlFor="float-input">New Word</label>
+              <label htmlFor="float-input">Filter</label>
             </span>
             <Button label="Add" icon="fa fa-plus" onClick={() => history.push('/phrases-lang-detail/0')} />
             <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => this.onRefresh}/>

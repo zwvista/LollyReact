@@ -74,7 +74,7 @@ export default class WordsUnit extends React.Component<any, any> {
             <span className="p-float-label">
               <InputText id="float-input" type="text" value={this.state.filter}
                          onChange={this.onFilterChange} onKeyPress={this.onFilterKeyPress}/>
-              <label htmlFor="float-input">New Word</label>
+              <label htmlFor="float-input">Filter</label>
             </span>
             <Button hidden={!this.settingsService.selectedVoice} icon="fa fa-volumeooltipOptions={{position: 'top'}}"
                     tooltip="Speak" onClick={() => this.settingsService.speak(this.state.newWord)} />
