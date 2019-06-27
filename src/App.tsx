@@ -63,6 +63,7 @@ import { WordsFamiService } from './view-models/words-fami.service';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faDollarSign, faEuroSign, faBus, faTrain, faPlane, faRocket, faCar, faTaxi, faCog } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { UsMappingService } from './services/us-mapping.service';
 
 // https://stackoverflow.com/questions/53375964/using-a-link-component-with-listitem-and-typescript
 // https://stackoverflow.com/questions/51257426/how-do-you-get-material-ui-tabs-to-work-with-react-router
@@ -77,7 +78,7 @@ function LinkTab(props: any) {
     PhrasesUnitService, SettingsService, WordsUnitService, AutoCorrectService,
     LangPhraseService, LangWordService, PhrasesLangService, WordsLangService,
     NoteService, WordFamiService, WordsFamiService,
-    VoicesService,
+    VoicesService, UsMappingService,
   ],
 })
 export default class App extends React.Component<any, any> {

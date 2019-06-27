@@ -2,7 +2,7 @@ import { concatMap, map } from 'rxjs/operators';
 import { Inject, Injectable } from 'react.di';
 import { LanguageService } from '../services/language.service';
 import { UserSettingService } from '../services/user-setting.service';
-import { MUserSetting } from '../models/user-setting';
+import { MUserSetting, MUserSettingInfo } from '../models/user-setting';
 import { MLanguage } from '../models/language';
 import { MDictItem, MDictReference, MDictNote, MDictTranslation } from '../models/dictionary';
 import { MTextbook } from '../models/textbook';
@@ -18,97 +18,116 @@ import * as Speech from 'speak-tts';
 import { VoicesService } from '../services/voices.service';
 import { MVoice } from '../models/voice';
 import { WordsFamiService } from './words-fami.service';
+import { MUSMapping } from '../models/usmapping';
+import { UsMappingService } from '../services/us-mapping.service';
 
 const userid = 1;
 
 @Injectable
 export class SettingsService {
 
+  usMappings: MUSMapping[] = [];
   userSettings: MUserSetting[] = [];
-  private selectedUSUser0!: MUserSetting;
-  private selectedUSUser1!: MUserSetting;
+  private getUSValue(info: MUserSettingInfo): string | null {
+    return this.userSettings.find(v => v.ID === info.USERSETTINGID)!['VALUE' + info.VALUEID]!;
+  }
+  private setUSValue(info: MUserSettingInfo, value: string) {
+    this.userSettings.find(v => v.ID === info.USERSETTINGID)!['VALUE' + info.VALUEID]! = value;
+  }
+  private INFO_USLANGID: MUserSettingInfo = new MUserSettingInfo();
   private get USLANGID(): number {
-    return +this.selectedUSUser0.VALUE1;
+    return +this.getUSValue(this.INFO_USLANGID)!;
   }
   private set USLANGID(newValue: number) {
-    this.selectedUSUser0.VALUE1 = String(newValue);
+    this.setUSValue(this.INFO_USLANGID, String(newValue));
   }
+  private INFO_USROWSPERPAGEOPTIONS: MUserSettingInfo = new MUserSettingInfo();
   get USROWSPERPAGEOPTIONS(): number[] {
-    return this.selectedUSUser0.VALUE2.split(',').map(value => +value);
+    return this.getUSValue(this.INFO_USROWSPERPAGEOPTIONS)!.split(',').map(value => +value);
   }
+  private INFO_USROWSPERPAGE: MUserSettingInfo = new MUserSettingInfo();
   get USROWSPERPAGE(): number {
-    return +this.selectedUSUser0.VALUE3;
+    return +this.getUSValue(this.INFO_USROWSPERPAGE)!;
   }
+  private INFO_USLEVELCOLORS: MUserSettingInfo = new MUserSettingInfo();
   USLEVELCOLORS!: {number: [string]} | {};
-  get USREADINTERVAL(): number {
-    return +this.selectedUSUser1.VALUE1;
+  private INFO_USSCANINTERVAL: MUserSettingInfo = new MUserSettingInfo();
+  get USSCANINTERVAL(): number {
+    return +this.getUSValue(this.INFO_USSCANINTERVAL)!;
   }
+  private INFO_USREVIEWINTERVAL: MUserSettingInfo = new MUserSettingInfo();
   get USREVIEWINTERVAL(): number {
-    return +this.selectedUSUser1.VALUE2;
+    return +this.getUSValue(this.INFO_USREVIEWINTERVAL)!;
   }
-  private selectedUSLang2!: MUserSetting;
+  private INFO_USTEXTBOOKID: MUserSettingInfo = new MUserSettingInfo();
   get USTEXTBOOKID(): number {
-    return +this.selectedUSLang2.VALUE1;
+    return +this.getUSValue(this.INFO_USTEXTBOOKID)!;
   }
   set USTEXTBOOKID(newValue: number) {
-    this.selectedUSLang2.VALUE1 = String(newValue);
+    this.setUSValue(this.INFO_USTEXTBOOKID, String(newValue));
   }
+  private INFO_USDICTITEM: MUserSettingInfo = new MUserSettingInfo();
   get USDICTITEM(): string {
-    return this.selectedUSLang2.VALUE2;
+    return this.getUSValue(this.INFO_USDICTITEM)!;
   }
   set USDICTITEM(newValue: string) {
-    this.selectedUSLang2.VALUE2 = newValue;
+    this.setUSValue(this.INFO_USDICTITEM, newValue);
   }
+  private INFO_USDICTNOTEID: MUserSettingInfo = new MUserSettingInfo();
   get USDICTNOTEID(): number {
-    return +this.selectedUSLang2.VALUE3 || 0;
+    return +this.getUSValue(this.INFO_USDICTNOTEID)! || 0;
   }
   set USDICTNOTEID(newValue: number) {
-    this.selectedUSLang2.VALUE3 = String(newValue);
+    this.setUSValue(this.INFO_USDICTNOTEID, String(newValue));
   }
+  private INFO_USDICTITEMS: MUserSettingInfo = new MUserSettingInfo();
   get USDICTITEMS(): string {
-    return this.selectedUSLang2.VALUE4 || '0';
+    return this.getUSValue(this.INFO_USDICTITEMS) || '0';
   }
   set USDICTITEMS(newValue: string) {
-    this.selectedUSLang2.VALUE4 = newValue;
+    this.setUSValue(this.INFO_USDICTITEMS, newValue);
   }
-  private selectedUSLang3!: MUserSetting;
+  private INFO_USDICTTRANSLATIONID: MUserSettingInfo = new MUserSettingInfo();
   get USDICTTRANSLATIONID(): number {
-    return +this.selectedUSLang3.VALUE1 || 0;
+    return +this.getUSValue(this.INFO_USDICTTRANSLATIONID)! || 0;
   }
   set USDICTTRANSLATIONID(newValue: number) {
-    this.selectedUSLang3.VALUE1 = String(newValue);
+    this.setUSValue(this.INFO_USDICTTRANSLATIONID, String(newValue));
   }
-  private selectedUSLang4!: MUserSetting;
-  get USVOICEID(): number {
-    return +(this.selectedUSLang4.VALUE1 || '0');
+  private INFO_USWEBVOICEID: MUserSettingInfo = new MUserSettingInfo();
+  get USWEBVOICEID(): number {
+    return +(this.getUSValue(this.INFO_USWEBVOICEID) || '0');
   }
-  set USVOICEID(newValue: number) {
-    this.selectedUSLang4.VALUE1 = String(newValue);
+  set USWEBVOICEID(newValue: number) {
+    this.setUSValue(this.INFO_USWEBVOICEID, String(newValue));
   }
-  private selectedUSTextbook!: MUserSetting;
+  private INFO_USUNITFROM: MUserSettingInfo = new MUserSettingInfo();
   get USUNITFROM(): number {
-    return +this.selectedUSTextbook.VALUE1;
+    return +this.getUSValue(this.INFO_USUNITFROM)!;
   }
   set USUNITFROM(newValue: number) {
-    this.selectedUSTextbook.VALUE1 = String(newValue);
+    this.setUSValue(this.INFO_USUNITFROM, String(newValue));
   }
+  private INFO_USPARTFROM: MUserSettingInfo = new MUserSettingInfo();
   get USPARTFROM(): number {
-    return +this.selectedUSTextbook.VALUE2;
+    return +this.getUSValue(this.INFO_USPARTFROM)!;
   }
   set USPARTFROM(newValue: number) {
-    this.selectedUSTextbook.VALUE2 = String(newValue);
+    this.setUSValue(this.INFO_USPARTFROM, String(newValue));
   }
+  private INFO_USUNITTO: MUserSettingInfo = new MUserSettingInfo();
   get USUNITTO(): number {
-    return +this.selectedUSTextbook.VALUE3;
+    return +this.getUSValue(this.INFO_USUNITTO)!;
   }
   set USUNITTO(newValue: number) {
-    this.selectedUSTextbook.VALUE3 = String(newValue);
+    this.setUSValue(this.INFO_USUNITTO, String(newValue));
   }
+  private INFO_USPARTTO: MUserSettingInfo = new MUserSettingInfo();
   get USPARTTO(): number {
-    return +this.selectedUSTextbook.VALUE4;
+    return +this.getUSValue(this.INFO_USPARTTO)!;
   }
   set USPARTTO(newValue: number) {
-    this.selectedUSTextbook.VALUE4 = String(newValue);
+    this.setUSValue(this.INFO_USPARTTO, String(newValue));
   }
   get USUNITPARTFROM(): number {
     return this.USUNITFROM * 10 + this.USPARTFROM;
@@ -137,7 +156,7 @@ export class SettingsService {
   }
   set selectedVoice(newValue: MVoice | null) {
     this._selectedVoice = newValue;
-    this.USVOICEID = newValue ? newValue.ID : 0;
+    this.USWEBVOICEID = newValue ? newValue.ID : 0;
     this.speech.setVoice(newValue ? newValue.VOICENAME : '');
   }
 
@@ -180,7 +199,10 @@ export class SettingsService {
   set selectedTextbook(newValue: MTextbook) {
     this._selectedTextbook = newValue;
     this.USTEXTBOOKID = newValue.ID;
-    this.selectedUSTextbook = this.userSettings.find(value => value.KIND === 11 && value.ENTITYID === newValue.ID)!;
+    this.INFO_USUNITFROM = this.getUSInfo(MUSMapping.NAME_USUNITFROM);
+    this.INFO_USPARTFROM = this.getUSInfo(MUSMapping.NAME_USPARTFROM);
+    this.INFO_USUNITTO = this.getUSInfo(MUSMapping.NAME_USUNITTO);
+    this.INFO_USPARTTO = this.getUSInfo(MUSMapping.NAME_USPARTTO);
     this.toType = this.isSingleUnit ? 0 : this.isSingleUnitPart ? 1 : 2;
   }
   textbookFilters: MSelectItem[] = [];
@@ -212,6 +234,7 @@ export class SettingsService {
   phraseFilterTypes = ['None', 'Phrase', 'Translation'].map((v, i) => new MSelectItem(i, v));
 
   constructor(@Inject private langService: LanguageService,
+              @Inject private usMappingService: UsMappingService,
               @Inject private userSettingService: UserSettingService,
               @Inject private dictReferenceService: DictReferenceService,
               @Inject private dictNoteService: DictNoteService,
@@ -223,15 +246,35 @@ export class SettingsService {
     this.speech.init();
   }
 
+  private getUSInfo(name: string): MUserSettingInfo {
+    const o = this.usMappings.find(v => v.NAME === name)!;
+    const entityid = o.ENTITYID !== -1 ? o.ENTITYID :
+      o.LEVEL === 1 ? this.selectedLang.ID :
+        o.LEVEL === 2 ? this.selectedTextbook.ID :
+          0;
+    const o2 = this.userSettings.find((v => v.KIND === o.KIND && v.ENTITYID === entityid))!;
+    const o3 = new MUserSettingInfo();
+    o3.USERSETTINGID = o2.ID;
+    o3.VALUEID = o.VALUEID;
+    return o3;
+  }
+
   getData(): Observable<number> {
-    return forkJoin([this.langService.getData(), this.userSettingService.getDataByUser(userid)]).pipe(
+    return forkJoin([this.langService.getData(),
+      this.usMappingService.getData(),
+      this.userSettingService.getDataByUser(userid)]).pipe(
       concatMap(res => {
         this.languages = res[0] as MLanguage[];
-        this.userSettings = res[1] as MUserSetting[];
-        this.selectedUSUser0 = this.userSettings.find(value => value.KIND === 1 && value.ENTITYID === 0);
-        this.selectedUSUser1 = this.userSettings.find(value => value.KIND === 1 && value.ENTITYID === 1);
+        this.usMappings = res[1] as MUSMapping[];
+        this.userSettings = res[2] as MUserSetting[];
+        this.INFO_USLANGID = this.getUSInfo(MUSMapping.NAME_USLANGID);
+        this.INFO_USROWSPERPAGEOPTIONS = this.getUSInfo(MUSMapping.NAME_USROWSPERPAGEOPTIONS);
+        this.INFO_USROWSPERPAGE = this.getUSInfo(MUSMapping.NAME_USROWSPERPAGE);
+        this.INFO_USLEVELCOLORS = this.getUSInfo(MUSMapping.NAME_USLEVELCOLORS);
+        this.INFO_USSCANINTERVAL = this.getUSInfo(MUSMapping.NAME_USSCANINTERVAL);
+        this.INFO_USREVIEWINTERVAL = this.getUSInfo(MUSMapping.NAME_USREVIEWINTERVAL);
         this.USLEVELCOLORS = {};
-        this.selectedUSUser0.VALUE4.split('\r\n').map(v => v.split(','))
+        this.getUSValue(this.INFO_USLEVELCOLORS)!.split('\r\n').map(v => v.split(','))
           .forEach(v => this.USLEVELCOLORS[+v[0]] = [v[1], v[2]]);
         if (this.settingsListener) this.settingsListener.onGetData();
         return this.setSelectedLang(this.languages.find(value => value.ID === this.USLANGID)!);
@@ -242,9 +285,12 @@ export class SettingsService {
     const isinit = lang.ID === this.USLANGID;
     this.selectedLang = lang;
     this.USLANGID = this.selectedLang.ID;
-    this.selectedUSLang2 = this.userSettings.find(value => value.KIND === 2 && value.ENTITYID === this.USLANGID)!;
-    this.selectedUSLang3 = this.userSettings.find(value => value.KIND === 3 && value.ENTITYID === this.USLANGID)!;
-    this.selectedUSLang4 = this.userSettings.find(value => value.KIND === 4 && value.ENTITYID === this.USLANGID)!;
+    this.INFO_USTEXTBOOKID = this.getUSInfo(MUSMapping.NAME_USTEXTBOOKID);
+    this.INFO_USDICTITEM = this.getUSInfo(MUSMapping.NAME_USDICTITEM);
+    this.INFO_USDICTNOTEID = this.getUSInfo(MUSMapping.NAME_USDICTNOTEID);
+    this.INFO_USDICTITEMS = this.getUSInfo(MUSMapping.NAME_USDICTITEMS);
+    this.INFO_USDICTTRANSLATIONID = this.getUSInfo(MUSMapping.NAME_USDICTTRANSLATIONID);
+    this.INFO_USWEBVOICEID = this.getUSInfo(MUSMapping.NAME_USWEBVOICEID);
     const dicts = this.USDICTITEMS.split('\r\n');
     return forkJoin([
       this.dictReferenceService.getDataByLang(this.USLANGID),
@@ -277,7 +323,7 @@ export class SettingsService {
         this.textbookFilters = [new MSelectItem(0, 'All Textbooks')].concat(this.textbookFilters);
         this.autoCorrects = res[4] as MAutoCorrect[];
         this.voices = res[5] as MVoice[];
-        this.selectedVoice = this.voices.find(value => value.ID === this.USVOICEID) ||
+        this.selectedVoice = this.voices.find(value => value.ID === this.USWEBVOICEID) ||
           (this.voices.length === 0 ? null : this.voices[0]);
         if (isinit) {
           if (this.settingsListener) this.settingsListener.onUpdateLang();
@@ -300,7 +346,7 @@ export class SettingsService {
   }
 
   updateLang(): Observable<number> {
-    return this.userSettingService.updateLang(this.selectedUSUser0.ID, this.USLANGID).pipe(
+    return this.userSettingService.updateIntValue(this.INFO_USLANGID, this.USLANGID).pipe(
       map( _ => {
         if (this.settingsListener) this.settingsListener.onUpdateLang();
         return 0;
@@ -309,7 +355,7 @@ export class SettingsService {
   }
 
   updateTextbook(): Observable<number> {
-    return this.userSettingService.updateTextbook(this.selectedUSLang2.ID, this.USTEXTBOOKID).pipe(
+    return this.userSettingService.updateIntValue(this.INFO_USTEXTBOOKID, this.USTEXTBOOKID).pipe(
       map( _ => {
         if (this.settingsListener) this.settingsListener.onUpdateTextbook();
         return 0;
@@ -318,7 +364,7 @@ export class SettingsService {
   }
 
   updateDictItem(): Observable<number> {
-    return this.userSettingService.updateDictItem(this.selectedUSLang2.ID, this.USDICTITEM).pipe(
+    return this.userSettingService.updateStringValue(this.INFO_USDICTITEM, this.USDICTITEM).pipe(
       map( _ => {
         if (this.settingsListener) this.settingsListener.onUpdateDictItem();
         return 0;
@@ -327,7 +373,7 @@ export class SettingsService {
   }
 
   updateDictNote(): Observable<number> {
-    return this.userSettingService.updateDictNote(this.selectedUSLang2.ID, this.USDICTNOTEID).pipe(
+    return this.userSettingService.updateIntValue(this.INFO_USDICTNOTEID, this.USDICTNOTEID).pipe(
       map( _ => {
         if (this.settingsListener) this.settingsListener.onUpdateDictNote();
         return 0;
@@ -336,7 +382,7 @@ export class SettingsService {
   }
 
   updateDictTranslation(): Observable<number> {
-    return this.userSettingService.updateDictTranslation(this.selectedUSLang3.ID, this.USDICTNOTEID).pipe(
+    return this.userSettingService.updateIntValue(this.INFO_USDICTTRANSLATIONID, this.USDICTNOTEID).pipe(
       map( _ => {
         if (this.settingsListener) this.settingsListener.onUpdateDictTranslation();
         return 0;
@@ -345,7 +391,7 @@ export class SettingsService {
   }
 
   updateVoice(): Observable<number> {
-    return this.userSettingService.updateVoice(this.selectedUSLang4.ID, this.USVOICEID).pipe(
+    return this.userSettingService.updateIntValue(this.INFO_USWEBVOICEID, this.USWEBVOICEID).pipe(
       map( _ => {
         if (this.settingsListener) this.settingsListener.onUpdateVoice();
         return 0;
@@ -472,7 +518,7 @@ export class SettingsService {
   private doUpdateUnitFrom(v: number): Observable<number> {
     if (this.USUNITFROM === v) return of(0);
     this.USUNITFROM = v;
-    return this.userSettingService.updateUnitFrom(this.selectedUSTextbook.ID, this.USUNITFROM).pipe(
+    return this.userSettingService.updateIntValue(this.INFO_USUNITFROM, this.USUNITFROM).pipe(
       map( _ => {
         if (this.settingsListener) this.settingsListener.onUpdateUnitFrom();
         return 0;
@@ -483,7 +529,7 @@ export class SettingsService {
   private doUpdatePartFrom(v: number): Observable<number> {
     if (this.USPARTFROM === v) return of(0);
     this.USPARTFROM = v;
-    return this.userSettingService.updatePartFrom(this.selectedUSTextbook.ID, this.USPARTFROM).pipe(
+    return this.userSettingService.updateIntValue(this.INFO_USPARTFROM, this.USPARTFROM).pipe(
       map( _ => {
         if (this.settingsListener) this.settingsListener.onUpdatePartFrom();
         return 0;
@@ -494,7 +540,7 @@ export class SettingsService {
   private doUpdateUnitTo(v: number): Observable<number> {
     if (this.USUNITTO === v) return of(0);
     this.USUNITTO = v;
-    return this.userSettingService.updateUnitTo(this.selectedUSTextbook.ID, this.USUNITTO).pipe(
+    return this.userSettingService.updateIntValue(this.INFO_USUNITTO, this.USUNITTO).pipe(
       map( _ => {
         if (this.settingsListener) this.settingsListener.onUpdateUnitTo();
         return 0;
@@ -505,7 +551,7 @@ export class SettingsService {
   private doUpdatePartTo(v: number): Observable<number> {
     if (this.USPARTTO === v) return of(0);
     this.USPARTTO = v;
-    return this.userSettingService.updatePartTo(this.selectedUSTextbook.ID, this.USPARTTO).pipe(
+    return this.userSettingService.updateIntValue(this.INFO_USPARTTO, this.USPARTTO).pipe(
       map( _ => {
         if (this.settingsListener) this.settingsListener.onUpdatePartTo();
         return 0;

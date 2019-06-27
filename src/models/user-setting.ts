@@ -11,3 +11,7 @@ export class MUserSetting {
   VALUE3!: string;
   VALUE4!: string;
 }
+export class MUserSettingInfo {
+  USERSETTINGID = 0;
+  VALUEID = 0;
+}
