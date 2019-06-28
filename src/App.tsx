@@ -90,19 +90,19 @@ export default class App extends React.Component<any, any> {
     const items = [
       {label: 'Words in Unit', icon: 'fa fa-bus fa-lg', target: '/words-unit'},
       {label: 'Phrases in Unit', icon: 'fa fa-train fa-lg', target: '/phrases-unit'},
-      {label: 'Words in Language', icon: 'fa fa-plane fa-lg', target: '/words-lang'},
-      {label: 'Phrases in Language', icon: 'fa fa-rocket fa-lg', target: '/phrases-lang'},
       {label: 'Words in Textbook', icon: 'fa fa-car fa-lg', target: '/words-textbook'},
       {label: 'Phrases in Textbook', icon: 'fa fa-taxi fa-lg', target: '/phrases-textbook'},
+      {label: 'Words in Language', icon: 'fa fa-plane fa-lg', target: '/words-lang'},
+      {label: 'Phrases in Language', icon: 'fa fa-rocket fa-lg', target: '/phrases-lang'},
       {label: 'Settings', icon: 'fa fa-gear fa-lg', target: '/settings'},
     ];
     const items2 = [
       {label: 'Words in Unit', icon: 'bus', target: '/words-unit2'},
       {label: 'Phrases in Unit', icon: 'train', target: '/phrases-unit2'},
-      {label: 'Words in Language', icon: 'plane', target: '/words-lang2'},
-      {label: 'Phrases in Language', icon: 'rocket', target: '/phrases-lang2'},
       {label: 'Words in Textbook', icon: 'car', target: '/words-textbook2'},
       {label: 'Phrases in Textbook', icon: 'taxi', target: '/phrases-textbook2'},
+      {label: 'Words in Language', icon: 'plane', target: '/words-lang2'},
+      {label: 'Phrases in Language', icon: 'rocket', target: '/phrases-lang2'},
       {label: 'Settings', icon: 'cog', target: '/settings'},
     ];
     const activeItem = items.find((value: any) => window.location.href.includes(value.target));
