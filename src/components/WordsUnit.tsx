@@ -60,7 +60,7 @@ export default class WordsUnit extends React.Component<any, any> {
               tooltip="Google Word" tooltipOptions={{position: 'top'}}/>
       <Button icon="fa fa-book" onClick={() => this.dictReference(rowData)}
               tooltip="Dictionary" tooltipOptions={{position: 'top'}}/>
-      <Button hidden={!this.settingsService.selectedDictNote} className="p-button-warning" label="Retrieve Note" onClick={() => this.getNote(rowData.ID)}/>
+      <Button hidden={!this.settingsService.selectedDictNote} className="p-button-warning" label="Retrieve Note" onClick={() => this.getNote(rowData)}/>
     </div>;
   };
 
@@ -178,9 +178,9 @@ export default class WordsUnit extends React.Component<any, any> {
     this.wordsUnitService.delete(item);
   }
 
-  getNote(index: number) {
-    console.log(index);
-    this.wordsUnitService.getNote(index).subscribe();
+  getNote(item: MUnitWord) {
+    const index = this.wordsUnitService.unitWords.indexOf(item);
+    this.wordsUnitService.getNote(index).subscribe(_ => this.updateServiceState());
   }
 
   // https://stackoverflow.com/questions/42775017/angular-2-redirect-to-an-external-url-and-open-in-a-new-tab

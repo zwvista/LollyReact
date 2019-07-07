@@ -167,7 +167,7 @@ export default class WordsUnit2 extends React.Component<any, any> {
                     </Fab>
                   </Tooltip>
                   <Button variant="contained" hidden={!this.settingsService.selectedDictNote}
-                          onClick={() => this.getNote(row.ID)}>
+                          onClick={() => this.getNote(row)}>
                     Retrieve Note
                   </Button>
                 </TableCell>
@@ -224,9 +224,9 @@ export default class WordsUnit2 extends React.Component<any, any> {
     this.wordsUnitService.delete(item);
   }
 
-  getNote(index: number) {
-    console.log(index);
-    this.wordsUnitService.getNote(index).subscribe();
+  getNote(item: MUnitWord) {
+    const index = this.wordsUnitService.unitWords.indexOf(item);
+    this.wordsUnitService.getNote(index).subscribe(_ => this.updateServiceState());
   }
 
   googleWord(WORD: string) {
@@ -234,7 +234,6 @@ export default class WordsUnit2 extends React.Component<any, any> {
   }
 
   updateLevel(item: MUnitWord, delta: number) {
-    const i = this.wordsUnitService.unitWords.indexOf(item);
     this.settingsService.updateLevel(item, item.WORDID, delta).subscribe(_ => this.updateServiceState());
   }
 

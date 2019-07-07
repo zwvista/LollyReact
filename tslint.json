@@ -27,6 +27,8 @@
     "no-shadowed-variable": false,
     "no-bitwise": false,
     "no-var-requires": false,
-    "no-string-literal": false
+    "no-string-literal": false,
+    "one-variable-per-declaration": false,
+    "no-conditional-assignment": false
   }
 }

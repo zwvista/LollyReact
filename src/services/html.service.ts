@@ -9,19 +9,24 @@ export class HtmlService extends BaseService {
                          templateHandler: (text: string, template: string) => string): string {
     const dic = new Map([['<delete>', ''], ['\\t', '\t'], ['\\r', '\r'], ['\\n', '\n']]);
 
-    let text = html;
+    let text = html.replace('\r\n', '\n');
     do {
       if (transform.length === 0) break;
       const arr = transform.split('\r\n');
       if (arr.length % 2 === 1) arr.pop();
 
-      for (let i = 0; i < arr.length; i++) {
-        const regex = new RegExp(arr[i], 'g');
+      for (let i = 0; i < arr.length; i += 2) {
+        const regex = new RegExp(arr[i].replace('\\r\\n', '\\n'), 'gm');
         let replacer = arr[i + 1];
         if (replacer.startsWith('<extract>')) {
           replacer = replacer.substring('<extract>'.length);
-          const ms = regex.exec(html)!;
-          text = ms.reduce((acc, s) => acc + s, '');
+          // https://stackoverflow.com/questions/6323417/how-do-i-retrieve-all-matches-for-a-regular-expression-in-javascript
+          let s = '', m;
+          do {
+            m = regex.exec(text);
+            if (m) s += m[0];
+          } while (m);
+          text = s;
           if (text.length === 0) break;
         }
         dic.forEach((value, key) => replacer = replacer.replace(key, value));

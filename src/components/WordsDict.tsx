@@ -46,7 +46,7 @@ export default class WordsDict extends React.Component<any, any> {
           </div>
         </Toolbar>
         <div className="p-grid">
-          <ListBox className="p-col-2" listStyle={{'max-height':'480px'}} options={this.state.words}
+          <ListBox className="p-col-2" listStyle={{'maxHeight':'480px'}} options={this.state.words}
                    value={this.state.selectedWord} onChange={this.onWordChange} />
           <div className="p-col-10">
             <DictBrowser url={this.state.dictUrl} htmlString={this.state.dictSrc} />
