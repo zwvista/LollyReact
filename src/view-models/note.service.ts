@@ -2,7 +2,7 @@ import { Inject, Injectable } from 'react.di';
 import { SettingsService } from './settings.service';
 import { EMPTY as empty, interval, Observable, Subscription } from 'rxjs';
 import { HtmlService } from '../services/html.service';
-import { mergeMap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 @Injectable
 export class NoteService {
@@ -16,7 +16,7 @@ export class NoteService {
     if (!dictNote) return empty;
     const url = dictNote.urlString(word, this.settingsService.autoCorrects);
     return this.htmlService.getHtml(url).pipe(
-      mergeMap(html => {
+      map(html => {
         console.log(html);
         return HtmlService.extractTextFrom(html, dictNote.TRANSFORM, '', (text, _) => text);
       }));
