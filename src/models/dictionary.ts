@@ -26,7 +26,7 @@ class MDictionary {
 export class MDictsReference {
   records!: MDictReference[];
 }
-const cssFolder = 'http://zwvista.tk/lolly/css/';
+const cssFolder = 'http://zwvista2.tk/lolly/css/';
 export class MDictReference extends MDictionary {
   htmlString(html: string, word: string): string {
     return HtmlService.extractTextFrom(html, this.TRANSFORM, this.TEMPLATE, (text: string, template2: string) =>

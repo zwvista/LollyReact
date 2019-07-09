@@ -22,10 +22,8 @@ export class HtmlService extends BaseService {
           replacer = replacer.substring('<extract>'.length);
           // https://stackoverflow.com/questions/6323417/how-do-i-retrieve-all-matches-for-a-regular-expression-in-javascript
           let s = '', m;
-          do {
-            m = regex.exec(text);
-            if (m) s += m[0];
-          } while (m);
+          while (m = regex.exec(text))
+            s += m[0];
           text = s;
           if (text.length === 0) break;
         }
