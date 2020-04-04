@@ -291,7 +291,6 @@ export class SettingsService {
     this.INFO_USDICTITEMS = this.getUSInfo(MUSMapping.NAME_USDICTITEMS);
     this.INFO_USDICTTRANSLATIONID = this.getUSInfo(MUSMapping.NAME_USDICTTRANSLATIONID);
     this.INFO_USWEBVOICEID = this.getUSInfo(MUSMapping.NAME_USWEBVOICEID);
-    const dicts = this.USDICTITEMS.split('\r\n');
     return forkJoin([
       this.dictReferenceService.getDataByLang(this.USLANGID),
       this.dictNoteService.getDataByLang(this.USLANGID),
@@ -301,15 +300,7 @@ export class SettingsService {
       this.voiceService.getDataByLang(this.USLANGID)]).pipe(
       concatMap(res => {
         this.dictsReference = res[0] as MDictReference[];
-        let i = 0;
-        this.dictItems = _.flatMap(dicts, d => {
-          if (d === '0')
-            return _.map(this.dictsReference, d2 => new MDictItem(String(d2.DICTID), d2.DICTNAME));
-          else {
-            i++;
-            return [new MDictItem(d, `Custom${i}`)];
-          }
-        });
+        this.dictItems = _.map(this.dictsReference, d2 => new MDictItem(String(d2.DICTID), d2.DICTNAME));
         this.selectedDictItem = this.dictItems.find(value => value.DICTID === this.USDICTITEM)!;
         this.dictsNote = res[1] as MDictNote[];
         this.selectedDictNote = this.dictsNote.find(value => value.DICTID === this.USDICTNOTEID) ||
@@ -331,18 +322,6 @@ export class SettingsService {
         } else
           return this.updateLang();
       }));
-  }
-
-  dictHtml(word: string, dictids: string[]): string {
-    let s = '<html><body>\n';
-    dictids.forEach((dictid, i) => {
-      const item = this.dictsReference.find(v => String(v.DICTID) === dictid);
-      const ifrId = `ifr${i + 1}`;
-      const url = item.urlString(word, this.autoCorrects);
-      s += `<iframe id='$ifrId' frameborder='1' style='width:100%; height:500px; display:block' src='$url'></iframe>\n`;
-    });
-    s += '</body></html>\\n';
-    return s;
   }
 
   updateLang(): Observable<number> {

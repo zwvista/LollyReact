@@ -78,33 +78,25 @@ export default class WordsDict extends React.Component<any, any> {
 
   refreshDict(selectedDictItem: MDictItem, selectedWord: string) {
     const item = selectedDictItem;
-    if (item.DICTNAME.startsWith('Custom')) {
-      const dictSrc = this.settingsService.dictHtml(this.state.selectedWord, item.dictids());
+    const item2 = this.settingsService.dictsReference.find(v => v.DICTNAME === item.DICTNAME);
+    const url = item2.urlString(selectedWord, this.settingsService.autoCorrects);
+    if (item2.DICTTYPENAME === 'OFFLINE') {
       this.setState({
-        dictSrc,
+        dictUrl: 'about:blank',
       });
-    }
-    else {
-      const item2 = this.settingsService.dictsReference.find(v => v.DICTNAME === item.DICTNAME);
-      const url = item2.urlString(selectedWord, this.settingsService.autoCorrects);
-      if (item2.DICTTYPENAME === 'OFFLINE') {
+      this.htmlService.getHtml(url).subscribe(html => {
+        const dictSrc = item2.htmlString(html, selectedWord)
+          .replace(/\n/g, ' ').replace(/"/g, '&quot;');
+        console.log(dictSrc);
         this.setState({
-          dictUrl: 'about:blank',
+          dictSrc,
         });
-        this.htmlService.getHtml(url).subscribe(html => {
-          const dictSrc = item2.htmlString(html, selectedWord)
-            .replace(/\n/g, ' ').replace(/"/g, '&quot;');
-          console.log(dictSrc);
-          this.setState({
-            dictSrc,
-          });
-        });
-      } else {
-        this.setState({
-          dictSrc: null,
-          dictUrl: url,
-        });
-      }
+      });
+    } else {
+      this.setState({
+        dictSrc: null,
+        dictUrl: url,
+      });
     }
   };
 
