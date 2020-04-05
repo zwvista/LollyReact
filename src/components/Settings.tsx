@@ -47,10 +47,10 @@ export default class Settings extends React.Component<any, any> implements Setti
           </select>
         </div>
         <div className="form-inline mb-2">
-          <label htmlFor="dictItem" className="col-2 control-label">Dictionary(Reference):</label>
-          <select id="dictItem" className="col-4 form-control" value={this.settingsService.selectedDictItem.DICTID} onChange={this.onDictItemChange}>
+          <label htmlFor="dictReference" className="col-2 control-label">Dictionary(Reference):</label>
+          <select id="dictReference" className="col-4 form-control" value={this.settingsService.selectedDictReference.DICTID} onChange={this.onDictReferenceChange}>
           {
-            this.settingsService.dictItems.map(o => <option key={o.DICTID} value={o.DICTID}>{o.DICTNAME}</option>)
+            this.settingsService.dictsReference.map(o => <option key={o.DICTID} value={o.DICTID}>{o.DICTNAME}</option>)
           }
           </select>
         </div>
@@ -131,10 +131,10 @@ export default class Settings extends React.Component<any, any> implements Setti
     this.subscription.add(this.settingsService.updateVoice().subscribe(_ => this.updateServiceState()));
   };
 
-  onDictItemChange = (event: any) => {
+  onDictReferenceChange = (event: any) => {
     const index = event.target.selectedIndex;
-    this.settingsService.selectedDictItem = this.settingsService.dictItems[index];
-    this.subscription.add(this.settingsService.updateDictItem().subscribe(_ => this.updateServiceState()));
+    this.settingsService.selectedDictReference = this.settingsService.dictsReference[index];
+    this.subscription.add(this.settingsService.updateDictReference().subscribe(_ => this.updateServiceState()));
   };
 
   onDictNoteChange = (event: any) => {
@@ -195,7 +195,7 @@ export default class Settings extends React.Component<any, any> implements Setti
   onGetData(): void {
   }
 
-  onUpdateDictItem(): void {
+  onUpdateDictReference(): void {
   }
 
   onUpdateDictNote(): void {

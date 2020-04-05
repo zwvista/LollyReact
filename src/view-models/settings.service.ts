@@ -4,10 +4,10 @@ import { LanguageService } from '../services/language.service';
 import { UserSettingService } from '../services/user-setting.service';
 import { MUserSetting, MUserSettingInfo } from '../models/user-setting';
 import { MLanguage } from '../models/language';
-import { MDictItem, MDictReference, MDictNote, MDictTranslation } from '../models/dictionary';
+import { MDictionary } from '../models/dictionary';
 import { MTextbook } from '../models/textbook';
 import { forkJoin, Observable, of } from 'rxjs';
-import { DictReferenceService, DictNoteService, DictTranslationService } from '../services/dictionary.service';
+import { DictionaryService } from '../services/dictionary.service';
 import { TextbookService } from '../services/textbook.service';
 import { AutoCorrectService } from '../services/autocorrect.service';
 import { autoCorrect, MAutoCorrect } from '../models/autocorrect';
@@ -66,33 +66,33 @@ export class SettingsService {
   set USTEXTBOOKID(newValue: number) {
     this.setUSValue(this.INFO_USTEXTBOOKID, String(newValue));
   }
-  private INFO_USDICTITEM: MUserSettingInfo = new MUserSettingInfo();
-  get USDICTITEM(): string {
-    return this.getUSValue(this.INFO_USDICTITEM)!;
+  private INFO_USDICTREFERENCE: MUserSettingInfo = new MUserSettingInfo();
+  get USDICTREFERENCE(): string {
+    return this.getUSValue(this.INFO_USDICTREFERENCE)!;
   }
-  set USDICTITEM(newValue: string) {
-    this.setUSValue(this.INFO_USDICTITEM, newValue);
+  set USDICTREFERENCE(newValue: string) {
+    this.setUSValue(this.INFO_USDICTREFERENCE, newValue);
   }
-  private INFO_USDICTNOTEID: MUserSettingInfo = new MUserSettingInfo();
-  get USDICTNOTEID(): number {
-    return +this.getUSValue(this.INFO_USDICTNOTEID)! || 0;
+  private INFO_USDICTNOTE: MUserSettingInfo = new MUserSettingInfo();
+  get USDICTNOTE(): number {
+    return +this.getUSValue(this.INFO_USDICTNOTE)! || 0;
   }
-  set USDICTNOTEID(newValue: number) {
-    this.setUSValue(this.INFO_USDICTNOTEID, String(newValue));
+  set USDICTNOTE(newValue: number) {
+    this.setUSValue(this.INFO_USDICTNOTE, String(newValue));
   }
-  private INFO_USDICTITEMS: MUserSettingInfo = new MUserSettingInfo();
-  get USDICTITEMS(): string {
-    return this.getUSValue(this.INFO_USDICTITEMS) || '0';
+  private INFO_USDICTSREFERENCE: MUserSettingInfo = new MUserSettingInfo();
+  get USDICTSREFERENCE(): string {
+    return this.getUSValue(this.INFO_USDICTSREFERENCE) || '0';
   }
-  set USDICTITEMS(newValue: string) {
-    this.setUSValue(this.INFO_USDICTITEMS, newValue);
+  set USDICTSREFERENCE(newValue: string) {
+    this.setUSValue(this.INFO_USDICTSREFERENCE, newValue);
   }
-  private INFO_USDICTTRANSLATIONID: MUserSettingInfo = new MUserSettingInfo();
-  get USDICTTRANSLATIONID(): number {
-    return +this.getUSValue(this.INFO_USDICTTRANSLATIONID)! || 0;
+  private INFO_USDICTTRANSLATION: MUserSettingInfo = new MUserSettingInfo();
+  get USDICTTRANSLATION(): number {
+    return +this.getUSValue(this.INFO_USDICTTRANSLATION)! || 0;
   }
-  set USDICTTRANSLATIONID(newValue: number) {
-    this.setUSValue(this.INFO_USDICTTRANSLATIONID, String(newValue));
+  set USDICTTRANSLATION(newValue: number) {
+    this.setUSValue(this.INFO_USDICTTRANSLATION, String(newValue));
   }
   private INFO_USWEBVOICEID: MUserSettingInfo = new MUserSettingInfo();
   get USWEBVOICEID(): number {
@@ -160,35 +160,34 @@ export class SettingsService {
     this.speech.setVoice(newValue ? newValue.VOICENAME : '');
   }
 
-  dictsReference: MDictReference[] = [];
-  dictItems: MDictItem[] = [];
-  private _selectedDictItem!: MDictItem;
-  get selectedDictItem(): MDictItem {
-    return this._selectedDictItem;
+  dictsReference: MDictionary[] = [];
+  private _selectedDictReference!: MDictionary;
+  get selectedDictReference(): MDictionary {
+    return this._selectedDictReference;
   }
-  set selectedDictItem(newValue: MDictItem) {
-    this._selectedDictItem = newValue;
-    this.USDICTITEM = this._selectedDictItem.DICTID;
+  set selectedDictReference(newValue: MDictionary) {
+    this._selectedDictReference = newValue;
+    this.USDICTREFERENCE = String(this._selectedDictReference.DICTID);
   }
 
-  dictsNote: MDictNote[] = [];
-  private _selectedDictNote: MDictNote | null = null;
-  get selectedDictNote(): MDictNote | null {
+  dictsNote: MDictionary[] = [];
+  private _selectedDictNote: MDictionary | null = null;
+  get selectedDictNote(): MDictionary | null {
     return this._selectedDictNote;
   }
-  set selectedDictNote(newValue: MDictNote | null) {
+  set selectedDictNote(newValue: MDictionary | null) {
     this._selectedDictNote = newValue;
-    if (newValue) this.USDICTNOTEID = newValue.ID;
+    if (newValue) this.USDICTNOTE = newValue.ID;
   }
 
-  dictsTranslation: MDictTranslation[] = [];
-  private _selectedDictTranslation: MDictTranslation | null = null;
-  get selectedDictTranslation(): MDictTranslation | null {
+  dictsTranslation: MDictionary[] = [];
+  private _selectedDictTranslation: MDictionary | null = null;
+  get selectedDictTranslation(): MDictionary | null {
     return this._selectedDictTranslation;
   }
-  set selectedDictTranslation(newValue: MDictTranslation | null) {
+  set selectedDictTranslation(newValue: MDictionary | null) {
     this._selectedDictTranslation = newValue;
-    if (newValue) this.USDICTTRANSLATIONID = newValue.ID;
+    if (newValue) this.USDICTTRANSLATION = newValue.ID;
   }
 
   textbooks: MTextbook[] = [];
@@ -236,9 +235,7 @@ export class SettingsService {
   constructor(@Inject private langService: LanguageService,
               @Inject private usMappingService: UsMappingService,
               @Inject private userSettingService: UserSettingService,
-              @Inject private dictReferenceService: DictReferenceService,
-              @Inject private dictNoteService: DictNoteService,
-              @Inject private dictTranslationService: DictTranslationService,
+              @Inject private dictionaryService: DictionaryService,
               @Inject private textbookService: TextbookService,
               @Inject private autoCorrectService: AutoCorrectService,
               @Inject private voiceService: VoicesService,
@@ -286,27 +283,26 @@ export class SettingsService {
     this.selectedLang = lang;
     this.USLANGID = this.selectedLang.ID;
     this.INFO_USTEXTBOOKID = this.getUSInfo(MUSMapping.NAME_USTEXTBOOKID);
-    this.INFO_USDICTITEM = this.getUSInfo(MUSMapping.NAME_USDICTITEM);
-    this.INFO_USDICTNOTEID = this.getUSInfo(MUSMapping.NAME_USDICTNOTEID);
-    this.INFO_USDICTITEMS = this.getUSInfo(MUSMapping.NAME_USDICTITEMS);
-    this.INFO_USDICTTRANSLATIONID = this.getUSInfo(MUSMapping.NAME_USDICTTRANSLATIONID);
+    this.INFO_USDICTREFERENCE = this.getUSInfo(MUSMapping.NAME_USDICTREFERENCE);
+    this.INFO_USDICTNOTE = this.getUSInfo(MUSMapping.NAME_USDICTNOTE);
+    this.INFO_USDICTSREFERENCE = this.getUSInfo(MUSMapping.NAME_USDICTSREFERENCE);
+    this.INFO_USDICTTRANSLATION = this.getUSInfo(MUSMapping.NAME_USDICTTRANSLATION);
     this.INFO_USWEBVOICEID = this.getUSInfo(MUSMapping.NAME_USWEBVOICEID);
     return forkJoin([
-      this.dictReferenceService.getDataByLang(this.USLANGID),
-      this.dictNoteService.getDataByLang(this.USLANGID),
-      this.dictTranslationService.getDataByLang(this.USLANGID),
+      this.dictionaryService.getDictsReference(this.USLANGID),
+      this.dictionaryService.getDictsNote(this.USLANGID),
+      this.dictionaryService.getDictsTranslation(this.USLANGID),
       this.textbookService.getDataByLang(this.USLANGID),
       this.autoCorrectService.getDataByLang(this.USLANGID),
       this.voiceService.getDataByLang(this.USLANGID)]).pipe(
       concatMap(res => {
-        this.dictsReference = res[0] as MDictReference[];
-        this.dictItems = _.map(this.dictsReference, d2 => new MDictItem(String(d2.DICTID), d2.DICTNAME));
-        this.selectedDictItem = this.dictItems.find(value => value.DICTID === this.USDICTITEM)!;
-        this.dictsNote = res[1] as MDictNote[];
-        this.selectedDictNote = this.dictsNote.find(value => value.DICTID === this.USDICTNOTEID) ||
+        this.dictsReference = res[0] as MDictionary[];
+        this.selectedDictReference = this.dictsReference.find(value => String(value.DICTID) === this.USDICTREFERENCE)!;
+        this.dictsNote = res[1] as MDictionary[];
+        this.selectedDictNote = this.dictsNote.find(value => value.DICTID === this.USDICTNOTE) ||
           (this.dictsNote.length === 0 ? null : this.dictsNote[0]);
-        this.dictsTranslation = res[2] as MDictTranslation[];
-        this.selectedDictTranslation = this.dictsTranslation.find(value => value.DICTID === this.USDICTTRANSLATIONID) ||
+        this.dictsTranslation = res[2] as MDictionary[];
+        this.selectedDictTranslation = this.dictsTranslation.find(value => value.DICTID === this.USDICTTRANSLATION) ||
           (this.dictsTranslation.length === 0 ? null : this.dictsTranslation[0]);
         this.textbooks = res[3] as MTextbook[];
         this.selectedTextbook = this.textbooks.find(value => value.ID === this.USTEXTBOOKID)!;
@@ -342,17 +338,17 @@ export class SettingsService {
     );
   }
 
-  updateDictItem(): Observable<number> {
-    return this.userSettingService.updateStringValue(this.INFO_USDICTITEM, this.USDICTITEM).pipe(
+  updateDictReference(): Observable<number> {
+    return this.userSettingService.updateStringValue(this.INFO_USDICTREFERENCE, this.USDICTREFERENCE).pipe(
       map( _ => {
-        if (this.settingsListener) this.settingsListener.onUpdateDictItem();
+        if (this.settingsListener) this.settingsListener.onUpdateDictReference();
         return 0;
       }),
     );
   }
 
   updateDictNote(): Observable<number> {
-    return this.userSettingService.updateIntValue(this.INFO_USDICTNOTEID, this.USDICTNOTEID).pipe(
+    return this.userSettingService.updateIntValue(this.INFO_USDICTNOTE, this.USDICTNOTE).pipe(
       map( _ => {
         if (this.settingsListener) this.settingsListener.onUpdateDictNote();
         return 0;
@@ -361,7 +357,7 @@ export class SettingsService {
   }
 
   updateDictTranslation(): Observable<number> {
-    return this.userSettingService.updateIntValue(this.INFO_USDICTTRANSLATIONID, this.USDICTNOTEID).pipe(
+    return this.userSettingService.updateIntValue(this.INFO_USDICTTRANSLATION, this.USDICTNOTE).pipe(
       map( _ => {
         if (this.settingsListener) this.settingsListener.onUpdateDictTranslation();
         return 0;
@@ -543,7 +539,7 @@ export interface SettingsListener {
   onGetData(): void;
   onUpdateLang(): void;
   onUpdateTextbook(): void;
-  onUpdateDictItem(): void;
+  onUpdateDictReference(): void;
   onUpdateDictNote(): void;
   onUpdateDictTranslation(): void;
   onUpdateVoice(): void;

@@ -3,48 +3,36 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { BaseService } from './base.service';
 import {
-  MDictReference,
-  MDictNote,
+  MDictionary,
   MDictsReference,
   MDictsNote,
-  MDictTranslation,
   MDictsTranslation
 } from '../models/dictionary';
 
 @Injectable
-export class DictReferenceService extends BaseService {
+export class DictionaryService extends BaseService {
 
-  getDataByLang(langid: number): Observable<MDictReference[]> {
+  getDictsReference(langid: number): Observable<MDictionary[]> {
     const url = `${this.baseUrl}VDICTSREFERENCE?filter=LANGIDFROM,eq,${langid}&order=SEQNUM&order=DICTNAME`;
     return this.http.get<MDictsReference>(url)
       .pipe(
-        map(result => result.records.map(value => Object.assign(new MDictReference(), value))),
+        map(result => result.records.map(value => Object.assign(new MDictionary(), value))),
       );
   }
 
-}
-
-@Injectable
-export class DictNoteService extends BaseService {
-
-  getDataByLang(langid: number): Observable<MDictNote[]> {
+  getDictsNote(langid: number): Observable<MDictionary[]> {
     const url = `${this.baseUrl}VDICTSNOTE?filter=LANGIDFROM,eq,${langid}`;
     return this.http.get<MDictsNote>(url)
       .pipe(
-        map(result => result.records.map(value => Object.assign(new MDictNote(), value))),
+        map(result => result.records.map(value => Object.assign(new MDictionary(), value))),
       );
   }
 
-}
-
-@Injectable
-export class DictTranslationService extends BaseService {
-
-  getDataByLang(langid: number): Observable<MDictTranslation[]> {
+  getDictsTranslation(langid: number): Observable<MDictionary[]> {
     const url = `${this.baseUrl}VDICTSTRANSLATION?filter=LANGIDFROM,eq,${langid}`;
     return this.http.get<MDictsTranslation>(url)
       .pipe(
-        map(result => result.records.map(value => Object.assign(new MDictTranslation(), value))),
+        map(result => result.records.map(value => Object.assign(new MDictionary(), value))),
       );
   }
 

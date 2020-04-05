@@ -1,7 +1,7 @@
 import { autoCorrect, MAutoCorrect } from './autocorrect';
 import { HtmlService } from '../services/html.service';
 
-class MDictionary {
+export class MDictionary {
   ID!: number;
   DICTID!: number;
   LANGIDFROM!: number;
@@ -21,34 +21,23 @@ class MDictionary {
     console.log(url);
     return url;
   }
-}
 
-export class MDictsReference {
-  records!: MDictReference[];
-}
-const cssFolder = 'http://zwvista2.tk/lolly/css/';
-export class MDictReference extends MDictionary {
   htmlString(html: string, word: string): string {
     return HtmlService.extractTextFrom(html, this.TRANSFORM, this.TEMPLATE, (text: string, template2: string) =>
       template2.replace(/\{0\}/g, word).replace(/\{1\}/g, cssFolder).replace(/\{2\}/g, text));
   }
 }
 
-export class MDictItem {
-  constructor(public DICTID: string, public DICTNAME: string) {}
-  dictids(): string[] {
-    return this.DICTID.split(',');
-  }
+export class MDictsReference {
+  records!: MDictionary[];
 }
 
 export class MDictsNote {
-  records!: MDictNote[];
-}
-export class MDictNote extends MDictionary {
+  records!: MDictionary[];
 }
 
 export class MDictsTranslation {
-  records!: MDictTranslation[];
+  records!: MDictionary[];
 }
-export class MDictTranslation extends MDictionary {
-}
+
+const cssFolder = 'http://zwvista2.tk/lolly/css/';

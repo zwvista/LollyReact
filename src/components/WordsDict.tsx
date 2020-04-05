@@ -8,7 +8,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { SettingsService } from '../view-models/settings.service';
 import DictBrowser from './DictBrowser';
 import { ListBox } from 'primereact/listbox';
-import { MDictItem } from '../models/dictionary';
+import { MDictionary } from '../models/dictionary';
 import { HtmlService } from '../services/html.service';
 import { WordsLangService } from '../view-models/words-lang.service';
 
@@ -25,14 +25,14 @@ export default class WordsDict extends React.Component<any, any> {
       dictType === 'textbook' ? this.wordsUnitService.textbookWords.map(v  => ({label: v.WORD, value: v.WORD})) :
       this.wordsLangService.langWords.map(v  => ({label: v.WORD, value: v.WORD}));
     const selectedWord = words[+this.props.match.params.index].value;
-    const selectedDictItem = this.settingsService.selectedDictItem;
+    const selectedDictReference = this.settingsService.selectedDictReference;
     this.setState({
       words,
       selectedWord,
       dictUrl: 'about:blank',
-      selectedDictItem,
+      selectedDictReference,
     });
-    if (selectedWord) this.refreshDict(selectedDictItem, selectedWord);
+    if (selectedWord) this.refreshDict(selectedDictReference, selectedWord);
   }
 
   render() {
@@ -41,7 +41,7 @@ export default class WordsDict extends React.Component<any, any> {
         <Toolbar>
           <div className="p-toolbar-group-left">
             <Button label="Back" onClick={this.goBack} />
-            <Dropdown className="p-col-2" options={this.settingsService.dictItems} value={this.state.selectedDictItem}
+            <Dropdown className="p-col-2" options={this.settingsService.dictsReference} value={this.state.selectedDictReference}
                 optionLabel="DICTNAME" onChange={this.onDictChange} />
           </div>
         </Toolbar>
@@ -61,11 +61,11 @@ export default class WordsDict extends React.Component<any, any> {
   };
 
   onDictChange = (e: any) => {
-    const selectedDictItem = e.value;
+    const selectedDictReference = e.value;
     this.setState({
-      selectedDictItem,
+      selectedDictReference,
     });
-    this.refreshDict(selectedDictItem, this.state.selectedWord);
+    this.refreshDict(selectedDictReference, this.state.selectedWord);
   };
 
   onWordChange = (e: any) => {
@@ -73,11 +73,11 @@ export default class WordsDict extends React.Component<any, any> {
     this.setState({
       selectedWord,
     });
-    this.refreshDict(this.state.selectedDictItem, selectedWord);
+    this.refreshDict(this.state.selectedDictReference, selectedWord);
   };
 
-  refreshDict(selectedDictItem: MDictItem, selectedWord: string) {
-    const item = selectedDictItem;
+  refreshDict(selectedDictReference: MDictionary, selectedWord: string) {
+    const item = selectedDictReference;
     const item2 = this.settingsService.dictsReference.find(v => v.DICTNAME === item.DICTNAME);
     const url = item2.urlString(selectedWord, this.settingsService.autoCorrects);
     if (item2.DICTTYPENAME === 'OFFLINE') {
