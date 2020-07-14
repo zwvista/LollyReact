@@ -9,8 +9,8 @@ export class LangWordService extends BaseService {
 
   getDataByLang(langid: number, page: number, rows: number, filter: string, filterType: number): Observable<MLangWords> {
     let url = `${this.baseUrl}VLANGWORDS?filter=LANGID,eq,${langid}&order=WORD&page=${page},${rows}`;
-    if (filterType !== 0 && filter)
-      url += `&filter=${filterType === 1 ? 'WORD' : 'NOTE'},cs,${encodeURIComponent(filter)}`;
+    if (filter)
+      url += `&filter=${filterType === 0 ? 'WORD' : 'NOTE'},cs,${encodeURIComponent(filter)}`;
     return this.http.get<MLangWords>(url)
       .pipe(
         map(result => ({

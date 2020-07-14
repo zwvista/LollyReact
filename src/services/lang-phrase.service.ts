@@ -9,8 +9,8 @@ export class LangPhraseService extends BaseService {
 
   getDataByLang(langid: number, page: number, rows: number, filter: string, filterType: number): Observable<MLangPhrases> {
     let url = `${this.baseUrl}LANGPHRASES?filter=LANGID,eq,${langid}&order=PHRASE&page=${page},${rows}`;
-    if (filterType !== 0 && filter)
-      url += `&filter=${filterType === 1 ? 'PHRASE' : 'TRANSLATION'},cs,${encodeURIComponent(filter)}`;
+    if (filter)
+      url += `&filter=${filterType === 0 ? 'PHRASE' : 'TRANSLATION'},cs,${encodeURIComponent(filter)}`;
     return this.http.get<MLangPhrases>(url)
       .pipe(
         map(result => ({

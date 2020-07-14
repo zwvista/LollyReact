@@ -229,8 +229,8 @@ export class SettingsService {
 
   settingsListener: SettingsListener | null = null;
 
-  wordFilterTypes = ['None', 'Word', 'Note'].map((v, i) => new MSelectItem(i, v));
-  phraseFilterTypes = ['None', 'Phrase', 'Translation'].map((v, i) => new MSelectItem(i, v));
+  wordFilterTypes = ['Word', 'Note'].map((v, i) => new MSelectItem(i, v));
+  phraseFilterTypes = ['Phrase', 'Translation'].map((v, i) => new MSelectItem(i, v));
 
   constructor(@Inject private langService: LanguageService,
               @Inject private usMappingService: UsMappingService,
