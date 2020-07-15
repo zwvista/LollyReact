@@ -2,11 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8c3ada4f-a8b4-4150-ab02-25eb1fe8c197" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/unit-phrase.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/unit-phrase.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/unit-word.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/unit-word.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view-models/settings.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/view-models/settings.service.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,10 +24,12 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="TERMINAL_CUSTOM_COMMANDS_GOT_IT" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../LollyVue" />
     <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="terminal" />
     <property name="ts.external.directory.path" value="C:\zw\LollyReact\node_modules\typescript\lib" />
   </component>
   <component name="RunManager">
@@ -59,7 +59,8 @@
       <updated>1594271148910</updated>
       <workItem from="1594271153581" duration="2053000" />
       <workItem from="1594713094248" duration="571000" />
-      <workItem from="1594718253960" duration="343000" />
+      <workItem from="1594718253960" duration="1829000" />
+      <workItem from="1594787328888" duration="1666000" />
     </task>
     <servers />
   </component>
@@ -75,21 +76,25 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="740" y="274" key="FileChooserDialogImpl/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1594271203025" />
-    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1594713667009">
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1594775785273">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1594713667009" />
-    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1594713667008">
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1594775785273" />
+    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1594775785273">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1594713667008" />
-    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1594713667008">
+    <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1594775785273" />
+    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1594775785273">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1594713667008" />
-    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1594713667008">
+    <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1594775785273" />
+    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1594775785273">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1594713667008" />
+    <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1594775785273" />
+    <state x="468" y="164" key="SettingsEditor" timestamp="1594787432793">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="468" y="164" key="SettingsEditor/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1594787432793" />
   </component>
 </project>
