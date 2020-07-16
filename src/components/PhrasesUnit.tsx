@@ -63,9 +63,9 @@ export default class PhrasesUnit extends React.Component<any, any> {
           <div className="p-toolbar-group-left">
             <Dropdown id="filterType" options={this.settingsService.phraseFilterTypes} value={this.state.filterType} onChange={this.onFilterTypeChange} />
             <span className="p-float-label">
-              <InputText id="float-input" type="text" value={this.state.filter}
+              <InputText id="filter" type="text" value={this.state.filter}
                          onChange={this.onFilterChange} onKeyPress={this.onFilterKeyPress}/>
-              <label htmlFor="float-input">Filter</label>
+              <label htmlFor="filter">Filter</label>
             </span>
             <Button label="Add" icon="fa fa-plus" onClick={() => history.push('/phrases-unit-detail/0')} />
             <Button label="Refresh" icon="fa fa-refresh" onClick={this.onRefresh}/>
@@ -106,10 +106,6 @@ export default class PhrasesUnit extends React.Component<any, any> {
 
   onFilterKeyPress = (e: KeyboardEvent) => {
     if (e.key !== 'Enter') return;
-    if (this.state.filter && this.state.filterType === 0)
-      this.setState({filterType: this.state.filterType = 1});
-    else if (!this.state.filter && this.state.filterType !== 0)
-      this.setState({filterType: this.state.filterType = 0});
     this.onRefresh();
   };
 

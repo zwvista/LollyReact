@@ -70,15 +70,15 @@ export default class WordsUnit extends React.Component<any, any> {
         <Toolbar>
           <div className="p-toolbar-group-left">
             <span className="p-float-label">
-              <InputText id="float-input" type="text" value={this.state.newWord}
+              <InputText id="word" type="text" value={this.state.newWord}
                          onChange={this.onNewWordChange} onKeyPress={this.onNewWordKeyPress}/>
-              <label htmlFor="float-input">New Word</label>
+              <label htmlFor="word">New Word</label>
             </span>
             <Dropdown id="filterType" options={this.settingsService.wordFilterTypes} value={this.state.filterType} onChange={this.onFilterTypeChange} />
             <span className="p-float-label">
-              <InputText id="float-input" type="text" value={this.state.filter}
+              <InputText id="filter" type="text" value={this.state.filter}
                          onChange={this.onFilterChange} onKeyPress={this.onFilterKeyPress}/>
-              <label htmlFor="float-input">Filter</label>
+              <label htmlFor="Filter">Filter</label>
             </span>
             <Button hidden={!this.settingsService.selectedVoice} icon="fa fa-volumeooltipOptions={{position: 'top'}}"
                     tooltip="Speak" onClick={() => this.settingsService.speak(this.state.newWord)} />
@@ -162,10 +162,6 @@ export default class WordsUnit extends React.Component<any, any> {
 
   onFilterKeyPress = (e: KeyboardEvent) => {
     if (e.key !== 'Enter') return;
-    if (this.state.filter && this.state.filterType === 0)
-      this.setState({filterType: this.state.filterType = 1});
-    else if (!this.state.filter && this.state.filterType !== 0)
-      this.setState({filterType: this.state.filterType = 0});
     this.onRefresh();
   };
 

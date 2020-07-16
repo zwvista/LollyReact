@@ -230,10 +230,6 @@ export default class WordsTextbook2 extends React.Component<any, any> {
 
   onFilterKeyPress = (e: KeyboardEvent) => {
     if (e.key !== 'Enter') return;
-    if (this.state.filter && this.state.filterType === 0)
-      this.setState({filterType: this.state.filterType = 1});
-    else if (!this.state.filter && this.state.filterType !== 0)
-      this.setState({filterType: this.state.filterType = 0});
     this.onRefresh();
   };
 
