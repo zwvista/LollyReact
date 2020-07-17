@@ -174,7 +174,7 @@ export default class WordsTextbook2 extends React.Component<any, any> {
                       <FontAwesomeIcon icon={faGoogle} />
                     </Fab>
                   </Tooltip>
-                  <Tooltip title="Dictionary" onClick={() => this.dictReference(row)}>
+                  <Tooltip title="Dictionary" onClick={() => this.dictWord(row)}>
                     <Fab size="small" color="primary">
                       <FontAwesomeIcon icon={faBook} />
                     </Fab>
@@ -262,7 +262,7 @@ export default class WordsTextbook2 extends React.Component<any, any> {
     this.settingsService.updateLevel(item, item.WORDID, delta).subscribe();
   }
 
-  dictReference(item: MUnitWord) {
+  dictWord(item: MUnitWord) {
     const index = this.wordsUnitService.textbookWords.indexOf(item);
     history.push('/words-dict/textbook/' + index);
   }

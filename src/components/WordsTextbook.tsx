@@ -73,7 +73,7 @@ export default class WordsTextbook extends React.Component<any, any> {
               tooltip="Level Down" onClick={() => this.updateLevel(rowData, -1)} />
       <Button icon="fa fa-google" onClick={() => this.googleWord(rowData.WORD)}
               tooltip="Google Word" tooltipOptions={{position: 'top'}}/>
-      <Button icon="fa fa-book" onClick={() => this.dictReference(rowData.ID)}
+      <Button icon="fa fa-book" onClick={() => this.dictWord(rowData.ID)}
               tooltip="Dictionary" tooltipOptions={{position: 'top'}}/>
       <Button hidden={!this.settingsService.selectedDictNote} className="p-button-warning" label="Retrieve Note" onClick={() => this.getNote(rowData.ID)} />
     </div>;
@@ -184,7 +184,7 @@ export default class WordsTextbook extends React.Component<any, any> {
       _ => this.setRowStyle(item, $('tr').eq(i + 1)));
   }
 
-  dictReference(item: MUnitWord) {
+  dictWord(item: MUnitWord) {
     const index = this.wordsUnitService.textbookWords.indexOf(item);
     history.push('/words-dict/textbook/' + index);
   }

@@ -168,7 +168,7 @@ export default class WordsLang2 extends React.Component<any, any> {
                       <FontAwesomeIcon icon={faGoogle} />
                     </Fab>
                   </Tooltip>
-                  <Tooltip title="Dictionary" onClick={() => this.dictReference(row)}>
+                  <Tooltip title="Dictionary" onClick={() => this.dictWord(row)}>
                     <Fab size="small" color="primary">
                       <FontAwesomeIcon icon={faBook} />
                     </Fab>
@@ -267,7 +267,7 @@ export default class WordsLang2 extends React.Component<any, any> {
     this.settingsService.updateLevel(item, item.ID, delta).subscribe();
   }
 
-  dictReference(item: MLangWord) {
+  dictWord(item: MLangWord) {
     const index = this.wordsLangService.langWords.indexOf(item);
     history.push('/words-dict/lang/' + index);
   }
