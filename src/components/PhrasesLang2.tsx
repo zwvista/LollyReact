@@ -27,6 +27,7 @@ import { KeyboardEvent } from 'react';
 import { ChangeEvent } from 'react';
 import { ReactNode } from 'react';
 import { AppService } from '../view-models/app.service';
+import { MLangPhrase } from '../models/lang-phrase';
 
 export default class PhrasesLang2 extends React.Component<any, any> {
   @Inject appService: AppService;
@@ -104,7 +105,7 @@ export default class PhrasesLang2 extends React.Component<any, any> {
                 <TableCell>{row.TRANSLATION}</TableCell>
                 <TableCell>
                   <Tooltip title="Delete">
-                    <Fab size="small" color="secondary" onClick={() => this.deletePhrase(row.ID)}>
+                    <Fab size="small" color="secondary" onClick={() => this.deletePhrase(row)}>
                       <FontAwesomeIcon icon={faTrash} />
                     </Fab>
                   </Tooltip>
@@ -186,8 +187,8 @@ export default class PhrasesLang2 extends React.Component<any, any> {
     this.onRefresh();
   };
 
-  deletePhrase(id: number) {
-    this.phrasesLangService.delete(id);
+  deletePhrase(item: MLangPhrase) {
+    this.phrasesLangService.delete(item);
   }
 
   updateServiceState() {

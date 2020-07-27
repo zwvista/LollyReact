@@ -3,6 +3,7 @@ import { Injectable } from 'react.di';
 
 @Injectable
 export class BaseService {
-  protected readonly baseUrl = 'https://zwvista.tk/lolly/api.php/records/';
+  protected readonly baseUrlAPI = 'https://zwvista.tk/lolly/api.php/records/';
+  protected readonly baseUrlSP = 'https://zwvista.tk/lolly/sp.php/';
   protected readonly http = new Rxios();
 }

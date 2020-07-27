@@ -35,8 +35,8 @@ export class PhrasesLangService {
     return this.langPhraseService.update(item);
   }
 
-  delete(id: number): Observable<number> {
-    return this.langPhraseService.delete(id);
+  delete(item: MLangPhrase): Observable<string> {
+    return this.langPhraseService.delete(item);
   }
 
   newLangPhrase(): MLangPhrase {

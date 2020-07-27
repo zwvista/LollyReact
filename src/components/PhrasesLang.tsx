@@ -18,6 +18,7 @@ import { InputText } from 'primereact/inputtext';
 import { SyntheticEvent } from 'react';
 import { KeyboardEvent } from 'react';
 import { AppService } from '../view-models/app.service';
+import { MUnitWord } from '../models/unit-word';
 
 export default class PhrasesLang extends React.Component<any, any> {
   @Inject appService: AppService;
@@ -57,7 +58,7 @@ export default class PhrasesLang extends React.Component<any, any> {
   actionTemplate = (rowData: any, column: any) => {
     return <div>
       <Button className="p-button-danger button-margin-right" icon="fa fa-trash"
-              tooltip="Delete" tooltipOptions={{position: 'top'}} onClick={() => this.deletePhrase(rowData.ID)} />
+              tooltip="Delete" tooltipOptions={{position: 'top'}} onClick={() => this.deletePhrase(rowData)} />
       <Button icon="fa fa-edit" tooltip="Edit" tooltipOptions={{position: 'top'}}
               onClick={() => history.push('/phrases-lang-detail/' + rowData.ID)}/>
       <Button icon="fa fa-volume-up" tooltipOptions={{position: 'top'}}
@@ -126,8 +127,8 @@ export default class PhrasesLang extends React.Component<any, any> {
     this.onRefresh();
   };
 
-  deletePhrase(id: number) {
-    this.phrasesLangService.delete(id);
+  deletePhrase(item: MLangPhrase) {
+    this.phrasesLangService.delete(item);
   }
 
   updateServiceState() {

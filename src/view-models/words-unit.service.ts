@@ -50,23 +50,7 @@ export class WordsUnitService {
   }
 
   create(item: MUnitWord): Observable<number | any[]> {
-    return this.langWordService.getDataByLangWord(item.LANGID, item.WORD).pipe(
-      concatMap( arrLang => {
-        if (arrLang.length === 0) {
-          const itemLang = MLangWord.fromUnit(item);
-          return this.langWordService.create(itemLang);
-        } else {
-          const itemLang = arrLang[0];
-          const wordid = itemLang.ID;
-          const b = itemLang.combineNote(item.NOTE);
-          return b ? this.updateNote(wordid, item.NOTE || '').pipe(map(_ => wordid)) : of(wordid);
-        }
-      }),
-      concatMap(wordid => {
-        item.WORDID = wordid as number;
-        return this.unitWordService.create(item);
-      }),
-    );
+    return this.unitWordService.create(item);
   }
 
   updateSeqNum(id: number, seqnum: number): Observable<number> {
@@ -77,58 +61,12 @@ export class WordsUnitService {
     return this.langWordService.updateNote(wordid, note);
   }
 
-  update(item: MUnitWord): Observable<number> {
-    const wordid = item.WORDID;
-    return this.unitWordService.getDataByLangWord(wordid).pipe(
-      concatMap(arrUnit => {
-        if (arrUnit.length === 0)
-          return empty;
-        else {
-          const itemLang = MLangWord.fromUnit(item);
-          return this.langWordService.getDataById(wordid).pipe(
-            concatMap(arrLangOld => {
-              if (arrLangOld.length > 0 && arrLangOld[0].WORD === item.WORD)
-                return this.langWordService.updateNote(wordid, item.NOTE || '').pipe(map(_ => wordid));
-              else
-                return this.langWordService.getDataByLangWord(item.LANGID, item.WORD).pipe(
-                  concatMap(arrLangNew => {
-                    const f = () => {
-                      const itemLang = arrLangNew[0];
-                      const wordid = itemLang.ID;
-                      const b = itemLang.combineNote(item.NOTE);
-                      item.NOTE = itemLang.NOTE;
-                      return b ? this.langWordService.updateNote(wordid, item.NOTE || '')
-                        .pipe(map(_ => wordid)) : of(wordid);
-                    };
-                    if (arrUnit.length === 1)
-                      if (arrLangNew.length === 0)
-                        return this.langWordService.update(itemLang).pipe(map(_ => wordid));
-                      else
-                        return this.langWordService.delete(wordid).pipe(concatMap(_ => f()));
-                    else
-                    if (arrLangNew.length === 0) {
-                      itemLang.ID = 0;
-                      return this.langWordService.create(itemLang);
-                    } else
-                      return f();
-                  }),
-                );
-            }),
-            concatMap(wordid => {
-              item.WORDID = wordid as number;
-              return this.unitWordService.update(item);
-            }),
-          );
-        }
-      }),
-    );
+  update(item: MUnitWord): Observable<string> {
+    return this.unitWordService.update(item);
   }
 
-  delete(item: MUnitWord): Observable<number> {
-    return this.unitWordService.delete(item.ID).pipe(
-      concatMap(_ => this.langWordService.delete(item.WORDID)),
-      concatMap(_ => this.wordsFamiService.delete(item.FAMIID)),
-    );
+  delete(item: MUnitWord): Observable<string> {
+    return this.unitWordService.delete(item);
   }
 
   reindex(onNext: (index: number) => void) {

@@ -44,10 +44,8 @@ export class WordsLangService {
     return this.langWordService.update(item);
   }
 
-  delete(item: MLangWord): Observable<number> {
-    return this.langWordService.delete(item.ID).pipe(
-      concatMap(_ => this.wordsFamiService.delete(item.FAMIID)),
-    );
+  delete(item: MLangWord): Observable<string> {
+    return this.langWordService.delete(item);
   }
 
   newLangWord(): MLangWord {

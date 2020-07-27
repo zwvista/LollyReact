@@ -8,7 +8,7 @@ import { MUSMapping, MUSMappings } from '../models/usmapping';
 export class UsMappingService extends BaseService {
 
   getData(): Observable<MUSMapping[]> {
-    const url = `${this.baseUrl}USMAPPINGS`;
+    const url = `${this.baseUrlAPI}USMAPPINGS`;
     return this.http.get<MUSMappings>(url)
       .pipe(
         map(result => result.records.map(value => Object.assign(new MUSMapping(), value))),

@@ -42,23 +42,7 @@ export class PhrasesUnitService {
   }
 
   create(item: MUnitPhrase): Observable<number | any[]> {
-    return this.langPhraseService.getDataByLangPhrase(item.LANGID, item.PHRASE).pipe(
-      concatMap( arrLang => {
-        if (arrLang.length === 0) {
-          const itemLang = MLangPhrase.fromUnit(item);
-          return this.langPhraseService.create(itemLang);
-        } else {
-          const itemLang = arrLang[0];
-          const phraseid = itemLang.ID;
-          const b = itemLang.combineTranslation(item.TRANSLATION);
-          return b ? this.updateTranslation(phraseid, item.TRANSLATION || '').pipe(map(_ => phraseid)) : of(phraseid);
-        }
-      }),
-      concatMap(phraseid => {
-        item.PHRASEID = phraseid as number;
-        return this.unitPhraseService.create(item);
-      }),
-    );
+    return this.unitPhraseService.create(item);
   }
 
   updateSeqNum(id: number, seqnum: number): Observable<number> {
@@ -69,58 +53,12 @@ export class PhrasesUnitService {
     return this.langPhraseService.updateTranslation(phraseid, translation);
   }
 
-  update(item: MUnitPhrase): Observable<number> {
-    const phraseid = item.PHRASEID;
-    return this.unitPhraseService.getDataByLangPhrase(phraseid).pipe(
-      concatMap(arrUnit => {
-        if (arrUnit.length === 0)
-          return empty;
-        else {
-          const itemLang = MLangPhrase.fromUnit(item);
-          return this.langPhraseService.getDataById(phraseid).pipe(
-            concatMap(arrLangOld => {
-              if (arrLangOld.length > 0 && arrLangOld[0].PHRASE === item.PHRASE)
-                return this.langPhraseService.updateTranslation(phraseid, item.TRANSLATION || '').pipe(map(_ => phraseid));
-              else
-                return this.langPhraseService.getDataByLangPhrase(item.LANGID, item.PHRASE).pipe(
-                  concatMap(arrLangNew => {
-                    const f = () => {
-                      const itemLang = arrLangNew[0];
-                      const phraseid = itemLang.ID;
-                      const b = itemLang.combineTranslation(item.TRANSLATION);
-                      item.TRANSLATION = itemLang.TRANSLATION;
-                      return b ? this.langPhraseService.updateTranslation(phraseid, item.TRANSLATION || '')
-                        .pipe(map(_ => phraseid)) : of(phraseid);
-                    };
-                    if (arrUnit.length === 1)
-                      if (arrLangNew.length === 0)
-                        return this.langPhraseService.update(itemLang).pipe(map(_ => phraseid));
-                      else
-                        return this.langPhraseService.delete(phraseid).pipe(concatMap(_ => f()));
-                    else
-                    if (arrLangNew.length === 0) {
-                      itemLang.ID = 0;
-                      return this.langPhraseService.create(itemLang);
-                    } else
-                      return f();
-                  }),
-                );
-            }),
-            concatMap(phraseid => {
-              item.PHRASEID = phraseid as number;
-              return this.unitPhraseService.update(item);
-            }),
-          );
-        }
-      }),
-    );
+  update(item: MUnitPhrase): Observable<string> {
+    return this.unitPhraseService.update(item);
   }
 
-  delete(item: MUnitPhrase): Observable<number> {
-    return this.unitPhraseService.delete(item.ID).pipe(
-      concatMap(_ => this.unitPhraseService.getDataByLangPhrase(item.PHRASEID)),
-      concatMap(arr => arr.length !== 0 ? empty : this.langPhraseService.delete(item.PHRASEID)),
-    );
+  delete(item: MUnitPhrase): Observable<string> {
+    return this.unitPhraseService.delete(item);
   }
 
   reindex(onNext: (index: number) => void) {
