@@ -13,7 +13,6 @@ import history from '../view-models/history';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { SettingsService } from '../view-models/settings.service';
 import * as $ from "jquery";
-import { MWordColor } from '../models/word-color';
 import { MUnitWord } from '../models/unit-word';
 import { Dropdown } from 'primereact/dropdown';
 import { AppService } from '../view-models/app.service';
@@ -52,10 +51,6 @@ export default class WordsUnit extends React.Component<any, any> {
       <CopyToClipboard text={rowData.WORD}>
         <Button icon="fa fa-copy" tooltip="Copy" tooltipOptions={{position: 'top'}}/>
       </CopyToClipboard>
-      <Button icon="fa fa-arrow-up" tooltipOptions={{position: 'top'}} className="p-button-warning"
-              tooltip="Level Up" onClick={() => this.updateLevel(rowData, 1)} />
-      <Button icon="fa fa-arrow-down" tooltipOptions={{position: 'top'}} className="p-button-warning"
-              tooltip="Level Down" onClick={() => this.updateLevel(rowData, -1)} />
       <Button icon="fa fa-google" onClick={() => this.googleWord(rowData.WORD)}
               tooltip="Google Word" tooltipOptions={{position: 'top'}}/>
       <Button icon="fa fa-book" onClick={() => this.dictWord(rowData)}
@@ -100,7 +95,6 @@ export default class WordsUnit extends React.Component<any, any> {
           <Column style={{width:'80px'}} field="WORDID" header="WORDID" />
           <Column field="WORD" header="WORD" />
           <Column field="NOTE" header="NOTE" />
-          <Column style={{width:'80px'}} field="LEVEL" header="LEVEL" />
           <Column style={{width:'80px'}} field="ACCURACY" header="ACCURACY" />
           <Column style={{width:'30%'}} body={this.actionTemplate} header="ACTIONS" />
         </DataTable>
@@ -135,24 +129,9 @@ export default class WordsUnit extends React.Component<any, any> {
     this.wordsUnitService.reindex(index => this.updateServiceState());
   };
 
-  // Here we have to use JQuery to set td styles based on row number,
-  // as PrimeReact DataTable has no rowStyle attribute.
-  setRowStyle(o: MWordColor, tr: any) {
-    const c = o.colorStyle;
-    if (c['background-color'])
-      $(tr).css('background-color', c['background-color']).css('color', c['color']);
-    else
-      $(tr).css('background-color', '').css('color', '');
-  }
-
   onRefresh = () => {
     this.subscription.add(this.wordsUnitService.getDataInTextbook(this.state.filter, this.state.filterType).subscribe(_ => {
       this.updateServiceState();
-      if (this.wordsUnitService.unitWords.length === 0) return;
-      $("tr").each((i, row) => {
-        if (i === 0) return;
-        this.setRowStyle(this.wordsUnitService.unitWords[i - 1], $(row));
-      });
     }));
   };
 
@@ -182,12 +161,6 @@ export default class WordsUnit extends React.Component<any, any> {
   // https://stackoverflow.com/questions/42775017/angular-2-redirect-to-an-external-url-and-open-in-a-new-tab
   googleWord(WORD: string) {
     window.open('https://www.google.com/search?q=' + encodeURIComponent(WORD), '_blank');
-  }
-
-  updateLevel(item: MUnitWord, delta: number) {
-    const i = this.wordsUnitService.unitWords.indexOf(item);
-    this.settingsService.updateLevel(item, item.WORDID, delta).subscribe(
-      _ => this.setRowStyle(item, $('tr').eq(i + 1)));
   }
 
   dictWord(item: MUnitWord) {

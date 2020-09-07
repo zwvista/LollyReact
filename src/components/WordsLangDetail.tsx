@@ -44,10 +44,6 @@ export default class WordsLangDetail extends React.Component<any, any> {
           <InputText className="p-col-3" id="FAMIID" value={this.state.item.FAMIID} disabled />
         </div>
         <div className="p-grid mb-2">
-          <label className="p-col-1" htmlFor="LEVEL">LEVEL:</label>
-          <InputText className="p-col-3" id="LEVEL" value={this.state.item.LEVEL} onChange={this.onChangeInput} />
-        </div>
-        <div className="p-grid mb-2">
           <label className="p-col-1" htmlFor="ACCURACY">ACCURACY:</label>
           <InputText className="p-col-3" id="ACCURACY" value={this.state.item.ACCURACY} disabled />
         </div>

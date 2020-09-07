@@ -116,20 +116,18 @@ export default class WordsLang2 extends React.Component<any, any> {
               <TableCell>ID</TableCell>
               <TableCell>WORD</TableCell>
               <TableCell>NOTE</TableCell>
-              <TableCell>LEVEL</TableCell>
               <TableCell>ACCURACY</TableCell>
               <TableCell>ACTIONS</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {this.wordsLangService.langWords.map(row => (
-              <TableRow key={row.ID} style={{backgroundColor:row.colorStyle['background-color']}}>
-                <TableCell style={{color:row.colorStyle['color']}}>{row.ID}</TableCell>
-                <TableCell style={{color:row.colorStyle['color']}}>{row.WORD}</TableCell>
-                <TableCell style={{color:row.colorStyle['color']}}>{row.NOTE}</TableCell>
-                <TableCell style={{color:row.colorStyle['color']}}>{row.LEVEL}</TableCell>
-                <TableCell style={{color:row.colorStyle['color']}}>{row.ACCURACY}</TableCell>
-                <TableCell style={{color:row.colorStyle['color']}}>
+              <TableRow key={row.ID}>
+                <TableCell>{row.ID}</TableCell>
+                <TableCell>{row.WORD}</TableCell>
+                <TableCell>{row.NOTE}</TableCell>
+                <TableCell>{row.ACCURACY}</TableCell>
+                <TableCell>
                   <Tooltip title="Delete">
                     <Fab size="small" color="secondary" onClick={() => this.deleteWord(row)}>
                       <FontAwesomeIcon icon={faTrash} />
@@ -153,16 +151,6 @@ export default class WordsLang2 extends React.Component<any, any> {
                       </Fab>
                     </Tooltip>
                   </CopyToClipboard>
-                  <Tooltip title="Level Up">
-                    <Fab size="small" onClick={() => this.updateLevel(row, 1)}>
-                      <FontAwesomeIcon icon={faArrowUp} />
-                    </Fab>
-                  </Tooltip>
-                  <Tooltip title="Level Down">
-                    <Fab size="small" onClick={() => this.updateLevel(row, -1)}>
-                      <FontAwesomeIcon icon={faArrowDown} />
-                    </Fab>
-                  </Tooltip>
                   <Tooltip title="Google Word" onClick={() => this.googleWord(row.WORD)}>
                     <Fab size="small" color="primary">
                       <FontAwesomeIcon icon={faGoogle} />
@@ -260,11 +248,6 @@ export default class WordsLang2 extends React.Component<any, any> {
   // https://stackoverflow.com/questions/42775017/angular-2-redirect-to-an-external-url-and-open-in-a-new-tab
   googleWord(WORD: string) {
     window.open('https://www.google.com/search?q=' + encodeURIComponent(WORD), '_blank');
-  }
-
-  updateLevel(item: MLangWord, delta: number) {
-    const i = this.wordsLangService.langWords.indexOf(item);
-    this.settingsService.updateLevel(item, item.ID, delta).subscribe();
   }
 
   dictWord(item: MLangWord) {

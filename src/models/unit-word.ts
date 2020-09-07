@@ -1,12 +1,10 @@
-import { MSelectItem } from '../common/selectitem';
-import { MWordColor } from './word-color';
 import { MTextbook } from './textbook';
 
 export class MUnitWords {
   records!: MUnitWord[];
   results = 0;
 }
-export class MUnitWord implements MWordColor {
+export class MUnitWord {
   ID = 0;
   LANGID = 0;
   TEXTBOOKID = 0;
@@ -18,8 +16,6 @@ export class MUnitWord implements MWordColor {
   NOTE: string | null = null;
   WORDID = 0;
   FAMIID = 0;
-  LEVEL = 0;
-  colorStyle: {string: string} | {} = {};
   CORRECT = 0;
   TOTAL = 0;
 

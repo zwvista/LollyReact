@@ -1,18 +1,15 @@
 import { MUnitWord } from './unit-word';
-import { MWordColor } from './word-color';
 
 export class MLangWords {
   records: MLangWord[];
   results = 0;
 }
-export class MLangWord implements MWordColor {
+export class MLangWord {
   ID = 0;
   LANGID = 0;
   WORD = '';
   NOTE: string | null = null;
   FAMIID = 0;
-  LEVEL = 0;
-  colorStyle: {string: string} | {} = {};
   CORRECT = 0;
   TOTAL = 0;
 

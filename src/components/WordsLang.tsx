@@ -14,7 +14,6 @@ import history from '../view-models/history';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { SettingsService } from '../view-models/settings.service';
 import * as $ from "jquery";
-import { MWordColor } from '../models/word-color';
 import { MLangWord } from '../models/lang-word';
 import { Dropdown } from 'primereact/dropdown';
 import { AppService } from '../view-models/app.service';
@@ -66,10 +65,6 @@ export default class WordsLang extends React.Component<any, any> {
       <CopyToClipboard text={rowData.WORD}>
         <Button icon="fa fa-copy" tooltip="Copy" tooltipOptions={{position: 'top'}}/>
       </CopyToClipboard>
-      <Button icon="fa fa-arrow-up" tooltipOptions={{position: 'top'}} className="p-button-warning"
-              tooltip="Level Up" onClick={() => this.updateLevel(rowData, 1)} />
-      <Button icon="fa fa-arrow-down" tooltipOptions={{position: 'top'}} className="p-button-warning"
-              tooltip="Level Down" onClick={() => this.updateLevel(rowData, -1)} />
       <Button icon="fa fa-google" onClick={() => this.googleWord(rowData.WORD)}
               tooltip="Google Word" tooltipOptions={{position: 'top'}}/>
       <Button icon="fa fa-book" onClick={() => this.dictWord(rowData)}
@@ -109,7 +104,6 @@ export default class WordsLang extends React.Component<any, any> {
           <Column style={{width:'80px'}} field="ID" header="ID" />
           <Column field="WORD" header="WORD" />
           <Column field="NOTE" header="NOTE" />
-          <Column style={{width:'80px'}} field="LEVEL" header="LEVEL" />
           <Column style={{width:'80px'}} field="ACCURACY" header="ACCURACY" />
           <Column style={{width:'30%'}} body={this.actionTemplate} header="ACTIONS" />
         </DataTable>
@@ -136,24 +130,9 @@ export default class WordsLang extends React.Component<any, any> {
     }));
   };
 
-  // Here we have to use JQuery to set td styles based on row number,
-  // as PrimeReact DataTable has no rowStyle attribute.
-  setRowStyle(o: MWordColor, tr: any) {
-    const c = o.colorStyle;
-    if (c['background-color'])
-      $(tr).css('background-color', c['background-color']).css('color', c['color']);
-    else
-      $(tr).css('background-color', '').css('color', '');
-  }
-
   onRefresh = () => {
     this.subscription.add(this.wordsLangService.getData(this.state.page, this.state.rows, this.state.filter, this.state.filterType).subscribe(_ => {
       this.updateServiceState();
-      if (this.wordsLangService.langWords.length === 0) return;
-      $("tr").each((i, tr) => {
-        if (i === 0) return;
-        this.setRowStyle(this.wordsLangService.langWords[i - 1], tr);
-      });
     }));
   };
 
@@ -187,12 +166,6 @@ export default class WordsLang extends React.Component<any, any> {
   // https://stackoverflow.com/questions/42775017/angular-2-redirect-to-an-external-url-and-open-in-a-new-tab
   googleWord(WORD: string) {
     window.open('https://www.google.com/search?q=' + encodeURIComponent(WORD), '_blank');
-  }
-
-  updateLevel(item: MLangWord, delta: number) {
-    const i = this.wordsLangService.langWords.indexOf(item);
-    this.settingsService.updateLevel(item, item.ID, delta).subscribe(
-      _ => this.setRowStyle(item, $('tr').eq(i + 1)));
   }
 
   dictWord(item: MLangWord) {

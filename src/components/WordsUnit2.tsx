@@ -105,23 +105,21 @@ export default class WordsUnit2 extends React.Component<any, any> {
               <TableCell>WORDID</TableCell>
               <TableCell>WORD</TableCell>
               <TableCell>NOTE</TableCell>
-              <TableCell>LEVEL</TableCell>
               <TableCell>ACCURACY</TableCell>
               <TableCell>ACTIONS</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {this.wordsUnitService.unitWords.map(row => (
-              <TableRow key={row.ID} style={{backgroundColor:row.colorStyle['background-color']}}>
-                <TableCell style={{color:row.colorStyle['color']}}>{row.ID}</TableCell>
-                <TableCell style={{color:row.colorStyle['color']}}>{row.UNITSTR}</TableCell>
-                <TableCell style={{color:row.colorStyle['color']}}>{row.PARTSTR}</TableCell>
-                <TableCell style={{color:row.colorStyle['color']}}>{row.SEQNUM}</TableCell>
-                <TableCell style={{color:row.colorStyle['color']}}>{row.WORDID}</TableCell>
-                <TableCell style={{color:row.colorStyle['color']}}>{row.WORD}</TableCell>
-                <TableCell style={{color:row.colorStyle['color']}}>{row.NOTE}</TableCell>
-                <TableCell style={{color:row.colorStyle['color']}}>{row.LEVEL}</TableCell>
-                <TableCell style={{color:row.colorStyle['color']}}>{row.ACCURACY}</TableCell>
+              <TableRow key={row.ID}>
+                <TableCell>{row.ID}</TableCell>
+                <TableCell>{row.UNITSTR}</TableCell>
+                <TableCell>{row.PARTSTR}</TableCell>
+                <TableCell>{row.SEQNUM}</TableCell>
+                <TableCell>{row.WORDID}</TableCell>
+                <TableCell>{row.WORD}</TableCell>
+                <TableCell>{row.NOTE}</TableCell>
+                <TableCell>{row.ACCURACY}</TableCell>
                 <TableCell>
                   <Tooltip title="Delete">
                     <Fab size="small" color="secondary" onClick={() => this.deleteWord(row)}>
@@ -146,16 +144,6 @@ export default class WordsUnit2 extends React.Component<any, any> {
                       </Fab>
                     </Tooltip>
                   </CopyToClipboard>
-                  <Tooltip title="Level Up">
-                    <Fab size="small" onClick={() => this.updateLevel(row, 1)}>
-                      <FontAwesomeIcon icon={faArrowUp} />
-                    </Fab>
-                  </Tooltip>
-                  <Tooltip title="Level Down">
-                    <Fab size="small" onClick={() => this.updateLevel(row, -1)}>
-                      <FontAwesomeIcon icon={faArrowDown} />
-                    </Fab>
-                  </Tooltip>
                   <Tooltip title="Google Word" onClick={() => this.googleWord(row.WORD)}>
                     <Fab size="small" color="primary">
                       <FontAwesomeIcon icon={faGoogle} />
@@ -227,10 +215,6 @@ export default class WordsUnit2 extends React.Component<any, any> {
 
   googleWord(WORD: string) {
     window.open('https://www.google.com/search?q=' + encodeURIComponent(WORD), '_blank');
-  }
-
-  updateLevel(item: MUnitWord, delta: number) {
-    this.settingsService.updateLevel(item, item.WORDID, delta).subscribe(_ => this.updateServiceState());
   }
 
   dictWord(item: MUnitWord) {

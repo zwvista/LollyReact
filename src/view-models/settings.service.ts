@@ -11,9 +11,7 @@ import { DictionaryService } from '../services/dictionary.service';
 import { TextbookService } from '../services/textbook.service';
 import { AutoCorrectService } from '../services/autocorrect.service';
 import { autoCorrect, MAutoCorrect } from '../models/autocorrect';
-import * as _ from 'lodash';
 import { MSelectItem } from '../common/selectitem';
-import { MWordColor } from '../models/word-color';
 import * as Speech from 'speak-tts';
 import { VoicesService } from '../services/voices.service';
 import { MVoice } from '../models/voice';
@@ -376,30 +374,6 @@ export class SettingsService {
 
   autoCorrectInput(text: string): string {
     return autoCorrect(text, this.autoCorrects, row => row.INPUT, row => row.EXTENDED);
-  }
-
-  setColorStyle(o: MWordColor) {
-    const c = this.USLEVELCOLORS[o.LEVEL];
-    o.colorStyle = !c ? {} : {
-      'background-color': '#' + c[0],
-      'color': '#' + c[1],
-    };
-  }
-
-  setColorStyles(words: MWordColor[]) {
-    words.forEach(o => this.setColorStyle(o));
-  }
-
-  updateLevel(o: MWordColor, wordid: number, delta: number): Observable<void> {
-    o.LEVEL += delta;
-    this.setColorStyle(o);
-    if (o.colorStyle['color'] || o.LEVEL === 0)
-      return this.wordsFamiService.update(wordid, o.LEVEL).pipe(map(_ => {}));
-    else {
-      o.LEVEL -= delta;
-      this.setColorStyle(o);
-      return of();
-    }
   }
 
   speak(text: string) {
