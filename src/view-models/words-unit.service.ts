@@ -81,7 +81,7 @@ export class WordsUnitService {
   newUnitWord(): MUnitWord {
     const o = new MUnitWord();
     o.LANGID = this.settingsService.selectedLang.ID;
-    o.TEXTBOOKID = this.settingsService.USTEXTBOOKID;
+    o.TEXTBOOKID = this.settingsService.USTEXTBOOK;
     const maxElem = this.unitWords.length === 0 ? null :
       this.unitWords.reduce((p, v) => p.unitPartSeqnum < v.unitPartSeqnum ? v : p);
     o.UNIT = maxElem ? maxElem.UNIT : this.settingsService.USUNITTO;

@@ -3,22 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="8c3ada4f-a8b4-4150-ab02-25eb1fe8c197" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/WordsLang.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/WordsLang.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/WordsLang2.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/WordsLang2.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/WordsLangDetail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/WordsLangDetail.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/WordsTextbook.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/WordsTextbook.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/WordsTextbook2.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/WordsTextbook2.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/WordsTextbookDetail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/WordsTextbookDetail.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/WordsUnit.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/WordsUnit.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/WordsUnit2.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/WordsUnit2.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/WordsUnitDetail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/WordsUnitDetail.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/lang-word.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/lang-word.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/unit-word.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/unit-word.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/word-color.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/word-color.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/word-fami.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/word-fami.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/usmapping.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/usmapping.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view-models/phrases-unit.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/view-models/phrases-unit.service.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/view-models/settings.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/view-models/settings.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view-models/words-fami.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/view-models/words-fami.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view-models/words-lang.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/view-models/words-lang.service.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/view-models/words-unit.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/view-models/words-unit.service.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -51,6 +38,7 @@
     <property name="TERMINAL_CUSTOM_COMMANDS_GOT_IT" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="dart.analysis.tool.window.visible" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -100,7 +88,9 @@
       <workItem from="1594986963511" duration="322000" />
       <workItem from="1594987300473" duration="29000" />
       <workItem from="1595851706226" duration="2498000" />
-      <workItem from="1599460303261" duration="2548000" />
+      <workItem from="1599460303261" duration="3263000" />
+      <workItem from="1599466803274" duration="19000" />
+      <workItem from="1600321222719" duration="900000" />
     </task>
     <servers />
   </component>
@@ -119,34 +109,34 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="740" y="274" key="FileChooserDialogImpl/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1594271203025" />
-    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1599463308074">
+    <state width="1877" height="284" key="GridCell.Tab.0.bottom" timestamp="1600322791565">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1599463308074" />
+    <state width="1877" height="284" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1600322791565" />
     <state width="1358" height="200" key="GridCell.Tab.0.bottom/0.23.1440.827@0.23.1440.827" timestamp="1594831064005" />
-    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1599463308074">
+    <state width="1877" height="284" key="GridCell.Tab.0.center" timestamp="1600322791565">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1599463308074" />
+    <state width="1877" height="284" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1600322791565" />
     <state width="1358" height="200" key="GridCell.Tab.0.center/0.23.1440.827@0.23.1440.827" timestamp="1594831064004" />
-    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1599463308074">
+    <state width="1877" height="284" key="GridCell.Tab.0.left" timestamp="1600322791565">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1599463308074" />
+    <state width="1877" height="284" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1600322791565" />
     <state width="1358" height="200" key="GridCell.Tab.0.left/0.23.1440.827@0.23.1440.827" timestamp="1594831064003" />
-    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1599463308074">
+    <state width="1877" height="284" key="GridCell.Tab.0.right" timestamp="1600322791565">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1599463308074" />
+    <state width="1877" height="284" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1600322791565" />
     <state width="1358" height="200" key="GridCell.Tab.0.right/0.23.1440.827@0.23.1440.827" timestamp="1594831064005" />
     <state x="468" y="164" key="SettingsEditor" timestamp="1594787432793">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="468" y="164" key="SettingsEditor/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1594787432793" />
-    <state x="568" y="235" width="890" height="805" key="find.popup" timestamp="1599461247283">
+    <state x="600" y="156" width="890" height="805" key="find.popup" timestamp="1600322614880">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="568" y="235" width="890" height="805" key="find.popup/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1599461247283" />
+    <state x="600" y="156" width="890" height="805" key="find.popup/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1600322614880" />
     <state x="426" y="210" width="667" height="640" key="find.popup/0.23.1440.827@0.23.1440.827" timestamp="1595852219910" />
   </component>
 </project>

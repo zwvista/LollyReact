@@ -75,7 +75,7 @@ export class PhrasesUnitService {
   newUnitPhrase(): MUnitPhrase {
     const o = new MUnitPhrase();
     o.LANGID = this.settingsService.selectedLang.ID;
-    o.TEXTBOOKID = this.settingsService.USTEXTBOOKID;
+    o.TEXTBOOKID = this.settingsService.USTEXTBOOK;
     const maxElem = this.unitPhrases.length === 0 ? null :
       this.unitPhrases.reduce((p, v) => p.unitPartSeqnum < v.unitPartSeqnum ? v : p);
     o.UNIT = maxElem ? maxElem.UNIT : this.settingsService.USUNITTO;
