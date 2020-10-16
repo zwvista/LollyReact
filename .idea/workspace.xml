@@ -48,6 +48,7 @@
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="terminal" />
     <property name="ts.external.directory.path" value="$PROJECT_DIR$/node_modules/typescript/lib" />
+    <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -91,6 +92,7 @@
       <workItem from="1599460303261" duration="3263000" />
       <workItem from="1599466803274" duration="19000" />
       <workItem from="1600321222719" duration="900000" />
+      <workItem from="1602834040771" duration="259000" />
     </task>
     <servers />
   </component>
@@ -133,10 +135,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="468" y="164" key="SettingsEditor/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1594787432793" />
-    <state x="600" y="156" width="890" height="805" key="find.popup" timestamp="1600322614880">
+    <state x="600" y="156" width="890" height="805" key="find.popup" timestamp="1602834463581">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="600" y="156" width="890" height="805" key="find.popup/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1600322614880" />
+    <state x="600" y="156" width="890" height="805" key="find.popup/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1602834463581" />
     <state x="426" y="210" width="667" height="640" key="find.popup/0.23.1440.827@0.23.1440.827" timestamp="1595852219910" />
   </component>
 </project>

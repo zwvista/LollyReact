@@ -5,7 +5,7 @@ export class MDictionary {
   ID!: number;
   DICTID!: number;
   LANGIDFROM!: number;
-  DICTTYPEID!: number;
+  DICTTYPECODE!: number;
   DICTTYPENAME!: string;
   DICTNAME!: string;
   URL!: string;
