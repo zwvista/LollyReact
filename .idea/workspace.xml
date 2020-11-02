@@ -3,10 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="8c3ada4f-a8b4-4150-ab02-25eb1fe8c197" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/usmapping.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/usmapping.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view-models/phrases-unit.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/view-models/phrases-unit.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view-models/settings.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/view-models/settings.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view-models/words-unit.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/view-models/words-unit.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/dictionary.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/dictionary.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/unit-phrase.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/unit-phrase.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/unit-word.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/unit-word.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/dictionary.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/dictionary.service.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,6 +70,7 @@
       <method v="2" />
     </configuration>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -93,11 +94,12 @@
       <workItem from="1599466803274" duration="19000" />
       <workItem from="1600321222719" duration="900000" />
       <workItem from="1602834040771" duration="259000" />
+      <workItem from="1604288315018" duration="615000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="2" />
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="oldMeFiltersMigrated" value="true" />

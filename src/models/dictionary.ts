@@ -2,17 +2,17 @@ import { autoCorrect, MAutoCorrect } from './autocorrect';
 import { HtmlService } from '../services/html.service';
 
 export class MDictionary {
-  ID!: number;
-  DICTID!: number;
-  LANGIDFROM!: number;
-  DICTTYPECODE!: number;
-  DICTTYPENAME!: string;
-  DICTNAME!: string;
-  URL!: string;
-  CHCONV!: string;
-  TRANSFORM!: string;
-  WAIT!: number;
-  TEMPLATE!: string;
+  ID = 0;
+  DICTID = 0;
+  LANGIDFROM = 0;
+  DICTTYPECODE = 0;
+  DICTTYPENAME = '';
+  DICTNAME = '';
+  URL = '';
+  CHCONV = '';
+  TRANSFORM = '';
+  WAIT = 0;
+  TEMPLATE = '';
 
   urlString(word: string, autoCorrects: MAutoCorrect[]): string {
     const word2 =
@@ -28,15 +28,7 @@ export class MDictionary {
   }
 }
 
-export class MDictsReference {
-  records!: MDictionary[];
-}
-
-export class MDictsNote {
-  records!: MDictionary[];
-}
-
-export class MDictsTranslation {
+export class MDictionaries {
   records!: MDictionary[];
 }
 

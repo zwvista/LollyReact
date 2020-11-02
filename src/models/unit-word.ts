@@ -13,7 +13,7 @@ export class MUnitWord {
   PART = 0;
   SEQNUM = 0;
   WORD = '';
-  NOTE: string | null = null;
+  NOTE = '';
   WORDID = 0;
   FAMIID = 0;
   CORRECT = 0;

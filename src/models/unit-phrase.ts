@@ -1,4 +1,3 @@
-import { MSelectItem } from '../common/selectitem';
 import { MTextbook } from './textbook';
 
 export class MUnitPhrases {
@@ -15,7 +14,7 @@ export class MUnitPhrase {
   SEQNUM = 0;
   PHRASEID = 0;
   PHRASE = '';
-  TRANSLATION: string | null = null;
+  TRANSLATION = '';
 
   textbook: MTextbook;
   get UNITSTR(): string {
