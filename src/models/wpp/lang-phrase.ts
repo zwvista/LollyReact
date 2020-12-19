@@ -8,7 +8,7 @@ export class MLangPhrase {
   ID = 0;
   LANGID = 0;
   PHRASE = '';
-  TRANSLATION: string | null = null;
+  TRANSLATION = '';
 
   constructor() {}
 

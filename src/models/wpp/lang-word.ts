@@ -8,7 +8,7 @@ export class MLangWord {
   ID = 0;
   LANGID = 0;
   WORD = '';
-  NOTE: string | null = null;
+  NOTE = '';
   FAMIID = 0;
   CORRECT = 0;
   TOTAL = 0;
