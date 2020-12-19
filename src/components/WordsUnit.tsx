@@ -13,7 +13,7 @@ import history from '../view-models/history';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { SettingsService } from '../view-models/settings.service';
 import * as $ from "jquery";
-import { MUnitWord } from '../models/unit-word';
+import { MUnitWord } from '../models/wpp/unit-word';
 import { Dropdown } from 'primereact/dropdown';
 import { AppService } from '../view-models/app.service';
 

@@ -12,7 +12,7 @@ import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { SettingsService } from '../view-models/settings.service';
 import * as $ from "jquery";
 import { WordsUnitService } from '../view-models/words-unit.service';
-import { MUnitWord } from '../models/unit-word';
+import { MUnitWord } from '../models/wpp/unit-word';
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 import { SyntheticEvent } from 'react';

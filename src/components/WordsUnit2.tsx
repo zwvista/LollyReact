@@ -28,7 +28,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
-import { MUnitWord } from '../models/unit-word';
+import { MUnitWord } from '../models/wpp/unit-word';
 import history from '../view-models/history';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { ChangeEvent, ReactNode, SyntheticEvent } from 'react';

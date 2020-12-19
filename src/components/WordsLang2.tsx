@@ -34,7 +34,7 @@ import { KeyboardEvent } from 'react';
 import * as $ from 'jquery';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
-import { MLangWord } from '../models/lang-word';
+import { MLangWord } from '../models/wpp/lang-word';
 import { ChangeEvent } from 'react';
 import { ReactNode } from 'react';
 import { AppService } from '../view-models/app.service';

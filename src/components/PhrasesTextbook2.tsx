@@ -23,7 +23,7 @@ import history from '../view-models/history';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { googleString } from '../common/common';
-import { MUnitPhrase } from '../models/unit-phrase';
+import { MUnitPhrase } from '../models/wpp/unit-phrase';
 import { SyntheticEvent } from 'react';
 import { KeyboardEvent } from 'react';
 import { ChangeEvent } from 'react';

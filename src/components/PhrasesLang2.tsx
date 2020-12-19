@@ -27,7 +27,7 @@ import { KeyboardEvent } from 'react';
 import { ChangeEvent } from 'react';
 import { ReactNode } from 'react';
 import { AppService } from '../view-models/app.service';
-import { MLangPhrase } from '../models/lang-phrase';
+import { MLangPhrase } from '../models/wpp/lang-phrase';
 
 export default class PhrasesLang2 extends React.Component<any, any> {
   @Inject appService: AppService;

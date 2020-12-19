@@ -1,12 +1,12 @@
 import { Inject, Injectable } from 'react.di';
 import { AppService } from './app.service';
 import { SettingsService } from './settings.service';
-import { MUnitPhrase } from '../models/unit-phrase';
+import { MUnitPhrase } from '../models/wpp/unit-phrase';
 import { UnitPhraseService } from '../services/unit-phrase.service';
 import { EMPTY as empty, Observable, of } from 'rxjs';
 import { concatMap, map } from 'rxjs/operators';
 import { LangPhraseService } from '../services/lang-phrase.service';
-import { MLangPhrase } from '../models/lang-phrase';
+import { MLangPhrase } from '../models/wpp/lang-phrase';
 
 @Injectable
 export class PhrasesUnitService {

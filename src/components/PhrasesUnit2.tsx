@@ -31,7 +31,7 @@ import {
 import history from '../view-models/history';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
-import { MUnitPhrase } from '../models/unit-phrase';
+import { MUnitPhrase } from '../models/wpp/unit-phrase';
 import { googleString } from '../common/common';
 import { SyntheticEvent } from 'react';
 import { KeyboardEvent } from 'react';

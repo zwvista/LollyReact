@@ -11,7 +11,7 @@ import history from '../view-models/history';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { googleString } from '../common/common';
 import { SettingsService } from '../view-models/settings.service';
-import { MUnitPhrase } from '../models/unit-phrase';
+import { MUnitPhrase } from '../models/wpp/unit-phrase';
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 import { SyntheticEvent } from 'react';

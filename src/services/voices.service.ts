@@ -1,7 +1,7 @@
 import { Injectable } from 'react.di';
 import { BaseService } from './base.service';
 import { Observable } from 'rxjs';
-import { MVoice, MVoices } from '../models/voice';
+import { MVoice, MVoices } from '../models/misc/voice';
 import { map } from 'rxjs/operators';
 
 @Injectable

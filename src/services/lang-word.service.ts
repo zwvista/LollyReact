@@ -1,7 +1,7 @@
 import { Injectable } from 'react.di';
 import { BaseService } from './base.service';
 import { Observable } from 'rxjs';
-import { MLangWord, MLangWords } from '../models/lang-word';
+import { MLangWord, MLangWords } from '../models/wpp/lang-word';
 import { map } from 'rxjs/operators';
 import { toParameters } from '../common/common';
 import { MSPResult } from '../common/sp-result';

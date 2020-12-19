@@ -1,13 +1,13 @@
 import { Inject, Injectable } from 'react.di';
 import { UnitWordService } from '../services/unit-word.service';
 import { SettingsService } from './settings.service';
-import { MUnitWord } from '../models/unit-word';
+import { MUnitWord } from '../models/wpp/unit-word';
 import { AppService } from './app.service';
 import { EMPTY as empty, Observable, of } from 'rxjs';
 import { concatMap, map } from 'rxjs/operators';
 import { NoteService } from './note.service';
 import { LangWordService } from '../services/lang-word.service';
-import { MLangWord } from '../models/lang-word';
+import { MLangWord } from '../models/wpp/lang-word';
 import { WordsFamiService } from './words-fami.service';
 
 @Injectable

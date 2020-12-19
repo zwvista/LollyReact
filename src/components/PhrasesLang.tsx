@@ -12,13 +12,13 @@ import history from '../view-models/history';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { googleString } from '../common/common';
 import { SettingsService } from '../view-models/settings.service';
-import { MLangPhrase } from '../models/lang-phrase';
+import { MLangPhrase } from '../models/wpp/lang-phrase';
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 import { SyntheticEvent } from 'react';
 import { KeyboardEvent } from 'react';
 import { AppService } from '../view-models/app.service';
-import { MUnitWord } from '../models/unit-word';
+import { MUnitWord } from '../models/wpp/unit-word';
 
 export default class PhrasesLang extends React.Component<any, any> {
   @Inject appService: AppService;

@@ -14,7 +14,7 @@ import history from '../view-models/history';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { SettingsService } from '../view-models/settings.service';
 import * as $ from "jquery";
-import { MLangWord } from '../models/lang-word';
+import { MLangWord } from '../models/wpp/lang-word';
 import { Dropdown } from 'primereact/dropdown';
 import { AppService } from '../view-models/app.service';
 

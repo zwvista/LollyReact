@@ -2,7 +2,7 @@ import { Injectable } from 'react.di';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { BaseService } from './base.service';
-import { MWordFami, MWordsFami } from '../models/word-fami';
+import { MWordFami, MWordsFami } from '../models/wpp/word-fami';
 
 @Injectable
 export class WordFamiService extends BaseService {

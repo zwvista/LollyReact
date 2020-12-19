@@ -2,7 +2,7 @@ import { Injectable } from 'react.di';
 import { BaseService } from './base.service';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { MUserSetting, MUserSettingInfo, MUserSettings } from '../models/user-setting';
+import { MUserSetting, MUserSettingInfo, MUserSettings } from '../models/misc/user-setting';
 
 @Injectable
 export class UserSettingService extends BaseService {

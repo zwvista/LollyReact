@@ -1,4 +1,4 @@
-import { MTextbook } from './textbook';
+import { MTextbook } from '../misc/textbook';
 
 export class MUnitPhrases {
   records!: MUnitPhrase[];

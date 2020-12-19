@@ -8,7 +8,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { SettingsService } from '../view-models/settings.service';
 import DictBrowser from './DictBrowser';
 import { ListBox } from 'primereact/listbox';
-import { MDictionary } from '../models/dictionary';
+import { MDictionary } from '../models/misc/dictionary';
 import { HtmlService } from '../services/html.service';
 import { WordsLangService } from '../view-models/words-lang.service';
 

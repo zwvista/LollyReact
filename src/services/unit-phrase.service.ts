@@ -1,9 +1,9 @@
 import { Injectable } from 'react.di';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { MUnitPhrase, MUnitPhrases } from '../models/unit-phrase';
+import { MUnitPhrase, MUnitPhrases } from '../models/wpp/unit-phrase';
 import { BaseService } from './base.service';
-import { MTextbook } from '../models/textbook';
+import { MTextbook } from '../models/misc/textbook';
 import { MSPResult } from '../common/sp-result';
 import { toParameters } from '../common/common';
 
