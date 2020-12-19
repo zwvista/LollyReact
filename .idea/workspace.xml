@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8c3ada4f-a8b4-4150-ab02-25eb1fe8c197" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/models/wpp/pattern-webpage.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/wpp/pattern.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/wpp/webpage.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/services/wpp/pattern-webpage.service.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/services/wpp/pattern.service.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/services/wpp/webpage.service.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -45,7 +45,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="dart.analysis.tool.window.visible" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/models/wpp" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/services/wpp" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.path.for.package.tslint" value="project" />
@@ -65,6 +65,7 @@
       <recent name="$PROJECT_DIR$/src/models/misc" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/services/wpp" />
       <recent name="$PROJECT_DIR$/src/models/wpp" />
       <recent name="$PROJECT_DIR$/src/common" />
     </key>
@@ -120,7 +121,7 @@
       <workItem from="1600321222719" duration="900000" />
       <workItem from="1602834040771" duration="259000" />
       <workItem from="1604288315018" duration="615000" />
-      <workItem from="1608302977089" duration="3718000" />
+      <workItem from="1608302977089" duration="5249000" />
     </task>
     <servers />
   </component>
