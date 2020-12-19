@@ -21,27 +21,4 @@ export class MLangPhrase {
     o.TRANSLATION = item.TRANSLATION;
     return o;
   }
-  static fromTextbook(item: MUnitPhrase): MLangPhrase {
-    const o = new MLangPhrase();
-    o.ID = item.PHRASEID;
-    o.LANGID = item.LANGID;
-    o.PHRASE = item.PHRASE;
-    o.TRANSLATION = item.TRANSLATION;
-    return o;
-  }
-
-  combineTranslation(translation: string | null): boolean {
-    const oldTranslation = this.TRANSLATION;
-    if (translation) {
-      if (!this.TRANSLATION)
-        this.TRANSLATION = translation;
-      else {
-        const arr = translation.split(',');
-        if (!arr.includes(translation))
-          arr.push(translation);
-        this.TRANSLATION = arr.join(',');
-      }
-    }
-    return oldTranslation !== this.TRANSLATION;
-  }
 }
