@@ -64,6 +64,11 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { faDollarSign, faEuroSign, faBus, faTrain, faPlane, faRocket, faCar, faTaxi, faCog } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { UsMappingService } from './services/misc/us-mapping.service';
+import { PatternService } from './services/wpp/pattern.service';
+import PatternsDetail from './components/PatternsLang';
+import Patterns from './components/Patterns';
+import Patterns2 from './components/Patterns2';
+import { PatternsService } from './view-models/patterns.service';
 
 // https://stackoverflow.com/questions/53375964/using-a-link-component-with-listitem-and-typescript
 // https://stackoverflow.com/questions/51257426/how-do-you-get-material-ui-tabs-to-work-with-react-router
@@ -78,7 +83,7 @@ function LinkTab(props: any) {
     PhrasesUnitService, SettingsService, WordsUnitService, AutoCorrectService,
     LangPhraseService, LangWordService, PhrasesLangService, WordsLangService,
     NoteService, WordFamiService, WordsFamiService,
-    VoicesService, UsMappingService,
+    VoicesService, UsMappingService, PatternService, PatternsService
   ],
 })
 export default class App extends React.Component<any, any> {
@@ -94,6 +99,7 @@ export default class App extends React.Component<any, any> {
       {label: 'Phrases in Textbook', icon: 'fa fa-taxi fa-lg', target: '/phrases-textbook'},
       {label: 'Words in Language', icon: 'fa fa-plane fa-lg', target: '/words-lang'},
       {label: 'Phrases in Language', icon: 'fa fa-rocket fa-lg', target: '/phrases-lang'},
+      {label: 'Patterns in Language', icon: 'fa fa-motorcycle fa-lg', target: '/patterns'},
       {label: 'Settings', icon: 'fa fa-gear fa-lg', target: '/settings'},
     ];
     const items2 = [
@@ -103,6 +109,7 @@ export default class App extends React.Component<any, any> {
       {label: 'Phrases in Textbook', icon: 'taxi', target: '/phrases-textbook2'},
       {label: 'Words in Language', icon: 'plane', target: '/words-lang2'},
       {label: 'Phrases in Language', icon: 'rocket', target: '/phrases-lang2'},
+      {label: 'Patterns in Language', icon: 'motorcycle', target: '/patterns2'},
       {label: 'Settings', icon: 'cog', target: '/settings'},
     ];
     const activeItem = items.find((value: any) => window.location.href.includes(value.target));
@@ -160,6 +167,9 @@ export default class App extends React.Component<any, any> {
             <Route path="/phrases-textbook" component={PhrasesTextbook} exact />
             <Route path="/phrases-textbook2" component={PhrasesTextbook2} exact />
             <Route path="/phrases-textbook-detail/:id" component={PhrasesTextbookDetail} exact />
+            <Route path="/patterns" component={Patterns} exact />
+            <Route path="/patterns2" component={Patterns2} exact />
+            <Route path="/patterns-detail/:id" component={PatternsDetail} exact />
             <Route path="/words-dict/:type/:index" component={WordsDict} exact />
             <Route path="/settings" component={Settings} exact />
           </Switch>

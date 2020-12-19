@@ -229,6 +229,7 @@ export class SettingsService {
 
   wordFilterTypes = ['Word', 'Note'].map((v, i) => new MSelectItem(i, v));
   phraseFilterTypes = ['Phrase', 'Translation'].map((v, i) => new MSelectItem(i, v));
+  patternFilterTypes = ['Pattern', 'Note', 'Tags'].map((v, i) => new MSelectItem(i, v));
 
   constructor(@Inject private langService: LanguageService,
               @Inject private usMappingService: UsMappingService,
