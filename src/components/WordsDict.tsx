@@ -9,7 +9,7 @@ import { SettingsService } from '../view-models/settings.service';
 import DictBrowser from './DictBrowser';
 import { ListBox } from 'primereact/listbox';
 import { MDictionary } from '../models/misc/dictionary';
-import { HtmlService } from '../services/html.service';
+import { HtmlService } from '../services/misc/html.service';
 import { WordsLangService } from '../view-models/words-lang.service';
 
 export default class WordsDict extends React.Component<any, any> {

@@ -1,11 +1,11 @@
 import { Injectable } from 'react.di';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { MUnitPhrase, MUnitPhrases } from '../models/wpp/unit-phrase';
-import { BaseService } from './base.service';
-import { MTextbook } from '../models/misc/textbook';
-import { MSPResult } from '../common/sp-result';
-import { toParameters } from '../common/common';
+import { MUnitPhrase, MUnitPhrases } from '../../models/wpp/unit-phrase';
+import { BaseService } from '../misc/base.service';
+import { MTextbook } from '../../models/misc/textbook';
+import { MSPResult } from '../../common/sp-result';
+import { toParameters } from '../../common/common';
 
 @Injectable
 export class UnitPhraseService extends BaseService {

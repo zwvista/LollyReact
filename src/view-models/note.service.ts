@@ -1,7 +1,7 @@
 import { Inject, Injectable } from 'react.di';
 import { SettingsService } from './settings.service';
 import { EMPTY as empty, interval, Observable, Subscription } from 'rxjs';
-import { HtmlService } from '../services/html.service';
+import { HtmlService } from '../services/misc/html.service';
 import { map } from 'rxjs/operators';
 
 @Injectable

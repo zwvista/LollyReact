@@ -1,11 +1,11 @@
 import { Injectable } from 'react.di';
-import { MUnitWord, MUnitWords } from '../models/wpp/unit-word';
+import { MUnitWord, MUnitWords } from '../../models/wpp/unit-word';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { BaseService } from './base.service';
-import { MTextbook } from '../models/misc/textbook';
-import { MSPResult } from '../common/sp-result';
-import { toParameters } from '../common/common';
+import { BaseService } from '../misc/base.service';
+import { MTextbook } from '../../models/misc/textbook';
+import { MSPResult } from '../../common/sp-result';
+import { toParameters } from '../../common/common';
 
 @Injectable
 export class UnitWordService extends BaseService {

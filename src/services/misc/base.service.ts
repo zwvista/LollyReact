@@ -1,4 +1,4 @@
-import { Rxios } from '../common/rxios';
+import { Rxios } from '../../common/rxios';
 import { Injectable } from 'react.di';
 
 @Injectable

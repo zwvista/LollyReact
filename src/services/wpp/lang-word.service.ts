@@ -1,10 +1,10 @@
 import { Injectable } from 'react.di';
-import { BaseService } from './base.service';
+import { BaseService } from '../misc/base.service';
 import { Observable } from 'rxjs';
-import { MLangWord, MLangWords } from '../models/wpp/lang-word';
+import { MLangWord, MLangWords } from '../../models/wpp/lang-word';
 import { map } from 'rxjs/operators';
-import { toParameters } from '../common/common';
-import { MSPResult } from '../common/sp-result';
+import { toParameters } from '../../common/common';
+import { MSPResult } from '../../common/sp-result';
 
 @Injectable
 export class LangWordService extends BaseService {

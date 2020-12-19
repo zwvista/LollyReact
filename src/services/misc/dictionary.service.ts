@@ -5,7 +5,7 @@ import { BaseService } from './base.service';
 import {
   MDictionary,
   MDictionaries,
-} from '../models/misc/dictionary';
+} from '../../models/misc/dictionary';
 
 @Injectable
 export class DictionaryService extends BaseService {

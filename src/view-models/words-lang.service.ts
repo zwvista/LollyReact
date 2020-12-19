@@ -1,7 +1,7 @@
 import { Inject, Injectable } from 'react.di';
 import { SettingsService } from './settings.service';
 import { AppService } from './app.service';
-import { LangWordService } from '../services/lang-word.service';
+import { LangWordService } from '../services/wpp/lang-word.service';
 import { Observable } from 'rxjs';
 import { MLangWord } from '../models/wpp/lang-word';
 import { concatMap, map } from 'rxjs/operators';

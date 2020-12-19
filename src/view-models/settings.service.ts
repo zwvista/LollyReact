@@ -1,23 +1,23 @@
 import { concatMap, map } from 'rxjs/operators';
 import { Inject, Injectable } from 'react.di';
-import { LanguageService } from '../services/language.service';
-import { UserSettingService } from '../services/user-setting.service';
+import { LanguageService } from '../services/misc/language.service';
+import { UserSettingService } from '../services/misc/user-setting.service';
 import { MUserSetting, MUserSettingInfo } from '../models/misc/user-setting';
 import { MLanguage } from '../models/misc/language';
 import { MDictionary } from '../models/misc/dictionary';
 import { MTextbook } from '../models/misc/textbook';
 import { forkJoin, Observable, of } from 'rxjs';
-import { DictionaryService } from '../services/dictionary.service';
-import { TextbookService } from '../services/textbook.service';
-import { AutoCorrectService } from '../services/autocorrect.service';
+import { DictionaryService } from '../services/misc/dictionary.service';
+import { TextbookService } from '../services/misc/textbook.service';
+import { AutoCorrectService } from '../services/misc/autocorrect.service';
 import { autoCorrect, MAutoCorrect } from '../models/misc/autocorrect';
 import { MSelectItem } from '../common/selectitem';
 import * as Speech from 'speak-tts';
-import { VoicesService } from '../services/voices.service';
+import { VoicesService } from '../services/misc/voices.service';
 import { MVoice } from '../models/misc/voice';
 import { WordsFamiService } from './words-fami.service';
 import { MUSMapping } from '../models/misc/usmapping';
-import { UsMappingService } from '../services/us-mapping.service';
+import { UsMappingService } from '../services/misc/us-mapping.service';
 
 const userid = 1;
 
