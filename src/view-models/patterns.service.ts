@@ -10,7 +10,7 @@ import { PatternService } from '../services/wpp/pattern.service';
 export class PatternsService {
 
   patterns: MPattern[] = [];
-  patternsCount = 0;
+  patternCount = 0;
 
   constructor(@Inject private patternService: PatternService,
               @Inject private settingsService: SettingsService,
@@ -22,7 +22,7 @@ export class PatternsService {
       concatMap(_ => this.patternService.getDataByLang(this.settingsService.selectedLang.ID, page, rows, filter, filterType)),
       map(res => {
         this.patterns = res.records;
-        this.patternsCount = res.results;
+        this.patternCount = res.results;
       }),
     );
   }

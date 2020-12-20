@@ -79,7 +79,7 @@ export default class Patterns2 extends React.Component<any, any> {
               <TablePagination
                 rowsPerPageOptions={this.settingsService.USROWSPERPAGEOPTIONS}
                 colSpan={4}
-                count={this.patternsService.patternsCount}
+                count={this.patternsService.patternCount}
                 rowsPerPage={this.state.rows}
                 page={this.state.page - 1}
                 SelectProps={{
@@ -142,7 +142,7 @@ export default class Patterns2 extends React.Component<any, any> {
               <TablePagination
                 rowsPerPageOptions={this.settingsService.USROWSPERPAGEOPTIONS}
                 colSpan={4}
-                count={this.patternsService.patternsCount}
+                count={this.patternsService.patternCount}
                 rowsPerPage={this.state.rows}
                 page={this.state.page - 1}
                 SelectProps={{

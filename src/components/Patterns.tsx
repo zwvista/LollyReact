@@ -86,7 +86,7 @@ export default class Patterns extends React.Component<any, any> {
           </div>
         </Toolbar>
         <Paginator first={this.state.first} rows={this.state.rows} onPageChange={this.onPageChange}
-                   totalRecords={this.patternsService.patternsCount}
+                   totalRecords={this.patternsService.patternCount}
                    rowsPerPageOptions={this.settingsService.USROWSPERPAGEOPTIONS}/>
         <DataTable value={this.patternsService.patterns} selectionMode="single" autoLayout={true}
                    selection={this.state.selectedRow} onSelectionChange={this.onSelectionChange}>
@@ -97,7 +97,7 @@ export default class Patterns extends React.Component<any, any> {
           <Column style={{width:'20%'}} body={this.actionTemplate} header="ACTIONS" />
         </DataTable>
         <Paginator first={this.state.first} rows={this.state.rows} onPageChange={this.onPageChange}
-                   totalRecords={this.patternsService.patternsCount}
+                   totalRecords={this.patternsService.patternCount}
                    rowsPerPageOptions={this.settingsService.USROWSPERPAGEOPTIONS}/>
       </div>
     );

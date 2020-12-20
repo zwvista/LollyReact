@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8c3ada4f-a8b4-4150-ab02-25eb1fe8c197" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/components/Patterns.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/Patterns2.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/PatternsLang.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view-models/settings.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/view-models/settings.service.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -125,7 +120,7 @@
       <workItem from="1600321222719" duration="900000" />
       <workItem from="1602834040771" duration="259000" />
       <workItem from="1604288315018" duration="615000" />
-      <workItem from="1608302977089" duration="7763000" />
+      <workItem from="1608302977089" duration="8465000" />
     </task>
     <servers />
   </component>
