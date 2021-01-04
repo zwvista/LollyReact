@@ -78,14 +78,13 @@ export default class WordsDict extends React.Component<any, any> {
 
   refreshDict(selectedDictReference: MDictionary, selectedWord: string) {
     const item = selectedDictReference;
-    const item2 = this.settingsService.dictsReference.find(v => v.DICTNAME === item.DICTNAME);
-    const url = item2.urlString(selectedWord, this.settingsService.autoCorrects);
-    if (item2.DICTTYPENAME === 'OFFLINE') {
+    const url = item.urlString(selectedWord, this.settingsService.autoCorrects);
+    if (item.DICTTYPENAME === 'OFFLINE') {
       this.setState({
         dictUrl: 'about:blank',
       });
       this.htmlService.getHtml(url).subscribe(html => {
-        const dictSrc = item2.htmlString(html, selectedWord)
+        const dictSrc = item.htmlString(html, selectedWord)
           .replace(/\n/g, ' ').replace(/"/g, '&quot;');
         console.log(dictSrc);
         this.setState({
