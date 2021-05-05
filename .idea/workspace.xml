@@ -2,15 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8c3ada4f-a8b4-4150-ab02-25eb1fe8c197" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Login.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/view-models/login.service.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/common.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/common.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Login.tsx" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/misc/user-setting.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/misc/user-setting.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/wpp/word-fami.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/wpp/word-fami.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view-models/settings.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/view-models/settings.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view-models/words-fami.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/view-models/words-fami.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view-models/app.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/view-models/app.service.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -126,7 +122,8 @@
       <workItem from="1620189566879" duration="2997000" />
       <workItem from="1620196889981" duration="5436000" />
       <workItem from="1620204225736" duration="80000" />
-      <workItem from="1620209614624" duration="986000" />
+      <workItem from="1620209614624" duration="1080000" />
+      <workItem from="1620220527357" duration="398000" />
     </task>
     <servers />
   </component>

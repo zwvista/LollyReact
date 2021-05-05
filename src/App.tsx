@@ -69,6 +69,12 @@ import PatternsDetail from './components/PatternsLang';
 import Patterns from './components/Patterns';
 import Patterns2 from './components/Patterns2';
 import { PatternsService } from './view-models/patterns.service';
+import { InputText } from 'primereact/inputtext';
+import { Password } from 'primereact/password';
+import { Button } from 'primereact/button';
+import { GlobalVars } from './common/common';
+import { UserService } from './services/misc/user.service';
+import { LoginService } from './view-models/login.service';
 
 // https://stackoverflow.com/questions/53375964/using-a-link-component-with-listitem-and-typescript
 // https://stackoverflow.com/questions/51257426/how-do-you-get-material-ui-tabs-to-work-with-react-router
@@ -83,10 +89,12 @@ function LinkTab(props: any) {
     PhrasesUnitService, SettingsService, WordsUnitService, AutoCorrectService,
     LangPhraseService, LangWordService, PhrasesLangService, WordsLangService,
     NoteService, WordFamiService, WordsFamiService,
-    VoiceService, UsMappingService, PatternService, PatternsService
+    VoiceService, UsMappingService, PatternService, PatternsService,
+    UserService, LoginService
   ],
 })
 export default class App extends React.Component<any, any> {
+  @Inject loginService!: LoginService;
   @Inject appService!: AppService;
 
   constructor(props: any) {
@@ -127,6 +135,26 @@ export default class App extends React.Component<any, any> {
   }
 
   render() {
+    const loggedIn = localStorage.getItem('userid');
+    if (!loggedIn)
+      return (
+        <div>
+          <div className="p-grid mt-2 mb-2">
+            <label htmlFor="username" className="col-2 control-label">USERNAME:</label>
+            <InputText className="p-col-3" id="username" value={this.loginService.item.USERNAME} onChange={this.onChangeUsername} />
+          </div>
+          <div className="p-grid mt-2 mb-2">
+            <label htmlFor="password" className="col-2 control-label">PASSWORD:</label>
+            <Password className="p-col-3" id="password" value={this.loginService.item.PASSWORD} onChange={this.onChangePassword} />
+          </div>
+          <div>
+            <Button label="Login" onClick={this.login} />
+          </div>
+        </div>
+      );
+
+    GlobalVars.userid = loggedIn!;
+    this.appService.getData();
     return (
       <Router history={history}>
         <div className="App">
@@ -176,6 +204,26 @@ export default class App extends React.Component<any, any> {
         </div>
       </Router>
     );
+  }
+
+  onChangeUsername = (e: any) => {
+    this.loginService.item.USERNAME = (e.nativeEvent.target as HTMLInputElement).value;
+    this.setState({loginService: this.loginService});
+  };
+
+  onChangePassword = (e: any) => {
+    this.loginService.item.PASSWORD = (e.nativeEvent.target as HTMLInputElement).value;
+    this.setState({loginService: this.loginService});
+  };
+
+  login = () => {
+    this.loginService.login().subscribe(userid => {
+      if (userid) {
+        localStorage.setItem('userid', userid);
+        GlobalVars.userid = userid;
+        window.location.reload();
+      }
+    });
   }
 
   onTabChange = (e: any) => {
