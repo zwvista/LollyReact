@@ -56,7 +56,7 @@ import { LangWordService } from './services/wpp/lang-word.service';
 import { WordsLangService } from './view-models/words-lang.service';
 import { PhrasesLangService } from './view-models/phrases-lang.service';
 import { NoteService } from './view-models/note.service';
-import { VoicesService } from './services/misc/voices.service';
+import { VoiceService } from './services/misc/voice.service';
 import { WordFamiService } from './services/wpp/word-fami.service';
 import { WordsFamiService } from './view-models/words-fami.service';
 
@@ -83,7 +83,7 @@ function LinkTab(props: any) {
     PhrasesUnitService, SettingsService, WordsUnitService, AutoCorrectService,
     LangPhraseService, LangWordService, PhrasesLangService, WordsLangService,
     NoteService, WordFamiService, WordsFamiService,
-    VoicesService, UsMappingService, PatternService, PatternsService
+    VoiceService, UsMappingService, PatternService, PatternsService
   ],
 })
 export default class App extends React.Component<any, any> {

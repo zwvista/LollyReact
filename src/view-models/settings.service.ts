@@ -13,7 +13,7 @@ import { AutoCorrectService } from '../services/misc/autocorrect.service';
 import { autoCorrect, MAutoCorrect } from '../models/misc/autocorrect';
 import { MSelectItem } from '../common/selectitem';
 import * as Speech from 'speak-tts';
-import { VoicesService } from '../services/misc/voices.service';
+import { VoiceService } from '../services/misc/voice.service';
 import { MVoice } from '../models/misc/voice';
 import { WordsFamiService } from './words-fami.service';
 import { MUSMapping } from '../models/misc/usmapping';
@@ -237,7 +237,7 @@ export class SettingsService {
               @Inject private dictionaryService: DictionaryService,
               @Inject private textbookService: TextbookService,
               @Inject private autoCorrectService: AutoCorrectService,
-              @Inject private voiceService: VoicesService,
+              @Inject private voiceService: VoiceService,
               @Inject private wordsFamiService: WordsFamiService) {
     this.speech.init();
   }
