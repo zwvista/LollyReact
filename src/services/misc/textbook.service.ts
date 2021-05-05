@@ -29,16 +29,15 @@ export class TextbookService extends BaseService {
         return m[1].split(',');
       return [];
     };
-    return this.http.get<MTextbooks>(url)
-      .pipe(
-        map(result => result.records.map(value => {
-            const o = Object.assign(new MTextbook(), value);
-            o.units = f(o.UNITS).map((v, i) => new MSelectItem(i + 1, v));
-            o.parts = o.PARTS.split(',').map((v, i) => new MSelectItem(i + 1, v));
-            return o;
-          })
-        ),
-      );
+    return this.http.get<MTextbooks>(url).pipe(
+      map(result => result.records.map(value => {
+          const o = Object.assign(new MTextbook(), value);
+          o.units = f(o.UNITS).map((v, i) => new MSelectItem(i + 1, v));
+          o.parts = o.PARTS.split(',').map((v, i) => new MSelectItem(i + 1, v));
+          return o;
+        })
+      ),
+    );
   }
 
 }

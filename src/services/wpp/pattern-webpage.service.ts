@@ -9,18 +9,16 @@ export class PatternWebpageService extends BaseService {
 
   getDataByPattern(patternid: number): Observable<MPatternWebPage[]> {
     const url = `${this.baseUrlAPI}VPATTERNSWEBPAGES?PATTERNID=ID,eq,${patternid}&order=SEQNUM`;
-    return this.http.get<MPatternWebPages>(url)
-      .pipe(
-        map(result => result.records.map(value => Object.assign(new MPatternWebPage(), value))),
-      );
+    return this.http.get<MPatternWebPages>(url).pipe(
+      map(result => result.records.map(value => Object.assign(new MPatternWebPage(), value))),
+    );
   }
 
   getDataById(id: number): Observable<MPatternWebPage[]> {
     const url = `${this.baseUrlAPI}VPATTERNSWEBPAGES?filter=ID,eq,${id}`;
-    return this.http.get<MPatternWebPages>(url)
-      .pipe(
-        map(result => result.records.map(value => Object.assign(new MPatternWebPage(), value))),
-      );
+    return this.http.get<MPatternWebPages>(url).pipe(
+      map(result => result.records.map(value => Object.assign(new MPatternWebPage(), value))),
+    );
   }
 
   create(item: MPatternWebPage): Observable<number | any[]> {

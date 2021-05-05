@@ -13,21 +13,19 @@ export class PatternService extends BaseService {
     let url = `${this.baseUrlAPI}PATTERNS?filter=LANGID,eq,${langid}&order=PATTERN&page=${page},${rows}`;
     if (filter)
       url += `&filter=${filterType === 0 ? 'PATTERN' : filterType === 1 ? 'NOTE' : 'TAGS'},cs,${encodeURIComponent(filter)}`;
-    return this.http.get<MPatterns>(url)
-      .pipe(
-        map(result => ({
-          records: result.records.map(value => Object.assign(new MPattern(), value)),
-          results: result.results,
-        })),
-      );
+    return this.http.get<MPatterns>(url).pipe(
+      map(result => ({
+        records: result.records.map(value => Object.assign(new MPattern(), value)),
+        results: result.results,
+      })),
+    );
   }
 
   getDataById(id: number): Observable<MPattern[]> {
     const url = `${this.baseUrlAPI}PATTERNS?filter=ID,eq,${id}`;
-    return this.http.get<MPatterns>(url)
-      .pipe(
-        map(result => result.records.map(value => Object.assign(new MPattern(), value))),
-      );
+    return this.http.get<MPatterns>(url).pipe(
+      map(result => result.records.map(value => Object.assign(new MPattern(), value))),
+    );
   }
 
   create(item: MPattern): Observable<number | any[]> {

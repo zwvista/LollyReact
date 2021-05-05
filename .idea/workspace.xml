@@ -2,13 +2,24 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8c3ada4f-a8b4-4150-ab02-25eb1fe8c197" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/models/misc/user.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/services/misc/user.service.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/misc/voice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/misc/voice.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/misc/voices.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/misc/voice.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view-models/settings.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/view-models/settings.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/common.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/common.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/misc/autocorrect.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/misc/autocorrect.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/misc/dictionary.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/misc/dictionary.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/misc/language.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/misc/language.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/misc/textbook.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/misc/textbook.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/misc/us-mapping.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/misc/us-mapping.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/misc/user-setting.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/misc/user-setting.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/misc/user.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/misc/user.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/misc/voice.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/misc/voice.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/wpp/lang-phrase.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/wpp/lang-phrase.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/wpp/lang-word.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/wpp/lang-word.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/wpp/pattern-webpage.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/wpp/pattern-webpage.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/wpp/pattern.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/wpp/pattern.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/wpp/unit-phrase.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/wpp/unit-phrase.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/wpp/unit-word.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/wpp/unit-word.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/wpp/webpage.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/wpp/webpage.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/wpp/word-fami.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/wpp/word-fami.service.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,17 +87,6 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="React CLI Server" type="js.build_tools.npm">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="start" />
@@ -130,6 +130,8 @@
       <workItem from="1609766960091" duration="226000" />
       <workItem from="1618625201496" duration="29000" />
       <workItem from="1620184106649" duration="757000" />
+      <workItem from="1620189158893" duration="21000" />
+      <workItem from="1620189566879" duration="2997000" />
     </task>
     <servers />
   </component>
