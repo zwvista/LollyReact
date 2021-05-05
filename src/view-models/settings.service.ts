@@ -19,8 +19,6 @@ import { WordsFamiService } from './words-fami.service';
 import { MUSMapping } from '../models/misc/usmapping';
 import { UsMappingService } from '../services/misc/us-mapping.service';
 
-const userid = 1;
-
 @Injectable
 export class SettingsService {
 
@@ -258,7 +256,7 @@ export class SettingsService {
   getData(): Observable<number> {
     return forkJoin([this.langService.getData(),
       this.usMappingService.getData(),
-      this.userSettingService.getDataByUser(userid)]).pipe(
+      this.userSettingService.getDataByUser()]).pipe(
       concatMap(res => {
         this.languages = res[0] as MLanguage[];
         this.usMappings = res[1] as MUSMapping[];

@@ -3,12 +3,13 @@ import { BaseService } from './base.service';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { MUserSetting, MUserSettingInfo, MUserSettings } from '../../models/misc/user-setting';
+import { GlobalVars } from '../../common/common';
 
 @Injectable
 export class UserSettingService extends BaseService {
 
-  getDataByUser(userid: number): Observable<MUserSetting[]> {
-    const url = `${this.baseUrlAPI}USERSETTINGS?filter=USERID,eq,${userid}`;
+  getDataByUser(): Observable<MUserSetting[]> {
+    const url = `${this.baseUrlAPI}USERSETTINGS?filter=USERID,eq,${GlobalVars.userid}`;
     return this.http.get<MUserSettings>(url).pipe(
       map(result => result.records.map(value => Object.assign(new MUserSetting(), value))),
     );

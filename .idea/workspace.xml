@@ -2,24 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8c3ada4f-a8b4-4150-ab02-25eb1fe8c197" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/Login.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/view-models/login.service.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/common/common.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/common.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/misc/autocorrect.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/misc/autocorrect.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/misc/dictionary.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/misc/dictionary.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/misc/language.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/misc/language.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/misc/textbook.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/misc/textbook.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/misc/us-mapping.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/misc/us-mapping.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/services/misc/user-setting.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/misc/user-setting.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/misc/user.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/misc/user.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/misc/voice.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/misc/voice.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/wpp/lang-phrase.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/wpp/lang-phrase.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/wpp/lang-word.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/wpp/lang-word.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/wpp/pattern-webpage.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/wpp/pattern-webpage.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/wpp/pattern.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/wpp/pattern.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/wpp/unit-phrase.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/wpp/unit-phrase.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/wpp/unit-word.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/wpp/unit-word.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/wpp/webpage.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/wpp/webpage.service.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/services/wpp/word-fami.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/wpp/word-fami.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view-models/settings.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/view-models/settings.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view-models/words-fami.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/view-models/words-fami.service.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,13 +50,14 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="dart.analysis.tool.window.visible" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/services/misc" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/view-models" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.path.for.package.tslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
+    <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="terminal" />
     <property name="show.migrate.to.gradle.popup" value="false" />
     <property name="ts.external.directory.path" value="$PROJECT_DIR$/node_modules/typescript/lib" />
@@ -73,11 +65,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/view-models" />
+      <recent name="$PROJECT_DIR$/src" />
       <recent name="$PROJECT_DIR$/src/services/misc" />
       <recent name="$PROJECT_DIR$/src/models/misc" />
       <recent name="$PROJECT_DIR$/src/components" />
-      <recent name="$PROJECT_DIR$/src/view-models" />
-      <recent name="$PROJECT_DIR$/src/services/wpp" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/models/wpp" />
@@ -132,6 +124,9 @@
       <workItem from="1620184106649" duration="757000" />
       <workItem from="1620189158893" duration="21000" />
       <workItem from="1620189566879" duration="2997000" />
+      <workItem from="1620196889981" duration="5436000" />
+      <workItem from="1620204225736" duration="80000" />
+      <workItem from="1620209614624" duration="986000" />
     </task>
     <servers />
   </component>

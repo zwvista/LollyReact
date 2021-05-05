@@ -3,12 +3,13 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { BaseService } from '../misc/base.service';
 import { MWordFami, MWordsFami } from '../../models/wpp/word-fami';
+import { GlobalVars } from '../../common/common';
 
 @Injectable
 export class WordFamiService extends BaseService {
 
-  getDataByUserWord(userid: number, wordid: number): Observable<MWordFami[]> {
-    const url = `${this.baseUrlAPI}WORDSFAMI?filter=USERID,eq,${userid}&filter=WORDID,eq,${wordid}`;
+  getDataByUserWord(wordid: number): Observable<MWordFami[]> {
+    const url = `${this.baseUrlAPI}WORDSFAMI?filter=USERID,eq,${GlobalVars.userid}&filter=WORDID,eq,${wordid}`;
     return this.http.get<MWordsFami>(url).pipe(
       map(result => result.records.map(value => Object.assign(new MWordFami(), value))),
     );

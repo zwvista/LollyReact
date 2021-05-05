@@ -10,5 +10,5 @@ export function toParameters(item: Object): Object {
 }
 
 export class GlobalVars {
-  public static userid: string = '';
+  public static userid = '';
 }
