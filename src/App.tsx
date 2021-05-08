@@ -55,7 +55,6 @@ import { LangPhraseService } from './services/wpp/lang-phrase.service';
 import { LangWordService } from './services/wpp/lang-word.service';
 import { WordsLangService } from './view-models/words-lang.service';
 import { PhrasesLangService } from './view-models/phrases-lang.service';
-import { NoteService } from './view-models/note.service';
 import { VoiceService } from './services/misc/voice.service';
 import { WordFamiService } from './services/wpp/word-fami.service';
 
@@ -85,8 +84,7 @@ function LinkTab(props: any) {
     TextbookService, UnitPhraseService, UnitWordService, UserSettingService, AppService,
     PhrasesUnitService, SettingsService, WordsUnitService, AutoCorrectService,
     LangPhraseService, LangWordService, PhrasesLangService, WordsLangService,
-    NoteService, WordFamiService,
-    VoiceService, UsMappingService, PatternService, PatternsService,
+    WordFamiService, VoiceService, UsMappingService, PatternService, PatternsService,
     UserService, LoginService
   ],
 })

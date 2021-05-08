@@ -5,7 +5,6 @@ import { LangWordService } from '../services/wpp/lang-word.service';
 import { Observable } from 'rxjs';
 import { MLangWord } from '../models/wpp/lang-word';
 import { concatMap, map } from 'rxjs/operators';
-import { NoteService } from './note.service';
 
 @Injectable
 export class WordsLangService {
@@ -15,8 +14,7 @@ export class WordsLangService {
 
   constructor(@Inject private langWordService: LangWordService,
               @Inject private settingsService: SettingsService,
-              @Inject private appService: AppService,
-              @Inject private noteService: NoteService) {
+              @Inject private appService: AppService) {
   }
 
   getData(page: number, rows: number, filter: string, filterType: number): Observable<void> {
@@ -53,7 +51,7 @@ export class WordsLangService {
 
   getNote(index: number): Observable<number> {
     const item = this.langWords[index];
-    return this.noteService.getNote(item.WORD).pipe(
+    return this.settingsService.getNote(item.WORD).pipe(
       concatMap(note => {
         item.NOTE = note;
         return this.updateNote(item.ID, note);

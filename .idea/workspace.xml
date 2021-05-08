@@ -3,9 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="8c3ada4f-a8b4-4150-ab02-25eb1fe8c197" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view-models/note.service.ts" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/view-models/settings.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/view-models/settings.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view-models/words-fami.service.ts" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/view-models/words-lang.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/view-models/words-lang.service.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/view-models/words-unit.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/view-models/words-unit.service.ts" afterDir="false" />
     </list>
@@ -127,7 +128,8 @@
       <workItem from="1620220527357" duration="398000" />
       <workItem from="1620220974084" duration="206000" />
       <workItem from="1620223437443" duration="1046000" />
-      <workItem from="1620448227623" duration="159000" />
+      <workItem from="1620448227623" duration="254000" />
+      <workItem from="1620448837282" duration="327000" />
     </task>
     <servers />
   </component>
