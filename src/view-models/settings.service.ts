@@ -15,7 +15,6 @@ import { MSelectItem } from '../common/selectitem';
 import * as Speech from 'speak-tts';
 import { VoiceService } from '../services/misc/voice.service';
 import { MVoice } from '../models/misc/voice';
-import { WordsFamiService } from './words-fami.service';
 import { MUSMapping } from '../models/misc/usmapping';
 import { UsMappingService } from '../services/misc/us-mapping.service';
 
@@ -235,8 +234,7 @@ export class SettingsService {
               @Inject private dictionaryService: DictionaryService,
               @Inject private textbookService: TextbookService,
               @Inject private autoCorrectService: AutoCorrectService,
-              @Inject private voiceService: VoiceService,
-              @Inject private wordsFamiService: WordsFamiService) {
+              @Inject private voiceService: VoiceService) {
     this.speech.init();
   }
 

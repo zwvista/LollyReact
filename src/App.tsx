@@ -58,7 +58,6 @@ import { PhrasesLangService } from './view-models/phrases-lang.service';
 import { NoteService } from './view-models/note.service';
 import { VoiceService } from './services/misc/voice.service';
 import { WordFamiService } from './services/wpp/word-fami.service';
-import { WordsFamiService } from './view-models/words-fami.service';
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faDollarSign, faEuroSign, faBus, faTrain, faPlane, faRocket, faCar, faTaxi, faCog } from '@fortawesome/free-solid-svg-icons'
@@ -86,7 +85,7 @@ function LinkTab(props: any) {
     TextbookService, UnitPhraseService, UnitWordService, UserSettingService, AppService,
     PhrasesUnitService, SettingsService, WordsUnitService, AutoCorrectService,
     LangPhraseService, LangWordService, PhrasesLangService, WordsLangService,
-    NoteService, WordFamiService, WordsFamiService,
+    NoteService, WordFamiService,
     VoiceService, UsMappingService, PatternService, PatternsService,
     UserService, LoginService
   ],

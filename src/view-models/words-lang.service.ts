@@ -6,7 +6,6 @@ import { Observable } from 'rxjs';
 import { MLangWord } from '../models/wpp/lang-word';
 import { concatMap, map } from 'rxjs/operators';
 import { NoteService } from './note.service';
-import { WordsFamiService } from './words-fami.service';
 
 @Injectable
 export class WordsLangService {
@@ -15,7 +14,6 @@ export class WordsLangService {
   langWordsCount = 0;
 
   constructor(@Inject private langWordService: LangWordService,
-              @Inject private wordsFamiService: WordsFamiService,
               @Inject private settingsService: SettingsService,
               @Inject private appService: AppService,
               @Inject private noteService: NoteService) {

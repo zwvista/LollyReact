@@ -7,8 +7,6 @@ import { EMPTY as empty, Observable, of } from 'rxjs';
 import { concatMap, map } from 'rxjs/operators';
 import { NoteService } from './note.service';
 import { LangWordService } from '../services/wpp/lang-word.service';
-import { MLangWord } from '../models/wpp/lang-word';
-import { WordsFamiService } from './words-fami.service';
 
 @Injectable
 export class WordsUnitService {
@@ -20,7 +18,6 @@ export class WordsUnitService {
 
   constructor(@Inject private unitWordService: UnitWordService,
               @Inject private langWordService: LangWordService,
-              @Inject private wordsFamiService: WordsFamiService,
               @Inject private settingsService: SettingsService,
               @Inject private appService: AppService,
               @Inject private noteService: NoteService) {
