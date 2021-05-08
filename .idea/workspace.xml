@@ -3,12 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="8c3ada4f-a8b4-4150-ab02-25eb1fe8c197" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view-models/note.service.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view-models/settings.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/view-models/settings.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view-models/words-lang.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/view-models/words-lang.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view-models/words-unit.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/view-models/words-unit.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/misc/usmapping.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/misc/usmapping.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view-models/misc/settings.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/view-models/misc/settings.service.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,24 +66,14 @@
       <recent name="$PROJECT_DIR$/src/models/misc" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/models/wpp" />
-      <recent name="$PROJECT_DIR$/src/services/misc" />
-      <recent name="$PROJECT_DIR$/src/services/wpp" />
-      <recent name="$PROJECT_DIR$/src/models/misc" />
+      <recent name="$PROJECT_DIR$/src/components/words" />
+      <recent name="$PROJECT_DIR$/src/components/misc" />
+      <recent name="$PROJECT_DIR$/src/components/phrases" />
+      <recent name="$PROJECT_DIR$/src/components/patterns" />
+      <recent name="$PROJECT_DIR$/src/view-models/wpp" />
     </key>
   </component>
   <component name="RunManager">
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="React CLI Server" type="js.build_tools.npm">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="start" />
@@ -141,6 +127,8 @@
       <workItem from="1620223437443" duration="1046000" />
       <workItem from="1620448227623" duration="254000" />
       <workItem from="1620448837282" duration="327000" />
+      <workItem from="1620451077780" duration="1343000" />
+      <workItem from="1620453501788" duration="154000" />
     </task>
     <servers />
   </component>

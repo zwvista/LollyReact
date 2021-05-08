@@ -46,16 +46,6 @@ export class SettingsService {
   get USROWSPERPAGE(): number {
     return +this.getUSValue(this.INFO_USROWSPERPAGE)!;
   }
-  private INFO_USLEVELCOLORS: MUserSettingInfo = new MUserSettingInfo();
-  USLEVELCOLORS!: {number: [string]} | {};
-  private INFO_USSCANINTERVAL: MUserSettingInfo = new MUserSettingInfo();
-  get USSCANINTERVAL(): number {
-    return +this.getUSValue(this.INFO_USSCANINTERVAL)!;
-  }
-  private INFO_USREVIEWINTERVAL: MUserSettingInfo = new MUserSettingInfo();
-  get USREVIEWINTERVAL(): number {
-    return +this.getUSValue(this.INFO_USREVIEWINTERVAL)!;
-  }
   private INFO_USTEXTBOOK: MUserSettingInfo = new MUserSettingInfo();
   get USTEXTBOOK(): number {
     return +this.getUSValue(this.INFO_USTEXTBOOK)!;
@@ -77,13 +67,6 @@ export class SettingsService {
   set USDICTNOTE(newValue: number) {
     this.setUSValue(this.INFO_USDICTNOTE, String(newValue));
   }
-  private INFO_USDICTSREFERENCE: MUserSettingInfo = new MUserSettingInfo();
-  get USDICTSREFERENCE(): string {
-    return this.getUSValue(this.INFO_USDICTSREFERENCE) || '0';
-  }
-  set USDICTSREFERENCE(newValue: string) {
-    this.setUSValue(this.INFO_USDICTSREFERENCE, newValue);
-  }
   private INFO_USDICTTRANSLATION: MUserSettingInfo = new MUserSettingInfo();
   get USDICTTRANSLATION(): number {
     return +this.getUSValue(this.INFO_USDICTTRANSLATION)! || 0;
@@ -91,12 +74,12 @@ export class SettingsService {
   set USDICTTRANSLATION(newValue: number) {
     this.setUSValue(this.INFO_USDICTTRANSLATION, String(newValue));
   }
-  private INFO_USWEBVOICE: MUserSettingInfo = new MUserSettingInfo();
-  get USWEBVOICE(): number {
-    return +(this.getUSValue(this.INFO_USWEBVOICE) || '0');
+  private INFO_USVOICE: MUserSettingInfo = new MUserSettingInfo();
+  get USVOICE(): number {
+    return +(this.getUSValue(this.INFO_USVOICE) || '0');
   }
-  set USWEBVOICE(newValue: number) {
-    this.setUSValue(this.INFO_USWEBVOICE, String(newValue));
+  set USVOICE(newValue: number) {
+    this.setUSValue(this.INFO_USVOICE, String(newValue));
   }
   private INFO_USUNITFROM: MUserSettingInfo = new MUserSettingInfo();
   get USUNITFROM(): number {
@@ -153,7 +136,7 @@ export class SettingsService {
   }
   set selectedVoice(newValue: MVoice | null) {
     this._selectedVoice = newValue;
-    this.USWEBVOICE = newValue ? newValue.ID : 0;
+    this.USVOICE = newValue ? newValue.ID : 0;
     this.speech.setVoice(newValue ? newValue.VOICENAME : '');
   }
 
@@ -265,12 +248,6 @@ export class SettingsService {
         this.INFO_USLANG = this.getUSInfo(MUSMapping.NAME_USLANG);
         this.INFO_USROWSPERPAGEOPTIONS = this.getUSInfo(MUSMapping.NAME_USROWSPERPAGEOPTIONS);
         this.INFO_USROWSPERPAGE = this.getUSInfo(MUSMapping.NAME_USROWSPERPAGE);
-        this.INFO_USLEVELCOLORS = this.getUSInfo(MUSMapping.NAME_USLEVELCOLORS);
-        this.INFO_USSCANINTERVAL = this.getUSInfo(MUSMapping.NAME_USSCANINTERVAL);
-        this.INFO_USREVIEWINTERVAL = this.getUSInfo(MUSMapping.NAME_USREVIEWINTERVAL);
-        this.USLEVELCOLORS = {};
-        this.getUSValue(this.INFO_USLEVELCOLORS)!.split('\r\n').map(v => v.split(','))
-          .forEach(v => this.USLEVELCOLORS[+v[0]] = [v[1], v[2]]);
         if (this.settingsListener) this.settingsListener.onGetData();
         return this.setSelectedLang(this.languages.find(value => value.ID === this.USLANG)!);
       }));
@@ -283,9 +260,8 @@ export class SettingsService {
     this.INFO_USTEXTBOOK = this.getUSInfo(MUSMapping.NAME_USTEXTBOOK);
     this.INFO_USDICTREFERENCE = this.getUSInfo(MUSMapping.NAME_USDICTREFERENCE);
     this.INFO_USDICTNOTE = this.getUSInfo(MUSMapping.NAME_USDICTNOTE);
-    this.INFO_USDICTSREFERENCE = this.getUSInfo(MUSMapping.NAME_USDICTSREFERENCE);
     this.INFO_USDICTTRANSLATION = this.getUSInfo(MUSMapping.NAME_USDICTTRANSLATION);
-    this.INFO_USWEBVOICE = this.getUSInfo(MUSMapping.NAME_USWEBVOICE);
+    this.INFO_USVOICE = this.getUSInfo(MUSMapping.NAME_USVOICE);
     return forkJoin([
       this.dictionaryService.getDictsReference(this.USLANG),
       this.dictionaryService.getDictsNote(this.USLANG),
@@ -308,7 +284,7 @@ export class SettingsService {
         this.textbookFilters = [new MSelectItem(0, 'All Textbooks')].concat(this.textbookFilters);
         this.autoCorrects = res[4] as MAutoCorrect[];
         this.voices = res[5] as MVoice[];
-        this.selectedVoice = this.voices.find(value => value.ID === this.USWEBVOICE) ||
+        this.selectedVoice = this.voices.find(value => value.ID === this.USVOICE) ||
           (this.voices.length === 0 ? null : this.voices[0]);
         if (isinit) {
           if (this.settingsListener) this.settingsListener.onUpdateLang();
@@ -364,7 +340,7 @@ export class SettingsService {
   }
 
   updateVoice(): Observable<number> {
-    return this.userSettingService.updateIntValue(this.INFO_USWEBVOICE, this.USWEBVOICE).pipe(
+    return this.userSettingService.updateIntValue(this.INFO_USVOICE, this.USVOICE).pipe(
       map( _ => {
         if (this.settingsListener) this.settingsListener.onUpdateVoice();
         return 0;
