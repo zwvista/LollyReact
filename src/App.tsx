@@ -5,38 +5,38 @@ import { Link, Route, Router, Switch } from 'react-router-dom'
 import { AppBar, Tab, Tabs } from '@material-ui/core';
 
 import { Inject, Module } from 'react.di';
-import { WordsUnitService } from './view-models/words-unit.service';
-import { AppService } from './view-models/app.service';
+import { WordsUnitService } from './view-models/wpp/words-unit.service';
+import { AppService } from './view-models/misc/app.service';
 import { UserSettingService } from './services/misc/user-setting.service';
 import { DictionaryService } from './services/misc/dictionary.service';
 import { TextbookService } from './services/misc/textbook.service';
 import { HtmlService } from './services/misc/html.service';
-import { PhrasesUnitService } from './view-models/phrases-unit.service';
+import { PhrasesUnitService } from './view-models/wpp/phrases-unit.service';
 import { UnitPhraseService } from './services/wpp/unit-phrase.service';
 import { LanguageService } from './services/misc/language.service';
 import { UnitWordService } from './services/wpp/unit-word.service';
-import { SettingsService } from './view-models/settings.service';
+import { SettingsService } from './view-models/misc/settings.service';
 
-import PhrasesLang from './components/PhrasesLang';
-import PhrasesLang2 from './components/PhrasesLang2';
-import PhrasesLangDetail from './components/PhrasesLangDetail';
-import PhrasesTextbook from './components/PhrasesTextbook';
-import PhrasesTextbook2 from './components/PhrasesTextbook2';
-import PhrasesTextbookDetail from './components/PhrasesTextbookDetail';
-import PhrasesUnit from './components/PhrasesUnit';
-import PhrasesUnit2 from './components/PhrasesUnit2';
-import PhrasesUnitDetail from './components/PhrasesUnitDetail';
-import Settings from './components/Settings';
-import WordsDict from './components/WordsDict';
-import WordsLang from './components/WordsLang';
-import WordsLang2 from './components/WordsLang2';
-import WordsLangDetail from './components/WordsLangDetail';
-import WordsTextbook from './components/WordsTextbook';
-import WordsTextbook2 from './components/WordsTextbook2';
-import WordsTextbookDetail from './components/WordsTextbookDetail';
-import WordsUnit from './components/WordsUnit';
-import WordsUnit2 from './components/WordsUnit2';
-import WordsUnitDetail from './components/WordsUnitDetail';
+import PhrasesLang from './components/phrases/PhrasesLang';
+import PhrasesLang2 from './components/phrases/PhrasesLang2';
+import PhrasesLangDetail from './components/phrases/PhrasesLangDetail';
+import PhrasesTextbook from './components/phrases/PhrasesTextbook';
+import PhrasesTextbook2 from './components/phrases/PhrasesTextbook2';
+import PhrasesTextbookDetail from './components/phrases/PhrasesTextbookDetail';
+import PhrasesUnit from './components/phrases/PhrasesUnit';
+import PhrasesUnit2 from './components/phrases/PhrasesUnit2';
+import PhrasesUnitDetail from './components/phrases/PhrasesUnitDetail';
+import Settings from './components/misc/Settings';
+import WordsDict from './components/misc/WordsDict';
+import WordsLang from './components/words/WordsLang';
+import WordsLang2 from './components/words/WordsLang2';
+import WordsLangDetail from './components/words/WordsLangDetail';
+import WordsTextbook from './components/words/WordsTextbook';
+import WordsTextbook2 from './components/words/WordsTextbook2';
+import WordsTextbookDetail from './components/words/WordsTextbookDetail';
+import WordsUnit from './components/words/WordsUnit';
+import WordsUnit2 from './components/words/WordsUnit2';
+import WordsUnitDetail from './components/words/WordsUnitDetail';
 
 import 'primereact/resources/themes/nova-light/theme.css';
 import 'primereact/resources/primereact.min.css';
@@ -45,7 +45,7 @@ import "font-awesome/css/font-awesome.min.css";
 import "primeflex/primeflex.css"
 
 import { TabMenu } from 'primereact/tabmenu';
-import history from './view-models/history';
+import history from './view-models/misc/history';
 
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -53,8 +53,8 @@ import 'bootstrap/dist/css/bootstrap.css';
 import { AutoCorrectService } from './services/misc/autocorrect.service';
 import { LangPhraseService } from './services/wpp/lang-phrase.service';
 import { LangWordService } from './services/wpp/lang-word.service';
-import { WordsLangService } from './view-models/words-lang.service';
-import { PhrasesLangService } from './view-models/phrases-lang.service';
+import { WordsLangService } from './view-models/wpp/words-lang.service';
+import { PhrasesLangService } from './view-models/wpp/phrases-lang.service';
 import { VoiceService } from './services/misc/voice.service';
 import { WordFamiService } from './services/wpp/word-fami.service';
 
@@ -63,14 +63,14 @@ import { faDollarSign, faEuroSign, faBus, faTrain, faPlane, faRocket, faCar, faT
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { UsMappingService } from './services/misc/us-mapping.service';
 import { PatternService } from './services/wpp/pattern.service';
-import PatternsDetail from './components/PatternsLang';
-import Patterns from './components/Patterns';
-import Patterns2 from './components/Patterns2';
-import { PatternsService } from './view-models/patterns.service';
+import PatternsDetail from './components/patterns/PatternsLang';
+import Patterns from './components/patterns/Patterns';
+import Patterns2 from './components/patterns/Patterns2';
+import { PatternsService } from './view-models/wpp/patterns.service';
 import { GlobalVars } from './common/common';
 import { UserService } from './services/misc/user.service';
-import { LoginService } from './view-models/login.service';
-import Login from './components/Login';
+import { LoginService } from './view-models/misc/login.service';
+import Login from './components/misc/Login';
 
 // https://stackoverflow.com/questions/53375964/using-a-link-component-with-listitem-and-typescript
 // https://stackoverflow.com/questions/51257426/how-do-you-get-material-ui-tabs-to-work-with-react-router
