@@ -7,7 +7,7 @@ export class MDictionary {
   LANGIDFROM = 0;
   DICTTYPECODE = 0;
   DICTTYPENAME = '';
-  DICTNAME = '';
+  NAME = '';
   URL = '';
   CHCONV = '';
   TRANSFORM = '';

@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8c3ada4f-a8b4-4150-ab02-25eb1fe8c197" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/misc/Settings.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/misc/Settings.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view-models/misc/settings.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/view-models/misc/settings.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/misc/dictionary.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/misc/dictionary.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -131,6 +130,7 @@
       <workItem from="1620453501788" duration="154000" />
       <workItem from="1621097122903" duration="631000" />
       <workItem from="1621098537819" duration="131000" />
+      <workItem from="1621100943186" duration="92000" />
     </task>
     <servers />
   </component>

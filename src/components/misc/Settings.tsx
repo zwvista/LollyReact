@@ -50,7 +50,7 @@ export default class Settings extends React.Component<any, any> implements Setti
           <label htmlFor="dictReference" className="col-2 control-label">Dictionary(Reference):</label>
           <select id="dictReference" className="col-4 form-control" value={this.settingsService.selectedDictReference.DICTID} onChange={this.onDictReferenceChange}>
           {
-            this.settingsService.dictsReference.map(o => <option key={o.DICTID} value={o.DICTID}>{o.DICTNAME}</option>)
+            this.settingsService.dictsReference.map(o => <option key={o.DICTID} value={o.DICTID}>{o.NAME}</option>)
           }
           </select>
         </div>
@@ -58,7 +58,7 @@ export default class Settings extends React.Component<any, any> implements Setti
           <label htmlFor="dictNote" className="col-2 control-label">Dictionary(Note):</label>
           <select id="dictNote" className="col-4 form-control" value={this.settingsService.selectedDictNote ? this.settingsService.selectedDictNote.ID : ''} onChange={this.onDictNoteChange}>
           {
-            this.settingsService.dictsNote.map(o => <option key={o.ID} value={o.ID}>{o.DICTNAME}</option>)
+            this.settingsService.dictsNote.map(o => <option key={o.ID} value={o.ID}>{o.NAME}</option>)
           }
           </select>
         </div>
@@ -66,7 +66,7 @@ export default class Settings extends React.Component<any, any> implements Setti
           <label htmlFor="dictTranslation" className="col-2 control-label">Dictionary(Translation):</label>
           <select id="dictTranslation" className="col-4 form-control" value={this.settingsService.selectedDictTranslation ? this.settingsService.selectedDictTranslation.ID : ''} onChange={this.onDictTranslationChange}>
             {
-              this.settingsService.dictsTranslation.map(o => <option key={o.ID} value={o.ID}>{o.DICTNAME}</option>)
+              this.settingsService.dictsTranslation.map(o => <option key={o.ID} value={o.ID}>{o.NAME}</option>)
             }
           </select>
         </div>
