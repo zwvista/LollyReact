@@ -121,8 +121,8 @@ export default class Settings extends React.Component<any, any> implements Setti
   onLangChange = (event: any) => {
     console.log(event);
     const index = event.target.selectedIndex;
-    this.subscription.add(this.settingsService.setSelectedLang(this.settingsService.languages[index]).subscribe(_ => this.updateServiceState()));
-    this.settingsService.updateLang().subscribe();
+    this.settingsService.selectedLang = this.settingsService.languages[index];
+    this.settingsService.updateLang().subscribe(_ => this.updateServiceState());
   };
 
   onVoiceChange = (event: any) => {

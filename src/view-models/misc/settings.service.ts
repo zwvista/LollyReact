@@ -1,4 +1,4 @@
-import { concatMap, map } from 'rxjs/operators';
+import { concatMap, map, tap } from 'rxjs/operators';
 import { Inject, Injectable } from 'react.di';
 import { LanguageService } from '../../services/misc/language.service';
 import { UserSettingService } from '../../services/misc/user-setting.service';
@@ -130,60 +130,19 @@ export class SettingsService {
 
   voices: MVoice[] = [];
   speech = new Speech.default();
-  private _selectedVoice: MVoice | null = null;
-  get selectedVoice(): MVoice | null {
-    return this._selectedVoice;
-  }
-  set selectedVoice(newValue: MVoice | null) {
-    this._selectedVoice = newValue;
-    this.USVOICE = newValue ? newValue.ID : 0;
-    this.speech.setVoice(newValue ? newValue.VOICENAME : '');
-  }
+  selectedVoice: MVoice | null = null;
 
   dictsReference: MDictionary[] = [];
-  private _selectedDictReference!: MDictionary;
-  get selectedDictReference(): MDictionary {
-    return this._selectedDictReference;
-  }
-  set selectedDictReference(newValue: MDictionary) {
-    this._selectedDictReference = newValue;
-    this.USDICTREFERENCE = String(this._selectedDictReference.DICTID);
-  }
+  selectedDictReference!: MDictionary;
 
   dictsNote: MDictionary[] = [];
-  private _selectedDictNote: MDictionary | null = null;
-  get selectedDictNote(): MDictionary | null {
-    return this._selectedDictNote;
-  }
-  set selectedDictNote(newValue: MDictionary | null) {
-    this._selectedDictNote = newValue;
-    if (newValue) this.USDICTNOTE = newValue.ID;
-  }
+  selectedDictNote: MDictionary | null = null;
 
   dictsTranslation: MDictionary[] = [];
-  private _selectedDictTranslation: MDictionary | null = null;
-  get selectedDictTranslation(): MDictionary | null {
-    return this._selectedDictTranslation;
-  }
-  set selectedDictTranslation(newValue: MDictionary | null) {
-    this._selectedDictTranslation = newValue;
-    if (newValue) this.USDICTTRANSLATION = newValue.ID;
-  }
+  selectedDictTranslation: MDictionary | null = null;
 
   textbooks: MTextbook[] = [];
-  private _selectedTextbook: MTextbook;
-  get selectedTextbook(): MTextbook {
-    return this._selectedTextbook;
-  }
-  set selectedTextbook(newValue: MTextbook) {
-    this._selectedTextbook = newValue;
-    this.USTEXTBOOK = newValue.ID;
-    this.INFO_USUNITFROM = this.getUSInfo(MUSMapping.NAME_USUNITFROM);
-    this.INFO_USPARTFROM = this.getUSInfo(MUSMapping.NAME_USPARTFROM);
-    this.INFO_USUNITTO = this.getUSInfo(MUSMapping.NAME_USUNITTO);
-    this.INFO_USPARTTO = this.getUSInfo(MUSMapping.NAME_USPARTTO);
-    this.toType = this.isSingleUnit ? 0 : this.isSingleUnitPart ? 1 : 2;
-  }
+  selectedTextbook: MTextbook;
   textbookFilters: MSelectItem[] = [];
 
   get units(): MSelectItem[] {
@@ -249,14 +208,15 @@ export class SettingsService {
         this.INFO_USROWSPERPAGEOPTIONS = this.getUSInfo(MUSMapping.NAME_USROWSPERPAGEOPTIONS);
         this.INFO_USROWSPERPAGE = this.getUSInfo(MUSMapping.NAME_USROWSPERPAGE);
         if (this.settingsListener) this.settingsListener.onGetData();
-        return this.setSelectedLang(this.languages.find(value => value.ID === this.USLANG)!);
+        this.selectedLang = this.languages.find(value => value.ID === this.USLANG);
+        return this.updateLang();
       }));
   }
 
-  setSelectedLang(lang: MLanguage): Observable<number> {
-    const isinit = lang.ID === this.USLANG;
-    this.selectedLang = lang;
-    this.USLANG = this.selectedLang.ID;
+  updateLang(): Observable<number> {
+    const newVal = this.selectedLang.ID;
+    const dirty = this.USLANG !== newVal;
+    this.USLANG = newVal;
     this.INFO_USTEXTBOOK = this.getUSInfo(MUSMapping.NAME_USTEXTBOOK);
     this.INFO_USDICTREFERENCE = this.getUSInfo(MUSMapping.NAME_USDICTREFERENCE);
     this.INFO_USDICTNOTE = this.getUSInfo(MUSMapping.NAME_USDICTNOTE);
@@ -269,82 +229,85 @@ export class SettingsService {
       this.textbookService.getDataByLang(this.USLANG),
       this.autoCorrectService.getDataByLang(this.USLANG),
       this.voiceService.getDataByLang(this.USLANG)]).pipe(
-      concatMap(res => {
-        this.dictsReference = res[0] as MDictionary[];
-        this.selectedDictReference = this.dictsReference.find(value => String(value.DICTID) === this.USDICTREFERENCE)!;
-        this.dictsNote = res[1] as MDictionary[];
-        this.selectedDictNote = this.dictsNote.find(value => value.DICTID === this.USDICTNOTE) ||
-          (this.dictsNote.length === 0 ? null : this.dictsNote[0]);
-        this.dictsTranslation = res[2] as MDictionary[];
-        this.selectedDictTranslation = this.dictsTranslation.find(value => value.DICTID === this.USDICTTRANSLATION) ||
-          (this.dictsTranslation.length === 0 ? null : this.dictsTranslation[0]);
-        this.textbooks = res[3] as MTextbook[];
-        this.selectedTextbook = this.textbooks.find(value => value.ID === this.USTEXTBOOK)!;
-        this.textbookFilters = this.textbooks.map(value => new MSelectItem(value.ID, value.NAME));
-        this.textbookFilters = [new MSelectItem(0, 'All Textbooks')].concat(this.textbookFilters);
-        this.autoCorrects = res[4] as MAutoCorrect[];
-        this.voices = res[5] as MVoice[];
-        this.selectedVoice = this.voices.find(value => value.ID === this.USVOICE) ||
-          (this.voices.length === 0 ? null : this.voices[0]);
-        if (isinit) {
-          if (this.settingsListener) this.settingsListener.onUpdateLang();
-          return of(0);
-        } else
-          return this.updateLang();
-      }));
-  }
-
-  updateLang(): Observable<number> {
-    return this.userSettingService.updateIntValue(this.INFO_USLANG, this.USLANG).pipe(
-      map( _ => {
-        if (this.settingsListener) this.settingsListener.onUpdateLang();
-        return 0;
-      }),
+        concatMap(res => {
+          this.dictsReference = res[0] as MDictionary[];
+          this.selectedDictReference = this.dictsReference.find(value => String(value.DICTID) === this.USDICTREFERENCE)!;
+          this.dictsNote = res[1] as MDictionary[];
+          this.selectedDictNote = this.dictsNote.find(value => value.DICTID === this.USDICTNOTE) ||
+            (this.dictsNote.length === 0 ? null : this.dictsNote[0]);
+          this.dictsTranslation = res[2] as MDictionary[];
+          this.selectedDictTranslation = this.dictsTranslation.find(value => value.DICTID === this.USDICTTRANSLATION) ||
+            (this.dictsTranslation.length === 0 ? null : this.dictsTranslation[0]);
+          this.textbooks = res[3] as MTextbook[];
+          this.selectedTextbook = this.textbooks.find(value => value.ID === this.USTEXTBOOK)!;
+          this.textbookFilters = this.textbooks.map(value => new MSelectItem(value.ID, value.NAME));
+          this.textbookFilters = [new MSelectItem(0, 'All Textbooks')].concat(this.textbookFilters);
+          this.autoCorrects = res[4] as MAutoCorrect[];
+          this.voices = res[5] as MVoice[];
+          this.selectedVoice = this.voices.find(value => value.ID === this.USVOICE) ||
+            (this.voices.length === 0 ? null : this.voices[0]);
+          return forkJoin([this.updateTextbook(), this.updateDictReference(), this.updateDictNote(),
+            this.updateDictTranslation(), this.updateVoice(),
+            (dirty ? this.userSettingService.updateIntValue(this.INFO_USLANG, this.USLANG) : of(0)).pipe(
+              tap(_ => { if (this.settingsListener) this.settingsListener.onUpdateLang(); }),
+            )]).pipe(
+            map(_ => 0),
+          );
+        }),
     );
   }
 
   updateTextbook(): Observable<number> {
-    return this.userSettingService.updateIntValue(this.INFO_USTEXTBOOK, this.USTEXTBOOK).pipe(
-      map( _ => {
-        if (this.settingsListener) this.settingsListener.onUpdateTextbook();
-        return 0;
-      }),
+    const newVal = this.selectedTextbook.ID;
+    const dirty = this.USTEXTBOOK !== newVal;
+    this.USTEXTBOOK = newVal;
+    this.INFO_USUNITFROM = this.getUSInfo(MUSMapping.NAME_USUNITFROM);
+    this.INFO_USPARTFROM = this.getUSInfo(MUSMapping.NAME_USPARTFROM);
+    this.INFO_USUNITTO = this.getUSInfo(MUSMapping.NAME_USUNITTO);
+    this.INFO_USPARTTO = this.getUSInfo(MUSMapping.NAME_USPARTTO);
+    this.toType = this.isSingleUnit ? 0 : this.isSingleUnitPart ? 1 : 2;
+    return (dirty ? this.userSettingService.updateIntValue(this.INFO_USTEXTBOOK, this.USTEXTBOOK) : of(0)).pipe(
+      tap( _ => { if (this.settingsListener) this.settingsListener.onUpdateTextbook(); }),
     );
   }
 
   updateDictReference(): Observable<number> {
-    return this.userSettingService.updateStringValue(this.INFO_USDICTREFERENCE, this.USDICTREFERENCE).pipe(
-      map( _ => {
-        if (this.settingsListener) this.settingsListener.onUpdateDictReference();
-        return 0;
-      }),
+    const newVal = String(this.selectedDictReference.DICTID);
+    const dirty = this.USDICTREFERENCE !== newVal;
+    this.USDICTREFERENCE = newVal;
+    return (dirty ? this.userSettingService.updateStringValue(this.INFO_USDICTREFERENCE, this.USDICTREFERENCE) : of(0)).pipe(
+      tap( _ => { if (this.settingsListener) this.settingsListener.onUpdateDictReference(); }),
     );
   }
 
   updateDictNote(): Observable<number> {
-    return this.userSettingService.updateIntValue(this.INFO_USDICTNOTE, this.USDICTNOTE).pipe(
-      map( _ => {
-        if (this.settingsListener) this.settingsListener.onUpdateDictNote();
-        return 0;
-      }),
+    if (this.selectedDictNote == null) return empty;
+    const newVal = this.selectedDictNote.DICTID;
+    const dirty = this.USDICTNOTE !== newVal;
+    this.USDICTNOTE = newVal;
+    return (dirty ? this.userSettingService.updateIntValue(this.INFO_USDICTNOTE, this.USDICTNOTE) : of(0)).pipe(
+      tap( _ => { if (this.settingsListener) this.settingsListener.onUpdateDictNote(); }),
     );
   }
 
   updateDictTranslation(): Observable<number> {
-    return this.userSettingService.updateIntValue(this.INFO_USDICTTRANSLATION, this.USDICTNOTE).pipe(
-      map( _ => {
-        if (this.settingsListener) this.settingsListener.onUpdateDictTranslation();
-        return 0;
-      }),
+    if (this.selectedDictTranslation == null) return empty;
+    const newVal = this.selectedDictTranslation.DICTID;
+    const dirty = this.USDICTTRANSLATION !== newVal;
+    this.USDICTTRANSLATION = newVal;
+    return (dirty ? this.userSettingService.updateIntValue(this.INFO_USDICTTRANSLATION, this.USDICTNOTE) : of(0)).pipe(
+      tap( _ => { if (this.settingsListener) this.settingsListener.onUpdateDictTranslation(); }),
     );
   }
 
   updateVoice(): Observable<number> {
-    return this.userSettingService.updateIntValue(this.INFO_USVOICE, this.USVOICE).pipe(
-      map( _ => {
-        if (this.settingsListener) this.settingsListener.onUpdateVoice();
-        return 0;
-      }),
+    if (this.selectedVoice == null) return empty;
+    const newVal = this.selectedVoice.ID;
+    const dirty = this.USVOICE !== newVal;
+    this.USVOICE = newVal;
+    this.speech.setVoice(this.selectedVoice.VOICENAME);
+    return (dirty ? this.userSettingService.updateIntValue(this.INFO_USVOICE, this.USVOICE) : of(0)).pipe(
+      tap( _ => { if (this.settingsListener) this.settingsListener.onUpdateVoice(); }),
     );
   }
 
@@ -441,47 +404,27 @@ export class SettingsService {
   }
 
   private doUpdateUnitFrom(v: number): Observable<number> {
-    if (this.USUNITFROM === v) return of(0);
+    const dirty = this.USUNITFROM !== v;
     this.USUNITFROM = v;
-    return this.userSettingService.updateIntValue(this.INFO_USUNITFROM, this.USUNITFROM).pipe(
-      map( _ => {
-        if (this.settingsListener) this.settingsListener.onUpdateUnitFrom();
-        return 0;
-      }),
-    );
+    return dirty ? this.userSettingService.updateIntValue(this.INFO_USUNITFROM, this.USUNITFROM) : empty;
   }
 
   private doUpdatePartFrom(v: number): Observable<number> {
-    if (this.USPARTFROM === v) return of(0);
+    const dirty = this.USPARTFROM !== v;
     this.USPARTFROM = v;
-    return this.userSettingService.updateIntValue(this.INFO_USPARTFROM, this.USPARTFROM).pipe(
-      map( _ => {
-        if (this.settingsListener) this.settingsListener.onUpdatePartFrom();
-        return 0;
-      }),
-    );
+    return dirty ? this.userSettingService.updateIntValue(this.INFO_USPARTFROM, this.USPARTFROM) : empty;
   }
 
   private doUpdateUnitTo(v: number): Observable<number> {
-    if (this.USUNITTO === v) return of(0);
+    const dirty = this.USUNITTO !== v;
     this.USUNITTO = v;
-    return this.userSettingService.updateIntValue(this.INFO_USUNITTO, this.USUNITTO).pipe(
-      map( _ => {
-        if (this.settingsListener) this.settingsListener.onUpdateUnitTo();
-        return 0;
-      }),
-    );
+    return dirty ? this.userSettingService.updateIntValue(this.INFO_USUNITTO, this.USUNITTO) : empty;
   }
 
   private doUpdatePartTo(v: number): Observable<number> {
-    if (this.USPARTTO === v) return of(0);
+    const dirty = this.USPARTTO !== v;
     this.USPARTTO = v;
-    return this.userSettingService.updateIntValue(this.INFO_USPARTTO, this.USPARTTO).pipe(
-      map( _ => {
-        if (this.settingsListener) this.settingsListener.onUpdatePartTo();
-        return 0;
-      }),
-    );
+    return dirty ? this.userSettingService.updateIntValue(this.INFO_USPARTTO, this.USPARTTO) : empty;
   }
 
   getNote(word: string): Observable<string> {
