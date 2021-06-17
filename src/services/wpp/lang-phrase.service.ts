@@ -41,25 +41,25 @@ export class LangPhraseService extends BaseService {
   create(item: MLangPhrase): Observable<number | any[]> {
     const url = `${this.baseUrlAPI}LANGPHRASES`;
     (item as any).ID = null;
-    return this.http.post<number | any[]>(url, item).pipe(
+    return this.httpPost<number | any[]>(url, item).pipe(
     );
   }
 
   update(item: MLangPhrase): Observable<number> {
     const url = `${this.baseUrlAPI}LANGPHRASES/${item.ID}`;
-    return this.http.put<number>(url, item).pipe(
+    return this.httpPut<number>(url, item).pipe(
     );
   }
 
   updateTranslation(id: number, translation: string): Observable<number> {
     const url = `${this.baseUrlAPI}LANGPHRASES/${id}`;
-    return this.http.put<number>(url, {ID: id, TRANSLATION: translation} as MLangPhrase).pipe(
+    return this.httpPut<number>(url, {ID: id, TRANSLATION: translation} as MLangPhrase).pipe(
     );
   }
 
   delete(item: MLangPhrase): Observable<string> {
     const url = `${this.baseUrlSP}LANGPHRASES_DELETE`;
-    return this.http.post<MSPResult[][]>(url, toParameters(item)).pipe(
+    return this.httpPost<MSPResult[][]>(url, toParameters(item)).pipe(
       map(result => result[0][0].result),
     );
   }

@@ -23,7 +23,7 @@ export class UserSettingService extends BaseService {
     const url = `${this.baseUrlAPI}USERSETTINGS/${info.USERSETTINGID}`;
     const o = {};
     o['VALUE' + info.VALUEID] = stringValue;
-    return this.http.put<number>(url, o as MUserSetting).pipe(
+    return this.httpPut<number>(url, o as MUserSetting).pipe(
     );
   }
 }

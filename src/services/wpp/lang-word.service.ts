@@ -41,25 +41,25 @@ export class LangWordService extends BaseService {
   create(item: MLangWord): Observable<number | any[]> {
     const url = `${this.baseUrlAPI}LANGWORDS`;
     (item as any).ID = null;
-    return this.http.post<number | any[]>(url, item).pipe(
+    return this.httpPost<number | any[]>(url, item).pipe(
     );
   }
 
   update(item: MLangWord): Observable<number> {
     const url = `${this.baseUrlAPI}LANGWORDS/${item.ID}`;
-    return this.http.put<number>(url, item).pipe(
+    return this.httpPut<number>(url, item).pipe(
     );
   }
 
   updateNote(id: number, note: string): Observable<number> {
     const url = `${this.baseUrlAPI}LANGWORDS/${id}`;
-    return this.http.put<number>(url, {ID: id, NOTE: note} as MLangWord).pipe(
+    return this.httpPut<number>(url, {ID: id, NOTE: note} as MLangWord).pipe(
     );
   }
 
   delete(item: MLangWord): Observable<string> {
     const url = `${this.baseUrlSP}LANGWORDS_DELETE`;
-    return this.http.post<MSPResult[][]>(url, toParameters(item)).pipe(
+    return this.httpPost<MSPResult[][]>(url, toParameters(item)).pipe(
       map(result => result[0][0].result),
     );
   }

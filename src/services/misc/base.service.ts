@@ -12,4 +12,19 @@ export class BaseService {
     console.log(`[RestApi]GET:${url}`);
     return this.http.get<T>(url);
   }
+
+  httpPost<T>(url: string, body: any | null): Observable<T> {
+    console.log(`[RestApi]POST:${url} BODY:${body}`);
+    return this.http.post<T>(url, body);
+  }
+
+  httpPut<T>(url: string, body: any | null): Observable<T> {
+    console.log(`[RestApi]PUT:${url} BODY:${body}`);
+    return this.http.put<T>(url, body);
+  }
+
+  httpDelete(url: string): Observable<number> {
+    console.log(`[RestApi]DELETE:${url}`);
+    return this.http.delete(url) as Observable<number>;
+  }
 }

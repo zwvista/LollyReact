@@ -18,20 +18,20 @@ export class WordFamiService extends BaseService {
   create(item: MWordFami): Observable<number | any[]> {
     const url = `${this.baseUrlAPI}WORDSFAMI`;
     (item as any).ID = null;
-    return this.http.post<number | any[]>(url, item).pipe(
+    return this.httpPost<number | any[]>(url, item).pipe(
     );
   }
 
   update(item: MWordFami): Observable<number> {
     const url = `${this.baseUrlAPI}WORDSFAMI/${item.ID}`;
-    return this.http.put<number>(url, item).pipe(
+    return this.httpPut<number>(url, item).pipe(
     );
   }
 
   delete(id: number): Observable<number> {
     const url = `${this.baseUrlAPI}WORDSFAMI/${id}`;
 
-    return (this.http.delete(url) as Observable<number>).pipe(
+    return this.httpDelete(url).pipe(
     );
   }
 }

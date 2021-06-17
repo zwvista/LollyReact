@@ -50,27 +50,27 @@ export class UnitWordService extends BaseService {
 
   create(item: MUnitWord): Observable<number | any[]> {
     const url = `${this.baseUrlSP}UNITWORDS_CREATE`;
-    return this.http.post<MSPResult[][] | any[]>(url, toParameters(item)).pipe(
+    return this.httpPost<MSPResult[][] | any[]>(url, toParameters(item)).pipe(
       map(result => result[0][0].NEW_ID),
     );
   }
 
   updateSeqNum(id: number, seqnum: number): Observable<number> {
     const url = `${this.baseUrlAPI}UNITWORDS/${id}`;
-    return this.http.put<number>(url, {ID: id, SEQNUM: seqnum} as MUnitWord).pipe(
+    return this.httpPut<number>(url, {ID: id, SEQNUM: seqnum} as MUnitWord).pipe(
     );
   }
 
   update(item: MUnitWord): Observable<string> {
     const url = `${this.baseUrlSP}UNITWORDS_UPDATE`;
-    return this.http.post<MSPResult[][]>(url, toParameters(item)).pipe(
+    return this.httpPost<MSPResult[][]>(url, toParameters(item)).pipe(
       map(result => result[0][0].result),
     );
   }
 
   delete(item: MUnitWord): Observable<string> {
     const url = `${this.baseUrlSP}UNITWORDS_DELETE`;
-    return this.http.post<MSPResult[][]>(url, toParameters(item)).pipe(
+    return this.httpPost<MSPResult[][]>(url, toParameters(item)).pipe(
       map(result => result[0][0].result),
     );
   }

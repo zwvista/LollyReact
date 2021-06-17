@@ -50,27 +50,27 @@ export class UnitPhraseService extends BaseService {
 
   create(item: MUnitPhrase): Observable<number | any[]> {
     const url = `${this.baseUrlSP}UNITPHRASES_CREATE`;
-    return this.http.post<MSPResult[][] | any[]>(url, toParameters(item)).pipe(
+    return this.httpPost<MSPResult[][] | any[]>(url, toParameters(item)).pipe(
       map(result => result[0][0].NEW_ID),
     );
   }
 
   updateSeqNum(id: number, seqnum: number): Observable<number> {
     const url = `${this.baseUrlAPI}UNITPHRASES/${id}`;
-    return this.http.put<number>(url, {ID: id, SEQNUM: seqnum} as MUnitPhrase).pipe(
+    return this.httpPut<number>(url, {ID: id, SEQNUM: seqnum} as MUnitPhrase).pipe(
     );
   }
 
   update(item: MUnitPhrase): Observable<string> {
     const url = `${this.baseUrlSP}UNITPHRASES_UPDATE`;
-    return this.http.post<MSPResult[][]>(url, toParameters(item)).pipe(
+    return this.httpPost<MSPResult[][]>(url, toParameters(item)).pipe(
       map(result => result[0][0].result),
     );
   }
 
   delete(item: MUnitPhrase): Observable<string> {
     const url = `${this.baseUrlSP}UNITPHRASES_DELETE`;
-    return this.http.post<MSPResult[][]>(url, toParameters(item)).pipe(
+    return this.httpPost<MSPResult[][]>(url, toParameters(item)).pipe(
       map(result => result[0][0].result),
     );
   }
