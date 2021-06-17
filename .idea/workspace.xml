@@ -2,8 +2,26 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8c3ada4f-a8b4-4150-ab02-25eb1fe8c197" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/components/misc/Settings.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/misc/Settings.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/misc/dictionary.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/misc/dictionary.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/misc/autocorrect.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/misc/autocorrect.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/misc/base.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/misc/base.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/misc/dictionary.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/misc/dictionary.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/misc/language.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/misc/language.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/misc/textbook.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/misc/textbook.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/misc/us-mapping.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/misc/us-mapping.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/misc/user-setting.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/misc/user-setting.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/misc/user.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/misc/user.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/misc/voice.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/misc/voice.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/wpp/lang-phrase.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/wpp/lang-phrase.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/wpp/lang-word.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/wpp/lang-word.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/wpp/pattern-webpage.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/wpp/pattern-webpage.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/wpp/pattern.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/wpp/pattern.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/wpp/unit-phrase.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/wpp/unit-phrase.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/wpp/unit-word.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/wpp/unit-word.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/wpp/webpage.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/wpp/webpage.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/wpp/word-fami.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/wpp/word-fami.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view-models/misc/app.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/view-models/misc/app.service.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,7 +61,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="dart.analysis.tool.window.visible" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/components" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.path.for.package.tslint" value="project" />
@@ -131,6 +149,9 @@
       <workItem from="1621097122903" duration="631000" />
       <workItem from="1621098537819" duration="131000" />
       <workItem from="1621100943186" duration="92000" />
+      <workItem from="1623900668723" duration="252000" />
+      <workItem from="1623901903493" duration="155000" />
+      <workItem from="1623902083795" duration="796000" />
     </task>
     <servers />
   </component>

@@ -10,7 +10,7 @@ export class WordFamiService extends BaseService {
 
   getDataByUserWord(wordid: number): Observable<MWordFami[]> {
     const url = `${this.baseUrlAPI}WORDSFAMI?filter=USERID,eq,${GlobalVars.userid}&filter=WORDID,eq,${wordid}`;
-    return this.http.get<MWordsFami>(url).pipe(
+    return this.httpGet<MWordsFami>(url).pipe(
       map(result => result.records.map(value => Object.assign(new MWordFami(), value))),
     );
   }

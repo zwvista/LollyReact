@@ -14,7 +14,7 @@ export class UnitWordService extends BaseService {
     let url = `${this.baseUrlAPI}VUNITWORDS?filter=TEXTBOOKID,eq,${textbook.ID}&filter=UNITPART,bt,${unitPartFrom},${unitPartTo}&order=UNITPART&order=SEQNUM`;
     if (filterType !== 0 && filter)
       url += `&filter=${filterType === 1 ? 'WORD' : 'NOTE'},cs,${encodeURIComponent(filter)}`;
-    return this.http.get<MUnitWords>(url).pipe(
+    return this.httpGet<MUnitWords>(url).pipe(
       map(result => {
         const result2 = result.records.map(value => Object.assign(new MUnitWord(), value));
         result2.forEach(o => o.textbook = textbook);
@@ -29,7 +29,7 @@ export class UnitWordService extends BaseService {
       url += `&filter=${filterType === 0 ? 'WORD' : 'NOTE'},cs,${encodeURIComponent(filter)}`;
     if (textbookFilter !== 0)
       url += `&filter=TEXTBOOKID,eq,${textbookFilter}`;
-    return this.http.get<MUnitWords>(url).pipe(
+    return this.httpGet<MUnitWords>(url).pipe(
       map(result => ({
         records: result.records.map(value => {
           const v = Object.assign(new MUnitWord(), value);
@@ -43,7 +43,7 @@ export class UnitWordService extends BaseService {
 
   getDataByLangWord(wordid: number): Observable<MUnitWord[]> {
     const url = `${this.baseUrlAPI}VUNITWORDS?filter=WORDID,eq,${wordid}`;
-    return this.http.get<MUnitWords>(url).pipe(
+    return this.httpGet<MUnitWords>(url).pipe(
       map(result => result.records.map(value => Object.assign(new MUnitWord(), value))),
     );
   }

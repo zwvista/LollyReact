@@ -18,7 +18,7 @@ export class AppService {
   getData() {
     this.settingsService.getData().subscribe(_ => {
       this.isInitialized = true;
-      this._initializeObject.next(null);
+      this._initializeObject.next();
     });
   }
 

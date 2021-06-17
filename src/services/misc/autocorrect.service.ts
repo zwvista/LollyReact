@@ -9,7 +9,7 @@ export class AutoCorrectService extends BaseService {
 
   getDataByLang(langid: number): Observable<MAutoCorrect[]> {
     const url = `${this.baseUrlAPI}AUTOCORRECT?filter=LANGID,eq,${langid}`;
-    return this.http.get<MAutoCorrects>(url).pipe(
+    return this.httpGet<MAutoCorrects>(url).pipe(
       map(result => result.records.map(value => Object.assign(new MAutoCorrect(), value))),
     );
   }

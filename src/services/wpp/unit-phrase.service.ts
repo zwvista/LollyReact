@@ -14,7 +14,7 @@ export class UnitPhraseService extends BaseService {
     let url = `${this.baseUrlAPI}VUNITPHRASES?filter=TEXTBOOKID,eq,${textbook.ID}&filter=UNITPART,bt,${unitPartFrom},${unitPartTo}&order=UNITPART&order=SEQNUM`;
     if (filter)
       url += `&filter=${filterType === 0 ? 'PHRASE' : 'TRANSLATION'},cs,${encodeURIComponent(filter)}`;
-    return this.http.get<MUnitPhrases>(url).pipe(
+    return this.httpGet<MUnitPhrases>(url).pipe(
       map(result => {
         const result2 = result.records.map(value => Object.assign(new MUnitPhrase(), value));
         result2.forEach(o => o.textbook = textbook);
@@ -29,7 +29,7 @@ export class UnitPhraseService extends BaseService {
       url += `&filter=${filterType === 1 ? 'PHRASE' : 'TRANSLATION'},cs,${encodeURIComponent(filter)}`;
     if (textbookFilter !== 0)
       url += `&filter=TEXTBOOKID,eq,${textbookFilter}`;
-    return this.http.get<MUnitPhrases>(url).pipe(
+    return this.httpGet<MUnitPhrases>(url).pipe(
       map(result => ({
         records: result.records.map(value => {
           const v = Object.assign(new MUnitPhrase(), value);
@@ -43,7 +43,7 @@ export class UnitPhraseService extends BaseService {
 
   getDataByLangPhrase(phraseid: number): Observable<MUnitPhrase[]> {
     const url = `${this.baseUrlAPI}VUNITPHRASES?filter=PHRASEID,eq,${phraseid}`;
-    return this.http.get<MUnitPhrases>(url).pipe(
+    return this.httpGet<MUnitPhrases>(url).pipe(
       map(result => result.records.map(value => Object.assign(new MUnitPhrase(), value))),
     );
   }

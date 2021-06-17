@@ -9,7 +9,7 @@ export class WebpageService extends BaseService {
 
   getDataById(id: number): Observable<MWebPage[]> {
     const url = `${this.baseUrlAPI}WEBPAGES?filter=ID,eq,${id}`;
-    return this.http.get<MWebPages>(url).pipe(
+    return this.httpGet<MWebPages>(url).pipe(
       map(result => result.records.map(value => Object.assign(new MWebPage(), value))),
     );
   }
@@ -23,7 +23,7 @@ export class WebpageService extends BaseService {
       filter += `filter=URL,cs,${encodeURIComponent(u)}`;
     }
     const url = `${this.baseUrlAPI}WEBPAGES${filter}`;
-    return this.http.get<MWebPages>(url).pipe(
+    return this.httpGet<MWebPages>(url).pipe(
       map(result => result.records.map(value => Object.assign(new MWebPage(), value))),
     );
   }
