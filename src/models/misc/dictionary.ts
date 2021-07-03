@@ -32,4 +32,4 @@ export class MDictionaries {
   records!: MDictionary[];
 }
 
-const cssFolder = 'http://zwvista.tk/lolly/css/';
+const cssFolder = 'http://zwvista2.tk/lolly/css/';
