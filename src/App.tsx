@@ -1,7 +1,7 @@
 import * as React from 'react';
 import './App.css';
 
-import { Link, Route, Router, Switch } from 'react-router-dom'
+import { Link, Route, BrowserRouter as Router, Routes } from 'react-router-dom'
 import { AppBar, Tab, Tabs } from '@material-ui/core';
 
 import { Inject, Module } from 'react.di';
@@ -38,14 +38,13 @@ import WordsUnit from './components/words/WordsUnit';
 import WordsUnit2 from './components/words/WordsUnit2';
 import WordsUnitDetail from './components/words/WordsUnitDetail';
 
-import 'primereact/resources/themes/nova-light/theme.css';
+import 'primereact/resources/themes/nova/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
 import "font-awesome/css/font-awesome.min.css";
 import "primeflex/primeflex.css"
 
 import { TabMenu } from 'primereact/tabmenu';
-import history from './view-models/misc/history';
 
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -114,11 +113,11 @@ export default class App extends React.Component<any, any> {
       {label: 'Patterns in Language', icon: 'motorcycle', target: '/patterns2'},
       {label: 'Settings', icon: 'cog', target: '/settings'},
     ];
-    const activeItem = items.find((value: any) => window.location.href.includes(value.target));
+    // const activeIndex = items.find((value: any) => window.location.href.includes(value.target));
     this.state = {
       items,
       items2,
-      activeItem,
+      activeIndex: 0,
       value: 0,
       valueApp: 0,
     };
@@ -136,7 +135,7 @@ export default class App extends React.Component<any, any> {
     GlobalVars.userid = loggedIn!;
     this.appService.getData();
     return (
-      <Router history={history}>
+      <Router>
         <div className="App">
           <h2>Lolly React</h2>
           <AppBar position="static" color="default">
@@ -146,7 +145,7 @@ export default class App extends React.Component<any, any> {
             </Tabs>
           </AppBar>
           {this.state.valueApp === 0 && <div className="content-section implementation">
-            <TabMenu model={this.state.items} activeItem={this.state.activeItem} onTabChange={this.onTabChange} />
+            <TabMenu model={this.state.items} activeIndex={this.state.activeIndex} onTabChange={this.onTabChange} />
           </div>}
           {this.state.valueApp === 1 && <AppBar position="static" color="default">
             <Tabs value={this.state.value} onChange={this.onTab2Change} indicatorColor="primary" textColor="primary">
@@ -155,32 +154,32 @@ export default class App extends React.Component<any, any> {
               )}
             </Tabs>
           </AppBar>}
-          <Switch>
-            <Route path="/" component={WordsUnit} exact />
-            <Route path="/words-unit" component={WordsUnit} exact />
-            <Route path="/words-unit2" component={WordsUnit2} exact />
-            <Route path="/words-unit-detail/:id" component={WordsUnitDetail} exact />
-            <Route path="/phrases-unit" component={PhrasesUnit} exact />
-            <Route path="/phrases-unit2" component={PhrasesUnit2} exact />
-            <Route path="/phrases-unit-detail/:id" component={PhrasesUnitDetail} exact />
-            <Route path="/words-lang" component={WordsLang} exact />
-            <Route path="/words-lang2" component={WordsLang2} exact />
-            <Route path="/words-lang-detail/:id" component={WordsLangDetail} exact />
-            <Route path="/phrases-lang" component={PhrasesLang} exact />
-            <Route path="/phrases-lang2" component={PhrasesLang2} exact />
-            <Route path="/phrases-lang-detail/:id" component={PhrasesLangDetail} exact />
-            <Route path="/words-textbook" component={WordsTextbook} exact />
-            <Route path="/words-textbook2" component={WordsTextbook2} exact />
-            <Route path="/words-textbook-detail/:id" component={WordsTextbookDetail} exact />
-            <Route path="/phrases-textbook" component={PhrasesTextbook} exact />
-            <Route path="/phrases-textbook2" component={PhrasesTextbook2} exact />
-            <Route path="/phrases-textbook-detail/:id" component={PhrasesTextbookDetail} exact />
-            <Route path="/patterns" component={Patterns} exact />
-            <Route path="/patterns2" component={Patterns2} exact />
-            <Route path="/patterns-detail/:id" component={PatternsDetail} exact />
-            <Route path="/words-dict/:type/:index" component={WordsDict} exact />
-            <Route path="/settings" component={Settings} exact />
-          </Switch>
+          <Routes>
+            <Route path="/" element={WordsUnit} />
+            <Route path="/words-unit" element={WordsUnit} />
+            <Route path="/words-unit2" element={WordsUnit2} />
+            <Route path="/words-unit-detail/:id" element={WordsUnitDetail} />
+            <Route path="/phrases-unit" element={PhrasesUnit} />
+            <Route path="/phrases-unit2" element={PhrasesUnit2} />
+            <Route path="/phrases-unit-detail/:id" element={PhrasesUnitDetail} />
+            <Route path="/words-lang" element={WordsLang} />
+            <Route path="/words-lang2" element={WordsLang2} />
+            <Route path="/words-lang-detail/:id" element={WordsLangDetail} />
+            <Route path="/phrases-lang" element={PhrasesLang} />
+            <Route path="/phrases-lang2" element={PhrasesLang2} />
+            <Route path="/phrases-lang-detail/:id" element={PhrasesLangDetail} />
+            <Route path="/words-textbook" element={WordsTextbook} />
+            <Route path="/words-textbook2" element={WordsTextbook2} />
+            <Route path="/words-textbook-detail/:id" element={WordsTextbookDetail} />
+            <Route path="/phrases-textbook" element={PhrasesTextbook} />
+            <Route path="/phrases-textbook2" element={PhrasesTextbook2} />
+            <Route path="/phrases-textbook-detail/:id" element={PhrasesTextbookDetail} />
+            <Route path="/patterns" element={Patterns} />
+            <Route path="/patterns2" element={Patterns2} />
+            <Route path="/patterns-detail/:id" element={PatternsDetail} />
+            <Route path="/words-dict/:type/:index" element={WordsDict} />
+            <Route path="/settings" element={Settings} />
+          </Routes>
         </div>
       </Router>
     );
@@ -188,7 +187,7 @@ export default class App extends React.Component<any, any> {
 
   onTabChange = (e: any) => {
     this.setState({activeItem: e.value});
-    history.push(e.value.target);
+    this.props.history.push(e.value.target);
   };
 
   onTab2Change = (event: any, value: any) => {
@@ -200,11 +199,11 @@ export default class App extends React.Component<any, any> {
     if (index === -1) index = 0;
     this.setState({valueApp});
     if (valueApp === 0) {
-      this.setState({activeItem: this.state.items[index]});
-      history.push(this.state.items[index].target);
+      this.setState({activeIndex: index});
+      this.props.history.push(this.state.items[index].target);
     } else {
       this.setState({value: index});
-      history.push(this.state.items2[index].target);
+      this.props.history.push(this.state.items2[index].target);
     }
   };
 

@@ -27,7 +27,6 @@ import {
   faTrash,
   faVolumeUp
 } from '@fortawesome/free-solid-svg-icons';
-import history from '../../view-models/misc/history';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import * as $ from 'jquery';
@@ -88,7 +87,7 @@ export default class WordsTextbook2 extends React.Component<any, any> {
           <Button variant="contained" color="primary" onClick={(e: any) => this.onRefresh}>
             <span><FontAwesomeIcon icon={faSync} />Refresh</span>
           </Button>
-          <Button variant="contained" color="primary" onClick={() => history.push('/words-dict/textbook/0')}>
+          <Button variant="contained" color="primary" onClick={() => this.props.history.push('/words-dict/textbook/0')}>
             <span><FontAwesomeIcon icon={faBook} />Dictionary</span>
           </Button>
         </Toolbar>
@@ -104,7 +103,7 @@ export default class WordsTextbook2 extends React.Component<any, any> {
                 SelectProps={{
                   native: true,
                 }}
-                onChangePage={this.handleChangePage}
+                onPageChange={this.handleChangePage}
                 onChangeRowsPerPage={this.handleChangeRowsPerPage}
               />
             </TableRow>
@@ -140,7 +139,7 @@ export default class WordsTextbook2 extends React.Component<any, any> {
                     </Fab>
                   </Tooltip>
                   <Tooltip title="Edit">
-                    <Fab size="small" color="primary" onClick={() => history.push('/words-textbook-detail/' + row.ID)}>
+                    <Fab size="small" color="primary" onClick={() => this.props.history.push('/words-textbook-detail/' + row.ID)}>
                       <FontAwesomeIcon icon={faEdit} />
                     </Fab>
                   </Tooltip>
@@ -186,7 +185,7 @@ export default class WordsTextbook2 extends React.Component<any, any> {
                 SelectProps={{
                   native: true,
                 }}
-                onChangePage={this.handleChangePage}
+                onPageChange={this.handleChangePage}
                 onChangeRowsPerPage={this.handleChangeRowsPerPage}
               />
             </TableRow>
@@ -247,7 +246,7 @@ export default class WordsTextbook2 extends React.Component<any, any> {
 
   dictWord(item: MUnitWord) {
     const index = this.wordsUnitService.textbookWords.indexOf(item);
-    history.push('/words-dict/textbook/' + index);
+    this.props.history.push('/words-dict/textbook/' + index);
   }
 
   updateServiceState() {

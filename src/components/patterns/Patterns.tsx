@@ -1,13 +1,12 @@
 import * as React from 'react';
 import { Inject } from 'react.di';
 import { DataTable } from 'primereact/datatable';
-import { PageState, Paginator } from 'primereact/paginator';
+import {Paginator, PaginatorPageState} from 'primereact/paginator';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import '../misc/Common.css'
 import { Subscription } from 'rxjs';
 import { Toolbar } from 'primereact/toolbar';
-import history from '../../view-models/misc/history';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { googleString } from '../../common/common';
 import { SettingsService } from '../../view-models/misc/settings.service';
@@ -41,7 +40,7 @@ export default class Patterns extends React.Component<any, any> {
     }));
   }
 
-  onPageChange = (e: PageState) => {
+  onPageChange = (e: PaginatorPageState) => {
     this.setState({
       first: e.first,
       rows: this.state.rows = e.rows,
@@ -59,7 +58,7 @@ export default class Patterns extends React.Component<any, any> {
       <Button className="p-button-danger button-margin-right" icon="fa fa-trash"
               tooltip="Delete" tooltipOptions={{position: 'top'}} onClick={() => this.deletePattern(rowData.ID)} />
       <Button icon="fa fa-edit" tooltip="Edit" tooltipOptions={{position: 'top'}}
-              onClick={() => history.push('/patterns-detail/' + rowData.ID)}/>
+              onClick={() => this.props.history.push('/patterns-detail/' + rowData.ID)}/>
       <Button icon="fa fa-volume-up" tooltipOptions={{position: 'top'}}
               tooltip="Speak" onClick={() => this.settingsService.speak(rowData.PATTERN)} />
       <CopyToClipboard text={rowData.PATTERN}>
@@ -81,7 +80,7 @@ export default class Patterns extends React.Component<any, any> {
                          onChange={this.onFilterChange} onKeyPress={this.onFilterKeyPress}/>
               <label htmlFor="filter">Filter</label>
             </span>
-            <Button label="Add" icon="fa fa-plus" onClick={() => history.push('/patterns-detail/0')} />
+            <Button label="Add" icon="fa fa-plus" onClick={() => this.props.history.push('/patterns-detail/0')} />
             <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => this.onRefresh}/>
           </div>
         </Toolbar>
@@ -122,7 +121,7 @@ export default class Patterns extends React.Component<any, any> {
     this.onRefresh();
   };
 
-  onFilterTypeChange = (e: {originalEvent: Event, value: any}) => {
+  onFilterTypeChange = (e: {originalEvent: SyntheticEvent, value: any}) => {
     this.setState({filterType: this.state.filterType = e.value});
     this.onRefresh();
   };

@@ -38,11 +38,11 @@ export default class WordsTextbookDetail extends React.Component<any, any> {
         </div>
         <div className="p-grid mb-2">
           <label className="p-col-1" htmlFor="UNIT">UNIT:</label>
-          <Dropdown className="p-col-3" id="UNIT" autoWidth={false} options={this.settingsService.units} value={this.state.item.UNIT} onChange={this.onChangeDropDown} />
+          <Dropdown className="p-col-3" id="UNIT" options={this.settingsService.units} value={this.state.item.UNIT} onChange={this.onChangeDropDown} />
         </div>
         <div className="p-grid mb-2">
           <label className="p-col-1" htmlFor="PART">PART:</label>
-          <Dropdown className="p-col-3" id="PART" autoWidth={false} options={this.settingsService.parts} value={this.state.item.PART} onChange={this.onChangeDropDown} />
+          <Dropdown className="p-col-3" id="PART" options={this.settingsService.parts} value={this.state.item.PART} onChange={this.onChangeDropDown} />
         </div>
         <div className="p-grid mb-2">
           <label className="p-col-1" htmlFor="SEQNUM">SEQNUM:</label>

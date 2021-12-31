@@ -28,7 +28,6 @@ import {
   faTrash,
   faVolumeUp
 } from '@fortawesome/free-solid-svg-icons';
-import history from '../../view-models/misc/history';
 import { SyntheticEvent } from 'react';
 import { KeyboardEvent } from 'react';
 import * as $ from 'jquery';
@@ -86,13 +85,13 @@ export default class WordsLang2 extends React.Component<any, any> {
           </Select>
           <TextField label="Filter" value={this.state.filter}
                      onChange={this.onFilterChange} onKeyPress={this.onFilterKeyPress}/>
-          <Button variant="contained" color="primary" onClick={() => history.push('/words-lang-detail/0')}>
+          <Button variant="contained" color="primary" onClick={() => this.props.history.push('/words-lang-detail/0')}>
             <span><FontAwesomeIcon icon={faPlus} />Add</span>
           </Button>
           <Button variant="contained" color="primary" onClick={(e: any) => this.onRefresh}>
             <span><FontAwesomeIcon icon={faSync} />Refresh</span>
           </Button>
-          <Button variant="contained" color="primary" onClick={() => history.push('/words-dict/lang/0')}>
+          <Button variant="contained" color="primary" onClick={() => this.props.history.push('/words-dict/lang/0')}>
             <span><FontAwesomeIcon icon={faBook} />Dictionary</span>
           </Button>
         </Toolbar>
@@ -108,7 +107,7 @@ export default class WordsLang2 extends React.Component<any, any> {
                 SelectProps={{
                   native: true,
                 }}
-                onChangePage={this.handleChangePage}
+                onPageChange={this.handleChangePage}
                 onChangeRowsPerPage={this.handleChangeRowsPerPage}
               />
             </TableRow>
@@ -134,7 +133,7 @@ export default class WordsLang2 extends React.Component<any, any> {
                     </Fab>
                   </Tooltip>
                   <Tooltip title="Edit">
-                    <Fab size="small" color="primary" onClick={() => history.push('/words-lang-detail/' + row.ID)}>
+                    <Fab size="small" color="primary" onClick={() => this.props.history.push('/words-lang-detail/' + row.ID)}>
                       <FontAwesomeIcon icon={faEdit} />
                     </Fab>
                   </Tooltip>
@@ -180,7 +179,7 @@ export default class WordsLang2 extends React.Component<any, any> {
                 SelectProps={{
                   native: true,
                 }}
-                onChangePage={this.handleChangePage}
+                onPageChange={this.handleChangePage}
                 onChangeRowsPerPage={this.handleChangeRowsPerPage}
               />
             </TableRow>
@@ -252,7 +251,7 @@ export default class WordsLang2 extends React.Component<any, any> {
 
   dictWord(item: MLangWord) {
     const index = this.wordsLangService.langWords.indexOf(item);
-    history.push('/words-dict/lang/' + index);
+    this.props.history.push('/words-dict/lang/' + index);
   }
 
   updateServiceState() {

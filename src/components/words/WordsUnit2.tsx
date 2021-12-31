@@ -29,7 +29,6 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { MUnitWord } from '../../models/wpp/unit-word';
-import history from '../../view-models/misc/history';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { ChangeEvent, ReactNode, SyntheticEvent } from 'react';
 import { KeyboardEvent } from 'react';
@@ -79,7 +78,7 @@ export default class WordsUnit2 extends React.Component<any, any> {
           </Select>
           <TextField label="Filter" value={this.state.filter}
                      onChange={this.onFilterChange} onKeyPress={this.onFilterKeyPress}/>
-          <Button variant="contained" color="primary" onClick={() => history.push('/words-unit-detail/0')}>
+          <Button variant="contained" color="primary" onClick={() => this.props.history.push('/words-unit-detail/0')}>
             <span><FontAwesomeIcon icon={faPlus} />Add</span>
           </Button>
           <Button variant="contained" color="primary" onClick={this.onRefresh}>
@@ -91,7 +90,7 @@ export default class WordsUnit2 extends React.Component<any, any> {
           <Button hidden={!this.settingsService.selectedDictNote} variant="contained">
             Retrieve Notes If Empty
           </Button>
-          <Button variant="contained" color="primary" onClick={() => history.push('/words-dict/unit/0')}>
+          <Button variant="contained" color="primary" onClick={() => this.props.history.push('/words-dict/unit/0')}>
             <span><FontAwesomeIcon icon={faBook} />Dictionary</span>
           </Button>
         </Toolbar>
@@ -127,7 +126,7 @@ export default class WordsUnit2 extends React.Component<any, any> {
                     </Fab>
                   </Tooltip>
                   <Tooltip title="Edit">
-                    <Fab size="small" color="primary" onClick={() => history.push('/words-unit-detail/' + row.ID)}>
+                    <Fab size="small" color="primary" onClick={() => this.props.history.push('/words-unit-detail/' + row.ID)}>
                       <FontAwesomeIcon icon={faEdit} />
                     </Fab>
                   </Tooltip>
@@ -219,7 +218,7 @@ export default class WordsUnit2 extends React.Component<any, any> {
 
   dictWord(item: MUnitWord) {
     const index = this.wordsUnitService.unitWords.indexOf(item);
-    history.push('/words-dict/unit/' + index);
+    this.props.history.push('/words-dict/unit/' + index);
   }
 
   getNotes(ifEmpty: boolean) {

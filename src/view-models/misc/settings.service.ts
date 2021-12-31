@@ -6,7 +6,7 @@ import { MUserSetting, MUserSettingInfo } from '../../models/misc/user-setting';
 import { MLanguage } from '../../models/misc/language';
 import { MDictionary } from '../../models/misc/dictionary';
 import { MTextbook } from '../../models/misc/textbook';
-import { forkJoin, interval, Observable, of, Subscription } from 'rxjs';
+import { EMPTY as empty, forkJoin, interval, Observable, of, Subscription } from 'rxjs';
 import { DictionaryService } from '../../services/misc/dictionary.service';
 import { TextbookService } from '../../services/misc/textbook.service';
 import { AutoCorrectService } from '../../services/misc/autocorrect.service';
@@ -18,7 +18,6 @@ import { MVoice } from '../../models/misc/voice';
 import { MUSMapping } from '../../models/misc/usmapping';
 import { UsMappingService } from '../../services/misc/us-mapping.service';
 import { HtmlService } from '../../services/misc/html.service';
-import { EMPTY as empty } from 'rxjs/internal/observable/empty';
 
 @Injectable
 export class SettingsService {

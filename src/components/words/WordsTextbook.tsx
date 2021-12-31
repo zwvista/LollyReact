@@ -1,13 +1,12 @@
 import * as React from 'react';
 import { Inject } from 'react.di';
 import { DataTable } from 'primereact/datatable';
-import { PageState, Paginator } from 'primereact/paginator';
+import {Paginator, PaginatorPageState} from 'primereact/paginator';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import '../misc/Common.css'
 import { Subscription } from 'rxjs';
 import { Toolbar } from 'primereact/toolbar';
-import history from '../../view-models/misc/history';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { SettingsService } from '../../view-models/misc/settings.service';
 import * as $ from "jquery";
@@ -42,7 +41,7 @@ export default class WordsTextbook extends React.Component<any, any> {
     }));
   }
 
-  onPageChange = (e: PageState) => {
+  onPageChange = (e: PaginatorPageState) => {
     this.setState({
       first: e.first,
       rows: this.state.rows = e.rows,
@@ -60,7 +59,7 @@ export default class WordsTextbook extends React.Component<any, any> {
       <Button className="p-button-danger button-margin-right" icon="fa fa-trash"
               tooltip="Delete" tooltipOptions={{position: 'top'}} onClick={() => this.deleteWord(rowData)} />
       <Button icon="fa fa-edit" tooltip="Edit" tooltipOptions={{position: 'top'}}
-              onClick={() => history.push('/words-textbook-detail/' + rowData.ID)} />
+              onClick={() => this.props.history.push('/words-textbook-detail/' + rowData.ID)} />
       <Button hidden={!this.settingsService.selectedVoice} icon="fa fa-volume-up" tooltipOptions={{position: 'top'}}
               tooltip="Speak" onClick={() => this.settingsService.speak(rowData.WORD)} />
       <CopyToClipboard text={rowData.WORD}>
@@ -87,7 +86,7 @@ export default class WordsTextbook extends React.Component<any, any> {
             </span>
             <Dropdown id="textbookFilter" options={this.settingsService.textbookFilters} value={this.state.textbookFilter} onChange={this.onTextbookFilterChange} />
             <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => this.onRefresh}/>
-            <Button label="Dictionary" icon="fa fa-book" onClick={() => history.push('/words-dict/textbook/0')} />
+            <Button label="Dictionary" icon="fa fa-book" onClick={() => this.props.history.push('/words-dict/textbook/0')} />
           </div>
         </Toolbar>
         <Paginator first={this.state.first} rows={this.state.rows} onPageChange={this.onPageChange}
@@ -133,12 +132,12 @@ export default class WordsTextbook extends React.Component<any, any> {
     this.onRefresh();
   };
 
-  onFilterTypeChange = (e: {originalEvent: Event, value: any}) => {
+  onFilterTypeChange = (e: {originalEvent: SyntheticEvent, value: any}) => {
     this.setState({filterType: this.state.filterType = e.value});
     this.onRefresh();
   };
 
-  onTextbookFilterChange = (e: {originalEvent: Event, value: any}) => {
+  onTextbookFilterChange = (e: {originalEvent: SyntheticEvent, value: any}) => {
     this.setState({textbookFilter: this.state.textbookFilter = e.value});
     this.onRefresh();
   };
@@ -159,7 +158,7 @@ export default class WordsTextbook extends React.Component<any, any> {
 
   dictWord(item: MUnitWord) {
     const index = this.wordsUnitService.textbookWords.indexOf(item);
-    history.push('/words-dict/textbook/' + index);
+    this.props.history.push('/words-dict/textbook/' + index);
   }
 
   updateServiceState() {

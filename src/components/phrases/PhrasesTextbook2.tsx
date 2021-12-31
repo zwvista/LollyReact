@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { WordsUnitService } from '../../view-models/wpp/words-unit.service';
 import { Inject } from 'react.di';
 import '../misc/Common.css'
 import { Subscription } from 'rxjs';
@@ -19,7 +18,6 @@ import {
 import { PhrasesUnitService } from '../../view-models/wpp/phrases-unit.service';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCopy, faEdit, faPlus, faSync, faTrash, faVolumeUp } from '@fortawesome/free-solid-svg-icons';
-import history from '../../view-models/misc/history';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { googleString } from '../../common/common';
@@ -77,7 +75,7 @@ export default class PhrasesTextbook2 extends React.Component<any, any> {
               <MenuItem value={row.value} key={row.value}>{row.label}</MenuItem>
             )}
           </Select>
-          <Button variant="contained" color="primary" onClick={() => history.push('/phrases-textbook-detail/0')}>
+          <Button variant="contained" color="primary" onClick={() => this.props.history.push('/phrases-textbook-detail/0')}>
             <span><FontAwesomeIcon icon={faPlus} />Add</span>
           </Button>
           <Button variant="contained" color="primary" onClick={(e: any) => this.onRefresh}>
@@ -96,7 +94,7 @@ export default class PhrasesTextbook2 extends React.Component<any, any> {
                 SelectProps={{
                   native: true,
                 }}
-                onChangePage={this.handleChangePage}
+                onPageChange={this.handleChangePage}
                 onChangeRowsPerPage={this.handleChangeRowsPerPage}
               />
             </TableRow>
@@ -130,7 +128,7 @@ export default class PhrasesTextbook2 extends React.Component<any, any> {
                     </Fab>
                   </Tooltip>
                   <Tooltip title="Edit">
-                    <Fab size="small" color="primary" onClick={() => history.push('/phrases-textbook-detail/' + row.ID)}>
+                    <Fab size="small" color="primary" onClick={() => this.props.history.push('/phrases-textbook-detail/' + row.ID)}>
                       <FontAwesomeIcon icon={faEdit} />
                     </Fab>
                   </Tooltip>
@@ -167,7 +165,7 @@ export default class PhrasesTextbook2 extends React.Component<any, any> {
                 SelectProps={{
                   native: true,
                 }}
-                onChangePage={this.handleChangePage}
+                onPageChange={this.handleChangePage}
                 onChangeRowsPerPage={this.handleChangeRowsPerPage}
               />
             </TableRow>

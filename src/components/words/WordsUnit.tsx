@@ -9,7 +9,6 @@ import '../misc/Common.css'
 import { Subscription } from 'rxjs';
 import { Toolbar } from 'primereact/toolbar';
 import { InputText } from 'primereact/inputtext';
-import history from '../../view-models/misc/history';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { SettingsService } from '../../view-models/misc/settings.service';
 import * as $ from "jquery";
@@ -45,7 +44,7 @@ export default class WordsUnit extends React.Component<any, any> {
       <Button className="p-button-danger button-margin-right" icon="fa fa-trash"
               tooltip="Delete" tooltipOptions={{position: 'top'}} onClick={() => this.deleteWord(rowData)} />
       <Button icon="fa fa-edit" tooltip="Edit" tooltipOptions={{position: 'top'}}
-              onClick={() => history.push('/words-unit-detail/' + rowData.ID)} />
+              onClick={() => this.props.history.push('/words-unit-detail/' + rowData.ID)} />
       <Button hidden={!this.settingsService.selectedVoice} icon="fa fa-volume-up" tooltipOptions={{position: 'top'}}
               tooltip="Speak" onClick={() => this.settingsService.speak(rowData.WORD)} />
       <CopyToClipboard text={rowData.WORD}>
@@ -77,11 +76,11 @@ export default class WordsUnit extends React.Component<any, any> {
             </span>
             <Button hidden={!this.settingsService.selectedVoice} icon="fa fa-volumeooltipOptions={{position: 'top'}}"
                     tooltip="Speak" onClick={() => this.settingsService.speak(this.state.newWord)} />
-            <Button label="Add" icon="fa fa-plus" onClick={() => history.push('/words-unit-detail/0')} />
+            <Button label="Add" icon="fa fa-plus" onClick={() => this.props.history.push('/words-unit-detail/0')} />
             <Button label="Refresh" icon="fa fa-refresh" onClick={this.onRefresh}/>
             <Button hidden={!this.settingsService.selectedDictNote} className="p-button-warning" label="Retrieve All Notes" />
             <Button hidden={!this.settingsService.selectedDictNote} className="p-button-warning" label="Retrieve Notes If Empty" />
-            <Button label="Dictionary" icon="fa fa-book" onClick={() => history.push('/words-dict/unit/0')} />
+            <Button label="Dictionary" icon="fa fa-book" onClick={() => this.props.history.push('/words-dict/unit/0')} />
           </div>
         </Toolbar>
         <DataTable value={this.wordsUnitService.unitWords} autoLayout={true}
@@ -144,7 +143,7 @@ export default class WordsUnit extends React.Component<any, any> {
     this.onRefresh();
   };
 
-  onFilterTypeChange = (e: {originalEvent: Event, value: any}) => {
+  onFilterTypeChange = (e: {originalEvent: SyntheticEvent, value: any}) => {
     this.setState({filterType: this.state.filterType = e.value});
     this.onRefresh();
   };
@@ -165,7 +164,7 @@ export default class WordsUnit extends React.Component<any, any> {
 
   dictWord(item: MUnitWord) {
     const index = this.wordsUnitService.unitWords.indexOf(item);
-    history.push('/words-dict/unit/' + index);
+    this.props.history.push('/words-dict/unit/' + index);
   }
 
   getNotes(ifEmpty: boolean) {

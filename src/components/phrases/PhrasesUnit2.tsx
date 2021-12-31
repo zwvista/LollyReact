@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { WordsUnitService } from '../../view-models/wpp/words-unit.service';
 import { Inject } from 'react.di';
 import '../misc/Common.css'
 import { Subscription } from 'rxjs';
@@ -28,7 +27,6 @@ import {
   faTrash,
   faVolumeUp
 } from '@fortawesome/free-solid-svg-icons';
-import history from '../../view-models/misc/history';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { MUnitPhrase } from '../../models/wpp/unit-phrase';
@@ -74,7 +72,7 @@ export default class PhrasesUnit2 extends React.Component<any, any> {
           </Select>
           <TextField label="Filter" value={this.state.filter}
                      onChange={this.onFilterChange} onKeyPress={this.onFilterKeyPress}/>
-          <Button variant="contained" color="primary" onClick={() => history.push('/phrases-unit-detail/0')}>
+          <Button variant="contained" color="primary" onClick={() => this.props.history.push('/phrases-unit-detail/0')}>
             <span><FontAwesomeIcon icon={faPlus} />Add</span>
           </Button>
           <Button variant="contained" color="primary" onClick={this.onRefresh}>
@@ -111,7 +109,7 @@ export default class PhrasesUnit2 extends React.Component<any, any> {
                     </Fab>
                   </Tooltip>
                   <Tooltip title="Edit">
-                    <Fab size="small" color="primary" onClick={() => history.push('/phrases-unit-detail/' + row.ID)}>
+                    <Fab size="small" color="primary" onClick={() => this.props.history.push('/phrases-unit-detail/' + row.ID)}>
                       <FontAwesomeIcon icon={faEdit} />
                     </Fab>
                   </Tooltip>
