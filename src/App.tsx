@@ -1,7 +1,7 @@
 import * as React from 'react';
 import './App.css';
 
-import { Link, Route, BrowserRouter as Router, Routes } from 'react-router-dom'
+import {Link, Outlet} from 'react-router-dom'
 import { AppBar, Tab, Tabs } from '@material-ui/core';
 
 import { Inject, Module } from 'react.di';
@@ -17,26 +17,7 @@ import { LanguageService } from './services/misc/language.service';
 import { UnitWordService } from './services/wpp/unit-word.service';
 import { SettingsService } from './view-models/misc/settings.service';
 
-import PhrasesLang from './components/phrases/PhrasesLang';
-import PhrasesLang2 from './components/phrases/PhrasesLang2';
-import PhrasesLangDetail from './components/phrases/PhrasesLangDetail';
-import PhrasesTextbook from './components/phrases/PhrasesTextbook';
-import PhrasesTextbook2 from './components/phrases/PhrasesTextbook2';
-import PhrasesTextbookDetail from './components/phrases/PhrasesTextbookDetail';
-import PhrasesUnit from './components/phrases/PhrasesUnit';
-import PhrasesUnit2 from './components/phrases/PhrasesUnit2';
-import PhrasesUnitDetail from './components/phrases/PhrasesUnitDetail';
 import Settings from './components/misc/Settings';
-import WordsDict from './components/misc/WordsDict';
-import WordsLang from './components/words/WordsLang';
-import WordsLang2 from './components/words/WordsLang2';
-import WordsLangDetail from './components/words/WordsLangDetail';
-import WordsTextbook from './components/words/WordsTextbook';
-import WordsTextbook2 from './components/words/WordsTextbook2';
-import WordsTextbookDetail from './components/words/WordsTextbookDetail';
-import WordsUnit from './components/words/WordsUnit';
-import WordsUnit2 from './components/words/WordsUnit2';
-import WordsUnitDetail from './components/words/WordsUnitDetail';
 
 import 'primereact/resources/themes/nova/theme.css';
 import 'primereact/resources/primereact.min.css';
@@ -62,9 +43,6 @@ import { faDollarSign, faEuroSign, faBus, faTrain, faPlane, faRocket, faCar, faT
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { UsMappingService } from './services/misc/us-mapping.service';
 import { PatternService } from './services/wpp/pattern.service';
-import PatternsDetail from './components/patterns/PatternsLang';
-import Patterns from './components/patterns/Patterns';
-import Patterns2 from './components/patterns/Patterns2';
 import { PatternsService } from './view-models/wpp/patterns.service';
 import { GlobalVars } from './common/common';
 import { UserService } from './services/misc/user.service';
@@ -135,59 +113,32 @@ export default class App extends React.Component<any, any> {
     GlobalVars.userid = loggedIn!;
     this.appService.getData();
     return (
-      <Router>
-        <div className="App">
-          <h2>Lolly React</h2>
-          <AppBar position="static" color="default">
-            <Tabs value={this.state.valueApp} onChange={this.onTabAppChange} indicatorColor="primary" textColor="primary">
-              <Tab label={<span><FontAwesomeIcon icon="dollar-sign" size="lg"/> App1</span>} />
-              <Tab label={<span><FontAwesomeIcon icon="euro-sign" size="lg"/> App2</span>} />
-            </Tabs>
-          </AppBar>
-          {this.state.valueApp === 0 && <div className="content-section implementation">
-            <TabMenu model={this.state.items} activeIndex={this.state.activeIndex} onTabChange={this.onTabChange} />
-          </div>}
-          {this.state.valueApp === 1 && <AppBar position="static" color="default">
-            <Tabs value={this.state.value} onChange={this.onTab2Change} indicatorColor="primary" textColor="primary">
-              {this.state.items2.map((row: any) =>
-                <LinkTab key={row.label} label={<span><FontAwesomeIcon icon={row.icon} size="lg"/> {row.label}</span>} to={row.target} />
-              )}
-            </Tabs>
-          </AppBar>}
-          <Routes>
-            <Route path="/" element={WordsUnit} />
-            <Route path="/words-unit" element={WordsUnit} />
-            <Route path="/words-unit2" element={WordsUnit2} />
-            <Route path="/words-unit-detail/:id" element={WordsUnitDetail} />
-            <Route path="/phrases-unit" element={PhrasesUnit} />
-            <Route path="/phrases-unit2" element={PhrasesUnit2} />
-            <Route path="/phrases-unit-detail/:id" element={PhrasesUnitDetail} />
-            <Route path="/words-lang" element={WordsLang} />
-            <Route path="/words-lang2" element={WordsLang2} />
-            <Route path="/words-lang-detail/:id" element={WordsLangDetail} />
-            <Route path="/phrases-lang" element={PhrasesLang} />
-            <Route path="/phrases-lang2" element={PhrasesLang2} />
-            <Route path="/phrases-lang-detail/:id" element={PhrasesLangDetail} />
-            <Route path="/words-textbook" element={WordsTextbook} />
-            <Route path="/words-textbook2" element={WordsTextbook2} />
-            <Route path="/words-textbook-detail/:id" element={WordsTextbookDetail} />
-            <Route path="/phrases-textbook" element={PhrasesTextbook} />
-            <Route path="/phrases-textbook2" element={PhrasesTextbook2} />
-            <Route path="/phrases-textbook-detail/:id" element={PhrasesTextbookDetail} />
-            <Route path="/patterns" element={Patterns} />
-            <Route path="/patterns2" element={Patterns2} />
-            <Route path="/patterns-detail/:id" element={PatternsDetail} />
-            <Route path="/words-dict/:type/:index" element={WordsDict} />
-            <Route path="/settings" element={Settings} />
-          </Routes>
-        </div>
-      </Router>
+      <div className="App">
+        <h2>Lolly React</h2>
+        <AppBar position="static" color="default">
+          <Tabs value={this.state.valueApp} onChange={this.onTabAppChange} indicatorColor="primary" textColor="primary">
+            <Tab label={<span><FontAwesomeIcon icon="dollar-sign" size="lg"/> App1</span>} />
+            <Tab label={<span><FontAwesomeIcon icon="euro-sign" size="lg"/> App2</span>} />
+          </Tabs>
+        </AppBar>
+        {this.state.valueApp === 0 && <div className="content-section implementation">
+          <TabMenu model={this.state.items} activeIndex={this.state.activeIndex} onTabChange={this.onTabChange} />
+        </div>}
+        {this.state.valueApp === 1 && <AppBar position="static" color="default">
+          <Tabs value={this.state.value} onChange={this.onTab2Change} indicatorColor="primary" textColor="primary">
+            {this.state.items2.map((row: any) =>
+              <LinkTab key={row.label} label={<span><FontAwesomeIcon icon={row.icon} size="lg"/> {row.label}</span>} to={row.target} />
+            )}
+          </Tabs>
+        </AppBar>}
+        <Outlet/>
+      </div>
     );
   }
 
   onTabChange = (e: any) => {
     this.setState({activeItem: e.value});
-    this.props.history.push(e.value.target);
+    // this.props.history.push(e.value.target);
   };
 
   onTab2Change = (event: any, value: any) => {
@@ -200,10 +151,10 @@ export default class App extends React.Component<any, any> {
     this.setState({valueApp});
     if (valueApp === 0) {
       this.setState({activeIndex: index});
-      this.props.history.push(this.state.items[index].target);
+      // this.props.history.push(this.state.items[index].target);
     } else {
       this.setState({value: index});
-      this.props.history.push(this.state.items2[index].target);
+      // this.props.history.push(this.state.items2[index].target);
     }
   };
 
