@@ -137,7 +137,7 @@ export default class App extends React.Component<any, any> {
   }
 
   onTabChange = (e: any) => {
-    this.setState({activeItem: e.value});
+    this.setState({activeIndex: e.index});
     // this.props.history.push(e.value.target);
   };
 
@@ -146,7 +146,7 @@ export default class App extends React.Component<any, any> {
   };
 
   onTabAppChange = (event: any, valueApp: any) => {
-    let index = this.state.valueApp === 0 ? this.state.items.indexOf(this.state.activeItem) : this.state.value;
+    let index = this.state.valueApp === 0 ? this.state.activeIndex : this.state.value;
     if (index === -1) index = 0;
     this.setState({valueApp});
     if (valueApp === 0) {
