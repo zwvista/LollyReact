@@ -67,34 +67,32 @@ function LinkTab(props: any) {
 })
 export default class App extends React.Component<any, any> {
   @Inject appService!: AppService;
+  items = [
+    {label: 'Words in Unit', icon: 'fa fa-bus fa-lg', url: '/words-unit'},
+    {label: 'Phrases in Unit', icon: 'fa fa-train fa-lg', url: '/phrases-unit'},
+    {label: 'Words in Textbook', icon: 'fa fa-car fa-lg', url: '/words-textbook'},
+    {label: 'Phrases in Textbook', icon: 'fa fa-taxi fa-lg', url: '/phrases-textbook'},
+    {label: 'Words in Language', icon: 'fa fa-plane fa-lg', url: '/words-lang'},
+    {label: 'Phrases in Language', icon: 'fa fa-rocket fa-lg', url: '/phrases-lang'},
+    {label: 'Patterns in Language', icon: 'fa fa-motorcycle fa-lg', url: '/patterns'},
+    {label: 'Settings', icon: 'fa fa-gear fa-lg', url: '/settings'},
+  ];
+  items2 = [
+    {label: 'Words in Unit', icon: 'bus', target: '/words-unit2'},
+    {label: 'Phrases in Unit', icon: 'train', target: '/phrases-unit2'},
+    {label: 'Words in Textbook', icon: 'car', target: '/words-textbook2'},
+    {label: 'Phrases in Textbook', icon: 'taxi', target: '/phrases-textbook2'},
+    {label: 'Words in Language', icon: 'plane', target: '/words-lang2'},
+    {label: 'Phrases in Language', icon: 'rocket', target: '/phrases-lang2'},
+    {label: 'Patterns in Language', icon: 'motorcycle', target: '/patterns2'},
+    {label: 'Settings', icon: 'cog', target: '/settings'},
+  ];
 
   constructor(props: any) {
     super(props);
     library.add(faDollarSign, faEuroSign, faBus, faTrain, faPlane, faRocket, faCar, faTaxi, faCog);
-    const items = [
-      {label: 'Words in Unit', icon: 'fa fa-bus fa-lg', target: '/words-unit'},
-      {label: 'Phrases in Unit', icon: 'fa fa-train fa-lg', target: '/phrases-unit'},
-      {label: 'Words in Textbook', icon: 'fa fa-car fa-lg', target: '/words-textbook'},
-      {label: 'Phrases in Textbook', icon: 'fa fa-taxi fa-lg', target: '/phrases-textbook'},
-      {label: 'Words in Language', icon: 'fa fa-plane fa-lg', target: '/words-lang'},
-      {label: 'Phrases in Language', icon: 'fa fa-rocket fa-lg', target: '/phrases-lang'},
-      {label: 'Patterns in Language', icon: 'fa fa-motorcycle fa-lg', target: '/patterns'},
-      {label: 'Settings', icon: 'fa fa-gear fa-lg', target: '/settings'},
-    ];
-    const items2 = [
-      {label: 'Words in Unit', icon: 'bus', target: '/words-unit2'},
-      {label: 'Phrases in Unit', icon: 'train', target: '/phrases-unit2'},
-      {label: 'Words in Textbook', icon: 'car', target: '/words-textbook2'},
-      {label: 'Phrases in Textbook', icon: 'taxi', target: '/phrases-textbook2'},
-      {label: 'Words in Language', icon: 'plane', target: '/words-lang2'},
-      {label: 'Phrases in Language', icon: 'rocket', target: '/phrases-lang2'},
-      {label: 'Patterns in Language', icon: 'motorcycle', target: '/patterns2'},
-      {label: 'Settings', icon: 'cog', target: '/settings'},
-    ];
-    const activeIndex = items.findIndex((value: any) => window.location.href.includes(value.target));
+    const activeIndex = this.items.findIndex((value: any) => window.location.href.includes(value.url));
     this.state = {
-      items,
-      items2,
       activeIndex,
       value: 0,
       valueApp: 0,
@@ -122,11 +120,11 @@ export default class App extends React.Component<any, any> {
           </Tabs>
         </AppBar>
         {this.state.valueApp === 0 && <div className="content-section implementation">
-          <TabMenu model={this.state.items} activeIndex={this.state.activeIndex} onTabChange={this.onTabChange} />
+          <TabMenu model={this.items} activeIndex={this.state.activeIndex} onTabChange={this.onTabChange} />
         </div>}
         {this.state.valueApp === 1 && <AppBar position="static" color="default">
           <Tabs value={this.state.value} onChange={this.onTab2Change} indicatorColor="primary" textColor="primary">
-            {this.state.items2.map((row: any) =>
+            {this.items2.map((row: any) =>
               <LinkTab key={row.label} label={<span><FontAwesomeIcon icon={row.icon} size="lg"/> {row.label}</span>} to={row.target} />
             )}
           </Tabs>
@@ -138,7 +136,6 @@ export default class App extends React.Component<any, any> {
 
   onTabChange = (e: any) => {
     this.setState({activeIndex: e.index});
-    window.location.href = e.value.target;
     // this.props.history.push(e.value.target);
   };
 
@@ -152,10 +149,10 @@ export default class App extends React.Component<any, any> {
     this.setState({valueApp});
     if (valueApp === 0) {
       this.setState({activeIndex: index});
-      // this.props.history.push(this.state.items[index].target);
+      // this.props.history.push(this.items[index].target);
     } else {
       this.setState({value: index});
-      // this.props.history.push(this.state.items2[index].target);
+      // this.props.history.push(this.items2[index].target);
     }
   };
 

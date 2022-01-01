@@ -86,7 +86,7 @@ export default class WordsLang extends React.Component<any, any> {
                      onChange={this.onFilterChange} onKeyPress={this.onFilterKeyPress}/>
           <label htmlFor="Filter">Filter</label>
         </span>
-        <Button hidden={!this.settingsService.selectedVoice} icon="fa fa-volumeooltipOptions={{position: 'top'}}"
+        <Button hidden={!this.settingsService.selectedVoice} icon="fa fa-volume-up" tooltipOptions={{position: 'top'}}
                 tooltip="Speak" onClick={() => this.settingsService.speak(this.state.newWord)} />
         <Button label="Add" icon="fa fa-plus" onClick={() => this.props.history.push('/words-unit-detail/0')} />
         <Button label="Refresh" icon="fa fa-refresh" onClick={this.onRefresh}/>
