@@ -48,7 +48,7 @@ export default class Settings extends React.Component<any, any> implements Setti
         </div>
         <div className="form-inline mb-2">
           <label htmlFor="dictReference" className="col-2 control-label">Dictionary(Reference):</label>
-          <select id="dictReference" className="col-4 form-control" value={this.settingsService.selectedDictReference.DICTID} onChange={this.onDictReferenceChange}>
+          <select id="dictReference" className="col-4 form-control" value={this.settingsService.selectedDictReference?.DICTID} onChange={this.onDictReferenceChange}>
           {
             this.settingsService.dictsReference.map(o => <option key={o.DICTID} value={o.DICTID}>{o.NAME}</option>)
           }
@@ -72,7 +72,7 @@ export default class Settings extends React.Component<any, any> implements Setti
         </div>
         <div className="form-inline mb-2">
           <label htmlFor="textbook" className="col-2 control-label">Textbook:</label>
-          <select id="textbook" className="col-4 form-control" value={this.settingsService.selectedTextbook.ID} onChange={this.onTextbookChange}>
+          <select id="textbook" className="col-4 form-control" value={this.settingsService.selectedTextbook?.ID} onChange={this.onTextbookChange}>
           {
             this.settingsService.textbooks.map(o => <option key={o.ID} value={o.ID}>{o.NAME}</option>)
           }
@@ -196,32 +196,42 @@ export default class Settings extends React.Component<any, any> implements Setti
   }
 
   onUpdateDictReference(): void {
+    this.updateServiceState();
   }
 
   onUpdateDictNote(): void {
+    this.updateServiceState();
   }
 
   onUpdateDictTranslation(): void {
+    this.updateServiceState();
   }
 
   onUpdateLang(): void {
+    this.updateServiceState();
   }
 
   onUpdatePartFrom(): void {
+    this.updateServiceState();
   }
 
   onUpdatePartTo(): void {
+    this.updateServiceState();
   }
 
   onUpdateTextbook(): void {
+    this.updateServiceState();
   }
 
   onUpdateUnitFrom(): void {
+    this.updateServiceState();
   }
 
   onUpdateUnitTo(): void {
+    this.updateServiceState();
   }
 
   onUpdateVoice(): void {
+    this.updateServiceState();
   }
 };
