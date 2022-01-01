@@ -6,20 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="8c3ada4f-a8b4-4150-ab02-25eb1fe8c197" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/patterns/Patterns.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/patterns/Patterns.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/patterns/Patterns2.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/patterns/Patterns2.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/phrases/PhrasesLang.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/phrases/PhrasesLang.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/phrases/PhrasesLang2.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/phrases/PhrasesLang2.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/phrases/PhrasesTextbook.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/phrases/PhrasesTextbook.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/phrases/PhrasesTextbook2.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/phrases/PhrasesTextbook2.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/phrases/PhrasesUnit.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/phrases/PhrasesUnit.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/phrases/PhrasesUnit2.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/phrases/PhrasesUnit2.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/words/WordsLang.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/words/WordsLang.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/words/WordsLang2.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/words/WordsLang2.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/words/WordsTextbook.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/words/WordsTextbook.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/words/WordsTextbook2.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/words/WordsTextbook2.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/words/WordsUnit.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/words/WordsUnit.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/words/WordsUnit2.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/words/WordsUnit2.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -156,7 +143,7 @@
       <workItem from="1638667914623" duration="404000" />
       <workItem from="1640962957556" duration="14308000" />
       <workItem from="1641002146769" duration="1000" />
-      <workItem from="1641006175815" duration="966000" />
+      <workItem from="1641006175815" duration="2640000" />
     </task>
     <servers />
   </component>

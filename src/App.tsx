@@ -91,11 +91,11 @@ export default class App extends React.Component<any, any> {
       {label: 'Patterns in Language', icon: 'motorcycle', target: '/patterns2'},
       {label: 'Settings', icon: 'cog', target: '/settings'},
     ];
-    // const activeIndex = items.find((value: any) => window.location.href.includes(value.target));
+    const activeIndex = items.findIndex((value: any) => window.location.href.includes(value.target));
     this.state = {
       items,
       items2,
-      activeIndex: 0,
+      activeIndex,
       value: 0,
       valueApp: 0,
     };
@@ -138,6 +138,7 @@ export default class App extends React.Component<any, any> {
 
   onTabChange = (e: any) => {
     this.setState({activeIndex: e.index});
+    window.location.href = e.value.target;
     // this.props.history.push(e.value.target);
   };
 
