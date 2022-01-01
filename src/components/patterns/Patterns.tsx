@@ -70,20 +70,21 @@ export default class Patterns extends React.Component<any, any> {
   };
 
   render() {
+    const leftContents = (
+      <React.Fragment>
+        <Dropdown id="filterType" options={this.settingsService.patternFilterTypes} value={this.state.filterType} onChange={this.onFilterTypeChange} />
+        <span className="p-float-label">
+            <InputText id="filter" type="text" value={this.state.filter}
+                       onChange={this.onFilterChange} onKeyPress={this.onFilterKeyPress}/>
+            <label htmlFor="filter">Filter</label>
+          </span>
+        <Button label="Add" icon="fa fa-plus" onClick={() => this.props.history.push('/patterns-detail/0')} />
+        <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => this.onRefresh}/>
+      </React.Fragment>
+    );
     return !this.appService.isInitialized ? (<div/>) : (
       <div>
-        <Toolbar>
-          <div className="p-toolbar-group-left">
-            <Dropdown id="filterType" options={this.settingsService.patternFilterTypes} value={this.state.filterType} onChange={this.onFilterTypeChange} />
-            <span className="p-float-label">
-              <InputText id="filter" type="text" value={this.state.filter}
-                         onChange={this.onFilterChange} onKeyPress={this.onFilterKeyPress}/>
-              <label htmlFor="filter">Filter</label>
-            </span>
-            <Button label="Add" icon="fa fa-plus" onClick={() => this.props.history.push('/patterns-detail/0')} />
-            <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => this.onRefresh}/>
-          </div>
-        </Toolbar>
+        <Toolbar left={leftContents} />
         <Paginator first={this.state.first} rows={this.state.rows} onPageChange={this.onPageChange}
                    totalRecords={this.patternsService.patternCount}
                    rowsPerPageOptions={this.settingsService.USROWSPERPAGEOPTIONS}/>

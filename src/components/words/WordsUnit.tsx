@@ -59,30 +59,31 @@ export default class WordsUnit extends React.Component<any, any> {
   };
 
   render() {
+    const leftContents = (
+      <React.Fragment>
+        <span className="p-float-label">
+          <InputText id="word" type="text" value={this.state.newWord}
+                     onChange={this.onNewWordChange} onKeyPress={this.onNewWordKeyPress}/>
+          <label htmlFor="word">New Word</label>
+        </span>
+        <Dropdown id="filterType" options={this.settingsService.wordFilterTypes} value={this.state.filterType} onChange={this.onFilterTypeChange} />
+        <span className="p-float-label">
+          <InputText id="filter" type="text" value={this.state.filter}
+                     onChange={this.onFilterChange} onKeyPress={this.onFilterKeyPress}/>
+          <label htmlFor="Filter">Filter</label>
+        </span>
+        <Button hidden={!this.settingsService.selectedVoice} icon="fa fa-volumeooltipOptions={{position: 'top'}}"
+                tooltip="Speak" onClick={() => this.settingsService.speak(this.state.newWord)} />
+        <Button label="Add" icon="fa fa-plus" onClick={() => this.props.history.push('/words-unit-detail/0')} />
+        <Button label="Refresh" icon="fa fa-refresh" onClick={this.onRefresh}/>
+        <Button hidden={!this.settingsService.selectedDictNote} className="p-button-warning" label="Retrieve All Notes" />
+        <Button hidden={!this.settingsService.selectedDictNote} className="p-button-warning" label="Retrieve Notes If Empty" />
+        <Button label="Dictionary" icon="fa fa-book" onClick={() => this.props.history.push('/words-dict/unit/0')} />
+      </React.Fragment>
+    );
     return (
       <div>
-        <Toolbar>
-          <div className="p-toolbar-group-left">
-            <span className="p-float-label">
-              <InputText id="word" type="text" value={this.state.newWord}
-                         onChange={this.onNewWordChange} onKeyPress={this.onNewWordKeyPress}/>
-              <label htmlFor="word">New Word</label>
-            </span>
-            <Dropdown id="filterType" options={this.settingsService.wordFilterTypes} value={this.state.filterType} onChange={this.onFilterTypeChange} />
-            <span className="p-float-label">
-              <InputText id="filter" type="text" value={this.state.filter}
-                         onChange={this.onFilterChange} onKeyPress={this.onFilterKeyPress}/>
-              <label htmlFor="Filter">Filter</label>
-            </span>
-            <Button hidden={!this.settingsService.selectedVoice} icon="fa fa-volumeooltipOptions={{position: 'top'}}"
-                    tooltip="Speak" onClick={() => this.settingsService.speak(this.state.newWord)} />
-            <Button label="Add" icon="fa fa-plus" onClick={() => this.props.history.push('/words-unit-detail/0')} />
-            <Button label="Refresh" icon="fa fa-refresh" onClick={this.onRefresh}/>
-            <Button hidden={!this.settingsService.selectedDictNote} className="p-button-warning" label="Retrieve All Notes" />
-            <Button hidden={!this.settingsService.selectedDictNote} className="p-button-warning" label="Retrieve Notes If Empty" />
-            <Button label="Dictionary" icon="fa fa-book" onClick={() => this.props.history.push('/words-dict/unit/0')} />
-          </div>
-        </Toolbar>
+        <Toolbar left={leftContents} />
         <DataTable value={this.wordsUnitService.unitWords} autoLayout={true}
                    onRowReorder={this.onReorder} selectionMode="single"
                    selection={this.state.selectedRow} onSelectionChange={this.onSelectionChange}>

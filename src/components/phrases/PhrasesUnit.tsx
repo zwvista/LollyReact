@@ -56,20 +56,21 @@ export default class PhrasesUnit extends React.Component<any, any> {
   };
 
   render() {
+    const leftContents = (
+      <React.Fragment>
+        <Dropdown id="filterType" options={this.settingsService.phraseFilterTypes} value={this.state.filterType} onChange={this.onFilterTypeChange} />
+        <span className="p-float-label">
+          <InputText id="filter" type="text" value={this.state.filter}
+                     onChange={this.onFilterChange} onKeyPress={this.onFilterKeyPress}/>
+          <label htmlFor="filter">Filter</label>
+        </span>
+        <Button label="Add" icon="fa fa-plus" onClick={() => this.props.history.push('/phrases-unit-detail/0')} />
+        <Button label="Refresh" icon="fa fa-refresh" onClick={this.onRefresh}/>
+      </React.Fragment>
+    );
     return (
       <div>
-        <Toolbar>
-          <div className="p-toolbar-group-left">
-            <Dropdown id="filterType" options={this.settingsService.phraseFilterTypes} value={this.state.filterType} onChange={this.onFilterTypeChange} />
-            <span className="p-float-label">
-              <InputText id="filter" type="text" value={this.state.filter}
-                         onChange={this.onFilterChange} onKeyPress={this.onFilterKeyPress}/>
-              <label htmlFor="filter">Filter</label>
-            </span>
-            <Button label="Add" icon="fa fa-plus" onClick={() => this.props.history.push('/phrases-unit-detail/0')} />
-            <Button label="Refresh" icon="fa fa-refresh" onClick={this.onRefresh}/>
-          </div>
-        </Toolbar>
+        <Toolbar left={leftContents} />
         <DataTable value={this.phrasesUnitService.unitPhrases} selectionMode="single" autoLayout={true}
                    onRowReorder={this.onReorder}
                    selection={this.state.selectedRow} onSelectionChange={this.onSelectionChange}>
