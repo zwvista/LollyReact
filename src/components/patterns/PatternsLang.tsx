@@ -3,13 +3,14 @@ import { Button } from 'primereact/button';
 import '../misc/Common.css'
 import { Subscription } from 'rxjs';
 import { InputText } from 'primereact/inputtext';
-import { Inject } from 'react.di';
+import 'reflect-metadata';
+import {resolve} from "inversify-react";
 import { SettingsService } from '../../view-models/misc/settings.service';
 import { PatternsService } from '../../view-models/wpp/patterns.service';
 
 export default class PatternsDetail extends React.Component<any, any> {
-  @Inject patternsService: PatternsService;
-  @Inject settingsService: SettingsService;
+  @resolve patternsService: PatternsService;
+  @resolve settingsService: SettingsService;
   subscription = new Subscription();
 
   componentDidMount() {

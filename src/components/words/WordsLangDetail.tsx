@@ -4,12 +4,13 @@ import { Button } from 'primereact/button';
 import '../misc/Common.css'
 import { Subscription } from 'rxjs';
 import { InputText } from 'primereact/inputtext';
-import { Inject } from 'react.di';
+import 'reflect-metadata';
+import {resolve} from "inversify-react";
 import { SettingsService } from '../../view-models/misc/settings.service';
 
 export default class WordsLangDetail extends React.Component<any, any> {
-  @Inject wordsLangService: WordsLangService;
-  @Inject settingsService: SettingsService;
+  @resolve wordsLangService: WordsLangService;
+  @resolve settingsService: SettingsService;
   subscription = new Subscription();
 
   componentDidMount() {

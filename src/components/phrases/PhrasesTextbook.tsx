@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Inject } from 'react.di';
+import 'reflect-metadata';
+import {resolve} from "inversify-react";
 import { DataTable } from 'primereact/datatable';
 import {Paginator, PaginatorPageState} from 'primereact/paginator';
 import { Column } from 'primereact/column';
@@ -19,9 +20,9 @@ import { KeyboardEvent } from 'react';
 import { AppService } from '../../view-models/misc/app.service';
 
 export default class PhrasesTextbook extends React.Component<any, any> {
-  @Inject appService: AppService;
-  @Inject phrasesUnitService: PhrasesUnitService;
-  @Inject settingsService: SettingsService;
+  @resolve appService: AppService;
+  @resolve phrasesUnitService: PhrasesUnitService;
+  @resolve settingsService: SettingsService;
   subscription = new Subscription();
 
   state = {

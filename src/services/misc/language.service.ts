@@ -1,10 +1,10 @@
-import { Injectable } from 'react.di';
+import { injectable } from 'inversify';
 import { BaseService } from './base.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { MLanguage, MLanguages } from '../../models/misc/language';
 
-@Injectable
+@injectable()
 export class LanguageService extends BaseService {
 
   getData(): Observable<MLanguage[]> {

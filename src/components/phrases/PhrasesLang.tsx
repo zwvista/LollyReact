@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { PhrasesLangService } from '../../view-models/wpp/phrases-lang.service';
-import { Inject } from 'react.di';
+import 'reflect-metadata';
+import {resolve} from "inversify-react";
 import { DataTable } from 'primereact/datatable';
 import {Paginator, PaginatorPageState} from 'primereact/paginator';
 import { Column } from 'primereact/column';
@@ -20,9 +21,9 @@ import { AppService } from '../../view-models/misc/app.service';
 import { MUnitWord } from '../../models/wpp/unit-word';
 
 export default class PhrasesLang extends React.Component<any, any> {
-  @Inject appService: AppService;
-  @Inject phrasesLangService: PhrasesLangService;
-  @Inject settingsService: SettingsService;
+  @resolve appService: AppService;
+  @resolve phrasesLangService: PhrasesLangService;
+  @resolve settingsService: SettingsService;
   subscription = new Subscription();
 
   state = {

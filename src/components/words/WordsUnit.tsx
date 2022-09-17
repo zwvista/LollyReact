@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { KeyboardEvent, SyntheticEvent } from 'react';
 import { WordsUnitService } from '../../view-models/wpp/words-unit.service';
-import { Inject } from 'react.di';
+import 'reflect-metadata';
+import {resolve} from "inversify-react";
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
@@ -17,9 +18,9 @@ import { Dropdown } from 'primereact/dropdown';
 import { AppService } from '../../view-models/misc/app.service';
 
 export default class WordsUnit extends React.Component<any, any> {
-  @Inject appService: AppService;
-  @Inject wordsUnitService: WordsUnitService;
-  @Inject settingsService: SettingsService;
+  @resolve appService: AppService;
+  @resolve wordsUnitService: WordsUnitService;
+  @resolve settingsService: SettingsService;
   subscription = new Subscription();
 
   state = {

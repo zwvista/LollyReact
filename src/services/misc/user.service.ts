@@ -1,10 +1,10 @@
-import { Injectable } from 'react.di';
+import { injectable } from 'inversify';
 import { BaseService } from './base.service';
 import { Observable } from 'rxjs';
 import { MUser, MUsers } from '../../models/misc/user';
 import { map } from 'rxjs/operators';
 
-@Injectable
+@injectable()
 export class UserService extends BaseService {
 
   getDataByLang(username: string, password: string): Observable<MUser[]> {

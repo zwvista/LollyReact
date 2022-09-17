@@ -1,8 +1,8 @@
 import { Rxios } from '../../common/rxios';
-import { Injectable } from 'react.di';
+import { injectable } from 'inversify';
 import {Observable} from "rxjs";
 
-@Injectable
+@injectable()
 export class BaseService {
   protected readonly baseUrlAPI = 'https://zwvista2.tk/lolly/api.php/records/';
   protected readonly baseUrlSP = 'https://zwvista2.tk/lolly/sp.php/';

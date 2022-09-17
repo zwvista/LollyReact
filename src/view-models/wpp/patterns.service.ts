@@ -1,4 +1,6 @@
-import { Inject, Injectable } from 'react.di';
+import { injectable } from 'inversify';
+import 'reflect-metadata';
+import {inject} from "inversify";
 import { SettingsService } from '../misc/settings.service';
 import { AppService } from '../misc/app.service';
 import { MPattern } from '../../models/wpp/pattern';
@@ -6,15 +8,15 @@ import { concatMap, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { PatternService } from '../../services/wpp/pattern.service';
 
-@Injectable
+@injectable()
 export class PatternsService {
 
   patterns: MPattern[] = [];
   patternCount = 0;
 
-  constructor(@Inject private patternService: PatternService,
-              @Inject private settingsService: SettingsService,
-              @Inject private appService: AppService) {
+  constructor(@inject(PatternService) private patternService: PatternService,
+              @inject(SettingsService) private settingsService: SettingsService,
+              @inject(AppService) private appService: AppService) {
   }
 
   getData(page: number, rows: number, filter: string, filterType: number) {

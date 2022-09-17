@@ -1,15 +1,17 @@
-import { Inject, Injectable } from 'react.di';
+import { injectable } from 'inversify';
+import 'reflect-metadata';
+import {inject} from "inversify";
 import { UserService } from '../../services/misc/user.service';
 import { MUser } from '../../models/misc/user';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-@Injectable
+@injectable()
 export class LoginService {
 
   item = new MUser();
 
-  constructor(@Inject private userService: UserService) {
+  constructor(@inject(UserService) private userService: UserService) {
   }
 
   login(): Observable<string> {

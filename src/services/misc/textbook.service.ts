@@ -1,11 +1,11 @@
-import { Injectable } from 'react.di';
+import { injectable } from 'inversify';
 import { BaseService } from './base.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { MTextbook, MTextbooks } from '../../models/misc/textbook';
 import { MSelectItem } from '../../common/selectitem';
 
-@Injectable
+@injectable()
 export class TextbookService extends BaseService {
 
   getDataByLang(langid: number): Observable<MTextbook[]> {

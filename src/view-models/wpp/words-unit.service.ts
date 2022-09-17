@@ -1,4 +1,6 @@
-import { Inject, Injectable } from 'react.di';
+import { injectable } from 'inversify';
+import 'reflect-metadata';
+import {inject} from "inversify";
 import { UnitWordService } from '../../services/wpp/unit-word.service';
 import { SettingsService } from '../misc/settings.service';
 import { MUnitWord } from '../../models/wpp/unit-word';
@@ -7,7 +9,7 @@ import { EMPTY as empty, Observable, of } from 'rxjs';
 import { concatMap, map } from 'rxjs/operators';
 import { LangWordService } from '../../services/wpp/lang-word.service';
 
-@Injectable
+@injectable()
 export class WordsUnitService {
 
   unitWords: MUnitWord[] = [];
@@ -15,10 +17,10 @@ export class WordsUnitService {
   textbookWords: MUnitWord[] = [];
   textbookWordCount = 0;
 
-  constructor(@Inject private unitWordService: UnitWordService,
-              @Inject private langWordService: LangWordService,
-              @Inject private settingsService: SettingsService,
-              @Inject private appService: AppService) {
+  constructor(@inject(UnitWordService) private unitWordService: UnitWordService,
+              @inject(LangWordService) private langWordService: LangWordService,
+              @inject(SettingsService) private settingsService: SettingsService,
+              @inject(AppService) private appService: AppService) {
   }
 
   getDataInTextbook(filter: string, filterType: number): Observable<void> {

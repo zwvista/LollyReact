@@ -1,8 +1,10 @@
-import { Inject, Injectable } from 'react.di';
+import { injectable } from 'inversify';
+import 'reflect-metadata';
+import {inject} from "inversify";
 import { ReplaySubject } from 'rxjs';
 import { SettingsService } from './settings.service';
 
-@Injectable
+@injectable()
 export class AppService {
 
   private _initializeObject: ReplaySubject<void> = new ReplaySubject<void>();
@@ -12,7 +14,7 @@ export class AppService {
 
   isInitialized = false;
 
-  constructor(@Inject private settingsService: SettingsService) {
+  constructor(@inject(SettingsService) private settingsService: SettingsService) {
   }
 
   getData() {

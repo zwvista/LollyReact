@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { WordsUnitService } from '../../view-models/wpp/words-unit.service';
-import { Inject } from 'react.di';
+import 'reflect-metadata';
+import {resolve} from "inversify-react";
 import './Common.css'
 import { Toolbar } from 'primereact/toolbar';
 import { Button } from 'primereact/button';
@@ -13,10 +14,10 @@ import { HtmlService } from '../../services/misc/html.service';
 import { WordsLangService } from '../../view-models/wpp/words-lang.service';
 
 export default class WordsDict extends React.Component<any, any> {
-  @Inject wordsUnitService: WordsUnitService;
-  @Inject wordsLangService: WordsLangService;
-  @Inject settingsService: SettingsService;
-  @Inject htmlService: HtmlService;
+  @resolve wordsUnitService: WordsUnitService;
+  @resolve wordsLangService: WordsLangService;
+  @resolve settingsService: SettingsService;
+  @resolve htmlService: HtmlService;
 
   componentDidMount() {
     const dictType = this.props.match.params.type;

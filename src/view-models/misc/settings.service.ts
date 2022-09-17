@@ -1,5 +1,7 @@
 import { concatMap, map, tap } from 'rxjs/operators';
-import { Inject, Injectable } from 'react.di';
+import { injectable } from 'inversify';
+import 'reflect-metadata';
+import {inject} from "inversify";
 import { LanguageService } from '../../services/misc/language.service';
 import { UserSettingService } from '../../services/misc/user-setting.service';
 import { MUserSetting, MUserSettingInfo } from '../../models/misc/user-setting';
@@ -19,7 +21,7 @@ import { MUSMapping } from '../../models/misc/usmapping';
 import { UsMappingService } from '../../services/misc/us-mapping.service';
 import { HtmlService } from '../../services/misc/html.service';
 
-@Injectable
+@injectable()
 export class SettingsService {
 
   usMappings: MUSMapping[] = [];
@@ -171,14 +173,14 @@ export class SettingsService {
   phraseFilterTypes = ['Phrase', 'Translation'].map((v, i) => new MSelectItem(i, v));
   patternFilterTypes = ['Pattern', 'Note', 'Tags'].map((v, i) => new MSelectItem(i, v));
 
-  constructor(@Inject private langService: LanguageService,
-              @Inject private usMappingService: UsMappingService,
-              @Inject private userSettingService: UserSettingService,
-              @Inject private dictionaryService: DictionaryService,
-              @Inject private textbookService: TextbookService,
-              @Inject private autoCorrectService: AutoCorrectService,
-              @Inject private voiceService: VoiceService,
-              @Inject private htmlService: HtmlService) {
+  constructor(@inject(LanguageService) private langService: LanguageService,
+              @inject(UsMappingService) private usMappingService: UsMappingService,
+              @inject(UserSettingService) private userSettingService: UserSettingService,
+              @inject(DictionaryService) private dictionaryService: DictionaryService,
+              @inject(TextbookService) private textbookService: TextbookService,
+              @inject(AutoCorrectService) private autoCorrectService: AutoCorrectService,
+              @inject(VoiceService) private voiceService: VoiceService,
+              @inject(HtmlService) private htmlService: HtmlService) {
     this.speech.init();
   }
 

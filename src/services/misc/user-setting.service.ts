@@ -1,11 +1,11 @@
-import { Injectable } from 'react.di';
+import { injectable } from 'inversify';
 import { BaseService } from './base.service';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { MUserSetting, MUserSettingInfo, MUserSettings } from '../../models/misc/user-setting';
 import { GlobalVars } from '../../common/common';
 
-@Injectable
+@injectable()
 export class UserSettingService extends BaseService {
 
   getDataByUser(): Observable<MUserSetting[]> {

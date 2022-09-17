@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Inject } from 'react.di';
+import 'reflect-metadata';
+import {resolve} from "inversify-react";
 import '../misc/Common.css'
 import { Subscription } from 'rxjs';
 import { SettingsService } from '../../view-models/misc/settings.service';
@@ -28,9 +29,9 @@ import { AppService } from '../../view-models/misc/app.service';
 import { PatternsService } from '../../view-models/wpp/patterns.service';
 
 export default class Patterns2 extends React.Component<any, any> {
-  @Inject appService: AppService;
-  @Inject patternsService: PatternsService;
-  @Inject settingsService: SettingsService;
+  @resolve appService: AppService;
+  @resolve patternsService: PatternsService;
+  @resolve settingsService: SettingsService;
   subscription = new Subscription();
 
   state = {

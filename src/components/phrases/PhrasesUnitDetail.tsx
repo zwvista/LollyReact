@@ -4,13 +4,14 @@ import { Button } from 'primereact/button';
 import '../misc/Common.css'
 import { Subscription } from 'rxjs';
 import { InputText } from 'primereact/inputtext';
-import { Inject } from 'react.di';
+import 'reflect-metadata';
+import {resolve} from "inversify-react";
 import { SettingsService } from '../../view-models/misc/settings.service';
 import { Dropdown } from 'primereact/dropdown';
 
 export default class PhrasesUnitDetail extends React.Component<any, any> {
-  @Inject phrasesUnitService: PhrasesUnitService;
-  @Inject settingsService: SettingsService;
+  @resolve phrasesUnitService: PhrasesUnitService;
+  @resolve settingsService: SettingsService;
   subscription = new Subscription();
 
   componentDidMount() {

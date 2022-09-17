@@ -1,10 +1,10 @@
-import { Injectable } from 'react.di';
+import { injectable } from 'inversify';
 import { BaseService } from '../misc/base.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { MPatternWebPage, MPatternWebPages } from '../../models/wpp/pattern-webpage';
 
-@Injectable
+@injectable()
 export class PatternWebpageService extends BaseService {
 
   getDataByPattern(patternid: number): Observable<MPatternWebPage[]> {

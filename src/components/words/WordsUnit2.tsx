@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { WordsUnitService } from '../../view-models/wpp/words-unit.service';
-import { Inject } from 'react.di';
+import 'reflect-metadata';
+import {resolve} from "inversify-react";
 import '../misc/Common.css'
 import { Subscription } from 'rxjs';
 import { SettingsService } from '../../view-models/misc/settings.service';
@@ -35,9 +36,9 @@ import { KeyboardEvent } from 'react';
 import { AppService } from '../../view-models/misc/app.service';
 
 export default class WordsUnit2 extends React.Component<any, any> {
-  @Inject appService: AppService;
-  @Inject wordsUnitService: WordsUnitService;
-  @Inject settingsService: SettingsService;
+  @resolve appService: AppService;
+  @resolve wordsUnitService: WordsUnitService;
+  @resolve settingsService: SettingsService;
   subscription = new Subscription();
 
   state = {

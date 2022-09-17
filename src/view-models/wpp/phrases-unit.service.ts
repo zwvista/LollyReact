@@ -1,4 +1,6 @@
-import { Inject, Injectable } from 'react.di';
+import { injectable } from 'inversify';
+import 'reflect-metadata';
+import {inject} from "inversify";
 import { AppService } from '../misc/app.service';
 import { SettingsService } from '../misc/settings.service';
 import { MUnitPhrase } from '../../models/wpp/unit-phrase';
@@ -8,7 +10,7 @@ import { concatMap, map } from 'rxjs/operators';
 import { LangPhraseService } from '../../services/wpp/lang-phrase.service';
 import { MLangPhrase } from '../../models/wpp/lang-phrase';
 
-@Injectable
+@injectable()
 export class PhrasesUnitService {
 
   unitPhrases: MUnitPhrase[] = [];
@@ -16,10 +18,10 @@ export class PhrasesUnitService {
   textbookPhrases: MUnitPhrase[] = [];
   textbookPhraseCount = 0;
 
-  constructor(@Inject private unitPhraseService: UnitPhraseService,
-              @Inject private langPhraseService: LangPhraseService,
-              @Inject private settingsService: SettingsService,
-              @Inject private appService: AppService) {
+  constructor(@inject(UnitPhraseService) private unitPhraseService: UnitPhraseService,
+              @inject(LangPhraseService) private langPhraseService: LangPhraseService,
+              @inject(SettingsService) private settingsService: SettingsService,
+              @inject(AppService) private appService: AppService) {
   }
 
   getDataInTextbook(filter: string, filterType: number) {

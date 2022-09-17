@@ -1,4 +1,4 @@
-import { Injectable } from 'react.di';
+import { injectable } from 'inversify';
 import { BaseService } from '../misc/base.service';
 import { Observable } from 'rxjs';
 import { MLangWord, MLangWords } from '../../models/wpp/lang-word';
@@ -6,7 +6,7 @@ import { map } from 'rxjs/operators';
 import { toParameters } from '../../common/common';
 import { MSPResult } from '../../common/sp-result';
 
-@Injectable
+@injectable()
 export class LangWordService extends BaseService {
 
   getDataByLang(langid: number, page: number, rows: number, filter: string, filterType: number): Observable<MLangWords> {

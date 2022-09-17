@@ -2,13 +2,14 @@ import * as React from 'react';
 import { Button } from 'primereact/button';
 import './Common.css'
 import { InputText } from 'primereact/inputtext';
-import { Inject } from 'react.di';
+import 'reflect-metadata';
+import {resolve} from "inversify-react";
 import { GlobalVars } from '../../common/common';
 import { Password } from 'primereact/password';
 import { LoginService } from '../../view-models/misc/login.service';
 
 export default class Login extends React.Component<any, any> {
-  @Inject loginService!: LoginService;
+  @resolve loginService!: LoginService;
 
   render() {
     return (

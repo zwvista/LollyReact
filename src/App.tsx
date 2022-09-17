@@ -4,7 +4,8 @@ import './App.css';
 import {Link, Outlet} from 'react-router-dom'
 import { AppBar, Tab, Tabs } from '@material-ui/core';
 
-import { Inject, Module } from 'react.di';
+import 'reflect-metadata';
+import {resolve} from "inversify-react";
 import { WordsUnitService } from './view-models/wpp/words-unit.service';
 import { AppService } from './view-models/misc/app.service';
 import { UserSettingService } from './services/misc/user-setting.service';
@@ -66,7 +67,7 @@ function LinkTab(props: any) {
   ],
 })
 export default class App extends React.Component<any, any> {
-  @Inject appService!: AppService;
+  @resolve appService!: AppService;
   items = [
     {label: 'Words in Unit', icon: 'fa fa-bus fa-lg', url: '/words-unit'},
     {label: 'Phrases in Unit', icon: 'fa fa-train fa-lg', url: '/phrases-unit'},

@@ -1,10 +1,10 @@
-import { Injectable } from 'react.di';
+import { injectable } from 'inversify';
 import { BaseService } from '../misc/base.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { MWebPage, MWebPages } from '../../models/wpp/webpage';
 
-@Injectable
+@injectable()
 export class WebpageService extends BaseService {
 
   getDataById(id: number): Observable<MWebPage[]> {

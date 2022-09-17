@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { Inject } from 'react.di';
+import 'reflect-metadata';
+import {resolve} from "inversify-react";
 import { SettingsListener, SettingsService } from '../../view-models/misc/settings.service';
 import './Common.css'
 import { Subscription } from 'rxjs';
 
 export default class Settings extends React.Component<any, any> implements SettingsListener {
-  @Inject settingsService: SettingsService;
+  @resolve settingsService: SettingsService;
   subscription = new Subscription();
 
   get toTypeIsUnit() {

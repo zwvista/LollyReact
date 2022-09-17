@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Inject } from 'react.di';
+import 'reflect-metadata';
+import {resolve} from "inversify-react";
 import { DataTable } from 'primereact/datatable';
 import {Paginator, PaginatorPageState} from 'primereact/paginator';
 import { Column } from 'primereact/column';
@@ -19,9 +20,9 @@ import { PatternsService } from '../../view-models/wpp/patterns.service';
 import { MPattern } from '../../models/wpp/pattern';
 
 export default class Patterns extends React.Component<any, any> {
-  @Inject appService: AppService;
-  @Inject patternsService: PatternsService;
-  @Inject settingsService: SettingsService;
+  @resolve appService: AppService;
+  @resolve patternsService: PatternsService;
+  @resolve settingsService: SettingsService;
   subscription = new Subscription();
 
   state = {

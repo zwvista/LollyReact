@@ -1,4 +1,6 @@
-import { Inject, Injectable } from 'react.di';
+import { injectable } from 'inversify';
+import 'reflect-metadata';
+import {inject} from "inversify";
 import { LangPhraseService } from '../../services/wpp/lang-phrase.service';
 import { SettingsService } from '../misc/settings.service';
 import { AppService } from '../misc/app.service';
@@ -6,15 +8,15 @@ import { concatMap, map } from 'rxjs/operators';
 import { MLangPhrase } from '../../models/wpp/lang-phrase';
 import { Observable } from 'rxjs';
 
-@Injectable
+@injectable()
 export class PhrasesLangService {
 
   langPhrases: MLangPhrase[] = [];
   langPhraseCount = 0;
 
-  constructor(@Inject private langPhraseService: LangPhraseService,
-              @Inject private settingsService: SettingsService,
-              @Inject private appService: AppService) {
+  constructor(@inject(LangPhraseService) private langPhraseService: LangPhraseService,
+              @inject(SettingsService) private settingsService: SettingsService,
+              @inject(AppService) private appService: AppService) {
   }
 
   getData(page: number, rows: number, filter: string, filterType: number) {

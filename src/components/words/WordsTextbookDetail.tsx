@@ -3,14 +3,15 @@ import { Button } from 'primereact/button';
 import '../misc/Common.css'
 import { Subscription } from 'rxjs';
 import { InputText } from 'primereact/inputtext';
-import { Inject } from 'react.di';
+import 'reflect-metadata';
+import {resolve} from "inversify-react";
 import { SettingsService } from '../../view-models/misc/settings.service';
 import { Dropdown } from 'primereact/dropdown';
 import { WordsUnitService } from '../../view-models/wpp/words-unit.service';
 
 export default class WordsTextbookDetail extends React.Component<any, any> {
-  @Inject wordsUnitService: WordsUnitService;
-  @Inject settingsService: SettingsService;
+  @resolve wordsUnitService: WordsUnitService;
+  @resolve settingsService: SettingsService;
   subscription = new Subscription();
 
   componentDidMount() {

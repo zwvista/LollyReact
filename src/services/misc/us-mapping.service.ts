@@ -1,10 +1,10 @@
-import { Injectable } from 'react.di';
+import { injectable } from 'inversify';
 import { BaseService } from './base.service';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { MUSMapping, MUSMappings } from '../../models/misc/usmapping';
 
-@Injectable
+@injectable()
 export class UsMappingService extends BaseService {
 
   getData(): Observable<MUSMapping[]> {

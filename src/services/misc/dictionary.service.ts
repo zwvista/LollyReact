@@ -1,4 +1,4 @@
-import { Injectable } from 'react.di';
+import { injectable } from 'inversify';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { BaseService } from './base.service';
@@ -7,7 +7,7 @@ import {
   MDictionaries,
 } from '../../models/misc/dictionary';
 
-@Injectable
+@injectable()
 export class DictionaryService extends BaseService {
 
   getDictsReference(langid: number): Observable<MDictionary[]> {

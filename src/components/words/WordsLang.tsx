@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { KeyboardEvent, SyntheticEvent } from 'react';
 import { WordsLangService } from '../../view-models/wpp/words-lang.service';
-import { Inject } from 'react.di';
+import 'reflect-metadata';
+import {resolve} from "inversify-react";
 import { DataTable } from 'primereact/datatable';
 import {Paginator, PaginatorPageState} from 'primereact/paginator';
 import { Column } from 'primereact/column';
@@ -18,9 +19,9 @@ import { Dropdown } from 'primereact/dropdown';
 import { AppService } from '../../view-models/misc/app.service';
 
 export default class WordsLang extends React.Component<any, any> {
-  @Inject appService: AppService;
-  @Inject wordsLangService: WordsLangService;
-  @Inject settingsService: SettingsService;
+  @resolve appService: AppService;
+  @resolve wordsLangService: WordsLangService;
+  @resolve settingsService: SettingsService;
   subscription = new Subscription();
 
   state = {
