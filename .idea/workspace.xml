@@ -6,13 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="8c3ada4f-a8b4-4150-ab02-25eb1fe8c197" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/patterns/Patterns2.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/patterns/Patterns2.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/phrases/PhrasesLang2.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/phrases/PhrasesLang2.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/phrases/PhrasesTextbook2.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/phrases/PhrasesTextbook2.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/phrases/PhrasesUnit2.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/phrases/PhrasesUnit2.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/words/WordsLang2.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/words/WordsLang2.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/words/WordsTextbook2.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/words/WordsTextbook2.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/words/WordsUnit2.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/words/WordsUnit2.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,17 +41,17 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/Users/zwvista/Documents/Programs/Lolly/LollyReact/src",
-    "nodejs_package_manager_path": "npm",
-    "ts.external.directory.path": "/Users/zwvista/Documents/Programs/Lolly/LollyReact/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/zwvista/Documents/Programs/Lolly/LollyReact/src&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/zwvista/Documents/Programs/Lolly/LollyReact/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src" />
@@ -149,7 +142,8 @@
       <workItem from="1662877830002" duration="22000" />
       <workItem from="1663428201452" duration="1196000" />
       <workItem from="1663429681763" duration="793000" />
-      <workItem from="1663430725635" duration="4680000" />
+      <workItem from="1663430725635" duration="4968000" />
+      <workItem from="1663435851739" duration="800000" />
     </task>
     <servers />
   </component>
