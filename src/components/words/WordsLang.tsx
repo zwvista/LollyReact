@@ -13,7 +13,6 @@ import { Toolbar } from 'primereact/toolbar';
 import { InputText } from 'primereact/inputtext';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { SettingsService } from '../../view-models/misc/settings.service';
-import * as $ from "jquery";
 import { MLangWord } from '../../models/wpp/lang-word';
 import { Dropdown } from 'primereact/dropdown';
 import { AppService } from '../../view-models/misc/app.service';

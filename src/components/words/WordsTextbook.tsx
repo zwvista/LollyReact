@@ -10,7 +10,6 @@ import { Subscription } from 'rxjs';
 import { Toolbar } from 'primereact/toolbar';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { SettingsService } from '../../view-models/misc/settings.service';
-import * as $ from "jquery";
 import { WordsUnitService } from '../../view-models/wpp/words-unit.service';
 import { MUnitWord } from '../../models/wpp/unit-word';
 import { Dropdown } from 'primereact/dropdown';
