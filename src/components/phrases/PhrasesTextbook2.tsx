@@ -15,7 +15,7 @@ import {
   TableRow, TextField,
   Toolbar,
   Tooltip
-} from '@material-ui/core';
+} from '@mui/material';
 import { PhrasesUnitService } from '../../view-models/wpp/phrases-unit.service';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCopy, faEdit, faPlus, faSync, faTrash, faVolumeUp } from '@fortawesome/free-solid-svg-icons';

@@ -15,7 +15,7 @@ import {
   TextField,
   Toolbar,
   Tooltip
-} from '@material-ui/core';
+} from '@mui/material';
 import { WordsLangService } from '../../view-models/wpp/words-lang.service';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {

@@ -16,7 +16,7 @@ import {
   TextField,
   Toolbar,
   Tooltip
-} from '@material-ui/core';
+} from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faArrowDown,

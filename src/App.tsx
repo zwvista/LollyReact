@@ -2,7 +2,7 @@ import * as React from 'react';
 import './App.css';
 
 import {Link, Outlet} from 'react-router-dom'
-import { AppBar, Tab, Tabs } from '@material-ui/core';
+import { AppBar, Tab, Tabs } from '@mui/material';
 
 import 'reflect-metadata';
 import {resolve} from "inversify-react";

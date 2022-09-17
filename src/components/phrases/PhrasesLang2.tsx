@@ -15,7 +15,7 @@ import {
   TableRow, TextField,
   Toolbar,
   Tooltip
-} from '@material-ui/core';
+} from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCopy, faEdit, faPlus, faSync, faTrash, faVolumeUp } from '@fortawesome/free-solid-svg-icons';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
