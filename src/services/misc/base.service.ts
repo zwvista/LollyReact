@@ -4,8 +4,8 @@ import {Observable} from "rxjs";
 
 @injectable()
 export class BaseService {
-  protected readonly baseUrlAPI = 'https://zwvista2.tk/lolly/api.php/records/';
-  protected readonly baseUrlSP = 'https://zwvista2.tk/lolly/sp.php/';
+  protected readonly baseUrlAPI = 'https://zwvista.com/lolly/api.php/records/';
+  protected readonly baseUrlSP = 'https://zwvista.com/lolly/sp.php/';
   protected readonly http = new Rxios();
 
   httpGet<T>(url: string): Observable<T> {
