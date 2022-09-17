@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs';
 import { SettingsService } from '../../view-models/misc/settings.service';
 import {
   Button,
-  Fab, MenuItem, Select,
+  Fab, MenuItem, Select, SelectChangeEvent,
   Table,
   TableBody,
   TableCell,
@@ -199,7 +199,7 @@ export default class WordsUnit2 extends React.Component<any, any> {
     this.onRefresh();
   };
 
-  onFilterTypeChange = (e: ChangeEvent<HTMLSelectElement>, child: ReactNode) => {
+  onFilterTypeChange = (e: SelectChangeEvent<number>, child: ReactNode) => {
     this.setState({filterType: this.state.filterType = Number(e.target.value)});
     this.onRefresh();
   };

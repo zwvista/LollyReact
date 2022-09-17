@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 import { SettingsService } from '../../view-models/misc/settings.service';
 import {
   Button,
-  Fab, MenuItem, Select,
+  Fab, MenuItem, Select, SelectChangeEvent,
   Table,
   TableBody,
   TableCell, TableFooter,
@@ -87,7 +87,7 @@ export default class PhrasesLang2 extends React.Component<any, any> {
                   native: true,
                 }}
                 onPageChange={this.handleChangePage}
-                onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                onRowsPerPageChange={this.handleRowsPerPageChange}
               />
             </TableRow>
             <TableRow>
@@ -148,7 +148,7 @@ export default class PhrasesLang2 extends React.Component<any, any> {
                   native: true,
                 }}
                 onPageChange={this.handleChangePage}
-                onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                onRowsPerPageChange={this.handleRowsPerPageChange}
               />
             </TableRow>
           </TableFooter>
@@ -162,7 +162,7 @@ export default class PhrasesLang2 extends React.Component<any, any> {
     this.onRefresh();
   };
 
-  handleChangeRowsPerPage = (event: any) => {
+  handleRowsPerPageChange = (event: any) => {
     this.setState({ page: this.state.page = 1, rows: this.state.rows = event.target.value });
     this.onRefresh();
   };
@@ -182,7 +182,7 @@ export default class PhrasesLang2 extends React.Component<any, any> {
     this.onRefresh();
   };
 
-  onFilterTypeChange = (e: ChangeEvent<HTMLSelectElement>, child: ReactNode) => {
+  onFilterTypeChange = (e: SelectChangeEvent<number>, child: ReactNode) => {
     this.setState({filterType: this.state.filterType = Number(e.target.value)});
     this.onRefresh();
   };

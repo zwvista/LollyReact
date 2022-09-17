@@ -6,9 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="8c3ada4f-a8b4-4150-ab02-25eb1fe8c197" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/patterns/Patterns2.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/patterns/Patterns2.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/phrases/PhrasesLang2.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/phrases/PhrasesLang2.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/phrases/PhrasesTextbook2.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/phrases/PhrasesTextbook2.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/phrases/PhrasesUnit2.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/phrases/PhrasesUnit2.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/words/WordsLang2.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/words/WordsLang2.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/words/WordsTextbook2.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/words/WordsTextbook2.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/words/WordsUnit2.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/words/WordsUnit2.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -145,7 +149,7 @@
       <workItem from="1662877830002" duration="22000" />
       <workItem from="1663428201452" duration="1196000" />
       <workItem from="1663429681763" duration="793000" />
-      <workItem from="1663430725635" duration="3646000" />
+      <workItem from="1663430725635" duration="4680000" />
     </task>
     <servers />
   </component>
