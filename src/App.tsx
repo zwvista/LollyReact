@@ -6,17 +6,7 @@ import { AppBar, Tab, Tabs } from '@material-ui/core';
 
 import 'reflect-metadata';
 import {resolve} from "inversify-react";
-import { WordsUnitService } from './view-models/wpp/words-unit.service';
 import { AppService } from './view-models/misc/app.service';
-import { UserSettingService } from './services/misc/user-setting.service';
-import { DictionaryService } from './services/misc/dictionary.service';
-import { TextbookService } from './services/misc/textbook.service';
-import { HtmlService } from './services/misc/html.service';
-import { PhrasesUnitService } from './view-models/wpp/phrases-unit.service';
-import { UnitPhraseService } from './services/wpp/unit-phrase.service';
-import { LanguageService } from './services/misc/language.service';
-import { UnitWordService } from './services/wpp/unit-word.service';
-import { SettingsService } from './view-models/misc/settings.service';
 
 import Settings from './components/misc/Settings';
 
@@ -31,23 +21,10 @@ import { TabMenu } from 'primereact/tabmenu';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 
-import { AutoCorrectService } from './services/misc/autocorrect.service';
-import { LangPhraseService } from './services/wpp/lang-phrase.service';
-import { LangWordService } from './services/wpp/lang-word.service';
-import { WordsLangService } from './view-models/wpp/words-lang.service';
-import { PhrasesLangService } from './view-models/wpp/phrases-lang.service';
-import { VoiceService } from './services/misc/voice.service';
-import { WordFamiService } from './services/wpp/word-fami.service';
-
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faDollarSign, faEuroSign, faBus, faTrain, faPlane, faRocket, faCar, faTaxi, faCog } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { UsMappingService } from './services/misc/us-mapping.service';
-import { PatternService } from './services/wpp/pattern.service';
-import { PatternsService } from './view-models/wpp/patterns.service';
 import { GlobalVars } from './common/common';
-import { UserService } from './services/misc/user.service';
-import { LoginService } from './view-models/misc/login.service';
 import Login from './components/misc/Login';
 
 // https://stackoverflow.com/questions/53375964/using-a-link-component-with-listitem-and-typescript
@@ -56,16 +33,6 @@ function LinkTab(props: any) {
   return <Tab component={Link} {...props} />;
 }
 
-@Module({
-  providers: [
-    DictionaryService, HtmlService, LanguageService,
-    TextbookService, UnitPhraseService, UnitWordService, UserSettingService, AppService,
-    PhrasesUnitService, SettingsService, WordsUnitService, AutoCorrectService,
-    LangPhraseService, LangWordService, PhrasesLangService, WordsLangService,
-    WordFamiService, VoiceService, UsMappingService, PatternService, PatternsService,
-    UserService, LoginService
-  ],
-})
 export default class App extends React.Component<any, any> {
   @resolve appService!: AppService;
   items = [
