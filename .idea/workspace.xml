@@ -7,6 +7,7 @@
     <list default="true" id="8c3ada4f-a8b4-4150-ab02-25eb1fe8c197" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/words/WordsLang.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/words/WordsLang.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -149,6 +150,7 @@
       <workItem from="1663474550601" duration="4574000" />
       <workItem from="1663479206377" duration="6425000" />
       <workItem from="1663488538751" duration="5482000" />
+      <workItem from="1663499315125" duration="6109000" />
     </task>
     <servers />
   </component>
