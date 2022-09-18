@@ -2,7 +2,7 @@ import * as React from 'react';
 import { KeyboardEvent, SyntheticEvent } from 'react';
 import { WordsUnitService } from '../../view-models/wpp/words-unit.service';
 import 'reflect-metadata';
-import {resolve} from "inversify-react";
+import { resolve } from "inversify-react";
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
@@ -110,17 +110,16 @@ export default class WordsUnit extends React.Component<any, any> {
     this.setState({newWord: (e.nativeEvent.target as HTMLInputElement).value});
   };
 
-  onNewWordKeyPress = (e: KeyboardEvent) => {
+  onNewWordKeyPress = async (e: KeyboardEvent) => {
     if (e.key !== 'Enter' || !this.state.newWord) return;
     const o = this.wordsUnitService.newUnitWord();
     o.WORD = this.settingsService.autoCorrectInput(this.state.newWord);
     this.setState({newWord: ''});
     this.updateServiceState();
-    this.subscription.add(this.wordsUnitService.create(o).subscribe(id => {
-      o.ID = id as number;
-      this.wordsUnitService.unitWords.push(o);
-      this.updateServiceState();
-    }));
+    const id = await this.wordsUnitService.create(o);
+    o.ID = id as number;
+    this.wordsUnitService.unitWords.push(o);
+    this.updateServiceState();
   };
 
   onReorder = (e:any) => {
@@ -129,10 +128,9 @@ export default class WordsUnit extends React.Component<any, any> {
     this.wordsUnitService.reindex(index => this.updateServiceState());
   };
 
-  onRefresh = () => {
-    this.subscription.add(this.wordsUnitService.getDataInTextbook(this.state.filter, this.state.filterType).subscribe(_ => {
-      this.updateServiceState();
-    }));
+  onRefresh = async () => {
+    await this.wordsUnitService.getDataInTextbook(this.state.filter, this.state.filterType);
+    this.updateServiceState();
   };
 
   onFilterChange = (e: SyntheticEvent) => {
@@ -153,9 +151,10 @@ export default class WordsUnit extends React.Component<any, any> {
     this.wordsUnitService.delete(item);
   }
 
-  getNote(item: MUnitWord) {
+  async getNote(item: MUnitWord) {
     const index = this.wordsUnitService.unitWords.indexOf(item);
-    this.wordsUnitService.getNote(index).subscribe(_ => this.updateServiceState());
+    await this.wordsUnitService.getNote(index);
+    this.updateServiceState();
   }
 
   // https://stackoverflow.com/questions/42775017/angular-2-redirect-to-an-external-url-and-open-in-a-new-tab

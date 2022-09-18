@@ -1,14 +1,13 @@
-import { concatMap, map, tap } from 'rxjs/operators';
 import { injectable } from 'inversify';
 import 'reflect-metadata';
-import {inject} from "inversify";
+import { inject } from "inversify";
 import { LanguageService } from '../../services/misc/language.service';
 import { UserSettingService } from '../../services/misc/user-setting.service';
 import { MUserSetting, MUserSettingInfo } from '../../models/misc/user-setting';
 import { MLanguage } from '../../models/misc/language';
 import { MDictionary } from '../../models/misc/dictionary';
 import { MTextbook } from '../../models/misc/textbook';
-import { EMPTY as empty, forkJoin, interval, Observable, of, Subscription } from 'rxjs';
+import { interval, Subscription } from 'rxjs';
 import { DictionaryService } from '../../services/misc/dictionary.service';
 import { TextbookService } from '../../services/misc/textbook.service';
 import { AutoCorrectService } from '../../services/misc/autocorrect.service';
@@ -187,9 +186,9 @@ export class SettingsService {
   private getUSInfo(name: string): MUserSettingInfo {
     const o = this.usMappings.find(v => v.NAME === name)!;
     const entityid = o.ENTITYID !== -1 ? o.ENTITYID :
-      o.LEVEL === 1 ? this.selectedLang.ID :
-        o.LEVEL === 2 ? this.selectedTextbook.ID :
-          0;
+        o.LEVEL === 1 ? this.selectedLang.ID :
+            o.LEVEL === 2 ? this.selectedTextbook.ID :
+                0;
     const o2 = this.userSettings.find((v => v.KIND === o.KIND && v.ENTITYID === entityid))!;
     const o3 = new MUserSettingInfo();
     o3.USERSETTINGID = o2.ID;
@@ -197,24 +196,22 @@ export class SettingsService {
     return o3;
   }
 
-  getData(): Observable<number> {
-    return forkJoin([this.langService.getData(),
+  async getData() {
+    const res = await Promise.all([this.langService.getData(),
       this.usMappingService.getData(),
-      this.userSettingService.getDataByUser()]).pipe(
-      concatMap(res => {
-        this.languages = res[0] as MLanguage[];
-        this.usMappings = res[1] as MUSMapping[];
-        this.userSettings = res[2] as MUserSetting[];
-        this.INFO_USLANG = this.getUSInfo(MUSMapping.NAME_USLANG);
-        this.INFO_USROWSPERPAGEOPTIONS = this.getUSInfo(MUSMapping.NAME_USROWSPERPAGEOPTIONS);
-        this.INFO_USROWSPERPAGE = this.getUSInfo(MUSMapping.NAME_USROWSPERPAGE);
-        if (this.settingsListener) this.settingsListener.onGetData();
-        this.selectedLang = this.languages.find(value => value.ID === this.USLANG);
-        return this.updateLang();
-      }));
+      this.userSettingService.getDataByUser()]);
+    this.languages = res[0] as MLanguage[];
+    this.usMappings = res[1] as MUSMapping[];
+    this.userSettings = res[2] as MUserSetting[];
+    this.INFO_USLANG = this.getUSInfo(MUSMapping.NAME_USLANG);
+    this.INFO_USROWSPERPAGEOPTIONS = this.getUSInfo(MUSMapping.NAME_USROWSPERPAGEOPTIONS);
+    this.INFO_USROWSPERPAGE = this.getUSInfo(MUSMapping.NAME_USROWSPERPAGE);
+    if (this.settingsListener) this.settingsListener.onGetData();
+    this.selectedLang = this.languages.find(value => value.ID === this.USLANG)!;
+    await this.updateLang();
   }
 
-  updateLang(): Observable<number> {
+  async updateLang() {
     const newVal = this.selectedLang.ID;
     const dirty = this.USLANG !== newVal;
     this.USLANG = newVal;
@@ -223,42 +220,36 @@ export class SettingsService {
     this.INFO_USDICTNOTE = this.getUSInfo(MUSMapping.NAME_USDICTNOTE);
     this.INFO_USDICTTRANSLATION = this.getUSInfo(MUSMapping.NAME_USDICTTRANSLATION);
     this.INFO_USVOICE = this.getUSInfo(MUSMapping.NAME_USVOICE);
-    return forkJoin([
+    const res = await Promise.all([
       this.dictionaryService.getDictsReference(this.USLANG),
       this.dictionaryService.getDictsNote(this.USLANG),
       this.dictionaryService.getDictsTranslation(this.USLANG),
       this.textbookService.getDataByLang(this.USLANG),
       this.autoCorrectService.getDataByLang(this.USLANG),
-      this.voiceService.getDataByLang(this.USLANG)]).pipe(
-        concatMap(res => {
-          this.dictsReference = res[0] as MDictionary[];
-          this.selectedDictReference = this.dictsReference.find(value => String(value.DICTID) === this.USDICTREFERENCE)!;
-          this.dictsNote = res[1] as MDictionary[];
-          this.selectedDictNote = this.dictsNote.find(value => value.DICTID === this.USDICTNOTE) ||
-            (this.dictsNote.length === 0 ? null : this.dictsNote[0]);
-          this.dictsTranslation = res[2] as MDictionary[];
-          this.selectedDictTranslation = this.dictsTranslation.find(value => value.DICTID === this.USDICTTRANSLATION) ||
-            (this.dictsTranslation.length === 0 ? null : this.dictsTranslation[0]);
-          this.textbooks = res[3] as MTextbook[];
-          this.selectedTextbook = this.textbooks.find(value => value.ID === this.USTEXTBOOK)!;
-          this.textbookFilters = this.textbooks.map(value => new MSelectItem(value.ID, value.NAME));
-          this.textbookFilters = [new MSelectItem(0, 'All Textbooks')].concat(this.textbookFilters);
-          this.autoCorrects = res[4] as MAutoCorrect[];
-          this.voices = res[5] as MVoice[];
-          this.selectedVoice = this.voices.find(value => value.ID === this.USVOICE) ||
-            (this.voices.length === 0 ? null : this.voices[0]);
-          return forkJoin([this.updateTextbook(), this.updateDictReference(), this.updateDictNote(),
-            this.updateDictTranslation(), this.updateVoice(),
-            (dirty ? this.userSettingService.updateIntValue(this.INFO_USLANG, this.USLANG) : of(0)).pipe(
-              tap(_ => { if (this.settingsListener) this.settingsListener.onUpdateLang(); }),
-            )]).pipe(
-            map(_ => 0),
-          );
-        }),
-    );
+      this.voiceService.getDataByLang(this.USLANG)]);
+    this.dictsReference = res[0] as MDictionary[];
+    this.selectedDictReference = this.dictsReference.find(value => String(value.DICTID) === this.USDICTREFERENCE)!;
+    this.dictsNote = res[1] as MDictionary[];
+    this.selectedDictNote = this.dictsNote.find(value => value.DICTID === this.USDICTNOTE) ||
+        (this.dictsNote.length === 0 ? null : this.dictsNote[0]);
+    this.dictsTranslation = res[2] as MDictionary[];
+    this.selectedDictTranslation = this.dictsTranslation.find(value => value.DICTID === this.USDICTTRANSLATION) ||
+        (this.dictsTranslation.length === 0 ? null : this.dictsTranslation[0]);
+    this.textbooks = res[3] as MTextbook[];
+    this.selectedTextbook = this.textbooks.find(value => value.ID === this.USTEXTBOOK)!;
+    this.textbookFilters = this.textbooks.map(value => new MSelectItem(value.ID, value.NAME));
+    this.textbookFilters = [new MSelectItem(0, 'All Textbooks')].concat(this.textbookFilters);
+    this.autoCorrects = res[4] as MAutoCorrect[];
+    this.voices = res[5] as MVoice[];
+    this.selectedVoice = this.voices.find(value => value.ID === this.USVOICE) ||
+        (this.voices.length === 0 ? null : this.voices[0]);
+    await Promise.all([this.updateTextbook(), this.updateDictReference(), this.updateDictNote(),
+      this.updateDictTranslation(), this.updateVoice()]);
+    if (dirty) await this.userSettingService.updateIntValue(this.INFO_USLANG, this.USLANG);
+    if (this.settingsListener) this.settingsListener.onUpdateLang();
   }
 
-  updateTextbook(): Observable<number> {
+  async updateTextbook() {
     const newVal = this.selectedTextbook.ID;
     const dirty = this.USTEXTBOOK !== newVal;
     this.USTEXTBOOK = newVal;
@@ -267,49 +258,44 @@ export class SettingsService {
     this.INFO_USUNITTO = this.getUSInfo(MUSMapping.NAME_USUNITTO);
     this.INFO_USPARTTO = this.getUSInfo(MUSMapping.NAME_USPARTTO);
     this.toType = this.isSingleUnit ? 0 : this.isSingleUnitPart ? 1 : 2;
-    return (dirty ? this.userSettingService.updateIntValue(this.INFO_USTEXTBOOK, this.USTEXTBOOK) : of(0)).pipe(
-      tap( _ => { if (this.settingsListener) this.settingsListener.onUpdateTextbook(); }),
-    );
+    if (dirty) await this.userSettingService.updateIntValue(this.INFO_USTEXTBOOK, this.USTEXTBOOK);
+    if (this.settingsListener) this.settingsListener.onUpdateTextbook();
   }
 
-  updateDictReference(): Observable<number> {
+  async updateDictReference() {
     const newVal = String(this.selectedDictReference.DICTID);
     const dirty = this.USDICTREFERENCE !== newVal;
     this.USDICTREFERENCE = newVal;
-    return (dirty ? this.userSettingService.updateStringValue(this.INFO_USDICTREFERENCE, this.USDICTREFERENCE) : of(0)).pipe(
-      tap( _ => { if (this.settingsListener) this.settingsListener.onUpdateDictReference(); }),
-    );
+    if (dirty) await this.userSettingService.updateStringValue(this.INFO_USDICTREFERENCE, this.USDICTREFERENCE);
+    if (this.settingsListener) this.settingsListener.onUpdateDictReference();
   }
 
-  updateDictNote(): Observable<number> {
-    if (this.selectedDictNote == null) return empty;
+  async updateDictNote() {
+    if (this.selectedDictNote == null) return;
     const newVal = this.selectedDictNote.DICTID;
     const dirty = this.USDICTNOTE !== newVal;
     this.USDICTNOTE = newVal;
-    return (dirty ? this.userSettingService.updateIntValue(this.INFO_USDICTNOTE, this.USDICTNOTE) : of(0)).pipe(
-      tap( _ => { if (this.settingsListener) this.settingsListener.onUpdateDictNote(); }),
-    );
+    if (dirty) await this.userSettingService.updateIntValue(this.INFO_USDICTNOTE, this.USDICTNOTE);
+    if (this.settingsListener) this.settingsListener.onUpdateDictNote();
   }
 
-  updateDictTranslation(): Observable<number> {
-    if (this.selectedDictTranslation == null) return empty;
+  async updateDictTranslation() {
+    if (this.selectedDictTranslation == null) return;
     const newVal = this.selectedDictTranslation.DICTID;
     const dirty = this.USDICTTRANSLATION !== newVal;
     this.USDICTTRANSLATION = newVal;
-    return (dirty ? this.userSettingService.updateIntValue(this.INFO_USDICTTRANSLATION, this.USDICTNOTE) : of(0)).pipe(
-      tap( _ => { if (this.settingsListener) this.settingsListener.onUpdateDictTranslation(); }),
-    );
+    if (dirty) await this.userSettingService.updateIntValue(this.INFO_USDICTTRANSLATION, this.USDICTNOTE);
+    if (this.settingsListener) this.settingsListener.onUpdateDictTranslation();
   }
 
-  updateVoice(): Observable<number> {
-    if (this.selectedVoice == null) return empty;
+  async updateVoice() {
+    if (this.selectedVoice == null) return;
     const newVal = this.selectedVoice.ID;
     const dirty = this.USVOICE !== newVal;
     this.USVOICE = newVal;
     this.speech.setVoice(this.selectedVoice.VOICENAME);
-    return (dirty ? this.userSettingService.updateIntValue(this.INFO_USVOICE, this.USVOICE) : of(0)).pipe(
-      tap( _ => { if (this.settingsListener) this.settingsListener.onUpdateVoice(); }),
-    );
+    if (dirty) await this.userSettingService.updateIntValue(this.INFO_USVOICE, this.USVOICE);
+    if (this.settingsListener) this.settingsListener.onUpdateVoice();
   }
 
   autoCorrectInput(text: string): string {
@@ -323,120 +309,110 @@ export class SettingsService {
     });
   }
 
-  updateUnitFrom(value: number): Observable<number> {
-    return this.doUpdateUnitFrom(value).pipe(
-      concatMap(_ => this.toType === 0 ? this.doUpdateSingleUnit() :
-        this.toType === 1 || this.isInvalidUnitPart ? this.doUpdateUnitPartTo() : of(0)),
-    );
+  async updateUnitFrom(value: number) {
+    await this.doUpdateUnitFrom(value);
+    if (this.toType === 0)
+      await this.doUpdateSingleUnit();
+    else if (this.toType === 1 || this.isInvalidUnitPart)
+      await this.doUpdateUnitPartTo();
   }
 
-  updatePartFrom(value: number): Observable<number> {
-    return this.doUpdatePartFrom(value).pipe(
-      concatMap(_ => this.toType === 1 || this.isInvalidUnitPart ? this.doUpdateUnitPartTo() : of(0)),
-    );
+  async updatePartFrom(value: number) {
+    await this.doUpdatePartFrom(value);
+    if (this.toType === 1 || this.isInvalidUnitPart)
+      await this.doUpdateUnitPartTo();
   }
 
-  updateToType(value: number): Observable<number> {
+  async updateToType(value: number) {
     this.toType = value;
-    return this.toType === 0 ? this.doUpdateSingleUnit() :
-      this.toType === 1 ? this.doUpdateUnitPartTo() : of(0);
+    if (this.toType === 0)
+      await this.doUpdateSingleUnit();
+    else if (this.toType === 1)
+      await this.doUpdateUnitPartTo();
   }
 
-  previousUnitPart(): Observable<number> {
-    if (this.toType === 0)
+  async previousUnitPart() {
+    if (this.toType === 0) {
       if (this.USUNITFROM > 1)
-        return forkJoin([this.doUpdateUnitFrom(this.USUNITFROM - 1),
-          this.doUpdateUnitTo(this.USUNITFROM)]).pipe(map(_ => 0));
-      else
-        return of(0);
-    else if (this.USPARTFROM > 1)
-      return forkJoin([this.doUpdatePartFrom(this.USPARTFROM - 1),
-        this.doUpdateUnitPartTo()]).pipe(map(_ => 0));
+        await Promise.all([this.doUpdateUnitFrom(this.USUNITFROM - 1),
+          this.doUpdateUnitTo(this.USUNITFROM)]);
+    } else if (this.USPARTFROM > 1)
+      await Promise.all([this.doUpdatePartFrom(this.USPARTFROM - 1),
+        this.doUpdateUnitPartTo()]);
     else if (this.USUNITFROM > 1)
-      return forkJoin([this.doUpdateUnitFrom(this.USUNITFROM - 1),
-        this.doUpdatePartFrom(this.partCount), this.doUpdateUnitPartTo()]).pipe(map(_ => 0));
-    else
-      return of(0);
+      await Promise.all([this.doUpdateUnitFrom(this.USUNITFROM - 1),
+        this.doUpdatePartFrom(this.partCount), this.doUpdateUnitPartTo()]);
   }
 
-  nextUnitPart(): Observable<number> {
-    if (this.toType === 0)
+  async nextUnitPart() {
+    if (this.toType === 0) {
       if (this.USUNITFROM < this.unitCount)
-        return forkJoin([this.doUpdateUnitFrom(this.USUNITFROM + 1),
-          this.doUpdateUnitTo(this.USUNITFROM)]).pipe(map(_ => 0));
-      else
-        return of(0);
-    else if (this.USPARTFROM < this.partCount)
-      return forkJoin([this.doUpdatePartFrom(this.USPARTFROM + 1),
-        this.doUpdateUnitPartTo()]).pipe(map(_ => 0));
+        await Promise.all([this.doUpdateUnitFrom(this.USUNITFROM + 1),
+          this.doUpdateUnitTo(this.USUNITFROM)]);
+    } else if (this.USPARTFROM < this.partCount)
+      await Promise.all([this.doUpdatePartFrom(this.USPARTFROM + 1),
+        this.doUpdateUnitPartTo()]);
     else if (this.USUNITFROM < this.unitCount)
-      return forkJoin([this.doUpdateUnitFrom(this.USUNITFROM + 1),
-        this.doUpdatePartFrom(1), this.doUpdateUnitPartTo()]).pipe(map(_ => 0));
-    else
-      return of(0);
+      await Promise.all([this.doUpdateUnitFrom(this.USUNITFROM + 1),
+        this.doUpdatePartFrom(1), this.doUpdateUnitPartTo()]);
   }
 
-  updateUnitTo(value: number): Observable<number> {
-    return this.doUpdateUnitTo(value).pipe(
-      concatMap(_ => this.toType === 1 || this.isInvalidUnitPart ? this.doUpdateUnitPartFrom() : of(0)),
-    );
+  async updateUnitTo(value: number) {
+    await this.doUpdateUnitTo(value);
+    if (this.toType === 1 || this.isInvalidUnitPart)
+      await this.doUpdateUnitPartFrom();
   }
 
-  updatePartTo(value: number): Observable<number> {
-    return this.doUpdatePartTo(value).pipe(
-      concatMap(_ => this.toType === 1 || this.isInvalidUnitPart ? this.doUpdateUnitPartFrom() : of(0)),
-    );
+  async updatePartTo(value: number) {
+    await this.doUpdatePartTo(value);
+    if (this.toType === 1 || this.isInvalidUnitPart)
+      await this.doUpdateUnitPartFrom();
   }
 
-  private doUpdateUnitPartFrom(): Observable<number> {
-    return forkJoin([this.doUpdateUnitFrom(this.USUNITTO), this.doUpdatePartFrom(this.USPARTTO)])
-      .pipe(map(_ => 0));
+  private async doUpdateUnitPartFrom() {
+    await Promise.all([this.doUpdateUnitFrom(this.USUNITTO), this.doUpdatePartFrom(this.USPARTTO)]);
   }
 
-  private doUpdateUnitPartTo(): Observable<number> {
-    return forkJoin([this.doUpdateUnitTo(this.USUNITFROM), this.doUpdatePartTo(this.USPARTFROM)])
-      .pipe(map(_ => 0));
+  private async doUpdateUnitPartTo() {
+    await Promise.all([this.doUpdateUnitTo(this.USUNITFROM), this.doUpdatePartTo(this.USPARTFROM)]);
   }
 
-  private doUpdateSingleUnit(): Observable<number> {
-    return forkJoin([this.doUpdateUnitTo(this.USUNITFROM), this.doUpdatePartFrom(1),
-      this.doUpdatePartTo(this.partCount)])
-      .pipe(map(_ => 0));
+  private async doUpdateSingleUnit() {
+    await Promise.all([this.doUpdateUnitTo(this.USUNITFROM), this.doUpdatePartFrom(1),
+      this.doUpdatePartTo(this.partCount)]);
   }
 
-  private doUpdateUnitFrom(v: number): Observable<number> {
+  private async doUpdateUnitFrom(v: number) {
     const dirty = this.USUNITFROM !== v;
     this.USUNITFROM = v;
-    return dirty ? this.userSettingService.updateIntValue(this.INFO_USUNITFROM, this.USUNITFROM) : empty;
+    if (dirty) await this.userSettingService.updateIntValue(this.INFO_USUNITFROM, this.USUNITFROM);
   }
 
-  private doUpdatePartFrom(v: number): Observable<number> {
+  private async doUpdatePartFrom(v: number) {
     const dirty = this.USPARTFROM !== v;
     this.USPARTFROM = v;
-    return dirty ? this.userSettingService.updateIntValue(this.INFO_USPARTFROM, this.USPARTFROM) : empty;
+    if (dirty) await this.userSettingService.updateIntValue(this.INFO_USPARTFROM, this.USPARTFROM);
   }
 
-  private doUpdateUnitTo(v: number): Observable<number> {
+  private async doUpdateUnitTo(v: number) {
     const dirty = this.USUNITTO !== v;
     this.USUNITTO = v;
-    return dirty ? this.userSettingService.updateIntValue(this.INFO_USUNITTO, this.USUNITTO) : empty;
+    if (dirty) await this.userSettingService.updateIntValue(this.INFO_USUNITTO, this.USUNITTO);
   }
 
-  private doUpdatePartTo(v: number): Observable<number> {
+  private async doUpdatePartTo(v: number) {
     const dirty = this.USPARTTO !== v;
     this.USPARTTO = v;
-    return dirty ? this.userSettingService.updateIntValue(this.INFO_USPARTTO, this.USPARTTO) : empty;
+    if (dirty) await this.userSettingService.updateIntValue(this.INFO_USPARTTO, this.USPARTTO);
   }
 
-  getNote(word: string): Observable<string> {
+  async getNote(word: string): Promise<string> {
     const dictNote = this.selectedDictNote;
-    if (!dictNote) return empty;
+    if (!dictNote) return "";
     const url = dictNote.urlString(word, this.autoCorrects);
-    return this.htmlService.getHtml(url).pipe(
-      map(html => {
-        console.log(html);
-        return HtmlService.extractTextFrom(html, dictNote.TRANSFORM, '', (text, _) => text);
-      }));
+    const html = await this.htmlService.getHtml(url);
+    console.log(html);
+    return HtmlService.extractTextFrom(html, dictNote.TRANSFORM, '', (text, _) => text);
   }
 
   getNotes(wordCount: number, isNoteEmpty: (index: number) => boolean, getOne: (index: number) => void, allComplete: () => void) {

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { WordsUnitService } from '../../view-models/wpp/words-unit.service';
 import 'reflect-metadata';
-import {resolve} from "inversify-react";
+import { resolve } from "inversify-react";
 import '../misc/Common.css'
 import { Subscription } from 'rxjs';
 import { SettingsService } from '../../view-models/misc/settings.service';
@@ -206,10 +206,10 @@ export default class WordsTextbook2 extends React.Component<any, any> {
     this.onRefresh();
   };
 
-  onRefresh = () => {
-    this.subscription.add(this.wordsUnitService.getDataInLang(this.state.page, this.state.rows, this.state.filter, this.state.filterType, this.state.textbookFilter).subscribe(_ => {
-      this.updateServiceState();
-    }));
+  onRefresh = async () => {
+    // https://stackoverflow.com/questions/4228356/integer-division-with-remainder-in-javascript
+    await this.wordsUnitService.getDataInLang(this.state.page, this.state.rows, this.state.filter, this.state.filterType, this.state.textbookFilter);
+    this.updateServiceState();
   };
 
   onFilterChange = (e: SyntheticEvent) => {
@@ -235,9 +235,9 @@ export default class WordsTextbook2 extends React.Component<any, any> {
     this.wordsUnitService.delete(item);
   }
 
-  getNote(index: number) {
+  async getNote(index: number) {
     console.log(index);
-    this.wordsUnitService.getNote(index).subscribe();
+    await this.wordsUnitService.getNote(index);
   }
 
   // https://stackoverflow.com/questions/42775017/angular-2-redirect-to-an-external-url-and-open-in-a-new-tab

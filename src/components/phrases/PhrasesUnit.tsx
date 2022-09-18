@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { PhrasesUnitService } from '../../view-models/wpp/phrases-unit.service';
 import 'reflect-metadata';
-import {resolve} from "inversify-react";
+import { resolve } from "inversify-react";
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
@@ -95,10 +95,9 @@ export default class PhrasesUnit extends React.Component<any, any> {
     this.phrasesUnitService.reindex(index => this.updateServiceState());
   };
 
-  onRefresh = () => {
-    this.subscription.add(this.phrasesUnitService.getDataInTextbook(this.state.filter, this.state.filterType).subscribe(
-      _ => this.updateServiceState()
-    ));
+  onRefresh = async () => {
+    await this.phrasesUnitService.getDataInTextbook(this.state.filter, this.state.filterType);
+    this.updateServiceState();
   };
 
   onFilterChange = (e: SyntheticEvent) => {

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { WordsUnitService } from '../../view-models/wpp/words-unit.service';
 import 'reflect-metadata';
-import {resolve} from "inversify-react";
+import { resolve } from "inversify-react";
 import './Common.css'
 import { Toolbar } from 'primereact/toolbar';
 import { Button } from 'primereact/button';
@@ -77,20 +77,19 @@ export default class WordsDict extends React.Component<any, any> {
     this.refreshDict(this.state.selectedDictReference, selectedWord);
   };
 
-  refreshDict(selectedDictReference: MDictionary, selectedWord: string) {
+  async refreshDict(selectedDictReference: MDictionary, selectedWord: string) {
     const item = selectedDictReference;
     const url = item.urlString(selectedWord, this.settingsService.autoCorrects);
     if (item.DICTTYPENAME === 'OFFLINE') {
       this.setState({
         dictUrl: 'about:blank',
       });
-      this.htmlService.getHtml(url).subscribe(html => {
-        const dictSrc = item.htmlString(html, selectedWord)
-          .replace(/\n/g, ' ').replace(/"/g, '&quot;');
-        console.log(dictSrc);
-        this.setState({
-          dictSrc,
-        });
+      const html = await this.htmlService.getHtml(url)
+      const dictSrc = item.htmlString(html, selectedWord)
+        .replace(/\n/g, ' ').replace(/"/g, '&quot;');
+      console.log(dictSrc);
+      this.setState({
+        dictSrc,
       });
     } else {
       this.setState({

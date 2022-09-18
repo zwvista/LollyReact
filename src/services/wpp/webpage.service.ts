@@ -1,20 +1,17 @@
 import { injectable } from 'inversify';
 import { BaseService } from '../misc/base.service';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { MWebPage, MWebPages } from '../../models/wpp/webpage';
 
 @injectable()
 export class WebpageService extends BaseService {
 
-  getDataById(id: number): Observable<MWebPage[]> {
+  async getDataById(id: number): Promise<MWebPage[]> {
     const url = `${this.baseUrlAPI}WEBPAGES?filter=ID,eq,${id}`;
-    return this.httpGet<MWebPages>(url).pipe(
-      map(result => result.records.map(value => Object.assign(new MWebPage(), value))),
-    );
+    const result = await this.httpGet<MWebPages>(url);
+    return result.records.map(value => Object.assign(new MWebPage(), value));
   }
 
-  getDataBySearch(t: string, u: string): Observable<MWebPage[]> {
+  async getDataBySearch(t: string, u: string): Promise<MWebPage[]> {
     let filter = '';
     if (t)
       filter += `?filter=TITLE,cs,${encodeURIComponent(t)}`;
@@ -23,27 +20,23 @@ export class WebpageService extends BaseService {
       filter += `filter=URL,cs,${encodeURIComponent(u)}`;
     }
     const url = `${this.baseUrlAPI}WEBPAGES${filter}`;
-    return this.httpGet<MWebPages>(url).pipe(
-      map(result => result.records.map(value => Object.assign(new MWebPage(), value))),
-    );
+    const result = await this.httpGet<MWebPages>(url);
+    return result.records.map(value => Object.assign(new MWebPage(), value));
   }
 
-  create(item: MWebPage): Observable<number | any[]> {
+  async create(item: MWebPage): Promise<number | any[]> {
     const url = `${this.baseUrlAPI}WEBPAGES`;
     (item as any).ID = null;
-    return this.httpPost<number | any[]>(url, item).pipe(
-    );
+    return await this.httpPost<number | any[]>(url, item);
   }
 
-  update(item: MWebPage): Observable<number> {
+  async update(item: MWebPage): Promise<number> {
     const url = `${this.baseUrlAPI}WEBPAGES/${item.ID}`;
-    return this.httpPut<number>(url, item).pipe(
-    );
+    return await this.httpPut<number>(url, item);
   }
 
-  delete(id: number): Observable<number> {
+  async delete(id: number): Promise<number> {
     const url = `${this.baseUrlAPI}WEBPAGES/${id}`;
-    return this.httpDelete(url).pipe(
-    );
+    return await this.httpDelete(url);
   }
 }

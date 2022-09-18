@@ -1,14 +1,12 @@
 import { injectable } from 'inversify';
 import 'reflect-metadata';
-import {inject} from "inversify";
+import { inject } from "inversify";
 import { AppService } from '../misc/app.service';
 import { SettingsService } from '../misc/settings.service';
 import { MUnitPhrase } from '../../models/wpp/unit-phrase';
 import { UnitPhraseService } from '../../services/wpp/unit-phrase.service';
-import { EMPTY as empty, Observable, of } from 'rxjs';
-import { concatMap, map } from 'rxjs/operators';
 import { LangPhraseService } from '../../services/wpp/lang-phrase.service';
-import { MLangPhrase } from '../../models/wpp/lang-phrase';
+import { take } from 'rxjs/operators';
 
 @injectable()
 export class PhrasesUnitService {
@@ -24,53 +22,47 @@ export class PhrasesUnitService {
               @inject(AppService) private appService: AppService) {
   }
 
-  getDataInTextbook(filter: string, filterType: number) {
-    return this.appService.initializeObject.pipe(
-      concatMap(_ => this.unitPhraseService.getDataByTextbookUnitPart(this.settingsService.selectedTextbook,
-        this.settingsService.USUNITPARTFROM, this.settingsService.USUNITPARTTO, filter, filterType)),
-      map(res => this.unitPhrases = res),
-    );
+  async getDataInTextbook(filter: string, filterType: number) {
+    await this.appService.initializeObject.pipe(take(1));
+    this.unitPhrases = await this.unitPhraseService.getDataByTextbookUnitPart(this.settingsService.selectedTextbook,
+        this.settingsService.USUNITPARTFROM, this.settingsService.USUNITPARTTO, filter, filterType);
   }
 
-  getDataInLang(page: number, rows: number, filter: string, filterType: number, textbookFilter: number) {
-    return this.appService.initializeObject.pipe(
-      concatMap(_ => this.unitPhraseService.getDataByLang(this.settingsService.selectedLang.ID,
-        this.settingsService.textbooks, page, rows, filter, filterType, textbookFilter)),
-      map(res => {
-        this.textbookPhrases = res.records;
-        this.textbookPhraseCount = res.results;
-      }),
-    );
+  async getDataInLang(page: number, rows: number, filter: string, filterType: number, textbookFilter: number) {
+    await this.appService.initializeObject.pipe(take(1));
+    const res = await this.unitPhraseService.getDataByLang(this.settingsService.selectedLang.ID,
+        this.settingsService.textbooks, page, rows, filter, filterType, textbookFilter);
+    this.textbookPhrases = res.records;
+    this.textbookPhraseCount = res.results;
   }
 
-  create(item: MUnitPhrase): Observable<number | any[]> {
-    return this.unitPhraseService.create(item);
+  async create(item: MUnitPhrase): Promise<number | any[]> {
+    return await this.unitPhraseService.create(item);
   }
 
-  updateSeqNum(id: number, seqnum: number): Observable<number> {
-    return this.unitPhraseService.updateSeqNum(id, seqnum);
+  async updateSeqNum(id: number, seqnum: number): Promise<number> {
+    return await this.unitPhraseService.updateSeqNum(id, seqnum);
   }
 
-  updateTranslation(phraseid: number, translation: string): Observable<number> {
-    return this.langPhraseService.updateTranslation(phraseid, translation);
+  async updateTranslation(phraseid: number, translation: string): Promise<number> {
+    return await this.langPhraseService.updateTranslation(phraseid, translation);
   }
 
-  update(item: MUnitPhrase): Observable<string> {
-    return this.unitPhraseService.update(item);
+  async update(item: MUnitPhrase): Promise<string> {
+    return await this.unitPhraseService.update(item);
   }
 
-  delete(item: MUnitPhrase): Observable<string> {
-    return this.unitPhraseService.delete(item);
+  async delete(item: MUnitPhrase): Promise<string> {
+    return await this.unitPhraseService.delete(item);
   }
 
-  reindex(onNext: (index: number) => void) {
+  async reindex(onNext: (index: number) => void) {
     for (let i = 1; i <= this.unitPhrases.length; i++) {
       const item = this.unitPhrases[i - 1];
       if (item.SEQNUM === i) continue;
       item.SEQNUM = i;
-      this.unitPhraseService.updateSeqNum(item.ID, item.SEQNUM).subscribe(_ => {
-        onNext(i - 1);
-      });
+      await this.unitPhraseService.updateSeqNum(item.ID, item.SEQNUM);
+      onNext(i - 1);
     }
   }
 
@@ -79,7 +71,7 @@ export class PhrasesUnitService {
     o.LANGID = this.settingsService.selectedLang.ID;
     o.TEXTBOOKID = this.settingsService.USTEXTBOOK;
     const maxElem = this.unitPhrases.length === 0 ? null :
-      this.unitPhrases.reduce((p, v) => p.unitPartSeqnum < v.unitPartSeqnum ? v : p);
+        this.unitPhrases.reduce((p, v) => p.unitPartSeqnum < v.unitPartSeqnum ? v : p);
     o.UNIT = maxElem ? maxElem.UNIT : this.settingsService.USUNITTO;
     o.PART = maxElem ? maxElem.PART : this.settingsService.USPARTTO;
     o.SEQNUM = (maxElem ? maxElem.SEQNUM : 0) + 1;

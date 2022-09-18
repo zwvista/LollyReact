@@ -1,6 +1,6 @@
 import { injectable } from 'inversify';
 import 'reflect-metadata';
-import {inject} from "inversify";
+import { inject } from "inversify";
 import { ReplaySubject } from 'rxjs';
 import { SettingsService } from './settings.service';
 
@@ -17,11 +17,10 @@ export class AppService {
   constructor(@inject(SettingsService) private settingsService: SettingsService) {
   }
 
-  getData() {
-    this.settingsService.getData().subscribe(_ => {
-      this.isInitialized = true;
-      this._initializeObject.next();
-    });
+  async getData() {
+    await this.settingsService.getData();
+    this.isInitialized = true;
+    this._initializeObject.next();
   }
 
 }

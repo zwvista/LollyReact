@@ -1,63 +1,54 @@
 import { injectable } from 'inversify';
 import { BaseService } from '../misc/base.service';
-import { Observable } from 'rxjs';
 import { MPattern, MPatterns } from '../../models/wpp/pattern';
-import { map } from 'rxjs/operators';
 import { MSPResult } from '../../common/sp-result';
 import { toParameters } from '../../common/common';
 
 @injectable()
 export class PatternService extends BaseService {
 
-  getDataByLang(langid: number, page: number, rows: number, filter: string, filterType: number): Observable<MPatterns> {
+  async getDataByLang(langid: number, page: number, rows: number, filter: string, filterType: number): Promise<MPatterns> {
     let url = `${this.baseUrlAPI}PATTERNS?filter=LANGID,eq,${langid}&order=PATTERN&page=${page},${rows}`;
     if (filter)
       url += `&filter=${filterType === 0 ? 'PATTERN' : filterType === 1 ? 'NOTE' : 'TAGS'},cs,${encodeURIComponent(filter)}`;
-    return this.httpGet<MPatterns>(url).pipe(
-      map(result => ({
-        records: result.records.map(value => Object.assign(new MPattern(), value)),
-        results: result.results,
-      })),
-    );
+    const result = await this.httpGet<MPatterns>(url);
+    return ({
+      records: result.records.map(value => Object.assign(new MPattern(), value)),
+      results: result.results,
+    });
   }
 
-  getDataById(id: number): Observable<MPattern[]> {
+  async getDataById(id: number): Promise<MPattern[]> {
     const url = `${this.baseUrlAPI}PATTERNS?filter=ID,eq,${id}`;
-    return this.httpGet<MPatterns>(url).pipe(
-      map(result => result.records.map(value => Object.assign(new MPattern(), value))),
-    );
+    const result = await this.httpGet<MPatterns>(url);
+    return result.records.map(value => Object.assign(new MPattern(), value));
   }
 
-  create(item: MPattern): Observable<number | any[]> {
+  async create(item: MPattern): Promise<number | any[]> {
     const url = `${this.baseUrlAPI}PATTERNS`;
     (item as any).ID = null;
-    return this.httpPost<number | any[]>(url, item).pipe(
-    );
+    return await this.httpPost<number | any[]>(url, item);
   }
 
-  update(item: MPattern): Observable<number> {
+  async update(item: MPattern): Promise<number> {
     const url = `${this.baseUrlAPI}PATTERNS/${item.ID}`;
-    return this.httpPut<number>(url, item).pipe(
-    );
+    return await this.httpPut<number>(url, item);
   }
 
-  delete(id: number): Observable<number> {
+  async delete(id: number): Promise<number> {
     const url = `${this.baseUrlAPI}PATTERNS/${id}`;
-    return this.httpDelete(url).pipe(
-    );
+    return await this.httpDelete(url);
   }
 
-  mergePatterns(item: MPattern): Observable<string> {
+  async mergePatterns(item: MPattern): Promise<string> {
     const url = `${this.baseUrlSP}PATTERNS_MERGE`;
-    return this.httpPost<MSPResult[][]>(url, toParameters(item)).pipe(
-      map(result => result[0][0].result),
-    );
+    const result = await this.httpPost<MSPResult[][]>(url, toParameters(item));
+    return result[0][0].result;
   }
 
-  splitPattern(item: MPattern): Observable<string> {
+  async splitPattern(item: MPattern): Promise<string> {
     const url = `${this.baseUrlSP}PATTERNS_SPLIT`;
-    return this.httpPost<MSPResult[][]>(url, toParameters(item)).pipe(
-      map(result => result[0][0].result),
-    );
+    const result = await this.httpPost<MSPResult[][]>(url, toParameters(item));
+    return result[0][0].result;
   }
 }

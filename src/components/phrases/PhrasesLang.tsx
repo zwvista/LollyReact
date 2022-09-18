@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { PhrasesLangService } from '../../view-models/wpp/phrases-lang.service';
 import 'reflect-metadata';
-import {resolve} from "inversify-react";
+import { resolve } from "inversify-react";
 import { DataTable } from 'primereact/datatable';
-import {Paginator, PaginatorPageState} from 'primereact/paginator';
+import { Paginator, PaginatorPageState } from 'primereact/paginator';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import '../misc/Common.css'
@@ -18,7 +18,6 @@ import { InputText } from 'primereact/inputtext';
 import { SyntheticEvent } from 'react';
 import { KeyboardEvent } from 'react';
 import { AppService } from '../../view-models/misc/app.service';
-import { MUnitWord } from '../../models/wpp/unit-word';
 
 export default class PhrasesLang extends React.Component<any, any> {
   @resolve appService: AppService;
@@ -104,10 +103,9 @@ export default class PhrasesLang extends React.Component<any, any> {
     );
   }
 
-  onRefresh = () => {
-    this.subscription.add(this.phrasesLangService.getData(this.state.page, this.state.rows, this.state.filter, this.state.filterType).subscribe(
-      _ => this.updateServiceState()
-    ));
+  onRefresh = async () => {
+    await this.phrasesLangService.getData(this.state.page, this.state.rows, this.state.filter, this.state.filterType);
+    this.updateServiceState();
   };
 
   onSelectionChange = (e: any) => {

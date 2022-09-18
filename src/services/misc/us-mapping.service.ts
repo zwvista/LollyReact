@@ -7,10 +7,9 @@ import { MUSMapping, MUSMappings } from '../../models/misc/usmapping';
 @injectable()
 export class UsMappingService extends BaseService {
 
-  getData(): Observable<MUSMapping[]> {
+  async getData(): Promise<MUSMapping[]> {
     const url = `${this.baseUrlAPI}USMAPPINGS`;
-    return this.httpGet<MUSMappings>(url).pipe(
-      map(result => result.records.map(value => Object.assign(new MUSMapping(), value))),
-    );
+    const result = await this.httpGet<MUSMappings>(url);
+    return result.records.map(value => Object.assign(new MUSMapping(), value));
   }
 }

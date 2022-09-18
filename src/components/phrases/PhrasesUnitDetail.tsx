@@ -2,17 +2,15 @@ import * as React from 'react';
 import { PhrasesUnitService } from '../../view-models/wpp/phrases-unit.service';
 import { Button } from 'primereact/button';
 import '../misc/Common.css'
-import { Subscription } from 'rxjs';
 import { InputText } from 'primereact/inputtext';
 import 'reflect-metadata';
-import {resolve} from "inversify-react";
+import { resolve } from "inversify-react";
 import { SettingsService } from '../../view-models/misc/settings.service';
 import { Dropdown } from 'primereact/dropdown';
 
 export default class PhrasesUnitDetail extends React.Component<any, any> {
   @resolve phrasesUnitService: PhrasesUnitService;
   @resolve settingsService: SettingsService;
-  subscription = new Subscription();
 
   componentDidMount() {
     const id = +this.props.match.params.id;
@@ -22,10 +20,6 @@ export default class PhrasesUnitDetail extends React.Component<any, any> {
     });
   }
 
-  componentWillUnmount() {
-    this.subscription.unsubscribe();
-  }
-  
   render() {
     return this.state && (
       <div>
@@ -80,13 +74,13 @@ export default class PhrasesUnitDetail extends React.Component<any, any> {
     history.back();
   };
 
-  save = () => {
+  save = async () => {
     this.state.item.PHRASE = this.settingsService.autoCorrectInput(this.state.item.PHRASE);
-    if (this.state.item.ID) {
-      this.subscription.add(this.phrasesUnitService.update(this.state.item).subscribe(_ => this.goBack()));
-    } else {
-      this.subscription.add(this.phrasesUnitService.create(this.state.item).subscribe(_ => this.goBack()));
-    }
+    if (this.state.item.ID)
+      await this.phrasesUnitService.update(this.state.item);
+    else
+      await this.phrasesUnitService.create(this.state.item);
+    this.goBack();
   };
 
 };

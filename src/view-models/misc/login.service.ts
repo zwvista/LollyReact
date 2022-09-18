@@ -1,10 +1,8 @@
 import { injectable } from 'inversify';
 import 'reflect-metadata';
-import {inject} from "inversify";
+import { inject } from "inversify";
 import { UserService } from '../../services/misc/user.service';
 import { MUser } from '../../models/misc/user';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 @injectable()
 export class LoginService {
@@ -14,9 +12,8 @@ export class LoginService {
   constructor(@inject(UserService) private userService: UserService) {
   }
 
-  login(): Observable<string> {
-    return this.userService.getDataByLang(this.item.USERNAME, this.item.PASSWORD).pipe(
-      map(res => res.length === 0 ? '' : res[0].USERID)
-    );
+  async login(): Promise<string> {
+    const res = await this.userService.getDataByLang(this.item.USERNAME, this.item.PASSWORD);
+    return res.length === 0 ? '' : res[0].USERID;
   }
 }

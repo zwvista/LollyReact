@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { Button } from 'primereact/button';
 import '../misc/Common.css'
-import { Subscription } from 'rxjs';
 import { InputText } from 'primereact/inputtext';
 import 'reflect-metadata';
-import {resolve} from "inversify-react";
+import { resolve } from "inversify-react";
 import { SettingsService } from '../../view-models/misc/settings.service';
 import { Dropdown } from 'primereact/dropdown';
 import { WordsUnitService } from '../../view-models/wpp/words-unit.service';
@@ -12,7 +11,6 @@ import { WordsUnitService } from '../../view-models/wpp/words-unit.service';
 export default class WordsTextbookDetail extends React.Component<any, any> {
   @resolve wordsUnitService: WordsUnitService;
   @resolve settingsService: SettingsService;
-  subscription = new Subscription();
 
   componentDidMount() {
     const id = +this.props.match.params.id;
@@ -22,10 +20,6 @@ export default class WordsTextbookDetail extends React.Component<any, any> {
     });
   }
 
-  componentWillUnmount() {
-    this.subscription.unsubscribe();
-  }
-  
   render() {
     return this.state && (
       <div>
@@ -92,9 +86,10 @@ export default class WordsTextbookDetail extends React.Component<any, any> {
     history.back();
   };
 
-  save = () => {
+  save = async () => {
     this.state.item.WORD = this.settingsService.autoCorrectInput(this.state.item.WORD);
-    this.subscription.add(this.wordsUnitService.update(this.state.item).subscribe(_ => this.goBack()));
+    await this.wordsUnitService.update(this.state.item);
+    this.goBack();
   };
 
 };

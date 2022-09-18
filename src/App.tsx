@@ -1,11 +1,11 @@
 import * as React from 'react';
 import './App.css';
 
-import {Link, Outlet} from 'react-router-dom'
+import { Link, Outlet } from 'react-router-dom'
 import { AppBar, Tab, Tabs } from '@mui/material';
 
 import 'reflect-metadata';
-import {resolve} from "inversify-react";
+import { resolve } from "inversify-react";
 import { AppService } from './view-models/misc/app.service';
 
 import Settings from './components/misc/Settings';

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { WordsUnitService } from '../../view-models/wpp/words-unit.service';
 import 'reflect-metadata';
-import {resolve} from "inversify-react";
+import { resolve } from "inversify-react";
 import '../misc/Common.css'
 import { Subscription } from 'rxjs';
 import { SettingsService } from '../../view-models/misc/settings.service';
@@ -171,23 +171,21 @@ export default class WordsUnit2 extends React.Component<any, any> {
     this.setState({newWord: (e.nativeEvent.target as HTMLInputElement).value});
   };
 
-  onNewWordKeyPress = (e: KeyboardEvent) => {
+  onNewWordKeyPress = async (e: KeyboardEvent) => {
     if (e.key !== 'Enter' || !this.state.newWord) return;
     const o = this.wordsUnitService.newUnitWord();
     o.WORD = this.settingsService.autoCorrectInput(this.state.newWord);
     this.setState({newWord: ''});
     this.updateServiceState();
-    this.subscription.add(this.wordsUnitService.create(o).subscribe(id => {
-      o.ID = id as number;
-      this.wordsUnitService.unitWords.push(o);
-      this.updateServiceState();
-    }));
+    const id = await this.wordsUnitService.create(o);
+    o.ID = id as number;
+    this.wordsUnitService.unitWords.push(o);
+    this.updateServiceState();
   };
 
-  onRefresh = () => {
-    this.subscription.add(this.wordsUnitService.getDataInTextbook(this.state.filter, this.state.filterType).subscribe(_ => {
-      this.updateServiceState();
-    }));
+  onRefresh = async () => {
+    await this.wordsUnitService.getDataInTextbook(this.state.filter, this.state.filterType);
+    this.updateServiceState();
   };
 
   onFilterChange = (e: SyntheticEvent) => {
@@ -208,9 +206,10 @@ export default class WordsUnit2 extends React.Component<any, any> {
     this.wordsUnitService.delete(item);
   }
 
-  getNote(item: MUnitWord) {
+  async getNote(item: MUnitWord) {
     const index = this.wordsUnitService.unitWords.indexOf(item);
-    this.wordsUnitService.getNote(index).subscribe(_ => this.updateServiceState());
+    await this.wordsUnitService.getNote(index);
+    this.updateServiceState();
   }
 
   googleWord(WORD: string) {

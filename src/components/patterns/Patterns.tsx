@@ -1,8 +1,8 @@
 import * as React from 'react';
 import 'reflect-metadata';
-import {resolve} from "inversify-react";
+import { resolve } from "inversify-react";
 import { DataTable } from 'primereact/datatable';
-import {Paginator, PaginatorPageState} from 'primereact/paginator';
+import { Paginator, PaginatorPageState } from 'primereact/paginator';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import '../misc/Common.css'
@@ -104,10 +104,9 @@ export default class Patterns extends React.Component<any, any> {
     );
   }
 
-  onRefresh = () => {
-    this.subscription.add(this.patternsService.getData(this.state.page, this.state.rows, this.state.filter, this.state.filterType).subscribe(
-      _ => this.updateServiceState()
-    ));
+  onRefresh = async () => {
+    await this.patternsService.getData(this.state.page, this.state.rows, this.state.filter, this.state.filterType);
+    this.updateServiceState();
   };
 
   onSelectionChange = (e: any) => {

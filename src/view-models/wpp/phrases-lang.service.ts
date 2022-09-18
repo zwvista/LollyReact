@@ -1,12 +1,11 @@
 import { injectable } from 'inversify';
 import 'reflect-metadata';
-import {inject} from "inversify";
+import { inject } from "inversify";
 import { LangPhraseService } from '../../services/wpp/lang-phrase.service';
 import { SettingsService } from '../misc/settings.service';
 import { AppService } from '../misc/app.service';
-import { concatMap, map } from 'rxjs/operators';
 import { MLangPhrase } from '../../models/wpp/lang-phrase';
-import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 @injectable()
 export class PhrasesLangService {
@@ -19,26 +18,23 @@ export class PhrasesLangService {
               @inject(AppService) private appService: AppService) {
   }
 
-  getData(page: number, rows: number, filter: string, filterType: number) {
-    return this.appService.initializeObject.pipe(
-      concatMap(_ => this.langPhraseService.getDataByLang(this.settingsService.selectedLang.ID, page, rows, filter, filterType)),
-      map(res => {
-        this.langPhrases = res.records;
-        this.langPhraseCount = res.results;
-      }),
-    );
+  async getData(page: number, rows: number, filter: string, filterType: number) {
+    await this.appService.initializeObject.pipe(take(1));
+    const res = await this.langPhraseService.getDataByLang(this.settingsService.selectedLang.ID, page, rows, filter, filterType);
+    this.langPhrases = res.records;
+    this.langPhraseCount = res.results;
   }
 
-  create(item: MLangPhrase): Observable<number | any[]> {
-    return this.langPhraseService.create(item);
+  async create(item: MLangPhrase): Promise<number | any[]> {
+    return await this.langPhraseService.create(item);
   }
 
-  update(item: MLangPhrase): Observable<number> {
-    return this.langPhraseService.update(item);
+  async update(item: MLangPhrase): Promise<number> {
+    return await this.langPhraseService.update(item);
   }
 
-  delete(item: MLangPhrase): Observable<string> {
-    return this.langPhraseService.delete(item);
+  async delete(item: MLangPhrase): Promise<string> {
+    return await this.langPhraseService.delete(item);
   }
 
   newLangPhrase(): MLangPhrase {

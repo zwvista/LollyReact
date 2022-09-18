@@ -1,48 +1,40 @@
 import { injectable } from 'inversify';
 import { BaseService } from '../misc/base.service';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { MPatternWebPage, MPatternWebPages } from '../../models/wpp/pattern-webpage';
 
 @injectable()
 export class PatternWebpageService extends BaseService {
 
-  getDataByPattern(patternid: number): Observable<MPatternWebPage[]> {
+  async getDataByPattern(patternid: number): Promise<MPatternWebPage[]> {
     const url = `${this.baseUrlAPI}VPATTERNSWEBPAGES?PATTERNID=ID,eq,${patternid}&order=SEQNUM`;
-    return this.httpGet<MPatternWebPages>(url).pipe(
-      map(result => result.records.map(value => Object.assign(new MPatternWebPage(), value))),
-    );
+    const result = await this.httpGet<MPatternWebPages>(url);
+    return result.records.map(value => Object.assign(new MPatternWebPage(), value));
   }
 
-  getDataById(id: number): Observable<MPatternWebPage[]> {
+  async getDataById(id: number): Promise<MPatternWebPage[]> {
     const url = `${this.baseUrlAPI}VPATTERNSWEBPAGES?filter=ID,eq,${id}`;
-    return this.httpGet<MPatternWebPages>(url).pipe(
-      map(result => result.records.map(value => Object.assign(new MPatternWebPage(), value))),
-    );
+    const result = await this.httpGet<MPatternWebPages>(url);
+    return result.records.map(value => Object.assign(new MPatternWebPage(), value));
   }
 
-  create(item: MPatternWebPage): Observable<number | any[]> {
+  async create(item: MPatternWebPage): Promise<number | any[]> {
     const url = `${this.baseUrlAPI}PATTERNSWEBPAGES`;
     (item as any).ID = null;
-    return this.httpPost<number | any[]>(url, item).pipe(
-    );
+    return await this.httpPost<number | any[]>(url, item);
   }
 
-  updateSeqNum(id: number, seqnum: number): Observable<number> {
+  async updateSeqNum(id: number, seqnum: number): Promise<number> {
     const url = `${this.baseUrlAPI}PATTERNSWEBPAGES/${id}`;
-    return this.httpPut<number>(url, {ID: id, SEQNUM: seqnum} as MPatternWebPage).pipe(
-    );
+    return await this.httpPut<number>(url, {ID: id, SEQNUM: seqnum} as MPatternWebPage);
   }
 
-  update(item: MPatternWebPage): Observable<number> {
+  async update(item: MPatternWebPage): Promise<number> {
     const url = `${this.baseUrlAPI}PATTERNSWEBPAGES/${item.ID}`;
-    return this.httpPut<number>(url, item).pipe(
-    );
+    return await this.httpPut<number>(url, item);
   }
 
-  delete(id: number): Observable<number> {
+  async delete(id: number): Promise<number> {
     const url = `${this.baseUrlAPI}PATTERNSWEBPAGES/${id}`;
-    return this.httpDelete(url).pipe(
-    );
+    return await this.httpDelete(url);
   }
 }

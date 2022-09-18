@@ -3,7 +3,7 @@ import { Button } from 'primereact/button';
 import './Common.css'
 import { InputText } from 'primereact/inputtext';
 import 'reflect-metadata';
-import {resolve} from "inversify-react";
+import { resolve } from "inversify-react";
 import { GlobalVars } from '../../common/common';
 import { Password } from 'primereact/password';
 import { LoginService } from '../../view-models/misc/login.service';
@@ -39,14 +39,13 @@ export default class Login extends React.Component<any, any> {
     this.setState({loginService: this.loginService});
   };
 
-  login = () => {
-    this.loginService.login().subscribe(userid => {
-      if (userid) {
-        localStorage.setItem('userid', userid);
-        GlobalVars.userid = userid;
-        window.location.reload();
-      }
-    });
+  login = async () => {
+    const userid = await this.loginService.login();
+    if (userid) {
+      localStorage.setItem('userid', userid);
+      GlobalVars.userid = userid;
+      window.location.reload();
+    }
   }
 
 };

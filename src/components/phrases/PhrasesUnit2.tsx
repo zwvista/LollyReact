@@ -1,6 +1,6 @@
 import * as React from 'react';
 import 'reflect-metadata';
-import {resolve} from "inversify-react";
+import { resolve } from "inversify-react";
 import '../misc/Common.css'
 import { Subscription } from 'rxjs';
 import { SettingsService } from '../../view-models/misc/settings.service';
@@ -141,10 +141,9 @@ export default class PhrasesUnit2 extends React.Component<any, any> {
     );
   }
 
-  onRefresh = () => {
-    this.subscription.add(this.phrasesUnitService.getDataInTextbook(this.state.filter, this.state.filterType).subscribe(
-      _ => this.updateServiceState()
-    ));
+  onRefresh = async () => {
+    await this.phrasesUnitService.getDataInTextbook(this.state.filter, this.state.filterType);
+    this.updateServiceState();
   };
 
   onFilterChange = (e: SyntheticEvent) => {

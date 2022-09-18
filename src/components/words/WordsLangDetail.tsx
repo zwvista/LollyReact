@@ -2,16 +2,14 @@ import * as React from 'react';
 import { WordsLangService } from '../../view-models/wpp/words-lang.service';
 import { Button } from 'primereact/button';
 import '../misc/Common.css'
-import { Subscription } from 'rxjs';
 import { InputText } from 'primereact/inputtext';
 import 'reflect-metadata';
-import {resolve} from "inversify-react";
+import { resolve } from "inversify-react";
 import { SettingsService } from '../../view-models/misc/settings.service';
 
 export default class WordsLangDetail extends React.Component<any, any> {
   @resolve wordsLangService: WordsLangService;
   @resolve settingsService: SettingsService;
-  subscription = new Subscription();
 
   componentDidMount() {
     const id = +this.props.match.params.id;
@@ -21,10 +19,6 @@ export default class WordsLangDetail extends React.Component<any, any> {
     });
   }
 
-  componentWillUnmount() {
-    this.subscription.unsubscribe();
-  }
-  
   render() {
     return this.state && (
       <div>
@@ -66,13 +60,13 @@ export default class WordsLangDetail extends React.Component<any, any> {
     history.back();
   };
 
-  save = () => {
+  save = async () => {
     this.state.item.WORD = this.settingsService.autoCorrectInput(this.state.item.WORD);
-    if (this.state.item.ID) {
-      this.subscription.add(this.wordsLangService.update(this.state.item).subscribe(_ => this.goBack()));
-    } else {
-      this.subscription.add(this.wordsLangService.create(this.state.item).subscribe(_ => this.goBack()));
-    }
+    if (this.state.item.ID)
+      await this.wordsLangService.update(this.state.item);
+    else
+      await this.wordsLangService.create(this.state.item);
+    this.goBack();
   };
 
 };

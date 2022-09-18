@@ -1,8 +1,8 @@
 import * as React from 'react';
 import 'reflect-metadata';
-import {resolve} from "inversify-react";
+import { resolve } from "inversify-react";
 import { DataTable } from 'primereact/datatable';
-import {Paginator, PaginatorPageState} from 'primereact/paginator';
+import { Paginator, PaginatorPageState } from 'primereact/paginator';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import '../misc/Common.css'
@@ -113,11 +113,10 @@ export default class WordsTextbook extends React.Component<any, any> {
     );
   }
 
-  onRefresh = () => {
+  onRefresh = async () => {
     // https://stackoverflow.com/questions/4228356/integer-division-with-remainder-in-javascript
-    this.subscription.add(this.wordsUnitService.getDataInLang(this.state.page, this.state.rows, this.state.filter, this.state.filterType, this.state.textbookFilter).subscribe(_ => {
-      this.updateServiceState();
-    }));
+    await this.wordsUnitService.getDataInLang(this.state.page, this.state.rows, this.state.filter, this.state.filterType, this.state.textbookFilter);
+    this.updateServiceState();
   };
 
   onSelectionChange = (e: any) => {
@@ -147,9 +146,9 @@ export default class WordsTextbook extends React.Component<any, any> {
     this.wordsUnitService.delete(item);
   }
 
-  getNote(index: number) {
+  async getNote(index: number) {
     console.log(index);
-    this.wordsUnitService.getNote(index).subscribe();
+    await this.wordsUnitService.getNote(index);
   }
 
   // https://stackoverflow.com/questions/42775017/angular-2-redirect-to-an-external-url-and-open-in-a-new-tab

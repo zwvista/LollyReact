@@ -2,9 +2,9 @@ import * as React from 'react';
 import { KeyboardEvent, SyntheticEvent } from 'react';
 import { WordsLangService } from '../../view-models/wpp/words-lang.service';
 import 'reflect-metadata';
-import {resolve} from "inversify-react";
+import { resolve } from "inversify-react";
 import { DataTable } from 'primereact/datatable';
-import {Paginator, PaginatorPageState} from 'primereact/paginator';
+import { Paginator, PaginatorPageState } from 'primereact/paginator';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import '../misc/Common.css'
@@ -120,22 +120,20 @@ export default class WordsLang extends React.Component<any, any> {
     this.setState({newWord: (e.nativeEvent.target as HTMLInputElement).value});
   };
 
-  onNewWordKeyPress = (e: KeyboardEvent) => {
+  onNewWordKeyPress = async (e: KeyboardEvent) => {
     if (e.key !== 'Enter' || !this.state.newWord) return;
     const o = this.wordsLangService.newLangWord();
     o.WORD = this.settingsService.autoCorrectInput(this.state.newWord);
     this.setState({newWord: ''});
     this.updateServiceState();
-    this.subscription.add(this.wordsLangService.create(o).subscribe(id => {
-      o.ID = id as number;
-      this.wordsLangService.langWords.push(o);
-    }));
+    const id = await this.wordsLangService.create(o);
+    o.ID = id as number;
+    this.wordsLangService.langWords.push(o);
   };
 
-  onRefresh = () => {
-    this.subscription.add(this.wordsLangService.getData(this.state.page, this.state.rows, this.state.filter, this.state.filterType).subscribe(_ => {
-      this.updateServiceState();
-    }));
+  onRefresh = async () => {
+    await this.wordsLangService.getData(this.state.page, this.state.rows, this.state.filter, this.state.filterType);
+    this.updateServiceState();
   };
 
   onSelectionChange = (e: any) => {
@@ -160,9 +158,9 @@ export default class WordsLang extends React.Component<any, any> {
     this.wordsLangService.delete(item);
   }
 
-  getNote(index: number) {
+  async getNote(index: number) {
     console.log(index);
-    this.wordsLangService.getNote(index).subscribe();
+    await this.wordsLangService.getNote(index);
   }
 
   // https://stackoverflow.com/questions/42775017/angular-2-redirect-to-an-external-url-and-open-in-a-new-tab

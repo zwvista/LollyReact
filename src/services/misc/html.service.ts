@@ -1,6 +1,5 @@
 import { injectable } from 'inversify';
 import { BaseService } from './base.service';
-import { Observable } from 'rxjs';
 
 @injectable()
 export class HtmlService extends BaseService {
@@ -38,10 +37,9 @@ export class HtmlService extends BaseService {
     return text;
   }
 
-  getHtml(url: string): Observable<string> {
-    // https://www.concretepage.com/angular-2/angular-httpclient-get-example#Text
-    return this.http.get<string>(url, {responseType: 'text'}).pipe(
-    );
+  async getHtml(url: string): Promise<string> {
+    const result = await fetch(url);
+    return await result.text();
   }
 
 }

@@ -1,13 +1,11 @@
 import * as React from 'react';
 import 'reflect-metadata';
-import {resolve} from "inversify-react";
+import { resolve } from "inversify-react";
 import { SettingsListener, SettingsService } from '../../view-models/misc/settings.service';
 import './Common.css'
-import { Subscription } from 'rxjs';
 
 export default class Settings extends React.Component<any, any> implements SettingsListener {
   @resolve settingsService: SettingsService;
-  subscription = new Subscription();
 
   get toTypeIsUnit() {
     return this.settingsService.toType === 0;
@@ -19,13 +17,9 @@ export default class Settings extends React.Component<any, any> implements Setti
     return this.settingsService.toType === 2;
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.settingsService.settingsListener = this;
-    this.subscription.add(this.settingsService.getData().subscribe());
-  }
-
-  componentWillUnmount() {
-    this.subscription.unsubscribe();
+    await this.settingsService.getData();
   }
 
   render() {
@@ -119,74 +113,87 @@ export default class Settings extends React.Component<any, any> implements Setti
     ) : (<div/>);
   }
 
-  onLangChange = (event: any) => {
+  onLangChange = async (event: any) => {
     console.log(event);
     const index = event.target.selectedIndex;
     this.settingsService.selectedLang = this.settingsService.languages[index];
-    this.settingsService.updateLang().subscribe(_ => this.updateServiceState());
+    await this.settingsService.updateLang();
+    this.updateServiceState();
   };
 
-  onVoiceChange = (event: any) => {
+  onVoiceChange = async (event: any) => {
     const index = event.target.selectedIndex;
     this.settingsService.selectedVoice = this.settingsService.voices[index];
-    this.subscription.add(this.settingsService.updateVoice().subscribe(_ => this.updateServiceState()));
+    await this.settingsService.updateVoice();
+    this.updateServiceState();
   };
 
-  onDictReferenceChange = (event: any) => {
+  onDictReferenceChange = async (event: any) => {
     const index = event.target.selectedIndex;
     this.settingsService.selectedDictReference = this.settingsService.dictsReference[index];
-    this.subscription.add(this.settingsService.updateDictReference().subscribe(_ => this.updateServiceState()));
+    await this.settingsService.updateDictReference();
+    this.updateServiceState();
   };
 
-  onDictNoteChange = (event: any) => {
+  onDictNoteChange = async (event: any) => {
     const index = event.target.selectedIndex;
     this.settingsService.selectedDictNote = this.settingsService.dictsNote[index];
-    this.subscription.add(this.settingsService.updateDictNote().subscribe(_ => this.updateServiceState()));
+    await this.settingsService.updateDictNote();
+    this.updateServiceState();
   };
 
-  onDictTranslationChange = (event: any) => {
+  onDictTranslationChange = async (event: any) => {
     const index = event.target.selectedIndex;
     this.settingsService.selectedDictTranslation = this.settingsService.dictsTranslation[index];
-    this.subscription.add(this.settingsService.updateDictTranslation().subscribe(_ => this.updateServiceState()));
+    await this.settingsService.updateDictTranslation();
+    this.updateServiceState();
   };
 
-  onTextbookChange = (event: any) => {
+  onTextbookChange = async (event: any) => {
     const index = event.target.selectedIndex;
     this.settingsService.selectedTextbook = this.settingsService.textbooks[index];
-    this.subscription.add(this.settingsService.updateTextbook().subscribe(_ => this.updateServiceState()));
+    await this.settingsService.updateTextbook();
+    this.updateServiceState();
   };
 
-  onUnitFromChange = (event: any) => {
+  onUnitFromChange = async (event: any) => {
     const index = event.target.selectedIndex;
-    this.subscription.add(this.settingsService.updateUnitFrom(this.settingsService.units[index].value).subscribe(_ => this.updateServiceState()));
+    await this.settingsService.updateUnitFrom(this.settingsService.units[index].value);
+    this.updateServiceState();
   };
 
-  onPartFromChange = (event: any) => {
+  onPartFromChange = async (event: any) => {
     const index = event.target.selectedIndex;
-    this.subscription.add(this.settingsService.updatePartFrom(this.settingsService.parts[index].value).subscribe(_ => this.updateServiceState()));
+    await this.settingsService.updatePartFrom(this.settingsService.parts[index].value);
+    this.updateServiceState();
   };
 
-  onToTypeChange = (event: any) => {
+  onToTypeChange = async (event: any) => {
     const index = event.target.selectedIndex;
-    this.subscription.add(this.settingsService.updateToType(this.settingsService.toTypes[index].value).subscribe(_ => this.updateServiceState()));
+    await this.settingsService.updateToType(this.settingsService.toTypes[index].value);
+    this.updateServiceState();
   };
 
-  previousUnitPart = (event: any) => {
-    this.subscription.add(this.settingsService.previousUnitPart().subscribe(_ => this.updateServiceState()));
+  previousUnitPart = async (event: any) => {
+    await this.settingsService.previousUnitPart();
+    this.updateServiceState();
   };
 
-  nextUnitPart = (event: any) => {
-    this.subscription.add(this.settingsService.nextUnitPart().subscribe(_ => this.updateServiceState()));
+  nextUnitPart = async (event: any) => {
+    await this.settingsService.nextUnitPart();
+    this.updateServiceState();
   };
 
-  onUnitToChange = (event: any) => {
+  onUnitToChange = async (event: any) => {
     const index = event.target.selectedIndex;
-    this.subscription.add(this.settingsService.updateUnitTo(this.settingsService.units[index].value).subscribe(_ => this.updateServiceState()));
+    await this.settingsService.updateUnitTo(this.settingsService.units[index].value);
+    this.updateServiceState();
   };
 
-  onPartToChange = (event: any) => {
+  onPartToChange = async (event: any) => {
     const index = event.target.selectedIndex;
-    this.subscription.add(this.settingsService.updateUnitTo(this.settingsService.parts[index].value).subscribe(_ => this.updateServiceState()));
+    await this.settingsService.updateUnitTo(this.settingsService.parts[index].value);
+    this.updateServiceState();
   };
 
   updateServiceState() {

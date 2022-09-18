@@ -1,17 +1,15 @@
 import * as React from 'react';
 import { Button } from 'primereact/button';
 import '../misc/Common.css'
-import { Subscription } from 'rxjs';
 import { InputText } from 'primereact/inputtext';
 import 'reflect-metadata';
-import {resolve} from "inversify-react";
+import { resolve } from "inversify-react";
 import { SettingsService } from '../../view-models/misc/settings.service';
 import { PatternsService } from '../../view-models/wpp/patterns.service';
 
 export default class PatternsDetail extends React.Component<any, any> {
   @resolve patternsService: PatternsService;
   @resolve settingsService: SettingsService;
-  subscription = new Subscription();
 
   componentDidMount() {
     const id = +this.props.match.params.id;
@@ -21,10 +19,6 @@ export default class PatternsDetail extends React.Component<any, any> {
     });
   }
 
-  componentWillUnmount() {
-    this.subscription.unsubscribe();
-  }
-  
   render() {
     return this.state && (
       <div>
@@ -62,12 +56,14 @@ export default class PatternsDetail extends React.Component<any, any> {
     history.back();
   };
 
-  save = () => {
+  save = async () => {
     this.state.pattern.PHRASE = this.settingsService.autoCorrectInput(this.state.pattern.PHRASE);
     if (this.state.pattern.ID) {
-      this.subscription.add(this.patternsService.update(this.state.pattern).subscribe(_ => this.goBack()));
+      await this.patternsService.update(this.state.pattern);
+      this.goBack();
     } else {
-      this.subscription.add(this.patternsService.create(this.state.pattern).subscribe(_ => this.goBack()));
+      await this.patternsService.create(this.state.pattern);
+      this.goBack();
     }
   };
 

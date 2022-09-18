@@ -1,8 +1,8 @@
 import * as React from 'react';
 import 'reflect-metadata';
-import {resolve} from "inversify-react";
+import { resolve } from "inversify-react";
 import { DataTable } from 'primereact/datatable';
-import {Paginator, PaginatorPageState} from 'primereact/paginator';
+import { Paginator, PaginatorPageState } from 'primereact/paginator';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import '../misc/Common.css'
@@ -109,10 +109,9 @@ export default class PhrasesTextbook extends React.Component<any, any> {
     );
   }
 
-  onRefresh = () => {
-    this.subscription.add(this.phrasesUnitService.getDataInLang(this.state.page, this.state.rows, this.state.filter, this.state.filterType, this.state.textbookFilter).subscribe(
-      _ => this.updateServiceState()
-    ));
+  onRefresh = async () => {
+    await this.phrasesUnitService.getDataInLang(this.state.page, this.state.rows, this.state.filter, this.state.filterType, this.state.textbookFilter);
+    this.updateServiceState();
   };
 
   onFilterChange = (e: SyntheticEvent) => {
