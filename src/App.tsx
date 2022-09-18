@@ -1,11 +1,11 @@
 import * as React from 'react';
 import './App.css';
 
-import { Link, Outlet } from 'react-router-dom'
+import { Link, Outlet, useNavigate } from 'react-router-dom'
 import { AppBar, Tab, Tabs } from '@mui/material';
 
 import 'reflect-metadata';
-import { resolve } from "inversify-react";
+import { useInjection } from "inversify-react";
 import { AppService } from './view-models/misc/app.service';
 
 import Settings from './components/misc/Settings';
@@ -26,6 +26,7 @@ import { faDollarSign, faEuroSign, faBus, faTrain, faPlane, faRocket, faCar, faT
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { GlobalVars } from './common/common';
 import Login from './components/misc/Login';
+import { useEffect, useState } from "react";
 
 // https://stackoverflow.com/questions/53375964/using-a-link-component-with-listitem-and-typescript
 // https://stackoverflow.com/questions/51257426/how-do-you-get-material-ui-tabs-to-work-with-react-router
@@ -33,9 +34,9 @@ function LinkTab(props: any) {
   return <Tab component={Link} {...props} />;
 }
 
-export default class App extends React.Component<any, any> {
-  @resolve appService!: AppService;
-  items = [
+export default function App() {
+  const appService = useInjection(AppService);
+  const items = [
     {label: 'Words in Unit', icon: 'fa fa-bus fa-lg', url: '/words-unit'},
     {label: 'Phrases in Unit', icon: 'fa fa-train fa-lg', url: '/phrases-unit'},
     {label: 'Words in Textbook', icon: 'fa fa-car fa-lg', url: '/words-textbook'},
@@ -45,83 +46,67 @@ export default class App extends React.Component<any, any> {
     {label: 'Patterns in Language', icon: 'fa fa-motorcycle fa-lg', url: '/patterns'},
     {label: 'Settings', icon: 'fa fa-gear fa-lg', url: '/settings'},
   ];
-  items2 = [
-    {label: 'Words in Unit', icon: 'bus', target: '/words-unit2'},
-    {label: 'Phrases in Unit', icon: 'train', target: '/phrases-unit2'},
-    {label: 'Words in Textbook', icon: 'car', target: '/words-textbook2'},
-    {label: 'Phrases in Textbook', icon: 'taxi', target: '/phrases-textbook2'},
-    {label: 'Words in Language', icon: 'plane', target: '/words-lang2'},
-    {label: 'Phrases in Language', icon: 'rocket', target: '/phrases-lang2'},
-    {label: 'Patterns in Language', icon: 'motorcycle', target: '/patterns2'},
-    {label: 'Settings', icon: 'cog', target: '/settings'},
+  const items2 = [
+    {label: 'Words in Unit', icon: 'bus', url: '/words-unit2'},
+    {label: 'Phrases in Unit', icon: 'train', url: '/phrases-unit2'},
+    {label: 'Words in Textbook', icon: 'car', url: '/words-textbook2'},
+    {label: 'Phrases in Textbook', icon: 'taxi', url: '/phrases-textbook2'},
+    {label: 'Words in Language', icon: 'plane', url: '/words-lang2'},
+    {label: 'Phrases in Language', icon: 'rocket', url: '/phrases-lang2'},
+    {label: 'Patterns in Language', icon: 'motorcycle', url: '/patterns2'},
+    {label: 'Settings', icon: 'cog', url: '/settings'},
   ];
+  const index = items.findIndex((value: any) => window.location.href.includes(value.url));
+  const [indexTab, setIndexTab] = useState(index);
+  const [indexTab2, setIndexTab2] = useState(0);
+  const [indexApp, setIndexApp] = useState(0);
+  const navigate = useNavigate();
 
-  constructor(props: any) {
-    super(props);
+  useEffect(() => {
     library.add(faDollarSign, faEuroSign, faBus, faTrain, faPlane, faRocket, faCar, faTaxi, faCog);
-    const activeIndex = this.items.findIndex((value: any) => window.location.href.includes(value.url));
-    this.state = {
-      activeIndex,
-      value: 0,
-      valueApp: 0,
-    };
-  }
+    console.log(appService);
+  });
 
-  componentDidMount() {
-    console.log(this.appService);
-  }
-
-  render() {
-    const loggedIn = localStorage.getItem('userid');
-    if (!loggedIn)
-      return (<Login />);
-
-    GlobalVars.userid = loggedIn!;
-    this.appService.getData();
-    return (
-      <div className="App">
-        <h2>Lolly React</h2>
-        <AppBar position="static" color="default">
-          <Tabs value={this.state.valueApp} onChange={this.onTabAppChange} indicatorColor="primary" textColor="primary">
-            <Tab label={<span><FontAwesomeIcon icon="dollar-sign" size="lg"/> App1</span>} />
-            <Tab label={<span><FontAwesomeIcon icon="euro-sign" size="lg"/> App2</span>} />
-          </Tabs>
-        </AppBar>
-        {this.state.valueApp === 0 && <div className="content-section implementation">
-          <TabMenu model={this.items} activeIndex={this.state.activeIndex} onTabChange={this.onTabChange} />
-        </div>}
-        {this.state.valueApp === 1 && <AppBar position="static" color="default">
-          <Tabs value={this.state.value} onChange={this.onTab2Change} indicatorColor="primary" textColor="primary">
-            {this.items2.map((row: any) =>
-              <LinkTab key={row.label} label={<span><FontAwesomeIcon icon={row.icon} size="lg"/> {row.label}</span>} to={row.target} />
-            )}
-          </Tabs>
-        </AppBar>}
-        <Outlet/>
-      </div>
-    );
-  }
-
-  onTabChange = (e: any) => {
-    this.setState({activeIndex: e.index});
-    // this.props.history.push(e.value.target);
-  };
-
-  onTab2Change = (event: any, value: any) => {
-    this.setState({value});
-  };
-
-  onTabAppChange = (event: any, valueApp: any) => {
-    let index = this.state.valueApp === 0 ? this.state.activeIndex : this.state.value;
+  function onTabAppChange(event: any, value: any) {
+    let index = value === 0 ? indexTab : indexTab2;
     if (index === -1) index = 0;
-    this.setState({valueApp});
-    if (valueApp === 0) {
-      this.setState({activeIndex: index});
-      // this.props.history.push(this.items[index].target);
+    setIndexApp(value);
+    if (value === 0) {
+      setIndexTab(index);
+      navigate(items[index].url);
     } else {
-      this.setState({value: index});
-      // this.props.history.push(this.items2[index].target);
+      setIndexTab2(index);
+      navigate(items2[index].url);
     }
-  };
+  }
+
+  const loggedIn = localStorage.getItem('userid');
+  if (!loggedIn)
+    return (<Login />);
+
+  GlobalVars.userid = loggedIn!;
+  appService.getData();
+  return (
+    <div className="App">
+      <h2>Lolly React</h2>
+      <AppBar position="static" color="default">
+        <Tabs value={indexApp} onChange={onTabAppChange} indicatorColor="primary" textColor="primary">
+          <Tab label={<span><FontAwesomeIcon icon="dollar-sign" size="lg"/> App1</span>} />
+          <Tab label={<span><FontAwesomeIcon icon="euro-sign" size="lg"/> App2</span>} />
+        </Tabs>
+      </AppBar>
+      {indexApp === 0 && <div className="content-section implementation">
+        <TabMenu model={items} activeIndex={indexTab} onTabChange={e => setIndexTab(e.index)} />
+      </div>}
+      {indexApp === 1 && <AppBar position="static" color="default">
+        <Tabs value={indexTab2} onChange={(e, v) => setIndexTab2(v)} indicatorColor="primary" textColor="primary">
+          {items2.map((row: any) =>
+            <LinkTab key={row.label} label={<span><FontAwesomeIcon icon={row.icon} size="lg"/> {row.label}</span>} to={row.url} />
+          )}
+        </Tabs>
+      </AppBar>}
+      <Outlet/>
+    </div>
+  );
 
 }
