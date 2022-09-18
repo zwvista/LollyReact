@@ -22,11 +22,11 @@ import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faDollarSign, faEuroSign, faBus, faTrain, faPlane, faRocket, faCar, faTaxi, faCog } from '@fortawesome/free-solid-svg-icons'
+import { faDollarSign, faEuroSign, faBus, faTrain, faCar, faTaxi, faPlane, faRocket, faMotorcycle, faCog } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { GlobalVars } from './common/common';
 import Login from './components/misc/Login';
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 // https://stackoverflow.com/questions/53375964/using-a-link-component-with-listitem-and-typescript
 // https://stackoverflow.com/questions/51257426/how-do-you-get-material-ui-tabs-to-work-with-react-router
@@ -36,6 +36,7 @@ function LinkTab(props: any) {
 
 export default function App() {
   const appService = useInjection(AppService);
+  console.log(appService);
   const items = [
     {label: 'Words in Unit', icon: 'fa fa-bus fa-lg', url: '/words-unit'},
     {label: 'Phrases in Unit', icon: 'fa fa-train fa-lg', url: '/phrases-unit'},
@@ -61,11 +62,7 @@ export default function App() {
   const [indexTab2, setIndexTab2] = useState(0);
   const [indexApp, setIndexApp] = useState(0);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    library.add(faDollarSign, faEuroSign, faBus, faTrain, faPlane, faRocket, faCar, faTaxi, faCog);
-    console.log(appService);
-  });
+  library.add(faDollarSign, faEuroSign, faBus, faTrain, faCar, faTaxi, faPlane, faRocket, faMotorcycle, faCog);
 
   function onTabAppChange(event: any, value: any) {
     let index = value === 0 ? indexTab : indexTab2;
