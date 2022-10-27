@@ -34,18 +34,18 @@ export default function WordsLang() {
   const [filterType, setFilterType] = useState(0);
   const [, setWordsLangService] = useState(wordsLangService);
 
-  function onPageChange(e: PaginatorPageState) {
+  const onPageChange = (e: PaginatorPageState) => {
     setFirst(e.first);
     setRows(e.rows);
     setPage(e.page + 1);
     onRefresh();
-  }
+  };
 
-  function onNewWordChange(e: SyntheticEvent) {
+  const onNewWordChange = (e: SyntheticEvent) => {
     setNewWord((e.nativeEvent.target as HTMLInputElement).value);
-  }
+  };
 
-  async function onNewWordKeyPress(e: KeyboardEvent) {
+  const onNewWordKeyPress = async (e: KeyboardEvent) => {
     if (e.key !== 'Enter' || !newWord) return;
     const o = wordsLangService.newLangWord();
     o.WORD = settingsService.autoCorrectInput(newWord);
@@ -54,54 +54,54 @@ export default function WordsLang() {
     const id = await wordsLangService.create(o);
     o.ID = id as number;
     wordsLangService.langWords.push(o);
-  }
+  };
 
-  async function onRefresh() {
+  const onRefresh = async () => {
     await wordsLangService.getData(page, rows, filter, filterType);
     updateServiceState();
-  }
+  };
 
-  function onSelectionChange(e: any) {
+  const onSelectionChange = (e: any) => {
     setSelectedRow(e.data);
-  }
+  };
 
-  function onFilterChange(e: SyntheticEvent) {
+  const onFilterChange = (e: SyntheticEvent) => {
     setFilter((e.nativeEvent.target as HTMLInputElement).value);
-  }
+  };
 
-  function onFilterKeyPress(e: KeyboardEvent) {
+  const onFilterKeyPress = (e: KeyboardEvent) => {
     if (e.key !== 'Enter') return;
     onRefresh();
-  }
+  };
 
-  function onFilterTypeChange(e: {originalEvent: SyntheticEvent, value: any}) {
+  const onFilterTypeChange = (e: {originalEvent: SyntheticEvent, value: any}) => {
     setFilterType(e.value);
     onRefresh();
-  }
+  };
 
-  function deleteWord(item: MLangWord) {
+  const deleteWord = (item: MLangWord) => {
     wordsLangService.delete(item);
-  }
+  };
 
-  async function getNote(index: number) {
+  const getNote =  async (index: number) => {
     console.log(index);
     await wordsLangService.getNote(index);
-  }
+  };
 
   // https://stackoverflow.com/questions/42775017/angular-2-redirect-to-an-external-url-and-open-in-a-new-tab
-  function googleWord(WORD: string) {
+  const googleWord = (WORD: string) => {
     window.open('https://www.google.com/search?q=' + encodeURIComponent(WORD), '_blank');
-  }
+  };
 
-  function dictWord(item: MLangWord) {
+  const dictWord = (item: MLangWord) => {
     const index = wordsLangService.langWords.indexOf(item);
     navigate('/words-dict/lang/' + index);
-  }
+  };
 
-  function updateServiceState() {
+  const updateServiceState = () => {
     setWordsLangService(null);
     setWordsLangService(wordsLangService);
-  }
+  };
 
   useEffect(() => {
     subscription.add(appService.initializeObject.subscribe(_ => {
@@ -133,7 +133,7 @@ export default function WordsLang() {
   };
 
   const leftContents = (
-    <React.Fragment>
+    <>
       <span className="p-float-label">
         <InputText id="word" type="text" value={newWord}
                    onChange={onNewWordChange} onKeyPress={onNewWordKeyPress}/>
@@ -152,7 +152,7 @@ export default function WordsLang() {
       <Button hidden={!settingsService.selectedDictNote} className="p-button-warning" label="Retrieve All Notes" />
       <Button hidden={!settingsService.selectedDictNote} className="p-button-warning" label="Retrieve Notes If Empty" />
       <Button label="Dictionary" icon="fa fa-book" onClick={() => navigate('/words-dict/unit/0')} />
-    </React.Fragment>
+    </>
   );
 
   return !appService.isInitialized && wordsLangService ? (<div/>) : (
