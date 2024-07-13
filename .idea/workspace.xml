@@ -4,77 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8c3ada4f-a8b4-4150-ab02-25eb1fe8c197" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/common/array.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/common/common.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/common/common.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/misc/Login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/misc/Login.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/misc/Settings.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/misc/Settings.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/misc/WordsDict.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/misc/WordsDict.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/patterns/Patterns.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/patterns/Patterns.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/patterns/Patterns2.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/patterns/Patterns2.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/patterns/PatternsLang.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/patterns/PatternsLang.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/phrases/PhrasesLang.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/phrases/PhrasesLang.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/phrases/PhrasesLang2.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/phrases/PhrasesLang2.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/phrases/PhrasesLangDetail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/phrases/PhrasesLangDetail.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/phrases/PhrasesTextbook.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/phrases/PhrasesTextbook.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/phrases/PhrasesTextbook2.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/phrases/PhrasesTextbook2.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/phrases/PhrasesTextbookDetail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/phrases/PhrasesTextbookDetail.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/phrases/PhrasesUnit.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/phrases/PhrasesUnit.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/phrases/PhrasesUnit2.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/phrases/PhrasesUnit2.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/phrases/PhrasesUnitDetail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/phrases/PhrasesUnitDetail.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/words/WordsLang.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/words/WordsLang.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/words/WordsLang2.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/words/WordsLang2.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/words/WordsLangDetail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/words/WordsLangDetail.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/words/WordsTextbook.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/words/WordsTextbook.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/words/WordsTextbook2.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/words/WordsTextbook2.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/words/WordsTextbookDetail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/words/WordsTextbookDetail.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/words/WordsUnit.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/words/WordsUnit.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/words/WordsUnit2.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/words/WordsUnit2.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/words/WordsUnitDetail.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/words/WordsUnitDetail.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/misc/autocorrect.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/misc/autocorrect.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/misc/dictionary.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/misc/dictionary.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/misc/textbook.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/misc/textbook.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/misc/voice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/misc/voice.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/wpp/lang-phrase.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/wpp/lang-phrase.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/wpp/lang-word.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/wpp/lang-word.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/wpp/pattern-webpage.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/wpp/pattern-webpage.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/wpp/pattern.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/wpp/pattern.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/wpp/unit-phrase.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/wpp/unit-phrase.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/wpp/unit-word.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/wpp/unit-word.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/wpp/webpage.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/wpp/webpage.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/wpp/word-fami.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/wpp/word-fami.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/misc/autocorrect.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/misc/autocorrect.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/misc/base.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/misc/base.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/misc/dictionary.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/misc/dictionary.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/misc/html.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/misc/html.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/misc/language.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/misc/language.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/misc/textbook.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/misc/textbook.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/misc/us-mapping.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/misc/us-mapping.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/misc/user-setting.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/misc/user-setting.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/misc/user.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/misc/user.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/misc/voice.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/misc/voice.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/wpp/lang-phrase.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/wpp/lang-phrase.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/wpp/lang-word.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/wpp/lang-word.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/wpp/pattern-webpage.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/wpp/pattern-webpage.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/wpp/pattern.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/wpp/pattern.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/wpp/unit-phrase.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/wpp/unit-phrase.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/wpp/unit-word.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/wpp/unit-word.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/wpp/webpage.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/wpp/webpage.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/services/wpp/word-fami.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/wpp/word-fami.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view-models/misc/app.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/view-models/misc/app.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view-models/misc/login.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/view-models/misc/login.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view-models/misc/settings.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/view-models/misc/settings.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view-models/wpp/patterns.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/view-models/wpp/patterns.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view-models/wpp/phrases-lang.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/view-models/wpp/phrases-lang.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view-models/wpp/phrases-unit.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/view-models/wpp/phrases-unit.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view-models/wpp/words-lang.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/view-models/wpp/words-lang.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view-models/wpp/words-unit.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/view-models/wpp/words-unit.service.ts" afterDir="false" />
-    </list>
+    <list default="true" id="8c3ada4f-a8b4-4150-ab02-25eb1fe8c197" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -231,7 +161,7 @@
       <workItem from="1716029966829" duration="112000" />
       <workItem from="1716030234653" duration="24000" />
       <workItem from="1716031806944" duration="600000" />
-      <workItem from="1720873223007" duration="2337000" />
+      <workItem from="1720873223007" duration="2476000" />
     </task>
     <servers />
   </component>

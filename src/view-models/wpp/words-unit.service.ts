@@ -4,7 +4,7 @@ import { MUnitWord } from 'src/models/wpp/unit-word';
 import { AppService } from '../misc/app.service';
 import { take } from 'rxjs/operators';
 import { LangWordService } from 'src/services/wpp/lang-word.service';
-import { inject, singleton } from "tsyringe";
+import { singleton } from "tsyringe";
 
 @singleton()
 export class WordsUnitService {
