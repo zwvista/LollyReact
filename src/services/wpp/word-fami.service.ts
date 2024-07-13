@@ -1,6 +1,6 @@
 import { BaseService } from '../misc/base.service';
-import { MWordFami, MWordsFami } from 'src/models/wpp/word-fami';
-import { GlobalVars } from 'src/common/common';
+import { MWordFami, MWordsFami } from '../../models/wpp/word-fami';
+import { GlobalVars } from '../../common/common';
 import { singleton } from "tsyringe";
 
 @singleton()

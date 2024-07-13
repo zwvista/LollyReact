@@ -1,5 +1,5 @@
 import { BaseService } from './base.service';
-import { MUSMapping, MUSMappings } from 'src/models/misc/usmapping';
+import { MUSMapping, MUSMappings } from '../../models/misc/usmapping';
 import { singleton } from "tsyringe";
 
 @singleton()

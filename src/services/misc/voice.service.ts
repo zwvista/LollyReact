@@ -1,5 +1,5 @@
 import { BaseService } from './base.service';
-import { MVoice, MVoices } from 'src/models/misc/voice';
+import { MVoice, MVoices } from '../../models/misc/voice';
 import { singleton } from "tsyringe";
 
 @singleton()

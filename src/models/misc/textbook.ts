@@ -1,4 +1,4 @@
-import { MSelectItem } from 'src/common/selectitem';
+import { MSelectItem } from '../../common/selectitem';
 
 export class MTextbooks {
   records!: MTextbook[];

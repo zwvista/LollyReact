@@ -1,6 +1,6 @@
 import { BaseService } from './base.service';
-import { MUserSetting, MUserSettingInfo, MUserSettings } from 'src/models/misc/user-setting';
-import { GlobalVars } from 'src/common/common';
+import { MUserSetting, MUserSettingInfo, MUserSettings } from '../../models/misc/user-setting';
+import { GlobalVars } from '../../common/common';
 import { singleton } from "tsyringe";
 
 @singleton()

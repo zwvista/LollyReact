@@ -1,4 +1,4 @@
-import { MUnitWord } from 'src/models/wpp/unit-word';
+import { MUnitWord } from './unit-word';
 
 export class MLangWords {
   records!: MLangWord[];

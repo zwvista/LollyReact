@@ -1,7 +1,7 @@
 import { BaseService } from '../misc/base.service';
-import { MPattern, MPatterns } from 'src/models/wpp/pattern';
-import { MSPResult } from 'src/common/sp-result';
-import { toParameters } from 'src/common/common';
+import { MPattern, MPatterns } from '../../models/wpp/pattern';
+import { MSPResult } from '../../common/sp-result';
+import { toParameters } from '../../common/common';
 import { singleton } from "tsyringe";
 
 @singleton()

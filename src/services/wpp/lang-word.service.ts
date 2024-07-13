@@ -1,7 +1,7 @@
 import { BaseService } from '../misc/base.service';
-import { MLangWord, MLangWords } from 'src/models/wpp/lang-word';
-import { MSPResult } from 'src/common/sp-result';
-import { toParameters } from 'src/common/common';
+import { MLangWord, MLangWords } from '../../models/wpp/lang-word';
+import { MSPResult } from '../../common/sp-result';
+import { toParameters } from '../../common/common';
 import { singleton } from "tsyringe";
 
 @singleton()

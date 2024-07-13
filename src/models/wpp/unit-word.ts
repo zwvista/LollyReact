@@ -1,4 +1,4 @@
-import { MTextbook } from 'src/models/misc/textbook';
+import { MTextbook } from '../misc/textbook';
 
 export class MUnitWords {
   records!: MUnitWord[];

@@ -1,9 +1,9 @@
-import { UnitWordService } from 'src/services/wpp/unit-word.service';
+import { UnitWordService } from '../../services/wpp/unit-word.service';
 import { SettingsService } from '../misc/settings.service';
-import { MUnitWord } from 'src/models/wpp/unit-word';
+import { MUnitWord } from '../../models/wpp/unit-word';
 import { AppService } from '../misc/app.service';
 import { take } from 'rxjs/operators';
-import { LangWordService } from 'src/services/wpp/lang-word.service';
+import { LangWordService } from '../../services/wpp/lang-word.service';
 import { singleton } from "tsyringe";
 
 @singleton()

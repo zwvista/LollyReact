@@ -1,6 +1,6 @@
 import { BaseService } from './base.service';
-import { MTextbook, MTextbooks } from 'src/models/misc/textbook';
-import { MSelectItem } from 'src/common/selectitem';
+import { MTextbook, MTextbooks } from '../../models/misc/textbook';
+import { MSelectItem } from '../../common/selectitem';
 import { singleton } from "tsyringe";
 
 @singleton()

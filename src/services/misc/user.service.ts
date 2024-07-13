@@ -1,5 +1,5 @@
 import { BaseService } from './base.service';
-import { MUser, MUsers } from 'src/models/misc/user';
+import { MUser, MUsers } from '../../models/misc/user';
 import { singleton } from "tsyringe";
 
 @singleton()

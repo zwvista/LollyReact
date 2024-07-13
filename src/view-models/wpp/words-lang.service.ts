@@ -1,9 +1,9 @@
 import { SettingsService } from '../misc/settings.service';
 import { AppService } from '../misc/app.service';
-import { LangWordService } from 'src/services/wpp/lang-word.service';
-import { MLangWord } from 'src/models/wpp/lang-word';
+import { LangWordService } from '../../services/wpp/lang-word.service';
+import { MLangWord } from '../../models/wpp/lang-word';
 import { take } from 'rxjs/operators';
-import { WordFamiService } from 'src/services/wpp/word-fami.service';
+import { WordFamiService } from '../../services/wpp/word-fami.service';
 import { singleton } from "tsyringe";
 
 @singleton()

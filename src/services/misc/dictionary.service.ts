@@ -2,7 +2,7 @@ import { BaseService } from './base.service';
 import {
   MDictionary,
   MDictionaries,
-} from 'src/models/misc/dictionary';
+} from '../../models/misc/dictionary';
 import { singleton } from "tsyringe";
 
 @singleton()

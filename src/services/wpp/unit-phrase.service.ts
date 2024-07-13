@@ -1,8 +1,8 @@
-import { MUnitPhrase, MUnitPhrases } from 'src/models/wpp/unit-phrase';
+import { MUnitPhrase, MUnitPhrases } from '../../models/wpp/unit-phrase';
 import { BaseService } from '../misc/base.service';
-import { MTextbook } from 'src/models/misc/textbook';
-import { MSPResult } from 'src/common/sp-result';
-import { toParameters } from 'src/common/common';
+import { MTextbook } from '../../models/misc/textbook';
+import { MSPResult } from '../../common/sp-result';
+import { toParameters } from '../../common/common';
 import { singleton } from "tsyringe";
 
 @singleton()

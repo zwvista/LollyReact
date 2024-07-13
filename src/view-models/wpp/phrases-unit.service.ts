@@ -1,9 +1,9 @@
 import { AppService } from '../misc/app.service';
 import { SettingsService } from '../misc/settings.service';
-import { MUnitPhrase } from 'src/models/wpp/unit-phrase';
-import { UnitPhraseService } from 'src/services/wpp/unit-phrase.service';
+import { MUnitPhrase } from '../../models/wpp/unit-phrase';
+import { UnitPhraseService } from '../../services/wpp/unit-phrase.service';
 import { take } from 'rxjs/operators';
-import { LangPhraseService } from 'src/services/wpp/lang-phrase.service';
+import { LangPhraseService } from '../../services/wpp/lang-phrase.service';
 import { singleton } from "tsyringe";
 
 @singleton()

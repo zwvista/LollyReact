@@ -1,5 +1,5 @@
 import { BaseService } from '../misc/base.service';
-import { MPatternWebPage, MPatternWebPages } from 'src/models/wpp/pattern-webpage';
+import { MPatternWebPage, MPatternWebPages } from '../../models/wpp/pattern-webpage';
 import { singleton } from "tsyringe";
 
 @singleton()

@@ -1,22 +1,22 @@
-import { LanguageService } from 'src/services/misc/language.service';
-import { UserSettingService } from 'src/services/misc/user-setting.service';
-import { MUserSetting, MUserSettingInfo } from 'src/models/misc/user-setting';
-import { MLanguage } from 'src/models/misc/language';
-import { MDictionary } from 'src/models/misc/dictionary';
-import { MTextbook } from 'src/models/misc/textbook';
+import { LanguageService } from '../../services/misc/language.service';
+import { UserSettingService } from '../../services/misc/user-setting.service';
+import { MUserSetting, MUserSettingInfo } from '../../models/misc/user-setting';
+import { MLanguage } from '../../models/misc/language';
+import { MDictionary } from '../../models/misc/dictionary';
+import { MTextbook } from '../../models/misc/textbook';
 import { interval, Subscription } from 'rxjs';
-import { DictionaryService } from 'src/services/misc/dictionary.service';
-import { TextbookService } from 'src/services/misc/textbook.service';
-import { autoCorrect, MAutoCorrect } from 'src/models/misc/autocorrect';
-import { AutoCorrectService } from 'src/services/misc/autocorrect.service';
-import { MSelectItem } from 'src/common/selectitem';
+import { DictionaryService } from '../../services/misc/dictionary.service';
+import { TextbookService } from '../../services/misc/textbook.service';
+import { autoCorrect, MAutoCorrect } from '../../models/misc/autocorrect';
+import { AutoCorrectService } from '../../services/misc/autocorrect.service';
+import { MSelectItem } from '../../common/selectitem';
 // @ts-ignore
 import * as Speech from 'speak-tts';
-import { VoiceService } from 'src/services/misc/voice.service';
-import { MVoice } from 'src/models/misc/voice';
-import { UsMappingService } from 'src/services/misc/us-mapping.service';
-import { MUSMapping } from 'src/models/misc/usmapping';
-import { HtmlService } from 'src/services/misc/html.service';
+import { VoiceService } from '../../services/misc/voice.service';
+import { MVoice } from '../../models/misc/voice';
+import { UsMappingService } from '../../services/misc/us-mapping.service';
+import { MUSMapping } from '../../models/misc/usmapping';
+import { HtmlService } from '../../services/misc/html.service';
 import { singleton } from "tsyringe";
 
 @singleton()

@@ -1,5 +1,5 @@
 import { BaseService } from './base.service';
-import { MLanguage, MLanguages } from 'src/models/misc/language';
+import { MLanguage, MLanguages } from '../../models/misc/language';
 import { singleton } from "tsyringe";
 
 @singleton()

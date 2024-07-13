@@ -1,5 +1,5 @@
 import { BaseService } from './base.service';
-import { MAutoCorrect, MAutoCorrects } from 'src/models/misc/autocorrect';
+import { MAutoCorrect, MAutoCorrects } from '../../models/misc/autocorrect';
 import { singleton } from "tsyringe";
 
 @singleton()
