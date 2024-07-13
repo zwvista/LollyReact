@@ -1,5 +1,5 @@
 export class MPatternWebPages {
-  records: MPatternWebPage[];
+  records!: MPatternWebPage[];
   results = 0;
 }
 export class MPatternWebPage {

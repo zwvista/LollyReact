@@ -1,10 +1,8 @@
-import { injectable } from 'inversify';
 import { BaseService } from './base.service';
-import { Observable } from 'rxjs';
-import { MVoice, MVoices } from '../../models/misc/voice';
-import { map } from 'rxjs/operators';
+import { MVoice, MVoices } from 'src/models/misc/voice';
+import { singleton } from "tsyringe";
 
-@injectable()
+@singleton()
 export class VoiceService extends BaseService {
 
   async getDataByLang(langid: number): Promise<MVoice[]> {

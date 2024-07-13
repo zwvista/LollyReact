@@ -1,21 +1,19 @@
-import { injectable } from 'inversify';
-import 'reflect-metadata';
-import { inject } from "inversify";
-import { LangPhraseService } from '../../services/wpp/lang-phrase.service';
+import { LangPhraseService } from 'src/services/wpp/lang-phrase.service';
 import { SettingsService } from '../misc/settings.service';
 import { AppService } from '../misc/app.service';
-import { MLangPhrase } from '../../models/wpp/lang-phrase';
 import { take } from 'rxjs/operators';
+import { MLangPhrase } from 'src/models/wpp/lang-phrase';
+import { inject, singleton } from "tsyringe";
 
-@injectable()
+@singleton()
 export class PhrasesLangService {
 
   langPhrases: MLangPhrase[] = [];
   langPhraseCount = 0;
 
-  constructor(@inject(LangPhraseService) private langPhraseService: LangPhraseService,
-              @inject(SettingsService) private settingsService: SettingsService,
-              @inject(AppService) private appService: AppService) {
+  constructor(private langPhraseService: LangPhraseService,
+              private settingsService: SettingsService,
+              private appService: AppService) {
   }
 
   async getData(page: number, rows: number, filter: string, filterType: number) {

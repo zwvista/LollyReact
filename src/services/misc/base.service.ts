@@ -1,6 +1,3 @@
-import { injectable } from 'inversify';
-
-@injectable()
 export class BaseService {
   protected readonly baseUrlAPI = 'https://zwvista.com/lolly/api.php/records/';
   protected readonly baseUrlSP = 'https://zwvista.com/lolly/sp.php/';

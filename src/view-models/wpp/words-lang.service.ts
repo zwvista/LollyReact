@@ -1,21 +1,21 @@
-import { injectable } from 'inversify';
-import 'reflect-metadata';
-import { inject } from "inversify";
 import { SettingsService } from '../misc/settings.service';
 import { AppService } from '../misc/app.service';
-import { LangWordService } from '../../services/wpp/lang-word.service';
-import { MLangWord } from '../../models/wpp/lang-word';
+import { LangWordService } from 'src/services/wpp/lang-word.service';
+import { MLangWord } from 'src/models/wpp/lang-word';
 import { take } from 'rxjs/operators';
+import { WordFamiService } from 'src/services/wpp/word-fami.service';
+import { inject, singleton } from "tsyringe";
 
-@injectable()
+@singleton()
 export class WordsLangService {
 
   langWords: MLangWord[] = [];
   langWordsCount = 0;
 
-  constructor(@inject(LangWordService) private langWordService: LangWordService,
-              @inject(SettingsService) private settingsService: SettingsService,
-              @inject(AppService) private appService: AppService) {
+  constructor(private langWordService: LangWordService,
+              private wordFamiService: WordFamiService,
+              private settingsService: SettingsService,
+              private appService: AppService) {
   }
 
   async getData(page: number, rows: number, filter: string, filterType: number): Promise<void> {

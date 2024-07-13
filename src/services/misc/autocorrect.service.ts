@@ -1,8 +1,8 @@
 import { BaseService } from './base.service';
-import { MAutoCorrect, MAutoCorrects } from '../../models/misc/autocorrect';
-import { injectable } from 'inversify';
+import { MAutoCorrect, MAutoCorrects } from 'src/models/misc/autocorrect';
+import { singleton } from "tsyringe";
 
-@injectable()
+@singleton()
 export class AutoCorrectService extends BaseService {
 
   async getDataByLang(langid: number): Promise<MAutoCorrect[]> {

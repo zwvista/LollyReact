@@ -1,5 +1,5 @@
 export class MVoices {
-  records: MVoice[];
+  records!: MVoice[];
 }
 export class MVoice {
   ID = 0;

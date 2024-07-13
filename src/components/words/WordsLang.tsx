@@ -2,7 +2,7 @@ import * as React from 'react';
 import { KeyboardEvent, SyntheticEvent, useEffect, useState } from 'react';
 import { WordsLangService } from '../../view-models/wpp/words-lang.service';
 import 'reflect-metadata';
-import { useInjection } from "inversify-react";
+import { container } from "tsyringe";
 import { DataTable } from 'primereact/datatable';
 import { Paginator, PaginatorPageState } from 'primereact/paginator';
 import { Column } from 'primereact/column';
@@ -19,9 +19,9 @@ import { AppService } from '../../view-models/misc/app.service';
 import { useNavigate } from "react-router-dom";
 
 export default function WordsLang() {
-  const appService = useInjection(AppService);
-  const wordsLangService = useInjection(WordsLangService);
-  const settingsService = useInjection(SettingsService);
+  const appService = container.resolve(AppService);
+  const wordsLangService = container.resolve(WordsLangService);
+  const settingsService = container.resolve(SettingsService);
   const subscription = new Subscription();
   const navigate = useNavigate();
 

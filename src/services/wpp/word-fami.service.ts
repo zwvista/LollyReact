@@ -1,9 +1,9 @@
-import { injectable } from 'inversify';
 import { BaseService } from '../misc/base.service';
-import { MWordFami, MWordsFami } from '../../models/wpp/word-fami';
-import { GlobalVars } from '../../common/common';
+import { MWordFami, MWordsFami } from 'src/models/wpp/word-fami';
+import { GlobalVars } from 'src/common/common';
+import { singleton } from "tsyringe";
 
-@injectable()
+@singleton()
 export class WordFamiService extends BaseService {
 
   async getDataByUserWord(wordid: number): Promise<MWordFami[]> {

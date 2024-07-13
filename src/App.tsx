@@ -5,7 +5,7 @@ import { Link, Outlet, useNavigate } from 'react-router-dom'
 import { AppBar, Tab, Tabs } from '@mui/material';
 
 import 'reflect-metadata';
-import { useInjection } from "inversify-react";
+import { container } from "tsyringe";
 import { AppService } from './view-models/misc/app.service';
 
 import Settings from './components/misc/Settings';
@@ -35,7 +35,7 @@ function LinkTab(props: any) {
 }
 
 export default function App() {
-  const appService = useInjection(AppService);
+  const appService = container.resolve(AppService);
   console.log(appService);
   const items = [
     {label: 'Words in Unit', icon: 'fa fa-bus fa-lg', url: '/words-unit'},

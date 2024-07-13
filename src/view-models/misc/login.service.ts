@@ -1,15 +1,13 @@
-import { injectable } from 'inversify';
-import 'reflect-metadata';
-import { inject } from "inversify";
-import { UserService } from '../../services/misc/user.service';
-import { MUser } from '../../models/misc/user';
+import { UserService } from 'src/services/misc/user.service';
+import { MUser } from 'src/models/misc/user';
+import { singleton } from "tsyringe";
 
-@injectable()
+@singleton()
 export class LoginService {
 
   item = new MUser();
 
-  constructor(@inject(UserService) private userService: UserService) {
+  constructor(private userService: UserService) {
   }
 
   async login(): Promise<string> {

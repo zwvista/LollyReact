@@ -1,4 +1,4 @@
-import { MTextbook } from '../misc/textbook';
+import { MTextbook } from 'src/models/misc/textbook';
 
 export class MUnitPhrases {
   records!: MUnitPhrase[];
@@ -16,7 +16,7 @@ export class MUnitPhrase {
   PHRASE = '';
   TRANSLATION = '';
 
-  textbook: MTextbook;
+  textbook!: MTextbook;
   get UNITSTR(): string {
     return this.textbook.UNITSTR(this.UNIT);
   }

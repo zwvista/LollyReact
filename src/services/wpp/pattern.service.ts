@@ -1,10 +1,10 @@
-import { injectable } from 'inversify';
 import { BaseService } from '../misc/base.service';
-import { MPattern, MPatterns } from '../../models/wpp/pattern';
-import { MSPResult } from '../../common/sp-result';
-import { toParameters } from '../../common/common';
+import { MPattern, MPatterns } from 'src/models/wpp/pattern';
+import { MSPResult } from 'src/common/sp-result';
+import { toParameters } from 'src/common/common';
+import { singleton } from "tsyringe";
 
-@injectable()
+@singleton()
 export class PatternService extends BaseService {
 
   async getDataByLang(langid: number, page: number, rows: number, filter: string, filterType: number): Promise<MPatterns> {

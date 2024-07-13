@@ -1,11 +1,11 @@
-import { injectable } from 'inversify';
-import { MUnitPhrase, MUnitPhrases } from '../../models/wpp/unit-phrase';
+import { MUnitPhrase, MUnitPhrases } from 'src/models/wpp/unit-phrase';
 import { BaseService } from '../misc/base.service';
-import { MTextbook } from '../../models/misc/textbook';
-import { MSPResult } from '../../common/sp-result';
-import { toParameters } from '../../common/common';
+import { MTextbook } from 'src/models/misc/textbook';
+import { MSPResult } from 'src/common/sp-result';
+import { toParameters } from 'src/common/common';
+import { singleton } from "tsyringe";
 
-@injectable()
+@singleton()
 export class UnitPhraseService extends BaseService {
 
   async getDataByTextbookUnitPart(textbook: MTextbook, unitPartFrom: number, unitPartTo: number, filter: string, filterType: number): Promise<MUnitPhrase[]> {

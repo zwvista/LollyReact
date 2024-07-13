@@ -2,7 +2,7 @@ import * as React from 'react';
 import { KeyboardEvent, SyntheticEvent } from 'react';
 import { WordsUnitService } from '../../view-models/wpp/words-unit.service';
 import 'reflect-metadata';
-import { resolve } from "inversify-react";
+import { container } from "tsyringe";
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
@@ -17,9 +17,9 @@ import { Dropdown } from 'primereact/dropdown';
 import { AppService } from '../../view-models/misc/app.service';
 
 export default class WordsUnit extends React.Component<any, any> {
-  @resolve appService: AppService;
-  @resolve wordsUnitService: WordsUnitService;
-  @resolve settingsService: SettingsService;
+  appService = container.resolve(AppService);
+  wordsUnitService = container.resolve(WordsUnitService);
+  settingsService = container.resolve(SettingsService);
   subscription = new Subscription();
 
   state = {

@@ -1,8 +1,8 @@
-import { injectable } from 'inversify';
 import { BaseService } from '../misc/base.service';
-import { MWebPage, MWebPages } from '../../models/wpp/webpage';
+import { MWebPage, MWebPages } from 'src/models/wpp/webpage';
+import { singleton } from "tsyringe";
 
-@injectable()
+@singleton()
 export class WebpageService extends BaseService {
 
   async getDataById(id: number): Promise<MWebPage[]> {

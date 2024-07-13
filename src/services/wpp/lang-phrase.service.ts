@@ -1,10 +1,10 @@
-import { injectable } from 'inversify';
 import { BaseService } from '../misc/base.service';
-import { MLangPhrase, MLangPhrases } from '../../models/wpp/lang-phrase';
-import { toParameters } from '../../common/common';
-import { MSPResult } from '../../common/sp-result';
+import { MLangPhrase, MLangPhrases } from 'src/models/wpp/lang-phrase';
+import { MSPResult } from 'src/common/sp-result';
+import { toParameters } from 'src/common/common';
+import { singleton } from "tsyringe";
 
-@injectable()
+@singleton()
 export class LangPhraseService extends BaseService {
 
   async getDataByLang(langid: number, page: number, rows: number, filter: string, filterType: number): Promise<MLangPhrases> {

@@ -1,7 +1,7 @@
-import { injectable } from 'inversify';
 import { BaseService } from './base.service';
+import { singleton } from "tsyringe";
 
-@injectable()
+@singleton()
 export class HtmlService extends BaseService {
 
   static extractTextFrom(html: string, transform: string, template: string,

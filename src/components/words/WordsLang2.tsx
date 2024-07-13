@@ -1,6 +1,6 @@
 import * as React from 'react';
 import 'reflect-metadata';
-import { resolve } from "inversify-react";
+import { container } from "tsyringe";
 import '../misc/Common.css'
 import { Subscription } from 'rxjs';
 import { SettingsService } from '../../view-models/misc/settings.service';
@@ -40,9 +40,9 @@ import { ReactNode } from 'react';
 import { AppService } from '../../view-models/misc/app.service';
 
 export default class WordsLang2 extends React.Component<any, any> {
-  @resolve appService: AppService;
-  @resolve wordsLangService: WordsLangService;
-  @resolve settingsService: SettingsService;
+  appService = container.resolve(AppService);
+  wordsLangService = container.resolve(WordsLangService);
+  settingsService = container.resolve(SettingsService);
   subscription = new Subscription();
 
   state = {

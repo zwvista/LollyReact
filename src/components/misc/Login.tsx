@@ -3,13 +3,13 @@ import { Button } from 'primereact/button';
 import './Common.css'
 import { InputText } from 'primereact/inputtext';
 import 'reflect-metadata';
-import { resolve } from "inversify-react";
+import { container } from "tsyringe";
 import { GlobalVars } from '../../common/common';
 import { Password } from 'primereact/password';
 import { LoginService } from '../../view-models/misc/login.service';
 
 export default class Login extends React.Component<any, any> {
-  @resolve loginService!: LoginService;
+  loginService = container.resolve(LoginService);
 
   render() {
     return (

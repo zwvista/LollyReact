@@ -1,4 +1,4 @@
-import * as _ from 'lodash';
+import _ from 'lodash';
 
 // https://stackoverflow.com/questions/42775017/angular-2-redirect-to-an-external-url-and-open-in-a-new-tab
 export function googleString(str: string) {
@@ -6,6 +6,7 @@ export function googleString(str: string) {
 }
 
 export function toParameters(item: Object): Object {
+  // @ts-ignore
   return _.mapKeys(item, (v, k) => 'P_' + k);
 }
 

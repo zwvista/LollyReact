@@ -1,10 +1,8 @@
-import { injectable } from 'inversify';
-import 'reflect-metadata';
-import { inject } from "inversify";
 import { ReplaySubject } from 'rxjs';
 import { SettingsService } from './settings.service';
+import { singleton } from "tsyringe";
 
-@injectable()
+@singleton()
 export class AppService {
 
   private _initializeObject: ReplaySubject<void> = new ReplaySubject<void>();
@@ -14,7 +12,7 @@ export class AppService {
 
   isInitialized = false;
 
-  constructor(@inject(SettingsService) private settingsService: SettingsService) {
+  constructor(private settingsService: SettingsService) {
   }
 
   async getData() {

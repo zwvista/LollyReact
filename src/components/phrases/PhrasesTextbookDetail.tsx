@@ -3,14 +3,14 @@ import { Button } from 'primereact/button';
 import '../misc/Common.css'
 import { InputText } from 'primereact/inputtext';
 import 'reflect-metadata';
-import { resolve } from "inversify-react";
+import { container } from "tsyringe";
 import { SettingsService } from '../../view-models/misc/settings.service';
 import { Dropdown } from 'primereact/dropdown';
 import { PhrasesUnitService } from '../../view-models/wpp/phrases-unit.service';
 
 export default class PhrasesTextbookDetail extends React.Component<any, any> {
-  @resolve phrasesUnitService: PhrasesUnitService;
-  @resolve settingsService: SettingsService;
+  phrasesUnitService = container.resolve(PhrasesUnitService);
+  settingsService = container.resolve(SettingsService);
 
   componentDidMount() {
     const id = +this.props.match.params.id;

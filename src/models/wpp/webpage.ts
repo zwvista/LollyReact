@@ -1,5 +1,5 @@
 export class MWebPages {
-  records: MWebPage[];
+  records!: MWebPage[];
   results = 0;
 }
 export class MWebPage {

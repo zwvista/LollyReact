@@ -1,7 +1,7 @@
-import { MUnitWord } from './unit-word';
+import { MUnitWord } from 'src/models/wpp/unit-word';
 
 export class MLangWords {
-  records: MLangWord[];
+  records!: MLangWord[];
   results = 0;
 }
 export class MLangWord {

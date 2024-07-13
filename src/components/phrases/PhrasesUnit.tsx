@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { PhrasesUnitService } from '../../view-models/wpp/phrases-unit.service';
 import 'reflect-metadata';
-import { resolve } from "inversify-react";
+import { container } from "tsyringe";
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
@@ -19,9 +19,9 @@ import { KeyboardEvent } from 'react';
 import { AppService } from '../../view-models/misc/app.service';
 
 export default class PhrasesUnit extends React.Component<any, any> {
-  @resolve appService: AppService;
-  @resolve phrasesUnitService: PhrasesUnitService;
-  @resolve settingsService: SettingsService;
+  appService = container.resolve(AppService);
+  phrasesUnitService = container.resolve(PhrasesUnitService);
+  settingsService = container.resolve(SettingsService);
   subscription = new Subscription();
 
   state = {

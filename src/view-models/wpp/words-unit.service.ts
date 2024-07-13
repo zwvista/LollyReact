@@ -1,14 +1,12 @@
-import { injectable } from 'inversify';
-import 'reflect-metadata';
-import { inject } from "inversify";
-import { UnitWordService } from '../../services/wpp/unit-word.service';
+import { UnitWordService } from 'src/services/wpp/unit-word.service';
 import { SettingsService } from '../misc/settings.service';
-import { MUnitWord } from '../../models/wpp/unit-word';
+import { MUnitWord } from 'src/models/wpp/unit-word';
 import { AppService } from '../misc/app.service';
-import { LangWordService } from '../../services/wpp/lang-word.service';
 import { take } from 'rxjs/operators';
+import { LangWordService } from 'src/services/wpp/lang-word.service';
+import { inject, singleton } from "tsyringe";
 
-@injectable()
+@singleton()
 export class WordsUnitService {
 
   unitWords: MUnitWord[] = [];
@@ -16,10 +14,10 @@ export class WordsUnitService {
   textbookWords: MUnitWord[] = [];
   textbookWordCount = 0;
 
-  constructor(@inject(UnitWordService) private unitWordService: UnitWordService,
-              @inject(LangWordService) private langWordService: LangWordService,
-              @inject(SettingsService) private settingsService: SettingsService,
-              @inject(AppService) private appService: AppService) {
+  constructor(private unitWordService: UnitWordService,
+              private langWordService: LangWordService,
+              private settingsService: SettingsService,
+              private appService: AppService) {
   }
 
   async getDataInTextbook(filter: string, filterType: number): Promise<void> {
@@ -71,7 +69,7 @@ export class WordsUnitService {
     o.LANGID = this.settingsService.selectedLang.ID;
     o.TEXTBOOKID = this.settingsService.USTEXTBOOK;
     const maxElem = this.unitWords.length === 0 ? null :
-        this.unitWords.reduce((p, v) => p.unitPartSeqnum < v.unitPartSeqnum ? v : p);
+      this.unitWords.reduce((p, v) => p.unitPartSeqnum < v.unitPartSeqnum ? v : p);
     o.UNIT = maxElem ? maxElem.UNIT : this.settingsService.USUNITTO;
     o.PART = maxElem ? maxElem.PART : this.settingsService.USPARTTO;
     o.SEQNUM = (maxElem ? maxElem.SEQNUM : 0) + 1;
@@ -87,8 +85,8 @@ export class WordsUnitService {
 
   getNotes(ifEmpty: boolean, oneComplete: (index: number) => void, allComplete: () => void) {
     this.settingsService.getNotes(this.unitWords.length,
-        i => !ifEmpty || !this.unitWords[i],
-        async i => { await this.getNote(i); oneComplete(i);
-        }, allComplete);
+      i => !ifEmpty || !this.unitWords[i],
+      async i => { await this.getNote(i); oneComplete(i);
+      }, allComplete);
   }
 }

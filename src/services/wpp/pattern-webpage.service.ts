@@ -1,8 +1,8 @@
-import { injectable } from 'inversify';
 import { BaseService } from '../misc/base.service';
-import { MPatternWebPage, MPatternWebPages } from '../../models/wpp/pattern-webpage';
+import { MPatternWebPage, MPatternWebPages } from 'src/models/wpp/pattern-webpage';
+import { singleton } from "tsyringe";
 
-@injectable()
+@singleton()
 export class PatternWebpageService extends BaseService {
 
   async getDataByPattern(patternid: number): Promise<MPatternWebPage[]> {

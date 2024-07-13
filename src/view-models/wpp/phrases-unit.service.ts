@@ -1,14 +1,12 @@
-import { injectable } from 'inversify';
-import 'reflect-metadata';
-import { inject } from "inversify";
 import { AppService } from '../misc/app.service';
 import { SettingsService } from '../misc/settings.service';
-import { MUnitPhrase } from '../../models/wpp/unit-phrase';
-import { UnitPhraseService } from '../../services/wpp/unit-phrase.service';
-import { LangPhraseService } from '../../services/wpp/lang-phrase.service';
+import { MUnitPhrase } from 'src/models/wpp/unit-phrase';
+import { UnitPhraseService } from 'src/services/wpp/unit-phrase.service';
 import { take } from 'rxjs/operators';
+import { LangPhraseService } from 'src/services/wpp/lang-phrase.service';
+import { inject, singleton } from "tsyringe";
 
-@injectable()
+@singleton()
 export class PhrasesUnitService {
 
   unitPhrases: MUnitPhrase[] = [];
@@ -16,10 +14,10 @@ export class PhrasesUnitService {
   textbookPhrases: MUnitPhrase[] = [];
   textbookPhraseCount = 0;
 
-  constructor(@inject(UnitPhraseService) private unitPhraseService: UnitPhraseService,
-              @inject(LangPhraseService) private langPhraseService: LangPhraseService,
-              @inject(SettingsService) private settingsService: SettingsService,
-              @inject(AppService) private appService: AppService) {
+  constructor(private unitPhraseService: UnitPhraseService,
+              private langPhraseService: LangPhraseService,
+              private settingsService: SettingsService,
+              private appService: AppService) {
   }
 
   async getDataInTextbook(filter: string, filterType: number) {
@@ -71,7 +69,7 @@ export class PhrasesUnitService {
     o.LANGID = this.settingsService.selectedLang.ID;
     o.TEXTBOOKID = this.settingsService.USTEXTBOOK;
     const maxElem = this.unitPhrases.length === 0 ? null :
-        this.unitPhrases.reduce((p, v) => p.unitPartSeqnum < v.unitPartSeqnum ? v : p);
+      this.unitPhrases.reduce((p, v) => p.unitPartSeqnum < v.unitPartSeqnum ? v : p);
     o.UNIT = maxElem ? maxElem.UNIT : this.settingsService.USUNITTO;
     o.PART = maxElem ? maxElem.PART : this.settingsService.USPARTTO;
     o.SEQNUM = (maxElem ? maxElem.SEQNUM : 0) + 1;

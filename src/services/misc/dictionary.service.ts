@@ -1,11 +1,11 @@
-import { injectable } from 'inversify';
 import { BaseService } from './base.service';
 import {
   MDictionary,
   MDictionaries,
-} from '../../models/misc/dictionary';
+} from 'src/models/misc/dictionary';
+import { singleton } from "tsyringe";
 
-@injectable()
+@singleton()
 export class DictionaryService extends BaseService {
 
   async getDictsReference(langid: number): Promise<MDictionary[]> {

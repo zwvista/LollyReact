@@ -1,11 +1,11 @@
 import * as React from 'react';
 import 'reflect-metadata';
-import { resolve } from "inversify-react";
+import { container } from "tsyringe";
 import { SettingsListener, SettingsService } from '../../view-models/misc/settings.service';
 import './Common.css'
 
 export default class Settings extends React.Component<any, any> implements SettingsListener {
-  @resolve settingsService: SettingsService;
+  settingsService = container.resolve(SettingsService);
 
   get toTypeIsUnit() {
     return this.settingsService.toType === 0;

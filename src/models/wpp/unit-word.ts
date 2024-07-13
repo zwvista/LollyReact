@@ -1,4 +1,4 @@
-import { MTextbook } from '../misc/textbook';
+import { MTextbook } from 'src/models/misc/textbook';
 
 export class MUnitWords {
   records!: MUnitWord[];
@@ -19,7 +19,7 @@ export class MUnitWord {
   CORRECT = 0;
   TOTAL = 0;
 
-  textbook: MTextbook;
+  textbook!: MTextbook;
   get UNITSTR(): string {
     return this.textbook.UNITSTR(this.UNIT);
   }

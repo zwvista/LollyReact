@@ -1,5 +1,5 @@
 export class MWordsFami {
-  records: MWordFami[];
+  records!: MWordFami[];
 }
 export class MWordFami {
   ID = 0;

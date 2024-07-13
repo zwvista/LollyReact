@@ -1,21 +1,19 @@
-import { injectable } from 'inversify';
-import 'reflect-metadata';
-import { inject } from "inversify";
 import { SettingsService } from '../misc/settings.service';
 import { AppService } from '../misc/app.service';
-import { MPattern } from '../../models/wpp/pattern';
-import { PatternService } from '../../services/wpp/pattern.service';
+import { MPattern } from 'src/models/wpp/pattern';
 import { take } from 'rxjs/operators';
+import { PatternService } from 'src/services/wpp/pattern.service';
+import { inject, singleton } from "tsyringe";
 
-@injectable()
+@singleton()
 export class PatternsService {
 
   patterns: MPattern[] = [];
   patternCount = 0;
 
-  constructor(@inject(PatternService) private patternService: PatternService,
-              @inject(SettingsService) private settingsService: SettingsService,
-              @inject(AppService) private appService: AppService) {
+  constructor(private patternService: PatternService,
+              private settingsService: SettingsService,
+              private appService: AppService) {
   }
 
   async getData(page: number, rows: number, filter: string, filterType: number) {

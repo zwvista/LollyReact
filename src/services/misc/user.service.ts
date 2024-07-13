@@ -1,10 +1,8 @@
-import { injectable } from 'inversify';
 import { BaseService } from './base.service';
-import { Observable } from 'rxjs';
-import { MUser, MUsers } from '../../models/misc/user';
-import { map } from 'rxjs/operators';
+import { MUser, MUsers } from 'src/models/misc/user';
+import { singleton } from "tsyringe";
 
-@injectable()
+@singleton()
 export class UserService extends BaseService {
 
   async getDataByLang(username: string, password: string): Promise<MUser[]> {

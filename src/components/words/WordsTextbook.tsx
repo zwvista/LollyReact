@@ -1,6 +1,6 @@
 import * as React from 'react';
 import 'reflect-metadata';
-import { resolve } from "inversify-react";
+import { container } from "tsyringe";
 import { DataTable } from 'primereact/datatable';
 import { Paginator, PaginatorPageState } from 'primereact/paginator';
 import { Column } from 'primereact/column';
@@ -19,9 +19,9 @@ import { KeyboardEvent } from 'react';
 import { AppService } from '../../view-models/misc/app.service';
 
 export default class WordsTextbook extends React.Component<any, any> {
-  @resolve appService: AppService;
-  @resolve wordsUnitService: WordsUnitService;
-  @resolve settingsService: SettingsService;
+  appService = container.resolve(AppService);
+  wordsUnitService = container.resolve(WordsUnitService);
+  settingsService = container.resolve(SettingsService);
   subscription = new Subscription();
 
   state = {

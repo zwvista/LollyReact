@@ -1,5 +1,5 @@
 export class MPatterns {
-  records: MPattern[];
+  records!: MPattern[];
   results = 0;
 }
 export class MPattern {

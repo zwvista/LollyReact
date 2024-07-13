@@ -1,6 +1,6 @@
 import * as React from 'react';
 import 'reflect-metadata';
-import { resolve } from "inversify-react";
+import { container } from "tsyringe";
 import '../misc/Common.css'
 import { Subscription } from 'rxjs';
 import { SettingsService } from '../../view-models/misc/settings.service';
@@ -29,9 +29,9 @@ import { AppService } from '../../view-models/misc/app.service';
 import { PatternsService } from '../../view-models/wpp/patterns.service';
 
 export default class Patterns2 extends React.Component<any, any> {
-  @resolve appService: AppService;
-  @resolve patternsService: PatternsService;
-  @resolve settingsService: SettingsService;
+  appService = container.resolve(AppService);
+  patternsService = container.resolve(PatternsService);
+  settingsService = container.resolve(SettingsService);
   subscription = new Subscription();
 
   state = {

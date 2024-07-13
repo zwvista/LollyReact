@@ -1,10 +1,8 @@
-import { injectable } from 'inversify';
 import { BaseService } from './base.service';
-import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
-import { MUSMapping, MUSMappings } from '../../models/misc/usmapping';
+import { MUSMapping, MUSMappings } from 'src/models/misc/usmapping';
+import { singleton } from "tsyringe";
 
-@injectable()
+@singleton()
 export class UsMappingService extends BaseService {
 
   async getData(): Promise<MUSMapping[]> {

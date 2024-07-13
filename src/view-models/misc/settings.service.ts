@@ -1,35 +1,34 @@
-import { injectable } from 'inversify';
-import 'reflect-metadata';
-import { inject } from "inversify";
-import { LanguageService } from '../../services/misc/language.service';
-import { UserSettingService } from '../../services/misc/user-setting.service';
-import { MUserSetting, MUserSettingInfo } from '../../models/misc/user-setting';
-import { MLanguage } from '../../models/misc/language';
-import { MDictionary } from '../../models/misc/dictionary';
-import { MTextbook } from '../../models/misc/textbook';
+import { LanguageService } from 'src/services/misc/language.service';
+import { UserSettingService } from 'src/services/misc/user-setting.service';
+import { MUserSetting, MUserSettingInfo } from 'src/models/misc/user-setting';
+import { MLanguage } from 'src/models/misc/language';
+import { MDictionary } from 'src/models/misc/dictionary';
+import { MTextbook } from 'src/models/misc/textbook';
 import { interval, Subscription } from 'rxjs';
-import { DictionaryService } from '../../services/misc/dictionary.service';
-import { TextbookService } from '../../services/misc/textbook.service';
-import { AutoCorrectService } from '../../services/misc/autocorrect.service';
-import { autoCorrect, MAutoCorrect } from '../../models/misc/autocorrect';
-import { MSelectItem } from '../../common/selectitem';
+import { DictionaryService } from 'src/services/misc/dictionary.service';
+import { TextbookService } from 'src/services/misc/textbook.service';
+import { autoCorrect, MAutoCorrect } from 'src/models/misc/autocorrect';
+import { AutoCorrectService } from 'src/services/misc/autocorrect.service';
+import { MSelectItem } from 'src/common/selectitem';
+// @ts-ignore
 import * as Speech from 'speak-tts';
-import { VoiceService } from '../../services/misc/voice.service';
-import { MVoice } from '../../models/misc/voice';
-import { MUSMapping } from '../../models/misc/usmapping';
-import { UsMappingService } from '../../services/misc/us-mapping.service';
-import { HtmlService } from '../../services/misc/html.service';
+import { VoiceService } from 'src/services/misc/voice.service';
+import { MVoice } from 'src/models/misc/voice';
+import { UsMappingService } from 'src/services/misc/us-mapping.service';
+import { MUSMapping } from 'src/models/misc/usmapping';
+import { HtmlService } from 'src/services/misc/html.service';
+import { singleton } from "tsyringe";
 
-@injectable()
+@singleton()
 export class SettingsService {
 
   usMappings: MUSMapping[] = [];
   userSettings: MUserSetting[] = [];
   private getUSValue(info: MUserSettingInfo): string | null {
-    return this.userSettings.find(v => v.ID === info.USERSETTINGID)!['VALUE' + info.VALUEID]!;
+    return (this.userSettings.find(v => v.ID === info.USERSETTINGID)! as any)['VALUE' + info.VALUEID]!;
   }
   private setUSValue(info: MUserSettingInfo, value: string) {
-    this.userSettings.find(v => v.ID === info.USERSETTINGID)!['VALUE' + info.VALUEID]! = value;
+    (this.userSettings.find(v => v.ID === info.USERSETTINGID)! as any)['VALUE' + info.VALUEID]! = value;
   }
   private INFO_USLANG: MUserSettingInfo = new MUserSettingInfo();
   private get USLANG(): number {
@@ -142,7 +141,7 @@ export class SettingsService {
   selectedDictTranslation: MDictionary | null = null;
 
   textbooks: MTextbook[] = [];
-  selectedTextbook: MTextbook;
+  selectedTextbook!: MTextbook;
   textbookFilters: MSelectItem[] = [];
 
   get units(): MSelectItem[] {
@@ -172,23 +171,23 @@ export class SettingsService {
   phraseFilterTypes = ['Phrase', 'Translation'].map((v, i) => new MSelectItem(i, v));
   patternFilterTypes = ['Pattern', 'Note', 'Tags'].map((v, i) => new MSelectItem(i, v));
 
-  constructor(@inject(LanguageService) private langService: LanguageService,
-              @inject(UsMappingService) private usMappingService: UsMappingService,
-              @inject(UserSettingService) private userSettingService: UserSettingService,
-              @inject(DictionaryService) private dictionaryService: DictionaryService,
-              @inject(TextbookService) private textbookService: TextbookService,
-              @inject(AutoCorrectService) private autoCorrectService: AutoCorrectService,
-              @inject(VoiceService) private voiceService: VoiceService,
-              @inject(HtmlService) private htmlService: HtmlService) {
+  constructor(private langService: LanguageService,
+              private usMappingService: UsMappingService,
+              private userSettingService: UserSettingService,
+              private dictionaryService: DictionaryService,
+              private textbookService: TextbookService,
+              private autoCorrectService: AutoCorrectService,
+              private voiceService: VoiceService,
+              private htmlService: HtmlService) {
     this.speech.init();
   }
 
   private getUSInfo(name: string): MUserSettingInfo {
     const o = this.usMappings.find(v => v.NAME === name)!;
     const entityid = o.ENTITYID !== -1 ? o.ENTITYID :
-        o.LEVEL === 1 ? this.selectedLang.ID :
-            o.LEVEL === 2 ? this.selectedTextbook.ID :
-                0;
+      o.LEVEL === 1 ? this.selectedLang.ID :
+        o.LEVEL === 2 ? this.selectedTextbook.ID :
+          0;
     const o2 = this.userSettings.find((v => v.KIND === o.KIND && v.ENTITYID === entityid))!;
     const o3 = new MUserSettingInfo();
     o3.USERSETTINGID = o2.ID;
@@ -198,8 +197,8 @@ export class SettingsService {
 
   async getData() {
     const res = await Promise.all([this.langService.getData(),
-      this.usMappingService.getData(),
-      this.userSettingService.getDataByUser()]);
+        this.usMappingService.getData(),
+        this.userSettingService.getDataByUser()]);
     this.languages = res[0] as MLanguage[];
     this.usMappings = res[1] as MUSMapping[];
     this.userSettings = res[2] as MUserSetting[];
@@ -231,10 +230,10 @@ export class SettingsService {
     this.selectedDictReference = this.dictsReference.find(value => String(value.DICTID) === this.USDICTREFERENCE)!;
     this.dictsNote = res[1] as MDictionary[];
     this.selectedDictNote = this.dictsNote.find(value => value.DICTID === this.USDICTNOTE) ||
-        (this.dictsNote.length === 0 ? null : this.dictsNote[0]);
+      (this.dictsNote.length === 0 ? null : this.dictsNote[0]);
     this.dictsTranslation = res[2] as MDictionary[];
     this.selectedDictTranslation = this.dictsTranslation.find(value => value.DICTID === this.USDICTTRANSLATION) ||
-        (this.dictsTranslation.length === 0 ? null : this.dictsTranslation[0]);
+      (this.dictsTranslation.length === 0 ? null : this.dictsTranslation[0]);
     this.textbooks = res[3] as MTextbook[];
     this.selectedTextbook = this.textbooks.find(value => value.ID === this.USTEXTBOOK)!;
     this.textbookFilters = this.textbooks.map(value => new MSelectItem(value.ID, value.NAME));
@@ -242,7 +241,7 @@ export class SettingsService {
     this.autoCorrects = res[4] as MAutoCorrect[];
     this.voices = res[5] as MVoice[];
     this.selectedVoice = this.voices.find(value => value.ID === this.USVOICE) ||
-        (this.voices.length === 0 ? null : this.voices[0]);
+      (this.voices.length === 0 ? null : this.voices[0]);
     await Promise.all([this.updateTextbook(), this.updateDictReference(), this.updateDictNote(),
       this.updateDictTranslation(), this.updateVoice()]);
     if (dirty) await this.userSettingService.updateIntValue(this.INFO_USLANG, this.USLANG);
@@ -335,7 +334,7 @@ export class SettingsService {
     if (this.toType === 0) {
       if (this.USUNITFROM > 1)
         await Promise.all([this.doUpdateUnitFrom(this.USUNITFROM - 1),
-          this.doUpdateUnitTo(this.USUNITFROM)]);
+            this.doUpdateUnitTo(this.USUNITFROM)]);
     } else if (this.USPARTFROM > 1)
       await Promise.all([this.doUpdatePartFrom(this.USPARTFROM - 1),
         this.doUpdateUnitPartTo()]);
@@ -351,10 +350,10 @@ export class SettingsService {
           this.doUpdateUnitTo(this.USUNITFROM)]);
     } else if (this.USPARTFROM < this.partCount)
       await Promise.all([this.doUpdatePartFrom(this.USPARTFROM + 1),
-        this.doUpdateUnitPartTo()]);
+      this.doUpdateUnitPartTo()]);
     else if (this.USUNITFROM < this.unitCount)
       await Promise.all([this.doUpdateUnitFrom(this.USUNITFROM + 1),
-        this.doUpdatePartFrom(1), this.doUpdateUnitPartTo()]);
+      this.doUpdatePartFrom(1), this.doUpdateUnitPartTo()]);
   }
 
   async updateUnitTo(value: number) {
