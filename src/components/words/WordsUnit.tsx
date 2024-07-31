@@ -13,7 +13,7 @@ import { InputText } from 'primereact/inputtext';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { SettingsService } from '../../view-models/misc/settings.service';
 import { MUnitWord } from '../../models/wpp/unit-word';
-import { Dropdown } from 'primereact/dropdown';
+import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
 import { AppService } from '../../view-models/misc/app.service';
 import { useNavigate } from "react-router-dom";
 
@@ -70,7 +70,7 @@ export default function WordsUnit() {
     onRefresh();
   };
 
-  const onFilterTypeChange = (e: {originalEvent: SyntheticEvent, value: any}) => {
+  const onFilterTypeChange = (e: DropdownChangeEvent) => {
     setFilterType(e.value);
     onRefresh();
   };
@@ -158,7 +158,7 @@ export default function WordsUnit() {
   return !appService.isInitialized && wordsUnitService ? (<div/>) : (
     <div>
       <Toolbar left={leftContents} />
-      <DataTable value={wordsUnitService.unitWords} autoLayout={true}
+      <DataTable value={wordsUnitService.unitWords}
                  onRowReorder={onReorder} selectionMode="single"
                  selection={selectedRow} onSelectionChange={onSelectionChange}>
         <Column rowReorder={settingsService.selectedTextbook && settingsService.isSingleUnitPart} style={{width: '3em'}} />

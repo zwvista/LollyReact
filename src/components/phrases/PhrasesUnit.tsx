@@ -12,7 +12,7 @@ import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { googleString } from '../../common/common';
 import { SettingsService } from '../../view-models/misc/settings.service';
 import { MUnitPhrase } from '../../models/wpp/unit-phrase';
-import { Dropdown } from 'primereact/dropdown';
+import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 import { SyntheticEvent } from 'react';
 import { KeyboardEvent } from 'react';
@@ -72,7 +72,7 @@ export default class PhrasesUnit extends React.Component<any, any> {
     return (
       <div>
         <Toolbar left={leftContents} />
-        <DataTable value={this.phrasesUnitService.unitPhrases} selectionMode="single" autoLayout={true}
+        <DataTable value={this.phrasesUnitService.unitPhrases} selectionMode="single"
                    onRowReorder={this.onReorder}
                    selection={this.state.selectedRow} onSelectionChange={this.onSelectionChange}>
           <Column rowReorder={this.settingsService.selectedTextbook && this.settingsService.isSingleUnitPart} style={{width: '3em'}} />
@@ -109,7 +109,7 @@ export default class PhrasesUnit extends React.Component<any, any> {
     this.onRefresh();
   };
 
-  onFilterTypeChange = (e: {originalEvent: SyntheticEvent, value: any}) => {
+  onFilterTypeChange = (e: DropdownChangeEvent) => {
     this.setState({filterType: this.state.filterType = e.value});
     this.onRefresh();
   };

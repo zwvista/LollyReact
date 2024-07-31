@@ -2,7 +2,7 @@ import * as React from 'react';
 import 'reflect-metadata';
 import { container } from "tsyringe";
 import { DataTable } from 'primereact/datatable';
-import { Paginator, PaginatorPageState } from 'primereact/paginator';
+import { Paginator, PaginatorPageChangeEvent } from 'primereact/paginator';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import '../misc/Common.css'
@@ -13,7 +13,7 @@ import { googleString } from '../../common/common';
 import { SettingsService } from '../../view-models/misc/settings.service';
 import { MUnitPhrase } from '../../models/wpp/unit-phrase';
 import { PhrasesUnitService } from '../../view-models/wpp/phrases-unit.service';
-import { Dropdown } from 'primereact/dropdown';
+import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 import { SyntheticEvent } from 'react';
 import { KeyboardEvent } from 'react';
@@ -42,7 +42,7 @@ export default class PhrasesTextbook extends React.Component<any, any> {
     }));
   }
 
-  onPageChange = (e: PaginatorPageState) => {
+  onPageChange = (e: PaginatorPageChangeEvent) => {
     this.setState({
       first: e.first,
       rows: this.state.rows = e.rows,
@@ -90,7 +90,7 @@ export default class PhrasesTextbook extends React.Component<any, any> {
         <Paginator first={this.state.first} rows={this.state.rows} onPageChange={this.onPageChange}
                    totalRecords={this.phrasesUnitService.textbookPhraseCount}
                    rowsPerPageOptions={this.settingsService.USROWSPERPAGEOPTIONS}/>
-        <DataTable value={this.phrasesUnitService.textbookPhrases} selectionMode="single" autoLayout={true}
+        <DataTable value={this.phrasesUnitService.textbookPhrases} selectionMode="single"
                    selection={this.state.selectedRow} onSelectionChange={this.onSelectionChange}>
           <Column style={{width:'80px'}} field="ID" header="ID" />
           <Column style={{width:'150px'}} field="TEXTBOOKNAME" header="TEXTBOOKNAME" />
@@ -123,12 +123,12 @@ export default class PhrasesTextbook extends React.Component<any, any> {
     this.onRefresh();
   };
 
-  onFilterTypeChange = (e: {originalEvent: SyntheticEvent, value: any}) => {
+  onFilterTypeChange = (e: DropdownChangeEvent) => {
     this.setState({filterType: this.state.filterType = e.value});
     this.onRefresh();
   };
 
-  onTextbookFilterChange = (e: {originalEvent: SyntheticEvent, value: any}) => {
+  onTextbookFilterChange = (e: DropdownChangeEvent) => {
     this.setState({textbookFilter: this.state.textbookFilter = e.value});
     this.onRefresh();
   };

@@ -4,7 +4,7 @@ import { WordsLangService } from '../../view-models/wpp/words-lang.service';
 import 'reflect-metadata';
 import { container } from "tsyringe";
 import { DataTable } from 'primereact/datatable';
-import { Paginator, PaginatorPageState } from 'primereact/paginator';
+import { Paginator, PaginatorPageChangeEvent } from 'primereact/paginator';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import '../misc/Common.css'
@@ -14,7 +14,7 @@ import { InputText } from 'primereact/inputtext';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { SettingsService } from '../../view-models/misc/settings.service';
 import { MLangWord } from '../../models/wpp/lang-word';
-import { Dropdown } from 'primereact/dropdown';
+import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
 import { AppService } from '../../view-models/misc/app.service';
 import { useNavigate } from "react-router-dom";
 
@@ -34,7 +34,7 @@ export default function WordsLang() {
   const [filterType, setFilterType] = useState(0);
   const [, setWordsLangService] = useState(wordsLangService);
 
-  const onPageChange = (e: PaginatorPageState) => {
+  const onPageChange = (e: PaginatorPageChangeEvent) => {
     setFirst(e.first);
     setRows(e.rows);
     setPage(e.page + 1);
@@ -74,7 +74,7 @@ export default function WordsLang() {
     onRefresh();
   };
 
-  const onFilterTypeChange = (e: {originalEvent: SyntheticEvent, value: any}) => {
+  const onFilterTypeChange = (e: DropdownChangeEvent) => {
     setFilterType(e.value);
     onRefresh();
   };
@@ -161,7 +161,7 @@ export default function WordsLang() {
       <Paginator first={first} rows={rows} onPageChange={onPageChange}
                  totalRecords={wordsLangService.langWordsCount}
                  rowsPerPageOptions={settingsService.USROWSPERPAGEOPTIONS}/>
-      <DataTable value={wordsLangService.langWords} selectionMode="single" autoLayout={true}
+      <DataTable value={wordsLangService.langWords} selectionMode="single"
                  selection={selectedRow} onSelectionChange={onSelectionChange}>
         <Column style={{width:'80px'}} field="ID" header="ID" />
         <Column field="WORD" header="WORD" />

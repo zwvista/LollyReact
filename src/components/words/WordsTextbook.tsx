@@ -2,7 +2,7 @@ import * as React from 'react';
 import 'reflect-metadata';
 import { container } from "tsyringe";
 import { DataTable } from 'primereact/datatable';
-import { Paginator, PaginatorPageState } from 'primereact/paginator';
+import { Paginator, PaginatorPageChangeEvent } from 'primereact/paginator';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import '../misc/Common.css'
@@ -12,7 +12,7 @@ import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { SettingsService } from '../../view-models/misc/settings.service';
 import { WordsUnitService } from '../../view-models/wpp/words-unit.service';
 import { MUnitWord } from '../../models/wpp/unit-word';
-import { Dropdown } from 'primereact/dropdown';
+import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 import { SyntheticEvent, useEffect, useState } from 'react';
 import { KeyboardEvent } from 'react';
@@ -35,7 +35,7 @@ export default function WordsTextbook() {
   const [textbookFilter, setTextbookFilter] = useState(0);
   const [, setWordsUnitService] = useState(wordsUnitService);
 
-  const onPageChange = (e: PaginatorPageState) => {
+  const onPageChange = (e: PaginatorPageChangeEvent) => {
     setFirst(e.first);
     setRows(e.rows);
     setPage(e.page + 1);
@@ -61,12 +61,12 @@ export default function WordsTextbook() {
     onRefresh();
   };
 
-  const onFilterTypeChange = (e: {originalEvent: SyntheticEvent, value: any}) => {
+  const onFilterTypeChange = (e: DropdownChangeEvent) => {
     setFilterType(e.value);
     onRefresh();
   };
 
-  const onTextbookFilterChange = (e: {originalEvent: SyntheticEvent, value: any}) => {
+  const onTextbookFilterChange = (e: DropdownChangeEvent) => {
     setTextbookFilter(e.value);
     onRefresh();
   };
@@ -144,7 +144,7 @@ export default function WordsTextbook() {
       <Paginator first={first} rows={rows} onPageChange={onPageChange}
                  totalRecords={wordsUnitService.textbookWordCount}
                  rowsPerPageOptions={settingsService.USROWSPERPAGEOPTIONS}/>
-      <DataTable value={wordsUnitService.textbookWords} selectionMode="single" autoLayout={true}
+      <DataTable value={wordsUnitService.textbookWords} selectionMode="single"
                  selection={selectedRow} onSelectionChange={onSelectionChange}>
         <Column style={{width:'80px'}} field="ID" header="ID" />
         <Column style={{width:'150px'}} field="TEXTBOOKNAME" header="TEXTBOOKNAME" />
