@@ -155,7 +155,7 @@ export default function WordsLang() {
     </>
   );
 
-  return !appService.isInitialized && wordsLangService ? (<div/>) : (
+  return !appService.isInitialized ? (<div/>) : (
     <div>
       <Toolbar left={leftContents} />
       <Paginator first={first} rows={rows} onPageChange={onPageChange}

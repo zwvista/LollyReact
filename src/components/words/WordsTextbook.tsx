@@ -18,6 +18,7 @@ import { SyntheticEvent, useEffect, useState } from 'react';
 import { KeyboardEvent } from 'react';
 import { AppService } from '../../view-models/misc/app.service';
 import { useNavigate } from "react-router-dom";
+import { MUnitPhrase } from "../../models/wpp/unit-phrase";
 
 export default function WordsTextbook() {
   const appService = container.resolve(AppService);
@@ -29,7 +30,7 @@ export default function WordsTextbook() {
   const [first, setFirst] = useState(0);
   const [rows, setRows] = useState(0);
   const [page, setPage] = useState(1);
-  const [selectedRow, setSelectedRow] = useState(null as any);
+  const [selectedRow, setSelectedRow] = useState(null as MUnitWord);
   const [filter, setFilter] = useState('');
   const [filterType, setFilterType] = useState(0);
   const [textbookFilter, setTextbookFilter] = useState(0);
@@ -138,7 +139,7 @@ export default function WordsTextbook() {
     </>
   );
 
-  return !appService.isInitialized && wordsUnitService ? (<div/>) : (
+  return !appService.isInitialized ? (<div/>) : (
     <div>
       <Toolbar left={leftContents} />
       <Paginator first={first} rows={rows} onPageChange={onPageChange}

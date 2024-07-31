@@ -25,7 +25,7 @@ export default function WordsUnit() {
   const navigate = useNavigate();
 
   const [newWord, setNewWord] = useState('');
-  const [selectedRow, setSelectedRow] = useState(null as any);
+  const [selectedRow, setSelectedRow] = useState(null as MUnitWord);
   const [filter, setFilter] = useState('');
   const [filterType, setFilterType] = useState(0);
   const [, setWordsUnitService] = useState(wordsUnitService);
@@ -97,7 +97,7 @@ export default function WordsUnit() {
 
   const getNotes = (ifEmpty: boolean) => {
     wordsUnitService.getNotes(ifEmpty, () => {}, () => {});
-  }
+  };
 
   const updateServiceState = () => {
     setWordsUnitService(null);
@@ -155,7 +155,7 @@ export default function WordsUnit() {
     </>
   );
 
-  return !appService.isInitialized && wordsUnitService ? (<div/>) : (
+  return !appService.isInitialized ? (<div/>) : (
     <div>
       <Toolbar left={leftContents} />
       <DataTable value={wordsUnitService.unitWords}
@@ -175,4 +175,3 @@ export default function WordsUnit() {
     </div>
   );
 }
-

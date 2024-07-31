@@ -15,138 +15,135 @@ import { MUnitPhrase } from '../../models/wpp/unit-phrase';
 import { PhrasesUnitService } from '../../view-models/wpp/phrases-unit.service';
 import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
-import { SyntheticEvent } from 'react';
+import { SyntheticEvent, useEffect, useState } from 'react';
 import { KeyboardEvent } from 'react';
 import { AppService } from '../../view-models/misc/app.service';
+import { useNavigate } from "react-router-dom";
 
-export default class PhrasesTextbook extends React.Component<any, any> {
-  appService = container.resolve(AppService);
-  phrasesUnitService = container.resolve(PhrasesUnitService);
-  settingsService = container.resolve(SettingsService);
-  subscription = new Subscription();
+export default function PhrasesTextbook() {
+  const appService = container.resolve(AppService);
+  const phrasesUnitService = container.resolve(PhrasesUnitService);
+  const settingsService = container.resolve(SettingsService);
+  const subscription = new Subscription();
+  const navigate = useNavigate();
 
-  state = {
-    first: 0,
-    rows: 0,
-    page: 1,
-    selectedRow: null as MUnitPhrase,
-    filter: '',
-    filterType: 0,
-    textbookFilter: 0,
+  const [first, setFirst] = useState(0);
+  const [rows, setRows] = useState(0);
+  const [page, setPage] = useState(1);
+  const [selectedRow, setSelectedRow] = useState(null as MUnitPhrase);
+  const [filter, setFilter] = useState('');
+  const [filterType, setFilterType] = useState(0);
+  const [textbookFilter, setTextbookFilter] = useState(0);
+  const [, setPhrasesUnitService] = useState(phrasesUnitService);
+
+  const onPageChange = (e: PaginatorPageChangeEvent) => {
+    setFirst(e.first);
+    setRows(e.rows);
+    setPage(e.page + 1);
+    onRefresh();
   };
 
-  componentDidMount() {
-    this.subscription.add(this.appService.initializeObject.subscribe(_ => {
-      this.setState({rows: this.state.rows = this.settingsService.USROWSPERPAGE});
-      this.onRefresh();
+  const onRefresh = async () => {
+    await phrasesUnitService.getDataInLang(page, rows, filter, filterType, textbookFilter);
+    updateServiceState();
+  };
+
+  const onFilterChange = (e: SyntheticEvent) => {
+    setFilter((e.nativeEvent.target as HTMLInputElement).value);
+  };
+
+  const onFilterKeyPress = (e: KeyboardEvent) => {
+    if (e.key !== 'Enter') return;
+    onRefresh();
+  };
+
+  const onFilterTypeChange = (e: DropdownChangeEvent) => {
+    setFilterType(e.value);
+    onRefresh();
+  };
+
+  const onTextbookFilterChange = (e: DropdownChangeEvent) => {
+    setTextbookFilter(e.value);
+    onRefresh();
+  };
+
+  const deletePhrase = (item: MUnitPhrase) => {
+    phrasesUnitService.delete(item);
+  };
+
+  const onSelectionChange = (e: any) => {
+    setSelectedRow(e.data);
+  };
+
+  const googlePhrase = (phrase: string) => {
+    googleString(phrase);
+  };
+
+  const updateServiceState = () => {
+    setPhrasesUnitService(null);
+    setPhrasesUnitService(phrasesUnitService);
+  };
+
+  useEffect(() => {
+    subscription.add(appService.initializeObject.subscribe(_ => {
+      setRows(settingsService.USROWSPERPAGE);
+      onRefresh();
     }));
-  }
+    return () => {
+      subscription.unsubscribe();
+    }
+  });
 
-  onPageChange = (e: PaginatorPageChangeEvent) => {
-    this.setState({
-      first: e.first,
-      rows: this.state.rows = e.rows,
-      page: this.state.page = e.page + 1,
-    });
-    this.onRefresh();
-  };
-
-  componentWillUnmount() {
-    this.subscription.unsubscribe();
-  }
-
-  actionTemplate = (rowData: any, column: any) => {
+  const actionTemplate = (rowData: any, column: any) => {
     return <div>
       <Button className="p-button-danger button-margin-right" icon="fa fa-trash"
-              tooltip="Delete" tooltipOptions={{position: 'top'}} onClick={() => this.deletePhrase(rowData)} />
+              tooltip="Delete" tooltipOptions={{position: 'top'}} onClick={() => deletePhrase(rowData)} />
       <Button icon="fa fa-edit" tooltip="Edit" tooltipOptions={{position: 'top'}}
-              onClick={() => this.props.history.push('/phrases-textbook-detail/' + rowData.ID)}/>
+              onClick={() => navigate('/phrases-textbook-detail/' + rowData.ID)}/>
       <Button icon="fa fa-volume-up" tooltipOptions={{position: 'top'}}
-              tooltip="Speak" onClick={() => this.settingsService.speak(rowData.PHRASE)} />
+              tooltip="Speak" onClick={() => settingsService.speak(rowData.PHRASE)} />
       <CopyToClipboard text={rowData.PHRASE}>
         <Button icon="fa fa-copy" tooltip="Copy" tooltipOptions={{position: 'top'}}/>
       </CopyToClipboard>
-      <Button icon="fa fa-google" onClick={() => this.googlePhrase(rowData.PHRASE)}
+      <Button icon="fa fa-google" onClick={() => googlePhrase(rowData.PHRASE)}
               tooltip="Google Phrase" tooltipOptions={{position: 'top'}}/>
     </div>;
   };
 
-  render() {
-    const leftContents = (
-      <React.Fragment>
-        <Dropdown id="filterType" options={this.settingsService.phraseFilterTypes} value={this.state.filterType} onChange={this.onFilterTypeChange} />
-        <span className="p-float-label">
-            <InputText id="filter" type="text" value={this.state.filter}
-                       onChange={this.onFilterChange} onKeyPress={this.onFilterKeyPress}/>
-            <label htmlFor="filter">Filter</label>
-          </span>
-        <Dropdown id="textbookFilter" options={this.settingsService.textbookFilters} value={this.state.textbookFilter} onChange={this.onTextbookFilterChange} />
-        <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => this.onRefresh}/>
-      </React.Fragment>
-    );
-    return !this.appService.isInitialized ? (<div/>) : (
-      <div>
-        <Toolbar left={leftContents} />
-        <Paginator first={this.state.first} rows={this.state.rows} onPageChange={this.onPageChange}
-                   totalRecords={this.phrasesUnitService.textbookPhraseCount}
-                   rowsPerPageOptions={this.settingsService.USROWSPERPAGEOPTIONS}/>
-        <DataTable value={this.phrasesUnitService.textbookPhrases} selectionMode="single"
-                   selection={this.state.selectedRow} onSelectionChange={this.onSelectionChange}>
-          <Column style={{width:'80px'}} field="ID" header="ID" />
-          <Column style={{width:'150px'}} field="TEXTBOOKNAME" header="TEXTBOOKNAME" />
-          <Column style={{width:'80px'}} field="UNITSTR" header="UNIT" />
-          <Column style={{width:'80px'}} field="PARTSTR" header="PART" />
-          <Column style={{width:'80px'}} field="SEQNUM" header="SEQNUM" />
-          <Column style={{width:'80px'}} field="PHRASEID" header="PHRASEID" />
-          <Column field="PHRASE" header="PHRASE" />
-          <Column field="TRANSLATION" header="TRANSLATION" />
-          <Column style={{width:'20%'}} body={this.actionTemplate} header="ACTIONS" />
-        </DataTable>
-        <Paginator first={this.state.first} rows={this.state.rows} onPageChange={this.onPageChange}
-                   totalRecords={this.phrasesUnitService.textbookPhraseCount}
-                   rowsPerPageOptions={this.settingsService.USROWSPERPAGEOPTIONS}/>
-      </div>
-    );
-  }
+  const leftContents = (
+    <React.Fragment>
+      <Dropdown id="filterType" options={settingsService.phraseFilterTypes} value={filterType} onChange={onFilterTypeChange} />
+      <span className="p-float-label">
+          <InputText id="filter" type="text" value={filter}
+                     onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
+          <label htmlFor="filter">Filter</label>
+        </span>
+      <Dropdown id="textbookFilter" options={settingsService.textbookFilters} value={textbookFilter} onChange={onTextbookFilterChange} />
+      <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => onRefresh}/>
+    </React.Fragment>
+  );
 
-  onRefresh = async () => {
-    await this.phrasesUnitService.getDataInLang(this.state.page, this.state.rows, this.state.filter, this.state.filterType, this.state.textbookFilter);
-    this.updateServiceState();
-  };
-
-  onFilterChange = (e: SyntheticEvent) => {
-    this.setState({filter: (e.nativeEvent.target as HTMLInputElement).value});
-  };
-
-  onFilterKeyPress = (e: KeyboardEvent) => {
-    if (e.key !== 'Enter') return;
-    this.onRefresh();
-  };
-
-  onFilterTypeChange = (e: DropdownChangeEvent) => {
-    this.setState({filterType: this.state.filterType = e.value});
-    this.onRefresh();
-  };
-
-  onTextbookFilterChange = (e: DropdownChangeEvent) => {
-    this.setState({textbookFilter: this.state.textbookFilter = e.value});
-    this.onRefresh();
-  };
-
-  deletePhrase(item: MUnitPhrase) {
-    this.phrasesUnitService.delete(item);
-  }
-
-  onSelectionChange = (e: any) => {
-    this.setState({selectedRow: e.data});
-  };
-
-  updateServiceState() {
-    this.setState({phrasesUnitService: this.phrasesUnitService});
-  }
-
-  googlePhrase(phrase: string) {
-    googleString(phrase);
-  }
-};
-
+  return !appService.isInitialized ? (<div/>) : (
+    <div>
+      <Toolbar left={leftContents} />
+      <Paginator first={first} rows={rows} onPageChange={onPageChange}
+                 totalRecords={phrasesUnitService.textbookPhraseCount}
+                 rowsPerPageOptions={settingsService.USROWSPERPAGEOPTIONS}/>
+      <DataTable value={phrasesUnitService.textbookPhrases} selectionMode="single"
+                 selection={selectedRow} onSelectionChange={onSelectionChange}>
+        <Column style={{width:'80px'}} field="ID" header="ID" />
+        <Column style={{width:'150px'}} field="TEXTBOOKNAME" header="TEXTBOOKNAME" />
+        <Column style={{width:'80px'}} field="UNITSTR" header="UNIT" />
+        <Column style={{width:'80px'}} field="PARTSTR" header="PART" />
+        <Column style={{width:'80px'}} field="SEQNUM" header="SEQNUM" />
+        <Column style={{width:'80px'}} field="PHRASEID" header="PHRASEID" />
+        <Column field="PHRASE" header="PHRASE" />
+        <Column field="TRANSLATION" header="TRANSLATION" />
+        <Column style={{width:'20%'}} body={actionTemplate} header="ACTIONS" />
+      </DataTable>
+      <Paginator first={first} rows={rows} onPageChange={onPageChange}
+                 totalRecords={phrasesUnitService.textbookPhraseCount}
+                 rowsPerPageOptions={settingsService.USROWSPERPAGEOPTIONS}/>
+    </div>
+  );
+}
