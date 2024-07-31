@@ -29,7 +29,7 @@ export default function WordsLang() {
   const [first, setFirst] = useState(0);
   const [rows, setRows] = useState(0);
   const [page, setPage] = useState(1);
-  const [selectedRow, setSelectedRow] = useState(null as any);
+  const [selectedRow, setSelectedRow] = useState(null as MLangWord);
   const [filter, setFilter] = useState('');
   const [filterType, setFilterType] = useState(0);
   const [, setWordsLangService] = useState(wordsLangService);
@@ -132,7 +132,7 @@ export default function WordsLang() {
     </div>;
   };
 
-  const leftContents = (
+  const startContent = (
     <>
       <span className="p-float-label">
         <InputText id="word" type="text" value={newWord}
@@ -157,7 +157,7 @@ export default function WordsLang() {
 
   return !appService.isInitialized ? (<div/>) : (
     <div>
-      <Toolbar left={leftContents} />
+      <Toolbar start={startContent} />
       <Paginator first={first} rows={rows} onPageChange={onPageChange}
                  totalRecords={wordsLangService.langWordsCount}
                  rowsPerPageOptions={settingsService.USROWSPERPAGEOPTIONS}/>

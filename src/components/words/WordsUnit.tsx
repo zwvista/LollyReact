@@ -132,7 +132,7 @@ export default function WordsUnit() {
     </div>;
   };
 
-  const leftContents = (
+  const startContent = (
     <>
       <span className="p-float-label">
         <InputText id="word" type="text" value={newWord}
@@ -157,7 +157,7 @@ export default function WordsUnit() {
 
   return !appService.isInitialized ? (<div/>) : (
     <div>
-      <Toolbar left={leftContents} />
+      <Toolbar start={startContent} />
       <DataTable value={wordsUnitService.unitWords}
                  onRowReorder={onReorder} selectionMode="single"
                  selection={selectedRow} onSelectionChange={onSelectionChange}>

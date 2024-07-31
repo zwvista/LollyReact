@@ -110,7 +110,7 @@ export default function PhrasesTextbook() {
     </div>;
   };
 
-  const leftContents = (
+  const startContent = (
     <React.Fragment>
       <Dropdown id="filterType" options={settingsService.phraseFilterTypes} value={filterType} onChange={onFilterTypeChange} />
       <span className="p-float-label">
@@ -125,7 +125,7 @@ export default function PhrasesTextbook() {
 
   return !appService.isInitialized ? (<div/>) : (
     <div>
-      <Toolbar left={leftContents} />
+      <Toolbar start={startContent} />
       <Paginator first={first} rows={rows} onPageChange={onPageChange}
                  totalRecords={phrasesUnitService.textbookPhraseCount}
                  rowsPerPageOptions={settingsService.USROWSPERPAGEOPTIONS}/>

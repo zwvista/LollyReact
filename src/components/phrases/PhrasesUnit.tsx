@@ -98,7 +98,7 @@ export default function PhrasesUnit() {
     </div>;
   };
 
-  const leftContents = (
+  const startContent = (
     <React.Fragment>
       <Dropdown id="filterType" options={settingsService.phraseFilterTypes} value={filterType} onChange={onFilterTypeChange} />
       <span className="p-float-label">
@@ -113,7 +113,7 @@ export default function PhrasesUnit() {
 
   return !appService.isInitialized ? (<div/>) : (
     <div>
-      <Toolbar left={leftContents} />
+      <Toolbar start={startContent} />
       <DataTable value={phrasesUnitService.unitPhrases} selectionMode="single"
                  onRowReorder={onReorder}
                  selection={selectedRow} onSelectionChange={onSelectionChange}>

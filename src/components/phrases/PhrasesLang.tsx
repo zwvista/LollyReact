@@ -15,127 +15,125 @@ import { SettingsService } from '../../view-models/misc/settings.service';
 import { MLangPhrase } from '../../models/wpp/lang-phrase';
 import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
-import { SyntheticEvent } from 'react';
+import { SyntheticEvent, useEffect, useState } from 'react';
 import { KeyboardEvent } from 'react';
 import { AppService } from '../../view-models/misc/app.service';
+import { useNavigate } from "react-router-dom";
+import { MLangWord } from "../../models/wpp/lang-word";
 
-export default class PhrasesLang extends React.Component<any, any> {
-  appService = container.resolve(AppService);
-  phrasesLangService = container.resolve(PhrasesLangService);
-  settingsService = container.resolve(SettingsService);
-  subscription = new Subscription();
+export default function PhrasesLang() {
+  const appService = container.resolve(AppService);
+  const phrasesLangService = container.resolve(PhrasesLangService);
+  const settingsService = container.resolve(SettingsService);
+  const subscription = new Subscription();
+  const navigate = useNavigate();
 
-  state = {
-    first: 0,
-    rows: 0,
-    page: 1,
-    selectedRow: null as MLangPhrase,
-    filter: '',
-    filterType: 0,
+  const [first, setFirst] = useState(0);
+  const [rows, setRows] = useState(0);
+  const [page, setPage] = useState(1);
+  const [selectedRow, setSelectedRow] = useState(null as MLangPhrase);
+  const [filter, setFilter] = useState('');
+  const [filterType, setFilterType] = useState(0);
+  const [, setPhrasesLangService] = useState(phrasesLangService);
+
+  const onPageChange = (e: PaginatorPageChangeEvent) => {
+    setFirst(e.first);
+    setRows(e.rows);
+    setPage(e.page + 1);
+    onRefresh();
   };
 
-  componentDidMount() {
-    this.subscription.add(this.appService.initializeObject.subscribe(_ => {
-      this.setState({rows: this.state.rows = this.settingsService.USROWSPERPAGE});
-      this.onRefresh();
+  const onRefresh = async () => {
+    await phrasesLangService.getData(page, rows, filter, filterType);
+    updateServiceState();
+  };
+
+  const onSelectionChange = (e: any) => {
+    setSelectedRow(e.data);
+  };
+
+  const onFilterChange = (e: SyntheticEvent) => {
+    setFilter((e.nativeEvent.target as HTMLInputElement).value);
+  };
+
+  const onFilterKeyPress = (e: KeyboardEvent) => {
+    if (e.key !== 'Enter') return;
+    onRefresh();
+  };
+
+  const onFilterTypeChange = (e: DropdownChangeEvent) => {
+    setFilterType(e.value);
+    onRefresh();
+  };
+
+  const deletePhrase = (item: MLangPhrase) => {
+    phrasesLangService.delete(item);
+  };
+
+  const googlePhrase = (phrase: string) => {
+    googleString(phrase);
+  };
+
+  const updateServiceState = () => {
+    setPhrasesLangService(null);
+    setPhrasesLangService(phrasesLangService);
+  };
+
+  useEffect(() => {
+    subscription.add(appService.initializeObject.subscribe(_ => {
+      setRows(settingsService.USROWSPERPAGE);
+      onRefresh();
     }));
-  }
+    return () => {
+      subscription.unsubscribe();
+    };
+  });
 
-  onPageChange = (e: PaginatorPageChangeEvent) => {
-    this.setState({
-      first: e.first,
-      rows: this.state.rows = e.rows,
-      page: this.state.page = e.page + 1,
-    });
-    this.onRefresh();
-  };
-
-  componentWillUnmount() {
-    this.subscription.unsubscribe();
-  }
-
-  actionTemplate = (rowData: any, column: any) => {
+  const actionTemplate = (rowData: any, column: any) => {
     return <div>
       <Button className="p-button-danger button-margin-right" icon="fa fa-trash"
-              tooltip="Delete" tooltipOptions={{position: 'top'}} onClick={() => this.deletePhrase(rowData)} />
+              tooltip="Delete" tooltipOptions={{position: 'top'}} onClick={() => deletePhrase(rowData)} />
       <Button icon="fa fa-edit" tooltip="Edit" tooltipOptions={{position: 'top'}}
-              onClick={() => this.props.history.push('/phrases-lang-detail/' + rowData.ID)}/>
+              onClick={() => navigate('/phrases-lang-detail/' + rowData.ID)}/>
       <Button icon="fa fa-volume-up" tooltipOptions={{position: 'top'}}
-              tooltip="Speak" onClick={() => this.settingsService.speak(rowData.PHRASE)} />
+              tooltip="Speak" onClick={() => settingsService.speak(rowData.PHRASE)} />
       <CopyToClipboard text={rowData.PHRASE}>
         <Button icon="fa fa-copy" tooltip="Copy" tooltipOptions={{position: 'top'}}/>
       </CopyToClipboard>
-      <Button icon="fa fa-google" onClick={() => this.googlePhrase(rowData.PHRASE)}
+      <Button icon="fa fa-google" onClick={() => googlePhrase(rowData.PHRASE)}
               tooltip="Google Phrase" tooltipOptions={{position: 'top'}}/>
     </div>;
   };
 
-  render() {
-    const leftContents = (
-      <React.Fragment>
-        <Dropdown id="filterType" options={this.settingsService.phraseFilterTypes} value={this.state.filterType} onChange={this.onFilterTypeChange} />
-        <span className="p-float-label">
-          <InputText id="filter" type="text" value={this.state.filter}
-                     onChange={this.onFilterChange} onKeyPress={this.onFilterKeyPress}/>
-          <label htmlFor="filter">Filter</label>
-        </span>
-        <Button label="Add" icon="fa fa-plus" onClick={() => this.props.history.push('/phrases-lang-detail/0')} />
-        <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => this.onRefresh}/>
-      </React.Fragment>
-    );
-    return !this.appService.isInitialized ? (<div/>) : (
-      <div>
-        <Toolbar left={leftContents} />
-        <Paginator first={this.state.first} rows={this.state.rows} onPageChange={this.onPageChange}
-                   totalRecords={this.phrasesLangService.langPhraseCount}
-                   rowsPerPageOptions={this.settingsService.USROWSPERPAGEOPTIONS}/>
-        <DataTable value={this.phrasesLangService.langPhrases} selectionMode="single"
-                   selection={this.state.selectedRow} onSelectionChange={this.onSelectionChange}>
-          <Column style={{width:'80px'}} field="ID" header="ID" />
-          <Column field="PHRASE" header="PHRASE" />
-          <Column field="TRANSLATION" header="TRANSLATION" />
-          <Column style={{width:'20%'}} body={this.actionTemplate} header="ACTIONS" />
-        </DataTable>
-        <Paginator first={this.state.first} rows={this.state.rows} onPageChange={this.onPageChange}
-                   totalRecords={this.phrasesLangService.langPhraseCount}
-                   rowsPerPageOptions={this.settingsService.USROWSPERPAGEOPTIONS}/>
-      </div>
-    );
-  }
+  const startContent = (
+    <React.Fragment>
+      <Dropdown id="filterType" options={settingsService.phraseFilterTypes} value={filterType} onChange={onFilterTypeChange} />
+      <span className="p-float-label">
+        <InputText id="filter" type="text" value={filter}
+                   onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
+        <label htmlFor="filter">Filter</label>
+      </span>
+      <Button label="Add" icon="fa fa-plus" onClick={() => navigate('/phrases-lang-detail/0')} />
+      <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => onRefresh}/>
+    </React.Fragment>
+  );
 
-  onRefresh = async () => {
-    await this.phrasesLangService.getData(this.state.page, this.state.rows, this.state.filter, this.state.filterType);
-    this.updateServiceState();
-  };
-
-  onSelectionChange = (e: any) => {
-    this.setState({selectedRow: e.data});
-  };
-
-  onFilterChange = (e: SyntheticEvent) => {
-    this.setState({filter: (e.nativeEvent.target as HTMLInputElement).value});
-  };
-
-  onFilterKeyPress = (e: KeyboardEvent) => {
-    if (e.key !== 'Enter') return;
-    this.onRefresh();
-  };
-
-  onFilterTypeChange = (e: DropdownChangeEvent) => {
-    this.setState({filterType: this.state.filterType = e.value});
-    this.onRefresh();
-  };
-
-  deletePhrase(item: MLangPhrase) {
-    this.phrasesLangService.delete(item);
-  }
-
-  updateServiceState() {
-    this.setState({phrasesLangService: this.phrasesLangService});
-  }
-
-  googlePhrase(phrase: string) {
-    googleString(phrase);
-  }
-};
-
+  return !appService.isInitialized ? (<div/>) : (
+    <div>
+      <Toolbar start={startContent} />
+      <Paginator first={first} rows={rows} onPageChange={onPageChange}
+                 totalRecords={phrasesLangService.langPhraseCount}
+                 rowsPerPageOptions={settingsService.USROWSPERPAGEOPTIONS}/>
+      <DataTable value={phrasesLangService.langPhrases} selectionMode="single"
+                 selection={selectedRow} onSelectionChange={onSelectionChange}>
+        <Column style={{width:'80px'}} field="ID" header="ID" />
+        <Column field="PHRASE" header="PHRASE" />
+        <Column field="TRANSLATION" header="TRANSLATION" />
+        <Column style={{width:'20%'}} body={actionTemplate} header="ACTIONS" />
+      </DataTable>
+      <Paginator first={first} rows={rows} onPageChange={onPageChange}
+                 totalRecords={phrasesLangService.langPhraseCount}
+                 rowsPerPageOptions={settingsService.USROWSPERPAGEOPTIONS}/>
+    </div>
+  );
+}

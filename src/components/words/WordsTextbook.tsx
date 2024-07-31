@@ -84,12 +84,12 @@ export default function WordsTextbook() {
   // https://stackoverflow.com/questions/42775017/angular-2-redirect-to-an-external-url-and-open-in-a-new-tab
   const googleWord = (WORD: string) => {
     window.open('https://www.google.com/search?q=' + encodeURIComponent(WORD), '_blank');
-  }
+  };
 
   const dictWord = (item: MUnitWord) => {
     const index = wordsUnitService.textbookWords.indexOf(item);
     navigate('/words-dict/textbook/' + index);
-  }
+  };
 
   const updateServiceState = () => {
     setWordsUnitService(null);
@@ -125,7 +125,7 @@ export default function WordsTextbook() {
     </div>;
   };
 
-  const leftContents = (
+  const startContent = (
     <>
       <Dropdown id="filterType" options={settingsService.wordFilterTypes} value={filterType} onChange={onFilterTypeChange} />
       <span className="p-float-label">
@@ -141,7 +141,7 @@ export default function WordsTextbook() {
 
   return !appService.isInitialized ? (<div/>) : (
     <div>
-      <Toolbar left={leftContents} />
+      <Toolbar start={startContent} />
       <Paginator first={first} rows={rows} onPageChange={onPageChange}
                  totalRecords={wordsUnitService.textbookWordCount}
                  rowsPerPageOptions={settingsService.USROWSPERPAGEOPTIONS}/>
