@@ -83,7 +83,7 @@ export default function WordsLang() {
     wordsLangService.delete(item);
   };
 
-  const getNote =  async (index: number) => {
+  const getNote = async (index: number) => {
     console.log(index);
     await wordsLangService.getNote(index);
   };

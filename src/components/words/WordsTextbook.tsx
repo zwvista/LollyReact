@@ -14,155 +14,153 @@ import { WordsUnitService } from '../../view-models/wpp/words-unit.service';
 import { MUnitWord } from '../../models/wpp/unit-word';
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
-import { SyntheticEvent } from 'react';
+import { SyntheticEvent, useEffect, useState } from 'react';
 import { KeyboardEvent } from 'react';
 import { AppService } from '../../view-models/misc/app.service';
+import { useNavigate } from "react-router-dom";
 
-export default class WordsTextbook extends React.Component<any, any> {
-  appService = container.resolve(AppService);
-  wordsUnitService = container.resolve(WordsUnitService);
-  settingsService = container.resolve(SettingsService);
-  subscription = new Subscription();
+export default function WordsTextbook() {
+  const appService = container.resolve(AppService);
+  const wordsUnitService = container.resolve(WordsUnitService);
+  const settingsService = container.resolve(SettingsService);
+  const subscription = new Subscription();
+  const navigate = useNavigate();
 
-  state = {
-    first: 0,
-    rows: 0,
-    page: 1,
-    selectedRow: null as any,
-    filter: '',
-    filterType: 0,
-    textbookFilter: 0,
+  const [first, setFirst] = useState(0);
+  const [rows, setRows] = useState(0);
+  const [page, setPage] = useState(1);
+  const [selectedRow, setSelectedRow] = useState(null as any);
+  const [filter, setFilter] = useState('');
+  const [filterType, setFilterType] = useState(0);
+  const [textbookFilter, setTextbookFilter] = useState(0);
+  const [, setWordsUnitService] = useState(wordsUnitService);
+
+  const onPageChange = (e: PaginatorPageState) => {
+    setFirst(e.first);
+    setRows(e.rows);
+    setPage(e.page + 1);
+    onRefresh();
   };
 
-  componentDidMount() {
-    this.subscription.add(this.appService.initializeObject.subscribe(_ => {
-      this.setState({rows: this.state.rows = this.settingsService.USROWSPERPAGE});
-      this.onRefresh();
-    }));
-  }
-
-  onPageChange = (e: PaginatorPageState) => {
-    this.setState({
-      first: e.first,
-      rows: this.state.rows = e.rows,
-      page: this.state.page = e.page + 1,
-    });
-    this.onRefresh();
-  };
-
-  componentWillUnmount() {
-    this.subscription.unsubscribe();
-  }
-
-  actionTemplate = (rowData: any, column: any) => {
-    return <div>
-      <Button className="p-button-danger button-margin-right" icon="fa fa-trash"
-              tooltip="Delete" tooltipOptions={{position: 'top'}} onClick={() => this.deleteWord(rowData)} />
-      <Button icon="fa fa-edit" tooltip="Edit" tooltipOptions={{position: 'top'}}
-              onClick={() => this.props.history.push('/words-textbook-detail/' + rowData.ID)} />
-      <Button hidden={!this.settingsService.selectedVoice} icon="fa fa-volume-up" tooltipOptions={{position: 'top'}}
-              tooltip="Speak" onClick={() => this.settingsService.speak(rowData.WORD)} />
-      <CopyToClipboard text={rowData.WORD}>
-        <Button icon="fa fa-copy" tooltip="Copy" tooltipOptions={{position: 'top'}}/>
-      </CopyToClipboard>
-      <Button icon="fa fa-google" onClick={() => this.googleWord(rowData.WORD)}
-              tooltip="Google Word" tooltipOptions={{position: 'top'}}/>
-      <Button icon="fa fa-book" onClick={() => this.dictWord(rowData.ID)}
-              tooltip="Dictionary" tooltipOptions={{position: 'top'}}/>
-      <Button hidden={!this.settingsService.selectedDictNote} className="p-button-warning" label="Retrieve Note" onClick={() => this.getNote(rowData.ID)} />
-    </div>;
-  };
-
-  render() {
-    const leftContents = (
-      <React.Fragment>
-        <Dropdown id="filterType" options={this.settingsService.wordFilterTypes} value={this.state.filterType} onChange={this.onFilterTypeChange} />
-        <span className="p-float-label">
-            <InputText id="filter" type="text" value={this.state.filter}
-                       onChange={this.onFilterChange} onKeyPress={this.onFilterKeyPress}/>
-            <label htmlFor="filter">Filter</label>
-          </span>
-        <Dropdown id="textbookFilter" options={this.settingsService.textbookFilters} value={this.state.textbookFilter} onChange={this.onTextbookFilterChange} />
-        <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => this.onRefresh}/>
-        <Button label="Dictionary" icon="fa fa-book" onClick={() => this.props.history.push('/words-dict/textbook/0')} />
-      </React.Fragment>
-    );
-    return !this.appService.isInitialized ? (<div/>) : (
-      <div>
-        <Toolbar left={leftContents} />
-        <Paginator first={this.state.first} rows={this.state.rows} onPageChange={this.onPageChange}
-                   totalRecords={this.wordsUnitService.textbookWordCount}
-                   rowsPerPageOptions={this.settingsService.USROWSPERPAGEOPTIONS}/>
-        <DataTable value={this.wordsUnitService.textbookWords} selectionMode="single" autoLayout={true}
-                   selection={this.state.selectedRow} onSelectionChange={this.onSelectionChange}>
-          <Column style={{width:'80px'}} field="ID" header="ID" />
-          <Column style={{width:'150px'}} field="TEXTBOOKNAME" header="TEXTBOOKNAME" />
-          <Column style={{width:'80px'}} field="UNITSTR" header="UNIT" />
-          <Column style={{width:'80px'}} field="PARTSTR" header="PART" />
-          <Column style={{width:'80px'}} field="SEQNUM" header="SEQNUM" />
-          <Column style={{width:'80px'}} field="WORDID" header="WORDID" />
-          <Column field="WORD" header="WORD" />
-          <Column field="NOTE" header="NOTE" />
-          <Column style={{width:'80px'}} field="ACCURACY" header="ACCURACY" />
-          <Column style={{width:'30%'}} body={this.actionTemplate} header="ACTIONS" />
-        </DataTable>
-        <Paginator first={this.state.first} rows={this.state.rows} onPageChange={this.onPageChange}
-                   totalRecords={this.wordsUnitService.textbookWordCount}
-                   rowsPerPageOptions={this.settingsService.USROWSPERPAGEOPTIONS}/>
-      </div>
-    );
-  }
-
-  onRefresh = async () => {
+  const onRefresh = async () => {
     // https://stackoverflow.com/questions/4228356/integer-division-with-remainder-in-javascript
-    await this.wordsUnitService.getDataInLang(this.state.page, this.state.rows, this.state.filter, this.state.filterType, this.state.textbookFilter);
-    this.updateServiceState();
+    await wordsUnitService.getDataInLang(page, rows, filter, filterType, textbookFilter);
+    updateServiceState();
   };
 
-  onSelectionChange = (e: any) => {
-    this.setState({selectedRow: e.data});
+  const onSelectionChange = (e: any) => {
+    setSelectedRow(e.data);
   };
 
-  onFilterChange = (e: SyntheticEvent) => {
-    this.setState({filter: (e.nativeEvent.target as HTMLInputElement).value});
+  const onFilterChange = (e: SyntheticEvent) => {
+    setFilter((e.nativeEvent.target as HTMLInputElement).value);
   };
 
-  onFilterKeyPress = (e: KeyboardEvent) => {
+  const onFilterKeyPress = (e: KeyboardEvent) => {
     if (e.key !== 'Enter') return;
-    this.onRefresh();
+    onRefresh();
   };
 
-  onFilterTypeChange = (e: {originalEvent: SyntheticEvent, value: any}) => {
-    this.setState({filterType: this.state.filterType = e.value});
-    this.onRefresh();
+  const onFilterTypeChange = (e: {originalEvent: SyntheticEvent, value: any}) => {
+    setFilterType(e.value);
+    onRefresh();
   };
 
-  onTextbookFilterChange = (e: {originalEvent: SyntheticEvent, value: any}) => {
-    this.setState({textbookFilter: this.state.textbookFilter = e.value});
-    this.onRefresh();
+  const onTextbookFilterChange = (e: {originalEvent: SyntheticEvent, value: any}) => {
+    setTextbookFilter(e.value);
+    onRefresh();
   };
 
-  deleteWord(item: MUnitWord) {
-    this.wordsUnitService.delete(item);
-  }
+  const deleteWord = (item: MUnitWord) => {
+    wordsUnitService.delete(item);
+  };
 
-  async getNote(index: number) {
+  const getNote = async (index: number) => {
     console.log(index);
-    await this.wordsUnitService.getNote(index);
-  }
+    await wordsUnitService.getNote(index);
+  };
 
   // https://stackoverflow.com/questions/42775017/angular-2-redirect-to-an-external-url-and-open-in-a-new-tab
-  googleWord(WORD: string) {
+  const googleWord = (WORD: string) => {
     window.open('https://www.google.com/search?q=' + encodeURIComponent(WORD), '_blank');
   }
 
-  dictWord(item: MUnitWord) {
-    const index = this.wordsUnitService.textbookWords.indexOf(item);
-    this.props.history.push('/words-dict/textbook/' + index);
+  const dictWord = (item: MUnitWord) => {
+    const index = wordsUnitService.textbookWords.indexOf(item);
+    navigate('/words-dict/textbook/' + index);
   }
 
-  updateServiceState() {
-    this.setState({wordsUnitService: this.wordsUnitService});
-  }
-};
+  const updateServiceState = () => {
+    setWordsUnitService(null);
+    setWordsUnitService(wordsUnitService);
+  };
+
+  useEffect(() => {
+    subscription.add(appService.initializeObject.subscribe(_ => {
+      setRows(settingsService.USROWSPERPAGE);
+      onRefresh();
+    }));
+    return () => {
+      subscription.unsubscribe();
+    }
+  });
+
+  const actionTemplate = (rowData: any, column: any) => {
+    return <div>
+      <Button className="p-button-danger button-margin-right" icon="fa fa-trash"
+              tooltip="Delete" tooltipOptions={{position: 'top'}} onClick={() => deleteWord(rowData)} />
+      <Button icon="fa fa-edit" tooltip="Edit" tooltipOptions={{position: 'top'}}
+              onClick={() => navigate('/words-textbook-detail/' + rowData.ID)} />
+      <Button hidden={!settingsService.selectedVoice} icon="fa fa-volume-up" tooltipOptions={{position: 'top'}}
+              tooltip="Speak" onClick={() => settingsService.speak(rowData.WORD)} />
+      <CopyToClipboard text={rowData.WORD}>
+        <Button icon="fa fa-copy" tooltip="Copy" tooltipOptions={{position: 'top'}}/>
+      </CopyToClipboard>
+      <Button icon="fa fa-google" onClick={() => googleWord(rowData.WORD)}
+              tooltip="Google Word" tooltipOptions={{position: 'top'}}/>
+      <Button icon="fa fa-book" onClick={() => dictWord(rowData.ID)}
+              tooltip="Dictionary" tooltipOptions={{position: 'top'}}/>
+      <Button hidden={!settingsService.selectedDictNote} className="p-button-warning" label="Retrieve Note" onClick={() => getNote(rowData.ID)} />
+    </div>;
+  };
+
+  const leftContents = (
+    <>
+      <Dropdown id="filterType" options={settingsService.wordFilterTypes} value={filterType} onChange={onFilterTypeChange} />
+      <span className="p-float-label">
+          <InputText id="filter" type="text" value={filter}
+                     onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
+          <label htmlFor="filter">Filter</label>
+        </span>
+      <Dropdown id="textbookFilter" options={settingsService.textbookFilters} value={textbookFilter} onChange={onTextbookFilterChange} />
+      <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => onRefresh}/>
+      <Button label="Dictionary" icon="fa fa-book" onClick={() => navigate('/words-dict/textbook/0')} />
+    </>
+  );
+
+  return !appService.isInitialized && wordsUnitService ? (<div/>) : (
+    <div>
+      <Toolbar left={leftContents} />
+      <Paginator first={first} rows={rows} onPageChange={onPageChange}
+                 totalRecords={wordsUnitService.textbookWordCount}
+                 rowsPerPageOptions={settingsService.USROWSPERPAGEOPTIONS}/>
+      <DataTable value={wordsUnitService.textbookWords} selectionMode="single" autoLayout={true}
+                 selection={selectedRow} onSelectionChange={onSelectionChange}>
+        <Column style={{width:'80px'}} field="ID" header="ID" />
+        <Column style={{width:'150px'}} field="TEXTBOOKNAME" header="TEXTBOOKNAME" />
+        <Column style={{width:'80px'}} field="UNITSTR" header="UNIT" />
+        <Column style={{width:'80px'}} field="PARTSTR" header="PART" />
+        <Column style={{width:'80px'}} field="SEQNUM" header="SEQNUM" />
+        <Column style={{width:'80px'}} field="WORDID" header="WORDID" />
+        <Column field="WORD" header="WORD" />
+        <Column field="NOTE" header="NOTE" />
+        <Column style={{width:'80px'}} field="ACCURACY" header="ACCURACY" />
+        <Column style={{width:'30%'}} body={actionTemplate} header="ACTIONS" />
+      </DataTable>
+      <Paginator first={first} rows={rows} onPageChange={onPageChange}
+                 totalRecords={wordsUnitService.textbookWordCount}
+                 rowsPerPageOptions={settingsService.USROWSPERPAGEOPTIONS}/>
+    </div>
+  );
+}
 

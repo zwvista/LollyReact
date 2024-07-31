@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { KeyboardEvent, SyntheticEvent } from 'react';
+import { KeyboardEvent, SyntheticEvent, useEffect, useState } from 'react';
 import { WordsUnitService } from '../../view-models/wpp/words-unit.service';
 import 'reflect-metadata';
 import { container } from "tsyringe";
@@ -15,164 +15,164 @@ import { SettingsService } from '../../view-models/misc/settings.service';
 import { MUnitWord } from '../../models/wpp/unit-word';
 import { Dropdown } from 'primereact/dropdown';
 import { AppService } from '../../view-models/misc/app.service';
+import { useNavigate } from "react-router-dom";
 
-export default class WordsUnit extends React.Component<any, any> {
-  appService = container.resolve(AppService);
-  wordsUnitService = container.resolve(WordsUnitService);
-  settingsService = container.resolve(SettingsService);
-  subscription = new Subscription();
+export default function WordsUnit() {
+  const appService = container.resolve(AppService);
+  const wordsUnitService = container.resolve(WordsUnitService);
+  const settingsService = container.resolve(SettingsService);
+  const subscription = new Subscription();
+  const navigate = useNavigate();
 
-  state = {
-    newWord: '',
-    selectedRow: null as any,
-    filter: '',
-    filterType: 0,
+  const [newWord, setNewWord] = useState('');
+  const [selectedRow, setSelectedRow] = useState(null as any);
+  const [filter, setFilter] = useState('');
+  const [filterType, setFilterType] = useState(0);
+  const [, setWordsUnitService] = useState(wordsUnitService);
+
+  const onSelectionChange = (e: any) => {
+    setSelectedRow(e.data);
   };
 
-  componentDidMount() {
-    this.subscription.add(this.appService.initializeObject.subscribe(_ => {
-      this.onRefresh();
+  const onNewWordChange = (e: SyntheticEvent) => {
+    setNewWord((e.nativeEvent.target as HTMLInputElement).value);
+  };
+
+  const onNewWordKeyPress = async (e: KeyboardEvent) => {
+    if (e.key !== 'Enter' || !newWord) return;
+    const o = wordsUnitService.newUnitWord();
+    o.WORD = settingsService.autoCorrectInput(newWord);
+    setNewWord('');
+    updateServiceState();
+    const id = await wordsUnitService.create(o);
+    o.ID = id as number;
+    wordsUnitService.unitWords.push(o);
+    updateServiceState();
+  };
+
+  const onReorder = (e:any) => {
+    console.log(`${e.dragIndex},${e.dropIndex}`);
+    wordsUnitService.unitWords = e.value;
+    wordsUnitService.reindex(index => updateServiceState());
+  };
+
+  const onRefresh = async () => {
+    await wordsUnitService.getDataInTextbook(filter, filterType);
+    updateServiceState();
+  };
+
+  const onFilterChange = (e: SyntheticEvent) => {
+    setFilter((e.nativeEvent.target as HTMLInputElement).value);
+  };
+
+  const onFilterKeyPress = (e: KeyboardEvent) => {
+    if (e.key !== 'Enter') return;
+    onRefresh();
+  };
+
+  const onFilterTypeChange = (e: {originalEvent: SyntheticEvent, value: any}) => {
+    setFilterType(e.value);
+    onRefresh();
+  };
+
+  const deleteWord = (item: MUnitWord) => {
+    wordsUnitService.delete(item);
+  };
+
+  const getNote = async(item: MUnitWord) => {
+    const index = wordsUnitService.unitWords.indexOf(item);
+    await wordsUnitService.getNote(index);
+    updateServiceState();
+  };
+
+  // https://stackoverflow.com/questions/42775017/angular-2-redirect-to-an-external-url-and-open-in-a-new-tab
+  const googleWord = (WORD: string) => {
+    window.open('https://www.google.com/search?q=' + encodeURIComponent(WORD), '_blank');
+  };
+
+  const dictWord = (item: MUnitWord) => {
+    const index = wordsUnitService.unitWords.indexOf(item);
+    navigate('/words-dict/unit/' + index);
+  };
+
+  const getNotes = (ifEmpty: boolean) => {
+    wordsUnitService.getNotes(ifEmpty, () => {}, () => {});
+  }
+
+  const updateServiceState = () => {
+    setWordsUnitService(null);
+    setWordsUnitService(wordsUnitService);
+  };
+
+  useEffect(() => {
+    subscription.add(appService.initializeObject.subscribe(_ => {
+      onRefresh();
     }));
-  }
+    return () => {
+      subscription.unsubscribe();
+    };
+  });
 
-  componentWillUnmount() {
-    this.subscription.unsubscribe();
-  }
-
-  actionTemplate = (rowData: any, column: any) => {
+  const actionTemplate = (rowData: any, column: any) => {
     return <div>
       <Button className="p-button-danger button-margin-right" icon="fa fa-trash"
-              tooltip="Delete" tooltipOptions={{position: 'top'}} onClick={() => this.deleteWord(rowData)} />
+              tooltip="Delete" tooltipOptions={{position: 'top'}} onClick={() => deleteWord(rowData)} />
       <Button icon="fa fa-edit" tooltip="Edit" tooltipOptions={{position: 'top'}}
-              onClick={() => this.props.history.push('/words-unit-detail/' + rowData.ID)} />
-      <Button hidden={!this.settingsService.selectedVoice} icon="fa fa-volume-up" tooltipOptions={{position: 'top'}}
-              tooltip="Speak" onClick={() => this.settingsService.speak(rowData.WORD)} />
+              onClick={() => navigate('/words-unit-detail/' + rowData.ID)} />
+      <Button hidden={!settingsService.selectedVoice} icon="fa fa-volume-up" tooltipOptions={{position: 'top'}}
+              tooltip="Speak" onClick={() => settingsService.speak(rowData.WORD)} />
       <CopyToClipboard text={rowData.WORD}>
         <Button icon="fa fa-copy" tooltip="Copy" tooltipOptions={{position: 'top'}}/>
       </CopyToClipboard>
-      <Button icon="fa fa-google" onClick={() => this.googleWord(rowData.WORD)}
+      <Button icon="fa fa-google" onClick={() => googleWord(rowData.WORD)}
               tooltip="Google Word" tooltipOptions={{position: 'top'}}/>
-      <Button icon="fa fa-book" onClick={() => this.dictWord(rowData)}
+      <Button icon="fa fa-book" onClick={() => dictWord(rowData)}
               tooltip="Dictionary" tooltipOptions={{position: 'top'}}/>
-      <Button hidden={!this.settingsService.selectedDictNote} className="p-button-warning" label="Retrieve Note" onClick={() => this.getNote(rowData)}/>
+      <Button hidden={!settingsService.selectedDictNote} className="p-button-warning" label="Retrieve Note" onClick={() => getNote(rowData)}/>
     </div>;
   };
 
-  render() {
-    const leftContents = (
-      <React.Fragment>
-        <span className="p-float-label">
-          <InputText id="word" type="text" value={this.state.newWord}
-                     onChange={this.onNewWordChange} onKeyPress={this.onNewWordKeyPress}/>
-          <label htmlFor="word">New Word</label>
-        </span>
-        <Dropdown id="filterType" options={this.settingsService.wordFilterTypes} value={this.state.filterType} onChange={this.onFilterTypeChange} />
-        <span className="p-float-label">
-          <InputText id="filter" type="text" value={this.state.filter}
-                     onChange={this.onFilterChange} onKeyPress={this.onFilterKeyPress}/>
-          <label htmlFor="Filter">Filter</label>
-        </span>
-        <Button hidden={!this.settingsService.selectedVoice} icon="fa fa-volume-up" tooltipOptions={{position: 'top'}}
-                tooltip="Speak" onClick={() => this.settingsService.speak(this.state.newWord)} />
-        <Button label="Add" icon="fa fa-plus" onClick={() => this.props.history.push('/words-unit-detail/0')} />
-        <Button label="Refresh" icon="fa fa-refresh" onClick={this.onRefresh}/>
-        <Button hidden={!this.settingsService.selectedDictNote} className="p-button-warning" label="Retrieve All Notes" />
-        <Button hidden={!this.settingsService.selectedDictNote} className="p-button-warning" label="Retrieve Notes If Empty" />
-        <Button label="Dictionary" icon="fa fa-book" onClick={() => this.props.history.push('/words-dict/unit/0')} />
-      </React.Fragment>
-    );
-    return (
-      <div>
-        <Toolbar left={leftContents} />
-        <DataTable value={this.wordsUnitService.unitWords} autoLayout={true}
-                   onRowReorder={this.onReorder} selectionMode="single"
-                   selection={this.state.selectedRow} onSelectionChange={this.onSelectionChange}>
-          <Column rowReorder={this.settingsService.selectedTextbook && this.settingsService.isSingleUnitPart} style={{width: '3em'}} />
-          <Column style={{width:'80px'}} field="ID" header="ID" />
-          <Column style={{width:'80px'}} field="UNITSTR" header="UNIT" />
-          <Column style={{width:'80px'}} field="PARTSTR" header="PART" />
-          <Column style={{width:'80px'}} field="SEQNUM" header="SEQNUM" />
-          <Column style={{width:'80px'}} field="WORDID" header="WORDID" />
-          <Column field="WORD" header="WORD" />
-          <Column field="NOTE" header="NOTE" />
-          <Column style={{width:'80px'}} field="ACCURACY" header="ACCURACY" />
-          <Column style={{width:'30%'}} body={this.actionTemplate} header="ACTIONS" />
-        </DataTable>
-      </div>
-    );
-  }
+  const leftContents = (
+    <>
+      <span className="p-float-label">
+        <InputText id="word" type="text" value={newWord}
+                   onChange={onNewWordChange} onKeyPress={onNewWordKeyPress}/>
+        <label htmlFor="word">New Word</label>
+      </span>
+      <Dropdown id="filterType" options={settingsService.wordFilterTypes} value={filterType} onChange={onFilterTypeChange} />
+      <span className="p-float-label">
+        <InputText id="filter" type="text" value={filter}
+                   onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
+        <label htmlFor="Filter">Filter</label>
+      </span>
+      <Button hidden={!settingsService.selectedVoice} icon="fa fa-volume-up" tooltipOptions={{position: 'top'}}
+              tooltip="Speak" onClick={() => settingsService.speak(newWord)} />
+      <Button label="Add" icon="fa fa-plus" onClick={() => navigate('/words-unit-detail/0')} />
+      <Button label="Refresh" icon="fa fa-refresh" onClick={onRefresh}/>
+      <Button hidden={!settingsService.selectedDictNote} className="p-button-warning" label="Retrieve All Notes" />
+      <Button hidden={!settingsService.selectedDictNote} className="p-button-warning" label="Retrieve Notes If Empty" />
+      <Button label="Dictionary" icon="fa fa-book" onClick={() => navigate('/words-dict/unit/0')} />
+    </>
+  );
 
-  onSelectionChange = (e: any) => {
-    this.setState({selectedRow: e.data});
-  };
-
-  onNewWordChange = (e: SyntheticEvent) => {
-    this.setState({newWord: (e.nativeEvent.target as HTMLInputElement).value});
-  };
-
-  onNewWordKeyPress = async (e: KeyboardEvent) => {
-    if (e.key !== 'Enter' || !this.state.newWord) return;
-    const o = this.wordsUnitService.newUnitWord();
-    o.WORD = this.settingsService.autoCorrectInput(this.state.newWord);
-    this.setState({newWord: ''});
-    this.updateServiceState();
-    const id = await this.wordsUnitService.create(o);
-    o.ID = id as number;
-    this.wordsUnitService.unitWords.push(o);
-    this.updateServiceState();
-  };
-
-  onReorder = (e:any) => {
-    console.log(`${e.dragIndex},${e.dropIndex}`);
-    this.wordsUnitService.unitWords = e.value;
-    this.wordsUnitService.reindex(index => this.updateServiceState());
-  };
-
-  onRefresh = async () => {
-    await this.wordsUnitService.getDataInTextbook(this.state.filter, this.state.filterType);
-    this.updateServiceState();
-  };
-
-  onFilterChange = (e: SyntheticEvent) => {
-    this.setState({filter: (e.nativeEvent.target as HTMLInputElement).value});
-  };
-
-  onFilterKeyPress = (e: KeyboardEvent) => {
-    if (e.key !== 'Enter') return;
-    this.onRefresh();
-  };
-
-  onFilterTypeChange = (e: {originalEvent: SyntheticEvent, value: any}) => {
-    this.setState({filterType: this.state.filterType = e.value});
-    this.onRefresh();
-  };
-
-  deleteWord(item: MUnitWord) {
-    this.wordsUnitService.delete(item);
-  }
-
-  async getNote(item: MUnitWord) {
-    const index = this.wordsUnitService.unitWords.indexOf(item);
-    await this.wordsUnitService.getNote(index);
-    this.updateServiceState();
-  }
-
-  // https://stackoverflow.com/questions/42775017/angular-2-redirect-to-an-external-url-and-open-in-a-new-tab
-  googleWord(WORD: string) {
-    window.open('https://www.google.com/search?q=' + encodeURIComponent(WORD), '_blank');
-  }
-
-  dictWord(item: MUnitWord) {
-    const index = this.wordsUnitService.unitWords.indexOf(item);
-    this.props.history.push('/words-dict/unit/' + index);
-  }
-
-  getNotes(ifEmpty: boolean) {
-    this.wordsUnitService.getNotes(ifEmpty, () => {}, () => {});
-  }
-
-  updateServiceState() {
-    this.setState({wordsUnitService: this.wordsUnitService});
-  }
-};
+  return !appService.isInitialized && wordsUnitService ? (<div/>) : (
+    <div>
+      <Toolbar left={leftContents} />
+      <DataTable value={wordsUnitService.unitWords} autoLayout={true}
+                 onRowReorder={onReorder} selectionMode="single"
+                 selection={selectedRow} onSelectionChange={onSelectionChange}>
+        <Column rowReorder={settingsService.selectedTextbook && settingsService.isSingleUnitPart} style={{width: '3em'}} />
+        <Column style={{width:'80px'}} field="ID" header="ID" />
+        <Column style={{width:'80px'}} field="UNITSTR" header="UNIT" />
+        <Column style={{width:'80px'}} field="PARTSTR" header="PART" />
+        <Column style={{width:'80px'}} field="SEQNUM" header="SEQNUM" />
+        <Column style={{width:'80px'}} field="WORDID" header="WORDID" />
+        <Column field="WORD" header="WORD" />
+        <Column field="NOTE" header="NOTE" />
+        <Column style={{width:'80px'}} field="ACCURACY" header="ACCURACY" />
+        <Column style={{width:'30%'}} body={actionTemplate} header="ACTIONS" />
+      </DataTable>
+    </div>
+  );
+}
 
