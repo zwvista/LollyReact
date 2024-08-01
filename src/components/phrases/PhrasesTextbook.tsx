@@ -111,7 +111,7 @@ export default function PhrasesTextbook() {
   };
 
   const startContent = (
-    <React.Fragment>
+    <>
       <Dropdown id="filterType" options={settingsService.phraseFilterTypes} value={filterType} onChange={onFilterTypeChange} />
       <span className="p-float-label">
           <InputText id="filter" type="text" value={filter}
@@ -120,7 +120,7 @@ export default function PhrasesTextbook() {
         </span>
       <Dropdown id="textbookFilter" options={settingsService.textbookFilters} value={textbookFilter} onChange={onTextbookFilterChange} />
       <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => onRefresh}/>
-    </React.Fragment>
+    </>
   );
 
   return !appService.isInitialized ? (<div/>) : (

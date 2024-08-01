@@ -106,7 +106,7 @@ export default function Patterns() {
   };
 
   const startContent = (
-    <React.Fragment>
+    <>
       <Dropdown id="filterType" options={settingsService.patternFilterTypes} value={filterType} onChange={onFilterTypeChange} />
       <span className="p-float-label">
           <InputText id="filter" type="text" value={filter}
@@ -115,7 +115,7 @@ export default function Patterns() {
         </span>
       <Button label="Add" icon="fa fa-plus" onClick={() => navigate('/patterns-detail/0')} />
       <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => onRefresh}/>
-    </React.Fragment>
+    </>
   );
 
   return !appService.isInitialized ? (<div/>) : (

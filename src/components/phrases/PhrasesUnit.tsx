@@ -99,7 +99,7 @@ export default function PhrasesUnit() {
   };
 
   const startContent = (
-    <React.Fragment>
+    <>
       <Dropdown id="filterType" options={settingsService.phraseFilterTypes} value={filterType} onChange={onFilterTypeChange} />
       <span className="p-float-label">
         <InputText id="filter" type="text" value={filter}
@@ -108,7 +108,7 @@ export default function PhrasesUnit() {
       </span>
       <Button label="Add" icon="fa fa-plus" onClick={() => navigate('/phrases-unit-detail/0')} />
       <Button label="Refresh" icon="fa fa-refresh" onClick={onRefresh}/>
-    </React.Fragment>
+    </>
   );
 
   return !appService.isInitialized ? (<div/>) : (
