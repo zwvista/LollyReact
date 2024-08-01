@@ -28,8 +28,7 @@ export default function PhrasesUnit() {
 
   const [filter, setFilter] = useState('');
   const [filterType, setFilterType] = useState(0);
-  const [refreshCount, setRefreshCount] = useState(0);
-  const onRefresh = () => setRefreshCount(refreshCount + 1);
+  const [refreshCount, onRefresh] = useReducer(x => x + 1, 0);
   const [, forceUpdate] = useReducer(x => x + 1, 0);
 
   const onReorder = (e:any) => {

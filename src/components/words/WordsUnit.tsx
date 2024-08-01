@@ -27,8 +27,7 @@ export default function WordsUnit() {
   const [newWord, setNewWord] = useState('');
   const [filter, setFilter] = useState('');
   const [filterType, setFilterType] = useState(0);
-  const [refreshCount, setRefreshCount] = useState(0);
-  const onRefresh = () => setRefreshCount(refreshCount + 1);
+  const [refreshCount, onRefresh] = useReducer(x => x + 1, 0);
   // https://stackoverflow.com/questions/30626030/can-you-force-a-react-component-to-rerender-without-calling-setstate
   const [, forceUpdate] = useReducer(x => x + 1, 0);
 

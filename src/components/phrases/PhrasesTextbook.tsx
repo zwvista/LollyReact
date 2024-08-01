@@ -33,8 +33,7 @@ export default function PhrasesTextbook() {
   const [filter, setFilter] = useState('');
   const [filterType, setFilterType] = useState(0);
   const [textbookFilter, setTextbookFilter] = useState(0);
-  const [refreshCount, setRefreshCount] = useState(0);
-  const onRefresh = () => setRefreshCount(refreshCount + 1);
+  const [refreshCount, onRefresh] = useReducer(x => x + 1, 0);
   const [, forceUpdate] = useReducer(x => x + 1, 0);
 
   const onPageChange = (e: PaginatorPageChangeEvent) => {
