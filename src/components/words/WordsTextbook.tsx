@@ -14,11 +14,10 @@ import { WordsUnitService } from '../../view-models/wpp/words-unit.service';
 import { MUnitWord } from '../../models/wpp/unit-word';
 import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
-import { SyntheticEvent, useEffect, useState } from 'react';
+import { SyntheticEvent, useEffect, useReducer, useState } from 'react';
 import { KeyboardEvent } from 'react';
 import { AppService } from '../../view-models/misc/app.service';
 import { useNavigate } from "react-router-dom";
-import { MUnitPhrase } from "../../models/wpp/unit-phrase";
 
 export default function WordsTextbook() {
   const appService = container.resolve(AppService);
@@ -33,9 +32,9 @@ export default function WordsTextbook() {
   const [filter, setFilter] = useState('');
   const [filterType, setFilterType] = useState(0);
   const [textbookFilter, setTextbookFilter] = useState(0);
-  const [, setWordsUnitService] = useState(wordsUnitService);
   const [refreshCount, setRefreshCount] = useState(0);
   const onRefresh = () => setRefreshCount(refreshCount + 1);
+  const [, forceUpdate] = useReducer(x => x + 1, 0);
 
   const onPageChange = (e: PaginatorPageChangeEvent) => {
     setFirst(e.first);
@@ -96,8 +95,7 @@ export default function WordsTextbook() {
     (async () => {
       // https://stackoverflow.com/questions/4228356/integer-division-with-remainder-in-javascript
       await wordsUnitService.getDataInLang(page, rows, filter, filterType, textbookFilter);
-      setWordsUnitService(null);
-      setWordsUnitService(wordsUnitService);
+      forceUpdate();
     })();
   }, [refreshCount]);
 

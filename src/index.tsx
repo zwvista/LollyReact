@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import App from './App';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
@@ -29,7 +29,8 @@ import WordsDict from "./components/misc/WordsDict";
 import Settings from "./components/misc/Settings";
 import 'reflect-metadata'
 
-ReactDOM.render(
+const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
+root.render(
   <BrowserRouter>
     <Routes>
       <Route path="/" element={<App/>} >
@@ -59,8 +60,7 @@ ReactDOM.render(
         <Route path="settings" element={<Settings/>} />
       </Route>
     </Routes>
-  </BrowserRouter>,
-  document.getElementById('root') as HTMLElement
+  </BrowserRouter>
 );
 
 // If you want to start measuring performance in your app, pass a function

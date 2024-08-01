@@ -13,13 +13,11 @@ import { googleString } from '../../common/common';
 import { SettingsService } from '../../view-models/misc/settings.service';
 import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
-import { SyntheticEvent, useEffect, useState } from 'react';
+import { SyntheticEvent, useEffect, useReducer, useState } from 'react';
 import { KeyboardEvent } from 'react';
 import { AppService } from '../../view-models/misc/app.service';
 import { PatternsService } from '../../view-models/wpp/patterns.service';
-import { MPattern } from '../../models/wpp/pattern';
 import { useNavigate } from "react-router-dom";
-import { MLangWord } from "../../models/wpp/lang-word";
 
 export default function Patterns() {
   const appService = container.resolve(AppService);
@@ -33,9 +31,9 @@ export default function Patterns() {
   const [page, setPage] = useState(1);
   const [filter, setFilter] = useState('');
   const [filterType, setFilterType] = useState(0);
-  const [, setPatternsService] = useState(patternsService);
   const [refreshCount, setRefreshCount] = useState(0);
   const onRefresh = () => setRefreshCount(refreshCount + 1);
+  const [, forceUpdate] = useReducer(x => x + 1, 0);
 
   const onPageChange = (e: PaginatorPageChangeEvent) => {
     setFirst(e.first);
@@ -79,8 +77,7 @@ export default function Patterns() {
   useEffect(() => {
     (async () => {
       await patternsService.getData(page, rows, filter, filterType);
-      setPatternsService(null);
-      setPatternsService(patternsService);
+      forceUpdate();
     })();
   }, [refreshCount]);
 

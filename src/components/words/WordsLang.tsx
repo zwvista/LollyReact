@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { KeyboardEvent, SyntheticEvent, useEffect, useState } from 'react';
+import { KeyboardEvent, SyntheticEvent, useEffect, useReducer, useState } from 'react';
 import { WordsLangService } from '../../view-models/wpp/words-lang.service';
 import 'reflect-metadata';
 import { container } from "tsyringe";
@@ -31,9 +31,9 @@ export default function WordsLang() {
   const [page, setPage] = useState(1);
   const [filter, setFilter] = useState('');
   const [filterType, setFilterType] = useState(0);
-  const [, setWordsLangService] = useState(wordsLangService);
   const [refreshCount, setRefreshCount] = useState(0);
   const onRefresh = () => setRefreshCount(refreshCount + 1);
+  const [, forceUpdate] = useReducer(x => x + 1, 0);
 
   const onPageChange = (e: PaginatorPageChangeEvent) => {
     setFirst(e.first);
@@ -103,8 +103,7 @@ export default function WordsLang() {
   useEffect(() => {
     (async () => {
       await wordsLangService.getData(page, rows, filter, filterType);
-      setWordsLangService(null);
-      setWordsLangService(wordsLangService);
+      forceUpdate();
     })();
   }, [refreshCount]);
 
@@ -150,7 +149,7 @@ export default function WordsLang() {
     </>
   );
 
-  return !appService.isInitialized ? (<div/>) : (
+  return !appService.isInitialized && wordsLangService ? (<div/>) : (
     <div>
       <Toolbar start={startContent} />
       <Paginator first={first} rows={rows} onPageChange={onPageChange}

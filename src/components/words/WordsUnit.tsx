@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { KeyboardEvent, SyntheticEvent, useEffect, useState } from 'react';
+import { KeyboardEvent, SyntheticEvent, useEffect, useReducer, useState } from 'react';
 import { WordsUnitService } from '../../view-models/wpp/words-unit.service';
 import 'reflect-metadata';
 import { container } from "tsyringe";
@@ -27,9 +27,10 @@ export default function WordsUnit() {
   const [newWord, setNewWord] = useState('');
   const [filter, setFilter] = useState('');
   const [filterType, setFilterType] = useState(0);
-  const [, setWordsUnitService] = useState(wordsUnitService);
   const [refreshCount, setRefreshCount] = useState(0);
   const onRefresh = () => setRefreshCount(refreshCount + 1);
+  // https://stackoverflow.com/questions/30626030/can-you-force-a-react-component-to-rerender-without-calling-setstate
+  const [, forceUpdate] = useReducer(x => x + 1, 0);
 
   const onNewWordChange = (e: SyntheticEvent) => {
     setNewWord((e.nativeEvent.target as HTMLInputElement).value);
@@ -102,8 +103,7 @@ export default function WordsUnit() {
   useEffect(() => {
     (async () => {
       await wordsUnitService.getDataInTextbook(filter, filterType);
-      setWordsUnitService(null);
-      setWordsUnitService(wordsUnitService);
+      forceUpdate();
     })();
   }, [refreshCount]);
 
@@ -149,7 +149,7 @@ export default function WordsUnit() {
     </>
   );
 
-  return !appService.isInitialized ? (<div/>) : (
+  return (
     <div>
       <Toolbar start={startContent} />
       <DataTable value={wordsUnitService.unitWords}

@@ -15,7 +15,7 @@ import { MUnitPhrase } from '../../models/wpp/unit-phrase';
 import { PhrasesUnitService } from '../../view-models/wpp/phrases-unit.service';
 import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
-import { SyntheticEvent, useEffect, useState } from 'react';
+import { SyntheticEvent, useEffect, useReducer, useState } from 'react';
 import { KeyboardEvent } from 'react';
 import { AppService } from '../../view-models/misc/app.service';
 import { useNavigate } from "react-router-dom";
@@ -33,9 +33,9 @@ export default function PhrasesTextbook() {
   const [filter, setFilter] = useState('');
   const [filterType, setFilterType] = useState(0);
   const [textbookFilter, setTextbookFilter] = useState(0);
-  const [, setPhrasesUnitService] = useState(phrasesUnitService);
   const [refreshCount, setRefreshCount] = useState(0);
   const onRefresh = () => setRefreshCount(refreshCount + 1);
+  const [, forceUpdate] = useReducer(x => x + 1, 0);
 
   const onPageChange = (e: PaginatorPageChangeEvent) => {
     setFirst(e.first);
@@ -84,8 +84,7 @@ export default function PhrasesTextbook() {
   useEffect(() => {
     (async () => {
       await phrasesUnitService.getDataInLang(page, rows, filter, filterType, textbookFilter);
-      setPhrasesUnitService(null);
-      setPhrasesUnitService(phrasesUnitService);
+      forceUpdate();
     })();
   }, [refreshCount]);
 

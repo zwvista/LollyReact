@@ -14,7 +14,7 @@ import { SettingsService } from '../../view-models/misc/settings.service';
 import { MUnitPhrase } from '../../models/wpp/unit-phrase';
 import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
-import { SyntheticEvent, useEffect, useState } from 'react';
+import { SyntheticEvent, useEffect, useReducer, useState } from 'react';
 import { KeyboardEvent } from 'react';
 import { AppService } from '../../view-models/misc/app.service';
 import { useNavigate } from "react-router-dom";
@@ -26,12 +26,11 @@ export default function PhrasesUnit() {
   const subscription = new Subscription();
   const navigate = useNavigate();
 
-  const [selectedRow, setSelectedRow] = useState(null as MUnitPhrase);
   const [filter, setFilter] = useState('');
   const [filterType, setFilterType] = useState(0);
-  const [, setPhrasesUnitService] = useState(phrasesUnitService);
   const [refreshCount, setRefreshCount] = useState(0);
   const onRefresh = () => setRefreshCount(refreshCount + 1);
+  const [, forceUpdate] = useReducer(x => x + 1, 0);
 
   const onReorder = (e:any) => {
     console.log(`${e.dragIndex},${e.dropIndex}`);
@@ -73,8 +72,7 @@ export default function PhrasesUnit() {
   useEffect(() => {
     (async () => {
       await phrasesUnitService.getDataInTextbook(filter, filterType);
-      setPhrasesUnitService(null);
-      setPhrasesUnitService(phrasesUnitService);
+      forceUpdate();
     })();
   }, [refreshCount]);
 
