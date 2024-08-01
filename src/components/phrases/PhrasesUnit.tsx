@@ -30,16 +30,13 @@ export default function PhrasesUnit() {
   const [filter, setFilter] = useState('');
   const [filterType, setFilterType] = useState(0);
   const [, setPhrasesUnitService] = useState(phrasesUnitService);
+  const [refreshCount, setRefreshCount] = useState(0);
+  const onRefresh = () => setRefreshCount(refreshCount + 1);
 
   const onReorder = (e:any) => {
     console.log(`${e.dragIndex},${e.dropIndex}`);
     phrasesUnitService.unitPhrases = e.value;
-    phrasesUnitService.reindex(index => updateServiceState());
-  };
-
-  const onRefresh = async () => {
-    await phrasesUnitService.getDataInTextbook(filter, filterType);
-    updateServiceState();
+    phrasesUnitService.reindex(index => onRefresh());
   };
 
   const onFilterChange = (e: SyntheticEvent) => {
@@ -60,17 +57,8 @@ export default function PhrasesUnit() {
     phrasesUnitService.delete(item);
   };
 
-  const onSelectionChange = (e: any) => {
-    setSelectedRow(e.data);
-  };
-
   const googlePhrase = (phrase: string) => {
     googleString(phrase);
-  };
-
-  const updateServiceState = () => {
-    setPhrasesUnitService(null);
-    setPhrasesUnitService(phrasesUnitService);
   };
 
   useEffect(() => {
@@ -80,7 +68,15 @@ export default function PhrasesUnit() {
     return () => {
       subscription.unsubscribe();
     }
-  });
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      await phrasesUnitService.getDataInTextbook(filter, filterType);
+      setPhrasesUnitService(null);
+      setPhrasesUnitService(phrasesUnitService);
+    })();
+  }, [refreshCount]);
 
   const actionTemplate = (rowData: any, column: any) => {
     return <div>
@@ -115,8 +111,7 @@ export default function PhrasesUnit() {
     <div>
       <Toolbar start={startContent} />
       <DataTable value={phrasesUnitService.unitPhrases} selectionMode="single"
-                 onRowReorder={onReorder}
-                 selection={selectedRow} onSelectionChange={onSelectionChange}>
+                 onRowReorder={onReorder}>
         <Column rowReorder={settingsService.selectedTextbook && settingsService.isSingleUnitPart} style={{width: '3em'}} />
         <Column style={{width:'80px'}} field="ID" header="ID" />
         <Column style={{width:'80px'}} field="UNITSTR" header="UNIT" />

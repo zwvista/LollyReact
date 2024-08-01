@@ -25,14 +25,11 @@ export default function WordsUnit() {
   const navigate = useNavigate();
 
   const [newWord, setNewWord] = useState('');
-  const [selectedRow, setSelectedRow] = useState(null as MUnitWord);
   const [filter, setFilter] = useState('');
   const [filterType, setFilterType] = useState(0);
   const [, setWordsUnitService] = useState(wordsUnitService);
-
-  const onSelectionChange = (e: any) => {
-    setSelectedRow(e.data);
-  };
+  const [refreshCount, setRefreshCount] = useState(0);
+  const onRefresh = () => setRefreshCount(refreshCount + 1);
 
   const onNewWordChange = (e: SyntheticEvent) => {
     setNewWord((e.nativeEvent.target as HTMLInputElement).value);
@@ -43,22 +40,16 @@ export default function WordsUnit() {
     const o = wordsUnitService.newUnitWord();
     o.WORD = settingsService.autoCorrectInput(newWord);
     setNewWord('');
-    updateServiceState();
     const id = await wordsUnitService.create(o);
     o.ID = id as number;
     wordsUnitService.unitWords.push(o);
-    updateServiceState();
+    onRefresh();
   };
 
   const onReorder = (e:any) => {
     console.log(`${e.dragIndex},${e.dropIndex}`);
     wordsUnitService.unitWords = e.value;
-    wordsUnitService.reindex(index => updateServiceState());
-  };
-
-  const onRefresh = async () => {
-    await wordsUnitService.getDataInTextbook(filter, filterType);
-    updateServiceState();
+    wordsUnitService.reindex(index => onRefresh());
   };
 
   const onFilterChange = (e: SyntheticEvent) => {
@@ -79,10 +70,10 @@ export default function WordsUnit() {
     wordsUnitService.delete(item);
   };
 
-  const getNote = async(item: MUnitWord) => {
+  const getNote = async (item: MUnitWord) => {
     const index = wordsUnitService.unitWords.indexOf(item);
     await wordsUnitService.getNote(index);
-    updateServiceState();
+    onRefresh();
   };
 
   // https://stackoverflow.com/questions/42775017/angular-2-redirect-to-an-external-url-and-open-in-a-new-tab
@@ -99,11 +90,6 @@ export default function WordsUnit() {
     wordsUnitService.getNotes(ifEmpty, () => {}, () => {});
   };
 
-  const updateServiceState = () => {
-    setWordsUnitService(null);
-    setWordsUnitService(wordsUnitService);
-  };
-
   useEffect(() => {
     subscription.add(appService.initializeObject.subscribe(_ => {
       onRefresh();
@@ -111,7 +97,15 @@ export default function WordsUnit() {
     return () => {
       subscription.unsubscribe();
     };
-  });
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      await wordsUnitService.getDataInTextbook(filter, filterType);
+      setWordsUnitService(null);
+      setWordsUnitService(wordsUnitService);
+    })();
+  }, [refreshCount]);
 
   const actionTemplate = (rowData: any, column: any) => {
     return <div>
@@ -159,8 +153,7 @@ export default function WordsUnit() {
     <div>
       <Toolbar start={startContent} />
       <DataTable value={wordsUnitService.unitWords}
-                 onRowReorder={onReorder} selectionMode="single"
-                 selection={selectedRow} onSelectionChange={onSelectionChange}>
+                 onRowReorder={onReorder} selectionMode="single">
         <Column rowReorder={settingsService.selectedTextbook && settingsService.isSingleUnitPart} style={{width: '3em'}} />
         <Column style={{width:'80px'}} field="ID" header="ID" />
         <Column style={{width:'80px'}} field="UNITSTR" header="UNIT" />

@@ -30,22 +30,18 @@ export default function PhrasesTextbook() {
   const [first, setFirst] = useState(0);
   const [rows, setRows] = useState(0);
   const [page, setPage] = useState(1);
-  const [selectedRow, setSelectedRow] = useState(null as MUnitPhrase);
   const [filter, setFilter] = useState('');
   const [filterType, setFilterType] = useState(0);
   const [textbookFilter, setTextbookFilter] = useState(0);
   const [, setPhrasesUnitService] = useState(phrasesUnitService);
+  const [refreshCount, setRefreshCount] = useState(0);
+  const onRefresh = () => setRefreshCount(refreshCount + 1);
 
   const onPageChange = (e: PaginatorPageChangeEvent) => {
     setFirst(e.first);
     setRows(e.rows);
     setPage(e.page + 1);
     onRefresh();
-  };
-
-  const onRefresh = async () => {
-    await phrasesUnitService.getDataInLang(page, rows, filter, filterType, textbookFilter);
-    updateServiceState();
   };
 
   const onFilterChange = (e: SyntheticEvent) => {
@@ -71,17 +67,8 @@ export default function PhrasesTextbook() {
     phrasesUnitService.delete(item);
   };
 
-  const onSelectionChange = (e: any) => {
-    setSelectedRow(e.data);
-  };
-
   const googlePhrase = (phrase: string) => {
     googleString(phrase);
-  };
-
-  const updateServiceState = () => {
-    setPhrasesUnitService(null);
-    setPhrasesUnitService(phrasesUnitService);
   };
 
   useEffect(() => {
@@ -92,7 +79,15 @@ export default function PhrasesTextbook() {
     return () => {
       subscription.unsubscribe();
     }
-  });
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      await phrasesUnitService.getDataInLang(page, rows, filter, filterType, textbookFilter);
+      setPhrasesUnitService(null);
+      setPhrasesUnitService(phrasesUnitService);
+    })();
+  }, [refreshCount]);
 
   const actionTemplate = (rowData: any, column: any) => {
     return <div>
@@ -129,8 +124,7 @@ export default function PhrasesTextbook() {
       <Paginator first={first} rows={rows} onPageChange={onPageChange}
                  totalRecords={phrasesUnitService.textbookPhraseCount}
                  rowsPerPageOptions={settingsService.USROWSPERPAGEOPTIONS}/>
-      <DataTable value={phrasesUnitService.textbookPhrases} selectionMode="single"
-                 selection={selectedRow} onSelectionChange={onSelectionChange}>
+      <DataTable value={phrasesUnitService.textbookPhrases} selectionMode="single">
         <Column style={{width:'80px'}} field="ID" header="ID" />
         <Column style={{width:'150px'}} field="TEXTBOOKNAME" header="TEXTBOOKNAME" />
         <Column style={{width:'80px'}} field="UNITSTR" header="UNIT" />

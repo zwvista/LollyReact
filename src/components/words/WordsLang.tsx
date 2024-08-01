@@ -29,10 +29,11 @@ export default function WordsLang() {
   const [first, setFirst] = useState(0);
   const [rows, setRows] = useState(0);
   const [page, setPage] = useState(1);
-  const [selectedRow, setSelectedRow] = useState(null as MLangWord);
   const [filter, setFilter] = useState('');
   const [filterType, setFilterType] = useState(0);
   const [, setWordsLangService] = useState(wordsLangService);
+  const [refreshCount, setRefreshCount] = useState(0);
+  const onRefresh = () => setRefreshCount(refreshCount + 1);
 
   const onPageChange = (e: PaginatorPageChangeEvent) => {
     setFirst(e.first);
@@ -50,19 +51,10 @@ export default function WordsLang() {
     const o = wordsLangService.newLangWord();
     o.WORD = settingsService.autoCorrectInput(newWord);
     setNewWord('');
-    updateServiceState();
     const id = await wordsLangService.create(o);
     o.ID = id as number;
     wordsLangService.langWords.push(o);
-  };
-
-  const onRefresh = async () => {
-    await wordsLangService.getData(page, rows, filter, filterType);
-    updateServiceState();
-  };
-
-  const onSelectionChange = (e: any) => {
-    setSelectedRow(e.data);
+    onRefresh();
   };
 
   const onFilterChange = (e: SyntheticEvent) => {
@@ -98,11 +90,6 @@ export default function WordsLang() {
     navigate('/words-dict/lang/' + index);
   };
 
-  const updateServiceState = () => {
-    setWordsLangService(null);
-    setWordsLangService(wordsLangService);
-  };
-
   useEffect(() => {
     subscription.add(appService.initializeObject.subscribe(_ => {
       setRows(settingsService.USROWSPERPAGE);
@@ -111,7 +98,15 @@ export default function WordsLang() {
     return () => {
       subscription.unsubscribe();
     };
-  });
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      await wordsLangService.getData(page, rows, filter, filterType);
+      setWordsLangService(null);
+      setWordsLangService(wordsLangService);
+    })();
+  }, [refreshCount]);
 
   const actionTemplate = (rowData: any, column: any) => {
     return <div>
@@ -161,8 +156,7 @@ export default function WordsLang() {
       <Paginator first={first} rows={rows} onPageChange={onPageChange}
                  totalRecords={wordsLangService.langWordsCount}
                  rowsPerPageOptions={settingsService.USROWSPERPAGEOPTIONS}/>
-      <DataTable value={wordsLangService.langWords} selectionMode="single"
-                 selection={selectedRow} onSelectionChange={onSelectionChange}>
+      <DataTable value={wordsLangService.langWords} selectionMode="single">
         <Column style={{width:'80px'}} field="ID" header="ID" />
         <Column field="WORD" header="WORD" />
         <Column field="NOTE" header="NOTE" />

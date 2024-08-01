@@ -30,27 +30,18 @@ export default function WordsTextbook() {
   const [first, setFirst] = useState(0);
   const [rows, setRows] = useState(0);
   const [page, setPage] = useState(1);
-  const [selectedRow, setSelectedRow] = useState(null as MUnitWord);
   const [filter, setFilter] = useState('');
   const [filterType, setFilterType] = useState(0);
   const [textbookFilter, setTextbookFilter] = useState(0);
   const [, setWordsUnitService] = useState(wordsUnitService);
+  const [refreshCount, setRefreshCount] = useState(0);
+  const onRefresh = () => setRefreshCount(refreshCount + 1);
 
   const onPageChange = (e: PaginatorPageChangeEvent) => {
     setFirst(e.first);
     setRows(e.rows);
     setPage(e.page + 1);
     onRefresh();
-  };
-
-  const onRefresh = async () => {
-    // https://stackoverflow.com/questions/4228356/integer-division-with-remainder-in-javascript
-    await wordsUnitService.getDataInLang(page, rows, filter, filterType, textbookFilter);
-    updateServiceState();
-  };
-
-  const onSelectionChange = (e: any) => {
-    setSelectedRow(e.data);
   };
 
   const onFilterChange = (e: SyntheticEvent) => {
@@ -91,11 +82,6 @@ export default function WordsTextbook() {
     navigate('/words-dict/textbook/' + index);
   };
 
-  const updateServiceState = () => {
-    setWordsUnitService(null);
-    setWordsUnitService(wordsUnitService);
-  };
-
   useEffect(() => {
     subscription.add(appService.initializeObject.subscribe(_ => {
       setRows(settingsService.USROWSPERPAGE);
@@ -104,7 +90,16 @@ export default function WordsTextbook() {
     return () => {
       subscription.unsubscribe();
     }
-  });
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      // https://stackoverflow.com/questions/4228356/integer-division-with-remainder-in-javascript
+      await wordsUnitService.getDataInLang(page, rows, filter, filterType, textbookFilter);
+      setWordsUnitService(null);
+      setWordsUnitService(wordsUnitService);
+    })();
+  }, [refreshCount]);
 
   const actionTemplate = (rowData: any, column: any) => {
     return <div>
@@ -145,8 +140,7 @@ export default function WordsTextbook() {
       <Paginator first={first} rows={rows} onPageChange={onPageChange}
                  totalRecords={wordsUnitService.textbookWordCount}
                  rowsPerPageOptions={settingsService.USROWSPERPAGEOPTIONS}/>
-      <DataTable value={wordsUnitService.textbookWords} selectionMode="single"
-                 selection={selectedRow} onSelectionChange={onSelectionChange}>
+      <DataTable value={wordsUnitService.textbookWords} selectionMode="single">
         <Column style={{width:'80px'}} field="ID" header="ID" />
         <Column style={{width:'150px'}} field="TEXTBOOKNAME" header="TEXTBOOKNAME" />
         <Column style={{width:'80px'}} field="UNITSTR" header="UNIT" />

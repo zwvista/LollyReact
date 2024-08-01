@@ -31,25 +31,17 @@ export default function PhrasesLang() {
   const [first, setFirst] = useState(0);
   const [rows, setRows] = useState(0);
   const [page, setPage] = useState(1);
-  const [selectedRow, setSelectedRow] = useState(null as MLangPhrase);
   const [filter, setFilter] = useState('');
   const [filterType, setFilterType] = useState(0);
   const [, setPhrasesLangService] = useState(phrasesLangService);
+  const [refreshCount, setRefreshCount] = useState(0);
+  const onRefresh = () => setRefreshCount(refreshCount + 1);
 
   const onPageChange = (e: PaginatorPageChangeEvent) => {
     setFirst(e.first);
     setRows(e.rows);
     setPage(e.page + 1);
     onRefresh();
-  };
-
-  const onRefresh = async () => {
-    await phrasesLangService.getData(page, rows, filter, filterType);
-    updateServiceState();
-  };
-
-  const onSelectionChange = (e: any) => {
-    setSelectedRow(e.data);
   };
 
   const onFilterChange = (e: SyntheticEvent) => {
@@ -74,11 +66,6 @@ export default function PhrasesLang() {
     googleString(phrase);
   };
 
-  const updateServiceState = () => {
-    setPhrasesLangService(null);
-    setPhrasesLangService(phrasesLangService);
-  };
-
   useEffect(() => {
     subscription.add(appService.initializeObject.subscribe(_ => {
       setRows(settingsService.USROWSPERPAGE);
@@ -87,7 +74,15 @@ export default function PhrasesLang() {
     return () => {
       subscription.unsubscribe();
     };
-  });
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      await phrasesLangService.getData(page, rows, filter, filterType);
+      setPhrasesLangService(null);
+      setPhrasesLangService(phrasesLangService);
+    })();
+  }, [refreshCount]);
 
   const actionTemplate = (rowData: any, column: any) => {
     return <div>
@@ -124,8 +119,7 @@ export default function PhrasesLang() {
       <Paginator first={first} rows={rows} onPageChange={onPageChange}
                  totalRecords={phrasesLangService.langPhraseCount}
                  rowsPerPageOptions={settingsService.USROWSPERPAGEOPTIONS}/>
-      <DataTable value={phrasesLangService.langPhrases} selectionMode="single"
-                 selection={selectedRow} onSelectionChange={onSelectionChange}>
+      <DataTable value={phrasesLangService.langPhrases} selectionMode="single">
         <Column style={{width:'80px'}} field="ID" header="ID" />
         <Column field="PHRASE" header="PHRASE" />
         <Column field="TRANSLATION" header="TRANSLATION" />
