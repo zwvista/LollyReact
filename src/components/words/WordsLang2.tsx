@@ -29,7 +29,7 @@ import {
   faTrash,
   faVolumeUp
 } from '@fortawesome/free-solid-svg-icons';
-import { SyntheticEvent } from 'react';
+import { SyntheticEvent, useEffect, useReducer, useState } from 'react';
 import { KeyboardEvent } from 'react';
 import * as $ from 'jquery';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
@@ -38,223 +38,220 @@ import { MLangWord } from '../../models/wpp/lang-word';
 import { ChangeEvent } from 'react';
 import { ReactNode } from 'react';
 import { AppService } from '../../view-models/misc/app.service';
+import { useNavigate } from "react-router-dom";
 
-export default class WordsLang2 extends React.Component<any, any> {
-  appService = container.resolve(AppService);
-  wordsLangService = container.resolve(WordsLangService);
-  settingsService = container.resolve(SettingsService);
-  subscription = new Subscription();
+export default function WordsLang2() {
+  const appService = container.resolve(AppService);
+  const wordsLangService = container.resolve(WordsLangService);
+  const settingsService = container.resolve(SettingsService);
+  const subscription = new Subscription();
+  const navigate = useNavigate();
 
-  state = {
-    newWord: '',
-    rows: 0,
-    page: 1,
-    filter: '',
-    filterType: 0,
+  const [newWord, setNewWord] = useState('');
+  const [rows, setRows] = useState(0);
+  const [page, setPage] = useState(1);
+  const [filter, setFilter] = useState('');
+  const [filterType, setFilterType] = useState(0);
+  const [refreshCount, onRefresh] = useReducer(x => x + 1, 0);
+  const [, forceUpdate] = useReducer(x => x + 1, 0);
+
+  const onNewWordChange = (e: SyntheticEvent) => {
+    setNewWord((e.nativeEvent.target as HTMLInputElement).value);
   };
 
-  componentDidMount() {
-    this.subscription.add(this.appService.initializeObject.subscribe(_ => {
-      this.setState({rows: this.state.rows = this.settingsService.USROWSPERPAGE});
-      this.onRefresh();
-    }));
-  }
-
-  componentWillUnmount() {
-    this.subscription.unsubscribe();
-  }
-
-  render() {
-    return !this.appService.isInitialized ? (<div/>) : (
-      <div>
-        <Toolbar>
-          <TextField label="New Word" value={this.state.newWord}
-                     onChange={this.onNewWordChange} onKeyPress={this.onNewWordKeyPress}/>
-          <Tooltip title="Speak">
-            <Fab size="small" color="primary" hidden={!this.settingsService.selectedVoice}
-                 onClick={() => this.settingsService.speak(this.state.newWord)}>
-              <FontAwesomeIcon icon={faVolumeUp} />
-            </Fab>
-          </Tooltip>
-          <Select
-            value={this.state.filterType}
-            onChange={this.onFilterTypeChange}
-          >
-            {this.settingsService.wordFilterTypes.map(row =>
-              <MenuItem value={row.value} key={row.value}>{row.label}</MenuItem>
-            )}
-          </Select>
-          <TextField label="Filter" value={this.state.filter}
-                     onChange={this.onFilterChange} onKeyPress={this.onFilterKeyPress}/>
-          <Button variant="contained" color="primary" onClick={() => this.props.history.push('/words-lang-detail/0')}>
-            <span><FontAwesomeIcon icon={faPlus} />Add</span>
-          </Button>
-          <Button variant="contained" color="primary" onClick={(e: any) => this.onRefresh}>
-            <span><FontAwesomeIcon icon={faSync} />Refresh</span>
-          </Button>
-          <Button variant="contained" color="primary" onClick={() => this.props.history.push('/words-dict/lang/0')}>
-            <span><FontAwesomeIcon icon={faBook} />Dictionary</span>
-          </Button>
-        </Toolbar>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TablePagination
-                rowsPerPageOptions={this.settingsService.USROWSPERPAGEOPTIONS}
-                colSpan={5}
-                count={this.wordsLangService.langWordsCount}
-                rowsPerPage={this.state.rows}
-                page={this.state.page - 1}
-                SelectProps={{
-                  native: true,
-                }}
-                onPageChange={this.handleChangePage}
-                onRowsPerPageChange={this.handleRowsPerPageChange}
-              />
-            </TableRow>
-            <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell>WORD</TableCell>
-              <TableCell>NOTE</TableCell>
-              <TableCell>ACCURACY</TableCell>
-              <TableCell>ACTIONS</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {this.wordsLangService.langWords.map(row => (
-              <TableRow key={row.ID}>
-                <TableCell>{row.ID}</TableCell>
-                <TableCell>{row.WORD}</TableCell>
-                <TableCell>{row.NOTE}</TableCell>
-                <TableCell>{row.ACCURACY}</TableCell>
-                <TableCell>
-                  <Tooltip title="Delete">
-                    <Fab size="small" color="secondary" onClick={() => this.deleteWord(row)}>
-                      <FontAwesomeIcon icon={faTrash} />
-                    </Fab>
-                  </Tooltip>
-                  <Tooltip title="Edit">
-                    <Fab size="small" color="primary" onClick={() => this.props.history.push('/words-lang-detail/' + row.ID)}>
-                      <FontAwesomeIcon icon={faEdit} />
-                    </Fab>
-                  </Tooltip>
-                  <Tooltip title="Speak">
-                    <Fab size="small" color="primary" hidden={!this.settingsService.selectedVoice}
-                         onClick={() => this.settingsService.speak(row.WORD)}>
-                      <FontAwesomeIcon icon={faVolumeUp} />
-                    </Fab>
-                  </Tooltip>
-                  <CopyToClipboard text={row.WORD}>
-                    <Tooltip title="Copy">
-                      <Fab size="small" color="primary">
-                        <FontAwesomeIcon icon={faCopy} />
-                      </Fab>
-                    </Tooltip>
-                  </CopyToClipboard>
-                  <Tooltip title="Google Word" onClick={() => this.googleWord(row.WORD)}>
-                    <Fab size="small" color="primary">
-                      <FontAwesomeIcon icon={faGoogle} />
-                    </Fab>
-                  </Tooltip>
-                  <Tooltip title="Dictionary" onClick={() => this.dictWord(row)}>
-                    <Fab size="small" color="primary">
-                      <FontAwesomeIcon icon={faBook} />
-                    </Fab>
-                  </Tooltip>
-                  <Button variant="contained" hidden={!this.settingsService.selectedDictNote}
-                          onClick={() => this.getNote(row.ID)}>
-                    Retrieve Note
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-          <TableFooter>
-            <TableRow>
-              <TablePagination
-                rowsPerPageOptions={this.settingsService.USROWSPERPAGEOPTIONS}
-                colSpan={5}
-                count={this.wordsLangService.langWordsCount}
-                rowsPerPage={this.state.rows}
-                page={this.state.page - 1}
-                SelectProps={{
-                  native: true,
-                }}
-                onPageChange={this.handleChangePage}
-                onRowsPerPageChange={this.handleRowsPerPageChange}
-              />
-            </TableRow>
-          </TableFooter>
-        </Table>
-      </div>
-    );
-  }
-
-  onNewWordChange = (e: SyntheticEvent) => {
-    this.setState({newWord: (e.nativeEvent.target as HTMLInputElement).value});
-  };
-
-  onNewWordKeyPress = async (e: KeyboardEvent) => {
-    if (e.key !== 'Enter' || !this.state.newWord) return;
-    const o = this.wordsLangService.newLangWord();
-    o.WORD = this.settingsService.autoCorrectInput(this.state.newWord);
-    this.setState({newWord: ''});
-    this.updateServiceState();
-    const id = await this.wordsLangService.create(o);
+  const onNewWordKeyPress = async (e: KeyboardEvent) => {
+    if (e.key !== 'Enter' || !newWord) return;
+    const o = wordsLangService.newLangWord();
+    o.WORD = settingsService.autoCorrectInput(newWord);
+    setNewWord('');
+    const id = await wordsLangService.create(o);
     o.ID = id as number;
-    this.wordsLangService.langWords.push(o);
+    wordsLangService.langWords.push(o);
+    onRefresh();
   };
 
-  handleChangePage = (event: any, page: any) => {
-    this.setState({ page: this.state.page = page + 1 });
-    this.onRefresh();
+  const handleChangePage = (event: any, page: any) => {
+    setPage(page + 1);
+    onRefresh();
   };
 
-  handleRowsPerPageChange = (event: any) => {
-    this.setState({ page: this.state.page = 1, rows: this.state.rows = event.target.value });
-    this.onRefresh();
+  const handleRowsPerPageChange = (event: any) => {
+    setPage(1);
+    setRows(event.target.value);
+    onRefresh();
   };
 
-  onRefresh = async () => {
-    await this.wordsLangService.getData(this.state.page, this.state.rows, this.state.filter, this.state.filterType);
-    this.updateServiceState();
+  const onFilterChange = (e: SyntheticEvent) => {
+    setFilter((e.nativeEvent.target as HTMLInputElement).value);
   };
 
-  onFilterChange = (e: SyntheticEvent) => {
-    this.setState({filter: (e.nativeEvent.target as HTMLInputElement).value});
-  };
-
-  onFilterKeyPress = (e: KeyboardEvent) => {
+  const onFilterKeyPress = (e: KeyboardEvent) => {
     if (e.key !== 'Enter') return;
-    this.onRefresh();
+    onRefresh();
   };
 
-  onFilterTypeChange = (e: SelectChangeEvent<number>, child: ReactNode) => {
-    this.setState({filterType: this.state.filterType = Number(e.target.value)});
-    this.onRefresh();
+  const onFilterTypeChange = (e: SelectChangeEvent<number>, child: ReactNode) => {
+    setFilterType(Number(e.target.value));
+    onRefresh();
   };
 
-  deleteWord(item: MLangWord) {
-    this.wordsLangService.delete(item);
-  }
+  const deleteWord = (item: MLangWord) => {
+    wordsLangService.delete(item);
+  };
 
-  async getNote(index: number) {
+  const getNote = async (index: number) => {
     console.log(index);
-    await this.wordsLangService.getNote(index);
-  }
+    await wordsLangService.getNote(index);
+  };
 
   // https://stackoverflow.com/questions/42775017/angular-2-redirect-to-an-external-url-and-open-in-a-new-tab
-  googleWord(WORD: string) {
+  const googleWord = (WORD: string) => {
     window.open('https://www.google.com/search?q=' + encodeURIComponent(WORD), '_blank');
-  }
+  };
 
-  dictWord(item: MLangWord) {
-    const index = this.wordsLangService.langWords.indexOf(item);
-    this.props.history.push('/words-dict/lang/' + index);
-  }
+  const dictWord = (item: MLangWord) => {
+    const index = wordsLangService.langWords.indexOf(item);
+    navigate('/words-dict/lang/' + index);
+  };
 
-  updateServiceState() {
-    this.setState({wordsLangService: this.wordsLangService});
-  }
-};
+  useEffect(() => {
+    subscription.add(appService.initializeObject.subscribe(_ => {
+      setRows(settingsService.USROWSPERPAGE);
+      onRefresh();
+    }));
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
 
+  useEffect(() => {
+    (async () => {
+      await wordsLangService.getData(page, rows, filter, filterType);
+      forceUpdate();
+    })();
+  }, [refreshCount]);
+
+  return !appService.isInitialized ? (<div/>) : (
+    <div>
+      <Toolbar>
+        <TextField label="New Word" value={newWord}
+                   onChange={onNewWordChange} onKeyPress={onNewWordKeyPress}/>
+        <Tooltip title="Speak">
+          <Fab size="small" color="primary" hidden={!settingsService.selectedVoice}
+               onClick={() => settingsService.speak(newWord)}>
+            <FontAwesomeIcon icon={faVolumeUp} />
+          </Fab>
+        </Tooltip>
+        <Select
+          value={filterType}
+          onChange={onFilterTypeChange}
+        >
+          {settingsService.wordFilterTypes.map(row =>
+            <MenuItem value={row.value} key={row.value}>{row.label}</MenuItem>
+          )}
+        </Select>
+        <TextField label="Filter" value={filter}
+                   onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
+        <Button variant="contained" color="primary" onClick={() => navigate('/words-lang-detail/0')}>
+          <span><FontAwesomeIcon icon={faPlus} />Add</span>
+        </Button>
+        <Button variant="contained" color="primary" onClick={(e: any) => onRefresh}>
+          <span><FontAwesomeIcon icon={faSync} />Refresh</span>
+        </Button>
+        <Button variant="contained" color="primary" onClick={() => navigate('/words-dict/lang/0')}>
+          <span><FontAwesomeIcon icon={faBook} />Dictionary</span>
+        </Button>
+      </Toolbar>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TablePagination
+              rowsPerPageOptions={settingsService.USROWSPERPAGEOPTIONS}
+              colSpan={5}
+              count={wordsLangService.langWordsCount}
+              rowsPerPage={rows}
+              page={page - 1}
+              SelectProps={{
+                native: true,
+              }}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleRowsPerPageChange}
+            />
+          </TableRow>
+          <TableRow>
+            <TableCell>ID</TableCell>
+            <TableCell>WORD</TableCell>
+            <TableCell>NOTE</TableCell>
+            <TableCell>ACCURACY</TableCell>
+            <TableCell>ACTIONS</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {wordsLangService.langWords.map(row => (
+            <TableRow key={row.ID}>
+              <TableCell>{row.ID}</TableCell>
+              <TableCell>{row.WORD}</TableCell>
+              <TableCell>{row.NOTE}</TableCell>
+              <TableCell>{row.ACCURACY}</TableCell>
+              <TableCell>
+                <Tooltip title="Delete">
+                  <Fab size="small" color="secondary" onClick={() => deleteWord(row)}>
+                    <FontAwesomeIcon icon={faTrash} />
+                  </Fab>
+                </Tooltip>
+                <Tooltip title="Edit">
+                  <Fab size="small" color="primary" onClick={() => navigate('/words-lang-detail/' + row.ID)}>
+                    <FontAwesomeIcon icon={faEdit} />
+                  </Fab>
+                </Tooltip>
+                <Tooltip title="Speak">
+                  <Fab size="small" color="primary" hidden={!settingsService.selectedVoice}
+                       onClick={() => settingsService.speak(row.WORD)}>
+                    <FontAwesomeIcon icon={faVolumeUp} />
+                  </Fab>
+                </Tooltip>
+                <CopyToClipboard text={row.WORD}>
+                  <Tooltip title="Copy">
+                    <Fab size="small" color="primary">
+                      <FontAwesomeIcon icon={faCopy} />
+                    </Fab>
+                  </Tooltip>
+                </CopyToClipboard>
+                <Tooltip title="Google Word" onClick={() => googleWord(row.WORD)}>
+                  <Fab size="small" color="primary">
+                    <FontAwesomeIcon icon={faGoogle} />
+                  </Fab>
+                </Tooltip>
+                <Tooltip title="Dictionary" onClick={() => dictWord(row)}>
+                  <Fab size="small" color="primary">
+                    <FontAwesomeIcon icon={faBook} />
+                  </Fab>
+                </Tooltip>
+                <Button variant="contained" hidden={!settingsService.selectedDictNote}
+                        onClick={() => getNote(row.ID)}>
+                  Retrieve Note
+                </Button>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+        <TableFooter>
+          <TableRow>
+            <TablePagination
+              rowsPerPageOptions={settingsService.USROWSPERPAGEOPTIONS}
+              colSpan={5}
+              count={wordsLangService.langWordsCount}
+              rowsPerPage={rows}
+              page={page - 1}
+              SelectProps={{
+                native: true,
+              }}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleRowsPerPageChange}
+            />
+          </TableRow>
+        </TableFooter>
+      </Table>
+    </div>
+  );
+}
