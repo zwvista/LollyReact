@@ -31,202 +31,197 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { MUnitWord } from '../../models/wpp/unit-word';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
-import { ChangeEvent, ReactNode, SyntheticEvent } from 'react';
+import { ChangeEvent, ReactNode, SyntheticEvent, useEffect, useReducer, useState } from 'react';
 import { KeyboardEvent } from 'react';
 import { AppService } from '../../view-models/misc/app.service';
+import { useNavigate } from "react-router-dom";
 
-export default class WordsUnit2 extends React.Component<any, any> {
-  appService = container.resolve(AppService);
-  wordsUnitService = container.resolve(WordsUnitService);
-  settingsService = container.resolve(SettingsService);
-  subscription = new Subscription();
+export default function WordsUnit2() {
+  const appService = container.resolve(AppService);
+  const wordsUnitService = container.resolve(WordsUnitService);
+  const settingsService = container.resolve(SettingsService);
+  const subscription = new Subscription();
+  const navigate = useNavigate();
 
-  state = {
-    newWord: '',
-    filter: '',
-    filterType: 0,
+  const [newWord, setNewWord] = useState('');
+  const [filter, setFilter] = useState('');
+  const [filterType, setFilterType] = useState(0);
+  const [refreshCount, onRefresh] = useReducer(x => x + 1, 0);
+  const [, forceUpdate] = useReducer(x => x + 1, 0);
+
+  const onNewWordChange = (e: SyntheticEvent) => {
+    setNewWord((e.nativeEvent.target as HTMLInputElement).value);
   };
 
-  componentDidMount() {
-    this.subscription.add(this.appService.initializeObject.subscribe(_ => {
-      this.onRefresh();
-    }));
-  }
-
-  componentWillUnmount() {
-    this.subscription.unsubscribe();
-  }
-
-  render() {
-    return (
-      <div>
-        <Toolbar>
-          <TextField label="New Word" value={this.state.newWord}
-                     onChange={this.onNewWordChange} onKeyPress={this.onNewWordKeyPress}/>
-          <Tooltip title="Speak">
-            <Fab size="small" color="primary" hidden={!this.settingsService.selectedVoice}
-                 onClick={() => this.settingsService.speak(this.state.newWord)}>
-              <FontAwesomeIcon icon={faVolumeUp} />
-            </Fab>
-          </Tooltip>
-          <Select
-            value={this.state.filterType}
-            onChange={this.onFilterTypeChange}
-          >
-            {this.settingsService.wordFilterTypes.map(row =>
-              <MenuItem value={row.value} key={row.value}>{row.label}</MenuItem>
-            )}
-          </Select>
-          <TextField label="Filter" value={this.state.filter}
-                     onChange={this.onFilterChange} onKeyPress={this.onFilterKeyPress}/>
-          <Button variant="contained" color="primary" onClick={() => this.props.history.push('/words-unit-detail/0')}>
-            <span><FontAwesomeIcon icon={faPlus} />Add</span>
-          </Button>
-          <Button variant="contained" color="primary" onClick={this.onRefresh}>
-            <span><FontAwesomeIcon icon={faSync} />Refresh</span>
-          </Button>
-          <Button hidden={!this.settingsService.selectedDictNote} variant="contained">
-            Retrieve All Notes
-          </Button>
-          <Button hidden={!this.settingsService.selectedDictNote} variant="contained">
-            Retrieve Notes If Empty
-          </Button>
-          <Button variant="contained" color="primary" onClick={() => this.props.history.push('/words-dict/unit/0')}>
-            <span><FontAwesomeIcon icon={faBook} />Dictionary</span>
-          </Button>
-        </Toolbar>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell>UNIT</TableCell>
-              <TableCell>PART</TableCell>
-              <TableCell>SEQNUM</TableCell>
-              <TableCell>WORDID</TableCell>
-              <TableCell>WORD</TableCell>
-              <TableCell>NOTE</TableCell>
-              <TableCell>ACCURACY</TableCell>
-              <TableCell>ACTIONS</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {this.wordsUnitService.unitWords.map(row => (
-              <TableRow key={row.ID}>
-                <TableCell>{row.ID}</TableCell>
-                <TableCell>{row.UNITSTR}</TableCell>
-                <TableCell>{row.PARTSTR}</TableCell>
-                <TableCell>{row.SEQNUM}</TableCell>
-                <TableCell>{row.WORDID}</TableCell>
-                <TableCell>{row.WORD}</TableCell>
-                <TableCell>{row.NOTE}</TableCell>
-                <TableCell>{row.ACCURACY}</TableCell>
-                <TableCell>
-                  <Tooltip title="Delete">
-                    <Fab size="small" color="secondary" onClick={() => this.deleteWord(row)}>
-                      <FontAwesomeIcon icon={faTrash} />
-                    </Fab>
-                  </Tooltip>
-                  <Tooltip title="Edit">
-                    <Fab size="small" color="primary" onClick={() => this.props.history.push('/words-unit-detail/' + row.ID)}>
-                      <FontAwesomeIcon icon={faEdit} />
-                    </Fab>
-                  </Tooltip>
-                  <Tooltip title="Speak">
-                    <Fab size="small" color="primary" hidden={!this.settingsService.selectedVoice}
-                         onClick={() => this.settingsService.speak(row.WORD)}>
-                      <FontAwesomeIcon icon={faVolumeUp} />
-                    </Fab>
-                  </Tooltip>
-                  <CopyToClipboard text={row.WORD}>
-                    <Tooltip title="Copy">
-                      <Fab size="small" color="primary">
-                        <FontAwesomeIcon icon={faCopy} />
-                      </Fab>
-                    </Tooltip>
-                  </CopyToClipboard>
-                  <Tooltip title="Google Word" onClick={() => this.googleWord(row.WORD)}>
-                    <Fab size="small" color="primary">
-                      <FontAwesomeIcon icon={faGoogle} />
-                    </Fab>
-                  </Tooltip>
-                  <Tooltip title="Dictionary" onClick={() => this.dictWord(row)}>
-                    <Fab size="small" color="primary">
-                      <FontAwesomeIcon icon={faBook} />
-                    </Fab>
-                  </Tooltip>
-                  <Button variant="contained" hidden={!this.settingsService.selectedDictNote}
-                          onClick={() => this.getNote(row)}>
-                    Retrieve Note
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
-    );
-  }
-
-  onNewWordChange = (e: SyntheticEvent) => {
-    this.setState({newWord: (e.nativeEvent.target as HTMLInputElement).value});
-  };
-
-  onNewWordKeyPress = async (e: KeyboardEvent) => {
-    if (e.key !== 'Enter' || !this.state.newWord) return;
-    const o = this.wordsUnitService.newUnitWord();
-    o.WORD = this.settingsService.autoCorrectInput(this.state.newWord);
-    this.setState({newWord: ''});
-    this.updateServiceState();
-    const id = await this.wordsUnitService.create(o);
+  const onNewWordKeyPress = async (e: KeyboardEvent) => {
+    if (e.key !== 'Enter' || !newWord) return;
+    const o = wordsUnitService.newUnitWord();
+    o.WORD = settingsService.autoCorrectInput(newWord);
+    setNewWord('');
+    const id = await wordsUnitService.create(o);
     o.ID = id as number;
-    this.wordsUnitService.unitWords.push(o);
-    this.updateServiceState();
+    wordsUnitService.unitWords.push(o);
+    onRefresh();
   };
 
-  onRefresh = async () => {
-    await this.wordsUnitService.getDataInTextbook(this.state.filter, this.state.filterType);
-    this.updateServiceState();
+  const onFilterChange = (e: SyntheticEvent) => {
+    setFilter((e.nativeEvent.target as HTMLInputElement).value);
   };
 
-  onFilterChange = (e: SyntheticEvent) => {
-    this.setState({filter: (e.nativeEvent.target as HTMLInputElement).value});
-  };
-
-  onFilterKeyPress = (e: KeyboardEvent) => {
+  const onFilterKeyPress = (e: KeyboardEvent) => {
     if (e.key !== 'Enter') return;
-    this.onRefresh();
+    onRefresh();
   };
 
-  onFilterTypeChange = (e: SelectChangeEvent<number>, child: ReactNode) => {
-    this.setState({filterType: this.state.filterType = Number(e.target.value)});
-    this.onRefresh();
+  const onFilterTypeChange = (e: SelectChangeEvent<number>, child: ReactNode) => {
+    setFilterType(Number(e.target.value));
+    onRefresh();
   };
 
-  deleteWord(item: MUnitWord) {
-    this.wordsUnitService.delete(item);
-  }
+  const deleteWord = (item: MUnitWord) => {
+    wordsUnitService.delete(item);
+  };
 
-  async getNote(item: MUnitWord) {
-    const index = this.wordsUnitService.unitWords.indexOf(item);
-    await this.wordsUnitService.getNote(index);
-    this.updateServiceState();
-  }
+  const getNote = async (item: MUnitWord) => {
+    const index = wordsUnitService.unitWords.indexOf(item);
+    await wordsUnitService.getNote(index);
+    onRefresh();
+  };
 
-  googleWord(WORD: string) {
+  const googleWord = (WORD: string) => {
     window.open('https://www.google.com/search?q=' + encodeURIComponent(WORD), '_blank');
-  }
+  };
 
-  dictWord(item: MUnitWord) {
-    const index = this.wordsUnitService.unitWords.indexOf(item);
-    this.props.history.push('/words-dict/unit/' + index);
-  }
+  const dictWord = (item: MUnitWord) => {
+    const index = wordsUnitService.unitWords.indexOf(item);
+    navigate('/words-dict/unit/' + index);
+  };
 
-  getNotes(ifEmpty: boolean) {
-    this.wordsUnitService.getNotes(ifEmpty, () => {}, () => {});
-  }
+  const getNotes = (ifEmpty: boolean) => {
+    wordsUnitService.getNotes(ifEmpty, () => {}, () => {});
+  };
 
-  updateServiceState() {
-    this.setState({wordsUnitService: this.wordsUnitService});
-  }
-};
+  useEffect(() => {
+    subscription.add(appService.initializeObject.subscribe(_ => {
+      onRefresh();
+    }));
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
 
+  useEffect(() => {
+    (async () => {
+      await wordsUnitService.getDataInTextbook(filter, filterType);
+      forceUpdate();
+    })();
+  }, [refreshCount]);
+
+  return (
+    <div>
+      <Toolbar>
+        <TextField label="New Word" value={newWord}
+                   onChange={onNewWordChange} onKeyPress={onNewWordKeyPress}/>
+        <Tooltip title="Speak">
+          <Fab size="small" color="primary" hidden={!settingsService.selectedVoice}
+               onClick={() => settingsService.speak(newWord)}>
+            <FontAwesomeIcon icon={faVolumeUp} />
+          </Fab>
+        </Tooltip>
+        <Select
+          value={filterType}
+          onChange={onFilterTypeChange}
+        >
+          {settingsService.wordFilterTypes.map(row =>
+            <MenuItem value={row.value} key={row.value}>{row.label}</MenuItem>
+          )}
+        </Select>
+        <TextField label="Filter" value={filter}
+                   onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
+        <Button variant="contained" color="primary" onClick={() => navigate('/words-unit-detail/0')}>
+          <span><FontAwesomeIcon icon={faPlus} />Add</span>
+        </Button>
+        <Button variant="contained" color="primary" onClick={onRefresh}>
+          <span><FontAwesomeIcon icon={faSync} />Refresh</span>
+        </Button>
+        <Button hidden={!settingsService.selectedDictNote} variant="contained">
+          Retrieve All Notes
+        </Button>
+        <Button hidden={!settingsService.selectedDictNote} variant="contained">
+          Retrieve Notes If Empty
+        </Button>
+        <Button variant="contained" color="primary" onClick={() => navigate('/words-dict/unit/0')}>
+          <span><FontAwesomeIcon icon={faBook} />Dictionary</span>
+        </Button>
+      </Toolbar>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>ID</TableCell>
+            <TableCell>UNIT</TableCell>
+            <TableCell>PART</TableCell>
+            <TableCell>SEQNUM</TableCell>
+            <TableCell>WORDID</TableCell>
+            <TableCell>WORD</TableCell>
+            <TableCell>NOTE</TableCell>
+            <TableCell>ACCURACY</TableCell>
+            <TableCell>ACTIONS</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {wordsUnitService.unitWords.map(row => (
+            <TableRow key={row.ID}>
+              <TableCell>{row.ID}</TableCell>
+              <TableCell>{row.UNITSTR}</TableCell>
+              <TableCell>{row.PARTSTR}</TableCell>
+              <TableCell>{row.SEQNUM}</TableCell>
+              <TableCell>{row.WORDID}</TableCell>
+              <TableCell>{row.WORD}</TableCell>
+              <TableCell>{row.NOTE}</TableCell>
+              <TableCell>{row.ACCURACY}</TableCell>
+              <TableCell>
+                <Tooltip title="Delete">
+                  <Fab size="small" color="secondary" onClick={() => deleteWord(row)}>
+                    <FontAwesomeIcon icon={faTrash} />
+                  </Fab>
+                </Tooltip>
+                <Tooltip title="Edit">
+                  <Fab size="small" color="primary" onClick={() => navigate('/words-unit-detail/' + row.ID)}>
+                    <FontAwesomeIcon icon={faEdit} />
+                  </Fab>
+                </Tooltip>
+                <Tooltip title="Speak">
+                  <Fab size="small" color="primary" hidden={!settingsService.selectedVoice}
+                       onClick={() => settingsService.speak(row.WORD)}>
+                    <FontAwesomeIcon icon={faVolumeUp} />
+                  </Fab>
+                </Tooltip>
+                <CopyToClipboard text={row.WORD}>
+                  <Tooltip title="Copy">
+                    <Fab size="small" color="primary">
+                      <FontAwesomeIcon icon={faCopy} />
+                    </Fab>
+                  </Tooltip>
+                </CopyToClipboard>
+                <Tooltip title="Google Word" onClick={() => googleWord(row.WORD)}>
+                  <Fab size="small" color="primary">
+                    <FontAwesomeIcon icon={faGoogle} />
+                  </Fab>
+                </Tooltip>
+                <Tooltip title="Dictionary" onClick={() => dictWord(row)}>
+                  <Fab size="small" color="primary">
+                    <FontAwesomeIcon icon={faBook} />
+                  </Fab>
+                </Tooltip>
+                <Button variant="contained" hidden={!settingsService.selectedDictNote}
+                        onClick={() => getNote(row)}>
+                  Retrieve Note
+                </Button>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
+  );
+}
