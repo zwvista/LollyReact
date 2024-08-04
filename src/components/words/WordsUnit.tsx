@@ -16,6 +16,7 @@ import { MUnitWord } from '../../models/wpp/unit-word';
 import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
 import { AppService } from '../../view-models/misc/app.service';
 import { useNavigate } from "react-router-dom";
+import { FloatLabel } from "primereact/floatlabel";
 
 export default function WordsUnit() {
   const appService = container.resolve(AppService);
@@ -108,7 +109,7 @@ export default function WordsUnit() {
 
   const actionTemplate = (rowData: any, column: any) => {
     return <div>
-      <Button className="p-button-danger button-margin-right" icon="fa fa-trash"
+      <Button severity="danger" icon="fa fa-trash"
               tooltip="Delete" tooltipOptions={{position: 'top'}} onClick={() => deleteWord(rowData)} />
       <Button icon="fa fa-edit" tooltip="Edit" tooltipOptions={{position: 'top'}}
               onClick={() => navigate('/words-unit-detail/' + rowData.ID)} />
@@ -121,29 +122,27 @@ export default function WordsUnit() {
               tooltip="Google Word" tooltipOptions={{position: 'top'}}/>
       <Button icon="fa fa-book" onClick={() => dictWord(rowData)}
               tooltip="Dictionary" tooltipOptions={{position: 'top'}}/>
-      <Button hidden={!settingsService.selectedDictNote} className="p-button-warning" label="Retrieve Note" onClick={() => getNote(rowData)}/>
+      <Button hidden={!settingsService.selectedDictNote} severity="warning" label="Retrieve Note" onClick={() => getNote(rowData)}/>
     </div>;
   };
 
   const startContent = (
     <>
-      <span className="p-float-label">
-        <InputText id="word" type="text" value={newWord}
-                   onChange={onNewWordChange} onKeyPress={onNewWordKeyPress}/>
+      <FloatLabel>
+        <InputText id="word" value={newWord} onChange={onNewWordChange} onKeyPress={onNewWordKeyPress}/>
         <label htmlFor="word">New Word</label>
-      </span>
+      </FloatLabel>
       <Dropdown id="filterType" options={settingsService.wordFilterTypes} value={filterType} onChange={onFilterTypeChange} />
-      <span className="p-float-label">
-        <InputText id="filter" type="text" value={filter}
-                   onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
+      <FloatLabel>
+        <InputText id="filter" value={filter} onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
         <label htmlFor="Filter">Filter</label>
-      </span>
+      </FloatLabel>
       <Button hidden={!settingsService.selectedVoice} icon="fa fa-volume-up" tooltipOptions={{position: 'top'}}
               tooltip="Speak" onClick={() => settingsService.speak(newWord)} />
       <Button label="Add" icon="fa fa-plus" onClick={() => navigate('/words-unit-detail/0')} />
       <Button label="Refresh" icon="fa fa-refresh" onClick={onRefresh}/>
-      <Button hidden={!settingsService.selectedDictNote} className="p-button-warning" label="Retrieve All Notes" />
-      <Button hidden={!settingsService.selectedDictNote} className="p-button-warning" label="Retrieve Notes If Empty" />
+      <Button hidden={!settingsService.selectedDictNote} severity="warning" label="Retrieve All Notes" />
+      <Button hidden={!settingsService.selectedDictNote} severity="warning" label="Retrieve Notes If Empty" />
       <Button label="Dictionary" icon="fa fa-book" onClick={() => navigate('/words-dict/unit/0')} />
     </>
   );

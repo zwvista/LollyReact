@@ -19,6 +19,7 @@ import { SyntheticEvent, useEffect, useReducer, useState } from 'react';
 import { KeyboardEvent } from 'react';
 import { AppService } from '../../view-models/misc/app.service';
 import { useNavigate } from "react-router-dom";
+import { FloatLabel } from "primereact/floatlabel";
 
 export default function PhrasesTextbook() {
   const appService = container.resolve(AppService);
@@ -89,7 +90,7 @@ export default function PhrasesTextbook() {
 
   const actionTemplate = (rowData: any, column: any) => {
     return <div>
-      <Button className="p-button-danger button-margin-right" icon="fa fa-trash"
+      <Button severity="danger" icon="fa fa-trash"
               tooltip="Delete" tooltipOptions={{position: 'top'}} onClick={() => deletePhrase(rowData)} />
       <Button icon="fa fa-edit" tooltip="Edit" tooltipOptions={{position: 'top'}}
               onClick={() => navigate('/phrases-textbook-detail/' + rowData.ID)}/>
@@ -106,11 +107,10 @@ export default function PhrasesTextbook() {
   const startContent = (
     <>
       <Dropdown id="filterType" options={settingsService.phraseFilterTypes} value={filterType} onChange={onFilterTypeChange} />
-      <span className="p-float-label">
-          <InputText id="filter" type="text" value={filter}
-                     onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
-          <label htmlFor="filter">Filter</label>
-        </span>
+      <FloatLabel>
+        <InputText id="filter" value={filter} onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
+        <label htmlFor="filter">Filter</label>
+      </FloatLabel>
       <Dropdown id="textbookFilter" options={settingsService.textbookFilters} value={textbookFilter} onChange={onTextbookFilterChange} />
       <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => onRefresh}/>
     </>

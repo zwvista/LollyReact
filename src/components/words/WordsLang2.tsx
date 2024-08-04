@@ -47,28 +47,12 @@ export default function WordsLang2() {
   const subscription = new Subscription();
   const navigate = useNavigate();
 
-  const [newWord, setNewWord] = useState('');
   const [rows, setRows] = useState(0);
   const [page, setPage] = useState(1);
   const [filter, setFilter] = useState('');
   const [filterType, setFilterType] = useState(0);
   const [refreshCount, onRefresh] = useReducer(x => x + 1, 0);
   const [, forceUpdate] = useReducer(x => x + 1, 0);
-
-  const onNewWordChange = (e: SyntheticEvent) => {
-    setNewWord((e.nativeEvent.target as HTMLInputElement).value);
-  };
-
-  const onNewWordKeyPress = async (e: KeyboardEvent) => {
-    if (e.key !== 'Enter' || !newWord) return;
-    const o = wordsLangService.newLangWord();
-    o.WORD = settingsService.autoCorrectInput(newWord);
-    setNewWord('');
-    const id = await wordsLangService.create(o);
-    o.ID = id as number;
-    wordsLangService.langWords.push(o);
-    onRefresh();
-  };
 
   const handleChangePage = (event: any, page: any) => {
     setPage(page + 1);
@@ -134,14 +118,6 @@ export default function WordsLang2() {
   return !appService.isInitialized ? (<div/>) : (
     <div>
       <Toolbar>
-        <TextField label="New Word" value={newWord}
-                   onChange={onNewWordChange} onKeyPress={onNewWordKeyPress}/>
-        <Tooltip title="Speak">
-          <Fab size="small" color="primary" hidden={!settingsService.selectedVoice}
-               onClick={() => settingsService.speak(newWord)}>
-            <FontAwesomeIcon icon={faVolumeUp} />
-          </Fab>
-        </Tooltip>
         <Select
           value={filterType}
           onChange={onFilterTypeChange}

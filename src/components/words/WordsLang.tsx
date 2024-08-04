@@ -17,6 +17,7 @@ import { MLangWord } from '../../models/wpp/lang-word';
 import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
 import { AppService } from '../../view-models/misc/app.service';
 import { useNavigate } from "react-router-dom";
+import { FloatLabel } from "primereact/floatlabel";
 
 export default function WordsLang() {
   const appService = container.resolve(AppService);
@@ -25,7 +26,6 @@ export default function WordsLang() {
   const subscription = new Subscription();
   const navigate = useNavigate();
 
-  const [newWord, setNewWord] = useState('');
   const [first, setFirst] = useState(0);
   const [rows, setRows] = useState(0);
   const [page, setPage] = useState(1);
@@ -38,21 +38,6 @@ export default function WordsLang() {
     setFirst(e.first);
     setRows(e.rows);
     setPage(e.page + 1);
-    onRefresh();
-  };
-
-  const onNewWordChange = (e: SyntheticEvent) => {
-    setNewWord((e.nativeEvent.target as HTMLInputElement).value);
-  };
-
-  const onNewWordKeyPress = async (e: KeyboardEvent) => {
-    if (e.key !== 'Enter' || !newWord) return;
-    const o = wordsLangService.newLangWord();
-    o.WORD = settingsService.autoCorrectInput(newWord);
-    setNewWord('');
-    const id = await wordsLangService.create(o);
-    o.ID = id as number;
-    wordsLangService.langWords.push(o);
     onRefresh();
   };
 
@@ -108,7 +93,7 @@ export default function WordsLang() {
 
   const actionTemplate = (rowData: any, column: any) => {
     return <div>
-      <Button className="p-button-danger button-margin-right" icon="fa fa-trash"
+      <Button severity="danger" icon="fa fa-trash"
               tooltip="Delete" tooltipOptions={{position: 'top'}} onClick={() => deleteWord(rowData)} />
       <Button icon="fa fa-edit" tooltip="Edit" tooltipOptions={{position: 'top'}}
               onClick={() => navigate('/words-lang-detail/' + rowData.ID)} />
@@ -121,29 +106,21 @@ export default function WordsLang() {
               tooltip="Google Word" tooltipOptions={{position: 'top'}}/>
       <Button icon="fa fa-book" onClick={() => dictWord(rowData)}
               tooltip="Dictionary" tooltipOptions={{position: 'top'}}/>
-      <Button hidden={!settingsService.selectedDictNote} className="p-button-warning" label="Retrieve Note" onClick={() => getNote(rowData.ID)} />
+      <Button hidden={!settingsService.selectedDictNote} severity="warning" label="Retrieve Note" onClick={() => getNote(rowData.ID)} />
     </div>;
   };
 
   const startContent = (
     <>
-      <span className="p-float-label">
-        <InputText id="word" type="text" value={newWord}
-                   onChange={onNewWordChange} onKeyPress={onNewWordKeyPress}/>
-        <label htmlFor="word">New Word</label>
-      </span>
       <Dropdown id="filterType" options={settingsService.wordFilterTypes} value={filterType} onChange={onFilterTypeChange} />
-      <span className="p-float-label">
-        <InputText id="filter" type="text" value={filter}
-                   onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
+      <FloatLabel>
+        <InputText id="filter" value={filter} onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
         <label htmlFor="Filter">Filter</label>
-      </span>
-      <Button hidden={!settingsService.selectedVoice} icon="fa fa-volume-up" tooltipOptions={{position: 'top'}}
-              tooltip="Speak" onClick={() => settingsService.speak(newWord)} />
+      </FloatLabel>
       <Button label="Add" icon="fa fa-plus" onClick={() => navigate('/words-unit-detail/0')} />
       <Button label="Refresh" icon="fa fa-refresh" onClick={onRefresh}/>
-      <Button hidden={!settingsService.selectedDictNote} className="p-button-warning" label="Retrieve All Notes" />
-      <Button hidden={!settingsService.selectedDictNote} className="p-button-warning" label="Retrieve Notes If Empty" />
+      <Button hidden={!settingsService.selectedDictNote} severity="warning" label="Retrieve All Notes" />
+      <Button hidden={!settingsService.selectedDictNote} severity="warning" label="Retrieve Notes If Empty" />
       <Button label="Dictionary" icon="fa fa-book" onClick={() => navigate('/words-dict/unit/0')} />
     </>
   );

@@ -18,6 +18,7 @@ import { SyntheticEvent, useEffect, useReducer, useState } from 'react';
 import { KeyboardEvent } from 'react';
 import { AppService } from '../../view-models/misc/app.service';
 import { useNavigate } from "react-router-dom";
+import { FloatLabel } from "primereact/floatlabel";
 
 export default function WordsTextbook() {
   const appService = container.resolve(AppService);
@@ -100,7 +101,7 @@ export default function WordsTextbook() {
 
   const actionTemplate = (rowData: any, column: any) => {
     return <div>
-      <Button className="p-button-danger button-margin-right" icon="fa fa-trash"
+      <Button severity="danger" icon="fa fa-trash"
               tooltip="Delete" tooltipOptions={{position: 'top'}} onClick={() => deleteWord(rowData)} />
       <Button icon="fa fa-edit" tooltip="Edit" tooltipOptions={{position: 'top'}}
               onClick={() => navigate('/words-textbook-detail/' + rowData.ID)} />
@@ -113,18 +114,17 @@ export default function WordsTextbook() {
               tooltip="Google Word" tooltipOptions={{position: 'top'}}/>
       <Button icon="fa fa-book" onClick={() => dictWord(rowData.ID)}
               tooltip="Dictionary" tooltipOptions={{position: 'top'}}/>
-      <Button hidden={!settingsService.selectedDictNote} className="p-button-warning" label="Retrieve Note" onClick={() => getNote(rowData.ID)} />
+      <Button hidden={!settingsService.selectedDictNote} severity="warning" label="Retrieve Note" onClick={() => getNote(rowData.ID)} />
     </div>;
   };
 
   const startContent = (
     <>
       <Dropdown id="filterType" options={settingsService.wordFilterTypes} value={filterType} onChange={onFilterTypeChange} />
-      <span className="p-float-label">
-          <InputText id="filter" type="text" value={filter}
-                     onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
-          <label htmlFor="filter">Filter</label>
-        </span>
+      <FloatLabel>
+        <InputText id="filter" value={filter} onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
+        <label htmlFor="filter">Filter</label>
+      </FloatLabel>
       <Dropdown id="textbookFilter" options={settingsService.textbookFilters} value={textbookFilter} onChange={onTextbookFilterChange} />
       <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => onRefresh}/>
       <Button label="Dictionary" icon="fa fa-book" onClick={() => navigate('/words-dict/textbook/0')} />

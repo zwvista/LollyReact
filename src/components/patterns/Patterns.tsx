@@ -18,6 +18,7 @@ import { KeyboardEvent } from 'react';
 import { AppService } from '../../view-models/misc/app.service';
 import { PatternsService } from '../../view-models/wpp/patterns.service';
 import { useNavigate } from "react-router-dom";
+import { FloatLabel } from "primereact/floatlabel";
 
 export default function Patterns() {
   const appService = container.resolve(AppService);
@@ -82,7 +83,7 @@ export default function Patterns() {
 
   const actionTemplate = (rowData: any, column: any) => {
     return <div>
-      <Button className="p-button-danger button-margin-right" icon="fa fa-trash"
+      <Button severity="danger" icon="fa fa-trash"
               tooltip="Delete" tooltipOptions={{position: 'top'}} onClick={() => deletePattern(rowData.ID)} />
       <Button icon="fa fa-edit" tooltip="Edit" tooltipOptions={{position: 'top'}}
               onClick={() => navigate('/patterns-detail/' + rowData.ID)}/>
@@ -99,11 +100,10 @@ export default function Patterns() {
   const startContent = (
     <>
       <Dropdown id="filterType" options={settingsService.patternFilterTypes} value={filterType} onChange={onFilterTypeChange} />
-      <span className="p-float-label">
-          <InputText id="filter" type="text" value={filter}
-                     onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
-          <label htmlFor="filter">Filter</label>
-        </span>
+      <FloatLabel>
+        <InputText id="filter" value={filter} onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
+        <label htmlFor="filter">Filter</label>
+      </FloatLabel>
       <Button label="Add" icon="fa fa-plus" onClick={() => navigate('/patterns-detail/0')} />
       <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => onRefresh}/>
     </>
