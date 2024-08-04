@@ -9,7 +9,6 @@ import { SettingsService } from '../../view-models/misc/settings.service';
 import { Dropdown } from 'primereact/dropdown';
 import { useNavigate, useParams } from "react-router-dom";
 import { useReducer } from "react";
-import { InputNumber } from "primereact/inputnumber";
 
 export default function WordsUnitDetail() {
   const wordsUnitService = container.resolve(WordsUnitService);
@@ -48,46 +47,48 @@ export default function WordsUnitDetail() {
   };
 
   return (
-    <div>
-      <div className="p-grid mt-2 mb-2">
-        <label className="p-col-1" htmlFor="ID">ID:</label>
-        <InputNumber className="p-col-3" id="ID" value={item.ID} disabled />
+    <div className="flex justify-content-center flex-wrap">
+      <div className="w-6">
+      <div className="grid mt-2 align-items-center">
+        <label className="col-4" htmlFor="ID">ID:</label>
+        <InputText className="col-8 w-8" id="ID" value={item.ID.toString()} disabled />
       </div>
-      <div className="p-grid mb-2">
-        <label className="p-col-1" htmlFor="UNIT">UNIT:</label>
-        <Dropdown className="p-col-3" id="UNIT" options={settingsService.units} value={item.UNIT} onChange={onChangeDropDown} />
+      <div className="grid mt-2 align-items-center">
+        <label className="col-4" htmlFor="UNIT">UNIT:</label>
+        <Dropdown className="col-8" id="UNIT" options={settingsService.units} value={item.UNIT} onChange={onChangeDropDown} />
       </div>
-      <div className="p-grid mb-2">
-        <label className="p-col-1" htmlFor="PART">PART:</label>
-        <Dropdown className="p-col-3" id="PART" options={settingsService.parts} value={item.PART} onChange={onChangeDropDown} />
+      <div className="grid mt-2 align-items-center">
+        <label className="col-4" htmlFor="PART">PART:</label>
+        <Dropdown className="col-8" id="PART" options={settingsService.parts} value={item.PART} onChange={onChangeDropDown} />
       </div>
-      <div className="p-grid mb-2">
-        <label className="p-col-1" htmlFor="SEQNUM">SEQNUM:</label>
-        <InputNumber className="p-col-3" id="SEQNUM" value={item.SEQNUM} onChange={onChangeInput} />
+      <div className="grid mt-2 align-items-center">
+        <label className="col-4" htmlFor="SEQNUM">SEQNUM:</label>
+        <InputText className="col-8" keyfilter="int" id="SEQNUM" value={item.SEQNUM.toString()} onChange={onChangeInput} />
       </div>
-      <div className="p-grid mb-2">
-        <label className="p-col-1" htmlFor="WORDID">WORDID:</label>
-        <InputNumber className="p-col-3" id="WORDID" value={item.WORDID} disabled />
+      <div className="grid mt-2 align-items-center">
+        <label className="col-4" htmlFor="WORDID">WORDID:</label>
+        <InputText className="col-8" id="WORDID" value={item.WORDID.toString()} disabled />
       </div>
-      <div className="p-grid mb-2">
-        <label className="p-col-1" htmlFor="WORD">WORD:</label>
-        <InputText className="p-col-3" id="WORD" value={item.WORD} onChange={onChangeInput} />
+      <div className="grid mt-2 align-items-center">
+        <label className="col-4" htmlFor="WORD">WORD:</label>
+        <InputText className="col-8" id="WORD" value={item.WORD} onChange={onChangeInput} />
       </div>
-      <div className="p-grid mb-2">
-        <label className="p-col-1" htmlFor="NOTE">NOTE:</label>
-        <InputText className="p-col-3" id="NOTE" value={item.NOTE} onChange={onChangeInput} />
+      <div className="grid mt-2 align-items-center">
+        <label className="col-4" htmlFor="NOTE">NOTE:</label>
+        <InputText className="col-8" id="NOTE" value={item.NOTE} onChange={onChangeInput} />
       </div>
-      <div className="p-grid mb-2">
-        <label className="p-col-1" htmlFor="FAMIID">FAMIID:</label>
-        <InputNumber className="p-col-3" id="FAMIID" value={item.FAMIID} disabled />
+      <div className="grid mt-2 align-items-center">
+        <label className="col-4" htmlFor="FAMIID">FAMIID:</label>
+        <InputText className="col-8" id="FAMIID" value={item.FAMIID.toString()} disabled />
       </div>
-      <div className="p-grid mb-2">
-        <label className="p-col-1" htmlFor="ACCURACY">ACCURACY:</label>
-        <InputText className="p-col-3" id="ACCURACY" value={item.ACCURACY} disabled />
+      <div className="grid mt-2 align-items-center">
+        <label className="col-4" htmlFor="ACCURACY">ACCURACY:</label>
+        <InputText className="col-8" id="ACCURACY" value={item.ACCURACY} disabled />
       </div>
-      <div>
-        <Button label="Back" onClick={goBack} />
-        <Button label="Save" onClick={save} />
+      <div className="mt-4 flex justify-content-around flex-wrap">
+        <Button className="border-round" label="Back" onClick={goBack} />
+        <Button className="border-round" label="Save" onClick={save} />
+      </div>
       </div>
     </div>
   );
