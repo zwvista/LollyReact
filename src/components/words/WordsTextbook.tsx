@@ -120,12 +120,12 @@ export default function WordsTextbook() {
 
   const startContent = (
     <>
-      <Dropdown id="filterType" options={settingsService.wordFilterTypes} value={filterType} onChange={onFilterTypeChange} />
+      <Dropdown options={settingsService.wordFilterTypes} value={filterType} onChange={onFilterTypeChange} />
       <FloatLabel>
         <InputText id="filter" value={filter} onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
         <label htmlFor="filter">Filter</label>
       </FloatLabel>
-      <Dropdown id="textbookFilter" options={settingsService.textbookFilters} value={textbookFilter} onChange={onTextbookFilterChange} />
+      <Dropdown options={settingsService.textbookFilters} value={textbookFilter} onChange={onTextbookFilterChange} />
       <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => onRefresh}/>
       <Button label="Dictionary" icon="fa fa-book" onClick={() => navigate('/words-dict/textbook/0')} />
     </>

@@ -99,7 +99,7 @@ export default function Patterns() {
 
   const startContent = (
     <>
-      <Dropdown id="filterType" options={settingsService.patternFilterTypes} value={filterType} onChange={onFilterTypeChange} />
+      <Dropdown options={settingsService.patternFilterTypes} value={filterType} onChange={onFilterTypeChange} />
       <FloatLabel>
         <InputText id="filter" value={filter} onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
         <label htmlFor="filter">Filter</label>

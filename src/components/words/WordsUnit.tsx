@@ -132,7 +132,7 @@ export default function WordsUnit() {
         <InputText id="word" value={newWord} onChange={onNewWordChange} onKeyPress={onNewWordKeyPress}/>
         <label htmlFor="word">New Word</label>
       </FloatLabel>
-      <Dropdown id="filterType" options={settingsService.wordFilterTypes} value={filterType} onChange={onFilterTypeChange} />
+      <Dropdown options={settingsService.wordFilterTypes} value={filterType} onChange={onFilterTypeChange} />
       <FloatLabel>
         <InputText id="filter" value={filter} onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
         <label htmlFor="Filter">Filter</label>

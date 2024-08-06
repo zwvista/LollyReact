@@ -94,10 +94,9 @@ export default function PhrasesUnit() {
 
   const startContent = (
     <>
-      <Dropdown id="filterType" options={settingsService.phraseFilterTypes} value={filterType} onChange={onFilterTypeChange} />
+      <Dropdown options={settingsService.phraseFilterTypes} value={filterType} onChange={onFilterTypeChange} />
       <FloatLabel>
-        <InputText id="filter" type="text" value={filter}
-                   onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
+        <InputText id="filter" value={filter} onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
         <label htmlFor="filter">Filter</label>
       </FloatLabel>
       <Button label="Add" icon="fa fa-plus" onClick={() => navigate('/phrases-unit-detail/0')} />
