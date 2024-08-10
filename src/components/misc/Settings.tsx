@@ -3,243 +3,192 @@ import 'reflect-metadata';
 import { container } from "tsyringe";
 import { SettingsListener, SettingsService } from '../../view-models/misc/settings.service';
 import './Common.css'
+import { useEffect, useMemo, useReducer } from "react";
 
-export default class Settings extends React.Component<any, any> implements SettingsListener {
-  settingsService = container.resolve(SettingsService);
+export default function Settings() {
+  const settingsService = container.resolve(SettingsService);
+  const [, forceUpdate] = useReducer(x => x + 1, 0);
 
-  get toTypeIsUnit() {
-    return this.settingsService.toType === 0;
-  }
-  get toTypeIsPart() {
-    return this.settingsService.toType === 1;
-  }
-  get toTypeIsTo() {
-    return this.settingsService.toType === 2;
-  }
+  const toTypeIsUnit = useMemo(() => settingsService.toType === 0, [settingsService.toType]);
+  const toTypeIsPart = useMemo(() => settingsService.toType === 1, [settingsService.toType]);
+  const toTypeIsTo = useMemo(() => settingsService.toType === 2, [settingsService.toType]);
 
-  async componentDidMount() {
-    this.settingsService.settingsListener = this;
-    await this.settingsService.getData();
-  }
-
-  render() {
-    return this.settingsService.selectedLang ? (
-      <div className="container mt-2">
-        <div className="form-inline mb-2">
-          <label htmlFor="lang" className="col-2 control-label">Language:</label>
-          <select id="lang" className="col-4 form-control" value={this.settingsService.selectedLang.ID} onChange={this.onLangChange}>
-          {
-            this.settingsService.languages.map(o => <option key={o.ID} value={o.ID}>{o.NAME}</option>)
-          }
-          </select>
-        </div>
-        <div className="form-inline mb-2">
-          <label htmlFor="voice" className="col-2 control-label">Voice:</label>
-          <select id="voice" className="col-4 form-control" value={this.settingsService.selectedVoice ? this.settingsService.selectedVoice.ID : ''} onChange={this.onVoiceChange}>
-            {
-              this.settingsService.voices.map(o => <option key={o.ID} value={o.ID}>{o.VOICENAME}</option>)
-            }
-          </select>
-        </div>
-        <div className="form-inline mb-2">
-          <label htmlFor="dictReference" className="col-2 control-label">Dictionary(Reference):</label>
-          <select id="dictReference" className="col-4 form-control" value={this.settingsService.selectedDictReference?.DICTID} onChange={this.onDictReferenceChange}>
-          {
-            this.settingsService.dictsReference.map(o => <option key={o.DICTID} value={o.DICTID}>{o.NAME}</option>)
-          }
-          </select>
-        </div>
-        <div className="form-inline mb-2">
-          <label htmlFor="dictNote" className="col-2 control-label">Dictionary(Note):</label>
-          <select id="dictNote" className="col-4 form-control" value={this.settingsService.selectedDictNote ? this.settingsService.selectedDictNote.ID : ''} onChange={this.onDictNoteChange}>
-          {
-            this.settingsService.dictsNote.map(o => <option key={o.ID} value={o.ID}>{o.NAME}</option>)
-          }
-          </select>
-        </div>
-        <div className="form-inline mb-2">
-          <label htmlFor="dictTranslation" className="col-2 control-label">Dictionary(Translation):</label>
-          <select id="dictTranslation" className="col-4 form-control" value={this.settingsService.selectedDictTranslation ? this.settingsService.selectedDictTranslation.ID : ''} onChange={this.onDictTranslationChange}>
-            {
-              this.settingsService.dictsTranslation.map(o => <option key={o.ID} value={o.ID}>{o.NAME}</option>)
-            }
-          </select>
-        </div>
-        <div className="form-inline mb-2">
-          <label htmlFor="textbook" className="col-2 control-label">Textbook:</label>
-          <select id="textbook" className="col-4 form-control" value={this.settingsService.selectedTextbook?.ID} onChange={this.onTextbookChange}>
-          {
-            this.settingsService.textbooks.map(o => <option key={o.ID} value={o.ID}>{o.NAME}</option>)
-          }
-          </select>
-        </div>
-        <div className="form-inline mb-2">
-          <label htmlFor="unitFrom" className="col-2 control-label">Unit:</label>
-          <select id="unitFrom" className="col-2 form-control" value={this.settingsService.USUNITFROM} onChange={this.onUnitFromChange}>
-          {
-            this.settingsService.units.map(o => <option key={o.value} value={o.value}>{o.label}</option>)
-          }
-          </select>
-          <select id="partFrom" className="col-2 form-control" disabled={this.toTypeIsUnit} value={this.settingsService.USPARTFROM} onChange={this.onPartFromChange}>
-          {
-            this.settingsService.parts.map(o => <option key={o.value} value={o.value}>{o.label}</option>)
-          }
-          </select>
-        </div>
-        <div className="form-inline mb-2">
-          <select id="toType" className="col-1 form-control" value={this.settingsService.toType} onChange={this.onToTypeChange}>
-            {
-              this.settingsService.toTypes.map(o => <option key={o.value} value={o.value}>{o.label}</option>)
-            }
-          </select>
-          <label className="col-1 control-label" />
-          <select id="unitTo" className="col-2 form-control" disabled={!this.toTypeIsTo} value={this.settingsService.USUNITTO} onChange={this.onUnitToChange}>
-          {
-            this.settingsService.units.map(o => <option key={o.value} value={o.value}>{o.label}</option>)
-          }
-          </select>
-          <select id="partTo" className="col-2 form-control" disabled={!this.toTypeIsTo} value={this.settingsService.USPARTTO} onChange={this.onPartToChange}>
-            {
-              this.settingsService.parts.map(o => <option key={o.value} value={o.value}>{o.label}</option>)
-            }
-          </select>
-        </div>
-        <div className="form-inline mb-2">
-          <label className="col-2 control-label" />
-          <button className="btn btn-primary mr-2" disabled={this.toTypeIsTo} onClick={this.previousUnitPart}>Previous</button>
-          <button className="btn btn-primary mr-2" disabled={this.toTypeIsTo} onClick={this.nextUnitPart}>Next</button>
-        </div>
-      </div>
-    ) : (<div/>);
-  }
-
-  onLangChange = async (event: any) => {
+  const onLangChange = async (event: any) => {
     console.log(event);
     const index = event.target.selectedIndex;
-    this.settingsService.selectedLang = this.settingsService.languages[index];
-    await this.settingsService.updateLang();
-    this.updateServiceState();
+    settingsService.selectedLang = settingsService.languages[index];
+    await settingsService.updateLang();
+    forceUpdate();
   };
 
-  onVoiceChange = async (event: any) => {
+  const onVoiceChange = async (event: any) => {
     const index = event.target.selectedIndex;
-    this.settingsService.selectedVoice = this.settingsService.voices[index];
-    await this.settingsService.updateVoice();
-    this.updateServiceState();
+    settingsService.selectedVoice = settingsService.voices[index];
+    await settingsService.updateVoice();
+    forceUpdate();
   };
 
-  onDictReferenceChange = async (event: any) => {
+  const onDictReferenceChange = async (event: any) => {
     const index = event.target.selectedIndex;
-    this.settingsService.selectedDictReference = this.settingsService.dictsReference[index];
-    await this.settingsService.updateDictReference();
-    this.updateServiceState();
+    settingsService.selectedDictReference = settingsService.dictsReference[index];
+    await settingsService.updateDictReference();
+    forceUpdate();
   };
 
-  onDictNoteChange = async (event: any) => {
+  const onDictNoteChange = async (event: any) => {
     const index = event.target.selectedIndex;
-    this.settingsService.selectedDictNote = this.settingsService.dictsNote[index];
-    await this.settingsService.updateDictNote();
-    this.updateServiceState();
+    settingsService.selectedDictNote = settingsService.dictsNote[index];
+    await settingsService.updateDictNote();
+    forceUpdate();
   };
 
-  onDictTranslationChange = async (event: any) => {
+  const onDictTranslationChange = async (event: any) => {
     const index = event.target.selectedIndex;
-    this.settingsService.selectedDictTranslation = this.settingsService.dictsTranslation[index];
-    await this.settingsService.updateDictTranslation();
-    this.updateServiceState();
+    settingsService.selectedDictTranslation = settingsService.dictsTranslation[index];
+    await settingsService.updateDictTranslation();
+    forceUpdate();
   };
 
-  onTextbookChange = async (event: any) => {
+  const onTextbookChange = async (event: any) => {
     const index = event.target.selectedIndex;
-    this.settingsService.selectedTextbook = this.settingsService.textbooks[index];
-    await this.settingsService.updateTextbook();
-    this.updateServiceState();
+    settingsService.selectedTextbook = settingsService.textbooks[index];
+    await settingsService.updateTextbook();
+    forceUpdate();
   };
 
-  onUnitFromChange = async (event: any) => {
+  const onUnitFromChange = async (event: any) => {
     const index = event.target.selectedIndex;
-    await this.settingsService.updateUnitFrom(this.settingsService.units[index].value);
-    this.updateServiceState();
+    await settingsService.updateUnitFrom(settingsService.units[index].value);
+    forceUpdate();
   };
 
-  onPartFromChange = async (event: any) => {
+  const onPartFromChange = async (event: any) => {
     const index = event.target.selectedIndex;
-    await this.settingsService.updatePartFrom(this.settingsService.parts[index].value);
-    this.updateServiceState();
+    await settingsService.updatePartFrom(settingsService.parts[index].value);
+    forceUpdate();
   };
 
-  onToTypeChange = async (event: any) => {
+  const onToTypeChange = async (event: any) => {
     const index = event.target.selectedIndex;
-    await this.settingsService.updateToType(this.settingsService.toTypes[index].value);
-    this.updateServiceState();
+    await settingsService.updateToType(settingsService.toTypes[index].value);
+    forceUpdate();
   };
 
-  previousUnitPart = async (event: any) => {
-    await this.settingsService.previousUnitPart();
-    this.updateServiceState();
+  const previousUnitPart = async (event: any) => {
+    await settingsService.previousUnitPart();
+    forceUpdate();
   };
 
-  nextUnitPart = async (event: any) => {
-    await this.settingsService.nextUnitPart();
-    this.updateServiceState();
+  const nextUnitPart = async (event: any) => {
+    await settingsService.nextUnitPart();
+    forceUpdate();
   };
 
-  onUnitToChange = async (event: any) => {
+  const onUnitToChange = async (event: any) => {
     const index = event.target.selectedIndex;
-    await this.settingsService.updateUnitTo(this.settingsService.units[index].value);
-    this.updateServiceState();
+    await settingsService.updateUnitTo(settingsService.units[index].value);
+    forceUpdate();
   };
 
-  onPartToChange = async (event: any) => {
+  const onPartToChange = async (event: any) => {
     const index = event.target.selectedIndex;
-    await this.settingsService.updateUnitTo(this.settingsService.parts[index].value);
-    this.updateServiceState();
+    await settingsService.updateUnitTo(settingsService.parts[index].value);
+    forceUpdate();
   };
 
-  updateServiceState() {
-    this.setState({settingsService: this.settingsService});
-  }
+  useEffect(() => {
+    (async () => {
+      await settingsService.getData();
+      forceUpdate();
+    })();
+  },[]);
 
-  onGetData(): void {
-  }
-
-  onUpdateDictReference(): void {
-    this.updateServiceState();
-  }
-
-  onUpdateDictNote(): void {
-    this.updateServiceState();
-  }
-
-  onUpdateDictTranslation(): void {
-    this.updateServiceState();
-  }
-
-  onUpdateLang(): void {
-    this.updateServiceState();
-  }
-
-  onUpdatePartFrom(): void {
-    this.updateServiceState();
-  }
-
-  onUpdatePartTo(): void {
-    this.updateServiceState();
-  }
-
-  onUpdateTextbook(): void {
-    this.updateServiceState();
-  }
-
-  onUpdateUnitFrom(): void {
-    this.updateServiceState();
-  }
-
-  onUpdateUnitTo(): void {
-    this.updateServiceState();
-  }
-
-  onUpdateVoice(): void {
-    this.updateServiceState();
-  }
+  return settingsService.selectedLang ? (
+    <div className="container mt-2">
+      <div className="form-inline mb-2">
+        <label htmlFor="lang" className="col-2 control-label">Language:</label>
+        <select id="lang" className="col-4 form-control" value={settingsService.selectedLang.ID} onChange={onLangChange}>
+        {
+          settingsService.languages.map(o => <option key={o.ID} value={o.ID}>{o.NAME}</option>)
+        }
+        </select>
+      </div>
+      <div className="form-inline mb-2">
+        <label htmlFor="voice" className="col-2 control-label">Voice:</label>
+        <select id="voice" className="col-4 form-control" value={settingsService.selectedVoice ? settingsService.selectedVoice.ID : ''} onChange={onVoiceChange}>
+          {
+            settingsService.voices.map(o => <option key={o.ID} value={o.ID}>{o.VOICENAME}</option>)
+          }
+        </select>
+      </div>
+      <div className="form-inline mb-2">
+        <label htmlFor="dictReference" className="col-2 control-label">Dictionary(Reference):</label>
+        <select id="dictReference" className="col-4 form-control" value={settingsService.selectedDictReference?.DICTID} onChange={onDictReferenceChange}>
+        {
+          settingsService.dictsReference.map(o => <option key={o.DICTID} value={o.DICTID}>{o.NAME}</option>)
+        }
+        </select>
+      </div>
+      <div className="form-inline mb-2">
+        <label htmlFor="dictNote" className="col-2 control-label">Dictionary(Note):</label>
+        <select id="dictNote" className="col-4 form-control" value={settingsService.selectedDictNote ? settingsService.selectedDictNote.ID : ''} onChange={onDictNoteChange}>
+        {
+          settingsService.dictsNote.map(o => <option key={o.ID} value={o.ID}>{o.NAME}</option>)
+        }
+        </select>
+      </div>
+      <div className="form-inline mb-2">
+        <label htmlFor="dictTranslation" className="col-2 control-label">Dictionary(Translation):</label>
+        <select id="dictTranslation" className="col-4 form-control" value={settingsService.selectedDictTranslation ? settingsService.selectedDictTranslation.ID : ''} onChange={onDictTranslationChange}>
+          {
+            settingsService.dictsTranslation.map(o => <option key={o.ID} value={o.ID}>{o.NAME}</option>)
+          }
+        </select>
+      </div>
+      <div className="form-inline mb-2">
+        <label htmlFor="textbook" className="col-2 control-label">Textbook:</label>
+        <select id="textbook" className="col-4 form-control" value={settingsService.selectedTextbook?.ID} onChange={onTextbookChange}>
+        {
+          settingsService.textbooks.map(o => <option key={o.ID} value={o.ID}>{o.NAME}</option>)
+        }
+        </select>
+      </div>
+      <div className="form-inline mb-2">
+        <label htmlFor="unitFrom" className="col-2 control-label">Unit:</label>
+        <select id="unitFrom" className="col-2 form-control" value={settingsService.USUNITFROM} onChange={onUnitFromChange}>
+        {
+          settingsService.units.map(o => <option key={o.value} value={o.value}>{o.label}</option>)
+        }
+        </select>
+        <select id="partFrom" className="col-2 form-control" disabled={toTypeIsUnit} value={settingsService.USPARTFROM} onChange={onPartFromChange}>
+        {
+          settingsService.parts.map(o => <option key={o.value} value={o.value}>{o.label}</option>)
+        }
+        </select>
+      </div>
+      <div className="form-inline mb-2">
+        <select id="toType" className="col-1 form-control" value={settingsService.toType} onChange={onToTypeChange}>
+          {
+            settingsService.toTypes.map(o => <option key={o.value} value={o.value}>{o.label}</option>)
+          }
+        </select>
+        <label className="col-1 control-label" />
+        <select id="unitTo" className="col-2 form-control" disabled={!toTypeIsTo} value={settingsService.USUNITTO} onChange={onUnitToChange}>
+        {
+          settingsService.units.map(o => <option key={o.value} value={o.value}>{o.label}</option>)
+        }
+        </select>
+        <select id="partTo" className="col-2 form-control" disabled={!toTypeIsTo} value={settingsService.USPARTTO} onChange={onPartToChange}>
+          {
+            settingsService.parts.map(o => <option key={o.value} value={o.value}>{o.label}</option>)
+          }
+        </select>
+      </div>
+      <div className="form-inline mb-2">
+        <label className="col-2 control-label" />
+        <button className="btn btn-primary mr-2" disabled={toTypeIsTo} onClick={previousUnitPart}>Previous</button>
+        <button className="btn btn-primary mr-2" disabled={toTypeIsTo} onClick={nextUnitPart}>Next</button>
+      </div>
+    </div>
+  ) : (<div/>);
 };
