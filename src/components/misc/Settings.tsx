@@ -103,7 +103,7 @@ export default function Settings() {
     })();
   },[]);
 
-  return settingsService.selectedLang ? (
+  return !settingsService.selectedLang ? (<div/>) : (
     <div className="container mt-2">
       <div className="form-inline mb-2">
         <label htmlFor="lang" className="col-2 control-label">Language:</label>
@@ -190,5 +190,5 @@ export default function Settings() {
         <button className="btn btn-primary mr-2" disabled={toTypeIsTo} onClick={nextUnitPart}>Next</button>
       </div>
     </div>
-  ) : (<div/>);
-};
+  );
+}
