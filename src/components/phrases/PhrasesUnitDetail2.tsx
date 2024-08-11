@@ -36,7 +36,7 @@ export default function PhrasesUnitDetail2(
   };
 
   return !item ? <div/> : (
-    <Dialog open={isDialogOpened} onClose={handleCloseDialog}>
+    <Dialog open={isDialogOpened} onClose={handleCloseDialog} fullWidth classes={{ paperFullWidth: 'width:750px' }}>
       <DialogContent>
         <div className="p-grid mt-2 mb-2">
           <label className="col-4" htmlFor="ID">ID:</label>

@@ -35,7 +35,7 @@ export default function WordsUnitDetail2(
   };
 
   return !item ? <div/> : (
-    <Dialog open={isDialogOpened} onClose={handleCloseDialog}>
+    <Dialog open={isDialogOpened} onClose={handleCloseDialog} fullWidth classes={{ paperFullWidth: 'width:750px' }}>
       <DialogContent>
         <div className="grid mt-2 align-items-center">
           <label className="col-4" htmlFor="ID">ID:</label>
