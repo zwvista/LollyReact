@@ -7,19 +7,17 @@ import 'reflect-metadata';
 import { container } from "tsyringe";
 import { SettingsService } from '../../view-models/misc/settings.service';
 import { Dropdown } from 'primereact/dropdown';
-import { useNavigate, useParams } from "react-router-dom";
 import { useReducer } from "react";
+import { Dialog } from "primereact/dialog";
+import { MUnitWord } from "../../models/wpp/unit-word";
 
-export default function WordsUnitDetail() {
+export default function WordsUnitDetail(
+  {id, isDialogOpened, handleCloseDialog}: {id: number, isDialogOpened: boolean, handleCloseDialog: () => void}
+) {
   const wordsUnitService = container.resolve(WordsUnitService);
   const settingsService = container.resolve(SettingsService);
-  const navigate = useNavigate();
-  const params = useParams();
-  const item = (() => {
-    const id = +params.id;
-    const o = wordsUnitService.unitWords.find(value => value.ID === id);
-    return o || wordsUnitService.newUnitWord();
-  })();
+  const itemOld = wordsUnitService.unitWords.find(value => value.ID === id);
+  const item = itemOld ? Object.create(itemOld) as MUnitWord : wordsUnitService.newUnitWord();
   const [, forceUpdate] = useReducer(x => x + 1, 0);
 
   const onChangeInput = (e: any) => {
@@ -33,25 +31,17 @@ export default function WordsUnitDetail() {
     forceUpdate();
   };
 
-  const goBack = () => {
-    navigate(-1);
-  };
-
   const save = async () => {
     item.WORD = settingsService.autoCorrectInput(item.WORD);
-    if (item.ID)
-      await wordsUnitService.update(item);
-    else
-      await wordsUnitService.create(item)
-    goBack();
+    await (item.ID ? wordsUnitService.update(item) : wordsUnitService.create(item));
+    handleCloseDialog();
   };
 
-  return (
-    <div className="flex justify-content-center flex-wrap">
-      <div className="w-6">
+  return !item ? <div/> : (
+    <Dialog visible={isDialogOpened} style={{width: '750px'}} onHide={handleCloseDialog}>
       <div className="grid mt-2 align-items-center">
         <label className="col-4" htmlFor="ID">ID:</label>
-        <InputText className="col-8 w-8" id="ID" value={item.ID.toString()} disabled />
+        <InputText className="col-8" id="ID" value={item.ID.toString()} disabled />
       </div>
       <div className="grid mt-2 align-items-center">
         <label className="col-4" htmlFor="UNIT">UNIT:</label>
@@ -86,10 +76,9 @@ export default function WordsUnitDetail() {
         <InputText className="col-8" id="ACCURACY" value={item.ACCURACY} disabled />
       </div>
       <div className="mt-4 flex justify-content-around flex-wrap">
-        <Button className="border-round" label="Back" onClick={goBack} />
+        <Button className="border-round" label="Cancel" onClick={handleCloseDialog} />
         <Button className="border-round" label="Save" onClick={save} />
       </div>
-      </div>
-    </div>
+    </Dialog>
   );
 }

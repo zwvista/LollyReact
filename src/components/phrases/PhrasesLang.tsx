@@ -20,6 +20,7 @@ import { KeyboardEvent } from 'react';
 import { AppService } from '../../view-models/misc/app.service';
 import { useNavigate } from "react-router-dom";
 import { FloatLabel } from "primereact/floatlabel";
+import PhrasesLangDetail from "./PhrasesLangDetail";
 
 export default function PhrasesLang() {
   const appService = container.resolve(AppService);
@@ -27,6 +28,8 @@ export default function PhrasesLang() {
   const settingsService = container.resolve(SettingsService);
   const subscription = new Subscription();
   const navigate = useNavigate();
+  const [showDialog, setShowDialog] = useState(false);
+  const [detailId, setDetailId] = useState(0);
 
   const [first, setFirst] = useState(0);
   const [rows, setRows] = useState(0);
@@ -65,6 +68,11 @@ export default function PhrasesLang() {
     googleString(phrase);
   };
 
+  const showDetailDialog = (id: number) => {
+    setDetailId(id);
+    setShowDialog(true);
+  };
+
   useEffect(() => {
     subscription.add(appService.initializeObject.subscribe(_ => {
       setRows(settingsService.USROWSPERPAGE);
@@ -87,7 +95,7 @@ export default function PhrasesLang() {
       <Button severity="danger" icon="fa fa-trash"
               tooltip="Delete" tooltipOptions={{position: 'top'}} onClick={() => deletePhrase(rowData)} />
       <Button icon="fa fa-edit" tooltip="Edit" tooltipOptions={{position: 'top'}}
-              onClick={() => navigate('/phrases-lang-detail/' + rowData.ID)}/>
+              onClick={() => showDetailDialog(rowData.ID)}/>
       <Button icon="fa fa-volume-up" tooltipOptions={{position: 'top'}}
               tooltip="Speak" onClick={() => settingsService.speak(rowData.PHRASE)} />
       <CopyToClipboard text={rowData.PHRASE}>
@@ -105,7 +113,7 @@ export default function PhrasesLang() {
         <InputText id="filter" value={filter} onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
         <label htmlFor="filter">Filter</label>
       </FloatLabel>
-      <Button label="Add" icon="fa fa-plus" onClick={() => navigate('/phrases-lang-detail/0')} />
+      <Button label="Add" icon="fa fa-plus" onClick={() => showDetailDialog(0)} />
       <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => onRefresh}/>
     </>
   );
@@ -125,6 +133,7 @@ export default function PhrasesLang() {
       <Paginator first={first} rows={rows} onPageChange={onPageChange}
                  totalRecords={phrasesLangService.langPhraseCount}
                  rowsPerPageOptions={settingsService.USROWSPERPAGEOPTIONS}/>
+      {showDialog && <PhrasesLangDetail id={detailId} isDialogOpened={showDialog} handleCloseDialog={() => setShowDialog(false)} />}
     </div>
   );
 }

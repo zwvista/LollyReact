@@ -19,6 +19,7 @@ import { AppService } from '../../view-models/misc/app.service';
 import { PatternsService } from '../../view-models/wpp/patterns.service';
 import { useNavigate } from "react-router-dom";
 import { FloatLabel } from "primereact/floatlabel";
+import PatternsDetail from "./PatternsDetail";
 
 export default function Patterns() {
   const appService = container.resolve(AppService);
@@ -26,6 +27,8 @@ export default function Patterns() {
   const settingsService = container.resolve(SettingsService);
   const subscription = new Subscription();
   const navigate = useNavigate();
+  const [showDialog, setShowDialog] = useState(false);
+  const [detailId, setDetailId] = useState(0);
 
   const [first, setFirst] = useState(0);
   const [rows, setRows] = useState(0);
@@ -64,6 +67,11 @@ export default function Patterns() {
     googleString(pattern);
   };
 
+  const showDetailDialog = (id: number) => {
+    setDetailId(id);
+    setShowDialog(true);
+  };
+
   useEffect(() => {
     subscription.add(appService.initializeObject.subscribe(_ => {
       setRows(settingsService.USROWSPERPAGE);
@@ -86,7 +94,7 @@ export default function Patterns() {
       <Button severity="danger" icon="fa fa-trash"
               tooltip="Delete" tooltipOptions={{position: 'top'}} onClick={() => deletePattern(rowData.ID)} />
       <Button icon="fa fa-edit" tooltip="Edit" tooltipOptions={{position: 'top'}}
-              onClick={() => navigate('/patterns-detail/' + rowData.ID)}/>
+              onClick={() => showDetailDialog(rowData.ID)}/>
       <Button icon="fa fa-volume-up" tooltipOptions={{position: 'top'}}
               tooltip="Speak" onClick={() => settingsService.speak(rowData.PATTERN)} />
       <CopyToClipboard text={rowData.PATTERN}>
@@ -104,7 +112,7 @@ export default function Patterns() {
         <InputText id="filter" value={filter} onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
         <label htmlFor="filter">Filter</label>
       </FloatLabel>
-      <Button label="Add" icon="fa fa-plus" onClick={() => navigate('/patterns-detail/0')} />
+      <Button label="Add" icon="fa fa-plus" onClick={() => showDetailDialog(0)} />
       <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => onRefresh}/>
     </>
   );
@@ -125,6 +133,7 @@ export default function Patterns() {
       <Paginator first={first} rows={rows} onPageChange={onPageChange}
                  totalRecords={patternsService.patternCount}
                  rowsPerPageOptions={settingsService.USROWSPERPAGEOPTIONS}/>
+      {showDialog && <PatternsDetail id={detailId} isDialogOpened={showDialog} handleCloseDialog={() => setShowDialog(false)} />}
     </div>
   );
 }

@@ -1,22 +1,22 @@
 import * as React from 'react';
-import { PhrasesLangService } from '../../view-models/wpp/phrases-lang.service';
 import { Button } from 'primereact/button';
 import '../misc/Common.css'
 import { InputText } from 'primereact/inputtext';
 import 'reflect-metadata';
 import { container } from "tsyringe";
 import { SettingsService } from '../../view-models/misc/settings.service';
-import { useReducer } from "react";
+import { PatternsService } from '../../view-models/wpp/patterns.service';
 import { Dialog } from 'primereact/dialog';
-import { MLangPhrase } from "../../models/wpp/lang-phrase";
+import { useReducer } from "react";
+import { MPattern } from "../../models/wpp/pattern";
 
-export default function PhrasesLangDetail(
+export default function PatternsDetail(
   {id, isDialogOpened, handleCloseDialog}: {id: number, isDialogOpened: boolean, handleCloseDialog: () => void}
 ) {
-  const phrasesLangService = container.resolve(PhrasesLangService);
+  const patternsService = container.resolve(PatternsService);
   const settingsService = container.resolve(SettingsService);
-  const itemOld = phrasesLangService.langPhrases.find(value => value.ID === id);
-  const item = itemOld ? Object.create(itemOld) as MLangPhrase : phrasesLangService.newLangPhrase();
+  const itemOld = patternsService.patterns.find(value => value.ID === id);
+  const item = itemOld ? Object.create(itemOld) as MPattern : patternsService.newPattern();
   const [, forceUpdate] = useReducer(x => x + 1, 0);
 
   const onChangeInput = (e: any) => {
@@ -26,8 +26,8 @@ export default function PhrasesLangDetail(
   };
 
   const save = async () => {
-    item.PHRASE = settingsService.autoCorrectInput(item.PHRASE);
-    await (item.ID ? phrasesLangService.update(item) : await phrasesLangService.create(item));
+    item.PATTERN = settingsService.autoCorrectInput(item.PATTERN);
+    await (item.ID ? patternsService.update(item) : patternsService.create(item));
     handleCloseDialog();
   };
 
@@ -38,12 +38,16 @@ export default function PhrasesLangDetail(
         <InputText className="col-8" id="ID" value={item.ID.toString()} disabled />
       </div>
       <div className="p-grid mb-2">
-        <label className="col-4" htmlFor="PHRASE">PHRASE:</label>
-        <InputText className="col-8" id="PHRASE" value={item.PHRASE} onChange={onChangeInput} />
+        <label className="col-4" htmlFor="PATTERN">PATTERN:</label>
+        <InputText className="col-8" id="PATTERN" value={item.PATTERN} onChange={onChangeInput} />
       </div>
       <div className="p-grid mb-2">
-        <label className="col-4" htmlFor="TRANSLATION">TRANSLATION:</label>
-        <InputText className="col-8" id="TRANSLATION" value={item.TRANSLATION} onChange={onChangeInput} />
+        <label className="col-4" htmlFor="NOTE">NOTE:</label>
+        <InputText className="col-8" id="NOTE" value={item.NOTE} onChange={onChangeInput} />
+      </div>
+      <div className="p-grid mb-2">
+        <label className="col-4" htmlFor="TAGS">TAGS:</label>
+        <InputText className="col-8" id="TAGS" value={item.TAGS} onChange={onChangeInput} />
       </div>
       <div className="mt-4 flex justify-content-around flex-wrap">
         <Button className="border-round" label="Cancel" onClick={handleCloseDialog} />

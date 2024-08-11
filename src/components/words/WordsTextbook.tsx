@@ -19,6 +19,7 @@ import { KeyboardEvent } from 'react';
 import { AppService } from '../../view-models/misc/app.service';
 import { useNavigate } from "react-router-dom";
 import { FloatLabel } from "primereact/floatlabel";
+import WordsTextbookDetail from "./WordsTextbookDetail";
 
 export default function WordsTextbook() {
   const appService = container.resolve(AppService);
@@ -26,6 +27,8 @@ export default function WordsTextbook() {
   const settingsService = container.resolve(SettingsService);
   const subscription = new Subscription();
   const navigate = useNavigate();
+  const [showDialog, setShowDialog] = useState(false);
+  const [detailId, setDetailId] = useState(0);
 
   const [first, setFirst] = useState(0);
   const [rows, setRows] = useState(0);
@@ -81,6 +84,11 @@ export default function WordsTextbook() {
     navigate('/words-dict/textbook/' + index);
   };
 
+  const showDetailDialog = (id: number) => {
+    setDetailId(id);
+    setShowDialog(true);
+  };
+
   useEffect(() => {
     subscription.add(appService.initializeObject.subscribe(_ => {
       setRows(settingsService.USROWSPERPAGE);
@@ -104,7 +112,7 @@ export default function WordsTextbook() {
       <Button severity="danger" icon="fa fa-trash"
               tooltip="Delete" tooltipOptions={{position: 'top'}} onClick={() => deleteWord(rowData)} />
       <Button icon="fa fa-edit" tooltip="Edit" tooltipOptions={{position: 'top'}}
-              onClick={() => navigate('/words-textbook-detail/' + rowData.ID)} />
+              onClick={() => showDetailDialog(rowData.ID)} />
       <Button hidden={!settingsService.selectedVoice} icon="fa fa-volume-up" tooltipOptions={{position: 'top'}}
               tooltip="Speak" onClick={() => settingsService.speak(rowData.WORD)} />
       <CopyToClipboard text={rowData.WORD}>
@@ -152,6 +160,7 @@ export default function WordsTextbook() {
       <Paginator first={first} rows={rows} onPageChange={onPageChange}
                  totalRecords={wordsUnitService.textbookWordCount}
                  rowsPerPageOptions={settingsService.USROWSPERPAGEOPTIONS}/>
+      {showDialog && <WordsTextbookDetail id={detailId} isDialogOpened={showDialog} handleCloseDialog={() => setShowDialog(false)} />}
     </div>
   );
 }

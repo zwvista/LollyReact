@@ -16,11 +16,11 @@ export default class Login extends React.Component<any, any> {
       <div>
         <div className="p-grid mt-2 mb-2">
           <label htmlFor="username" className="col-2 control-label">USERNAME:</label>
-          <InputText className="p-col-3" id="username" value={this.loginService.item.USERNAME} onChange={this.onChangeUsername} />
+          <InputText className="col-8" id="username" value={this.loginService.item.USERNAME} onChange={this.onChangeUsername} />
         </div>
         <div className="p-grid mt-2 mb-2">
           <label htmlFor="password" className="col-2 control-label">PASSWORD:</label>
-          <Password className="p-col-3" id="password" value={this.loginService.item.PASSWORD} onChange={this.onChangePassword} />
+          <Password className="col-8" id="password" value={this.loginService.item.PASSWORD} onChange={this.onChangePassword} />
         </div>
         <div>
           <Button label="Login" onClick={this.login} />

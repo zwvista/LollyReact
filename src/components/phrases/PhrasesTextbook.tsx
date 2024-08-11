@@ -20,6 +20,7 @@ import { KeyboardEvent } from 'react';
 import { AppService } from '../../view-models/misc/app.service';
 import { useNavigate } from "react-router-dom";
 import { FloatLabel } from "primereact/floatlabel";
+import PhrasesTextbookDetail from "./PhrasesTextbookDetail";
 
 export default function PhrasesTextbook() {
   const appService = container.resolve(AppService);
@@ -27,6 +28,8 @@ export default function PhrasesTextbook() {
   const settingsService = container.resolve(SettingsService);
   const subscription = new Subscription();
   const navigate = useNavigate();
+  const [showDialog, setShowDialog] = useState(false);
+  const [detailId, setDetailId] = useState(0);
 
   const [first, setFirst] = useState(0);
   const [rows, setRows] = useState(0);
@@ -71,6 +74,11 @@ export default function PhrasesTextbook() {
     googleString(phrase);
   };
 
+  const showDetailDialog = (id: number) => {
+    setDetailId(id);
+    setShowDialog(true);
+  };
+
   useEffect(() => {
     subscription.add(appService.initializeObject.subscribe(_ => {
       setRows(settingsService.USROWSPERPAGE);
@@ -93,7 +101,7 @@ export default function PhrasesTextbook() {
       <Button severity="danger" icon="fa fa-trash"
               tooltip="Delete" tooltipOptions={{position: 'top'}} onClick={() => deletePhrase(rowData)} />
       <Button icon="fa fa-edit" tooltip="Edit" tooltipOptions={{position: 'top'}}
-              onClick={() => navigate('/phrases-textbook-detail/' + rowData.ID)}/>
+              onClick={() => showDetailDialog(rowData.ID)}/>
       <Button icon="fa fa-volume-up" tooltipOptions={{position: 'top'}}
               tooltip="Speak" onClick={() => settingsService.speak(rowData.PHRASE)} />
       <CopyToClipboard text={rowData.PHRASE}>
@@ -136,6 +144,7 @@ export default function PhrasesTextbook() {
       <Paginator first={first} rows={rows} onPageChange={onPageChange}
                  totalRecords={phrasesUnitService.textbookPhraseCount}
                  rowsPerPageOptions={settingsService.USROWSPERPAGEOPTIONS}/>
+      {showDialog && <PhrasesTextbookDetail id={detailId} isDialogOpened={showDialog} handleCloseDialog={() => setShowDialog(false)} />}
     </div>
   );
 }

@@ -18,6 +18,7 @@ import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
 import { AppService } from '../../view-models/misc/app.service';
 import { useNavigate } from "react-router-dom";
 import { FloatLabel } from "primereact/floatlabel";
+import WordsLangDetail from "./WordsLangDetail";
 
 export default function WordsLang() {
   const appService = container.resolve(AppService);
@@ -25,6 +26,8 @@ export default function WordsLang() {
   const settingsService = container.resolve(SettingsService);
   const subscription = new Subscription();
   const navigate = useNavigate();
+  const [showDialog, setShowDialog] = useState(false);
+  const [detailId, setDetailId] = useState(0);
 
   const [first, setFirst] = useState(0);
   const [rows, setRows] = useState(0);
@@ -74,6 +77,11 @@ export default function WordsLang() {
     navigate('/words-dict/lang/' + index);
   };
 
+  const showDetailDialog = (id: number) => {
+    setDetailId(id);
+    setShowDialog(true);
+  };
+
   useEffect(() => {
     subscription.add(appService.initializeObject.subscribe(_ => {
       setRows(settingsService.USROWSPERPAGE);
@@ -96,7 +104,7 @@ export default function WordsLang() {
       <Button severity="danger" icon="fa fa-trash"
               tooltip="Delete" tooltipOptions={{position: 'top'}} onClick={() => deleteWord(rowData)} />
       <Button icon="fa fa-edit" tooltip="Edit" tooltipOptions={{position: 'top'}}
-              onClick={() => navigate('/words-lang-detail/' + rowData.ID)} />
+              onClick={() => showDetailDialog(rowData.ID)} />
       <Button hidden={!settingsService.selectedVoice} icon="fa fa-volume-up" tooltipOptions={{position: 'top'}}
               tooltip="Speak" onClick={() => settingsService.speak(rowData.WORD)} />
       <CopyToClipboard text={rowData.WORD}>
@@ -117,7 +125,7 @@ export default function WordsLang() {
         <InputText id="filter" value={filter} onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
         <label htmlFor="Filter">Filter</label>
       </FloatLabel>
-      <Button label="Add" icon="fa fa-plus" onClick={() => navigate('/words-unit-detail/0')} />
+      <Button label="Add" icon="fa fa-plus" onClick={() => showDetailDialog(0)} />
       <Button label="Refresh" icon="fa fa-refresh" onClick={onRefresh}/>
       <Button hidden={!settingsService.selectedDictNote} severity="warning" label="Retrieve All Notes" />
       <Button hidden={!settingsService.selectedDictNote} severity="warning" label="Retrieve Notes If Empty" />
@@ -141,6 +149,7 @@ export default function WordsLang() {
       <Paginator first={first} rows={rows} onPageChange={onPageChange}
                  totalRecords={wordsLangService.langWordsCount}
                  rowsPerPageOptions={settingsService.USROWSPERPAGEOPTIONS}/>
+      {showDialog && <WordsLangDetail id={detailId} isDialogOpened={showDialog} handleCloseDialog={() => setShowDialog(false)} />}
     </div>
   );
 }
