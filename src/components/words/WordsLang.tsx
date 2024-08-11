@@ -127,8 +127,6 @@ export default function WordsLang() {
       </FloatLabel>
       <Button label="Add" icon="fa fa-plus" onClick={() => showDetailDialog(0)} />
       <Button label="Refresh" icon="fa fa-refresh" onClick={onRefresh}/>
-      <Button hidden={!settingsService.selectedDictNote} severity="warning" label="Retrieve All Notes" />
-      <Button hidden={!settingsService.selectedDictNote} severity="warning" label="Retrieve Notes If Empty" />
       <Button label="Dictionary" icon="fa fa-book" onClick={() => navigate('/words-dict/unit/0')} />
     </>
   );

@@ -152,10 +152,10 @@ export default function WordsUnit2() {
         <Button variant="contained" color="primary" onClick={onRefresh}>
           <span><FontAwesomeIcon icon={faSync} />Refresh</span>
         </Button>
-        <Button hidden={!settingsService.selectedDictNote} variant="contained">
+        <Button hidden={!settingsService.selectedDictNote} variant="contained" color="warning">
           Retrieve All Notes
         </Button>
-        <Button hidden={!settingsService.selectedDictNote} variant="contained">
+        <Button hidden={!settingsService.selectedDictNote} variant="contained" color="warning">
           Retrieve Notes If Empty
         </Button>
         <Button variant="contained" color="primary" onClick={() => navigate('/words-dict/unit/0')}>
@@ -221,7 +221,7 @@ export default function WordsUnit2() {
                     <FontAwesomeIcon icon={faBook} />
                   </Fab>
                 </Tooltip>
-                <Button variant="contained" hidden={!settingsService.selectedDictNote}
+                <Button variant="contained" color="warning" hidden={!settingsService.selectedDictNote}
                         onClick={() => getNote(row)}>
                   Retrieve Note
                 </Button>

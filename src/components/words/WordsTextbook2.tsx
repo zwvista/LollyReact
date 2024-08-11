@@ -231,7 +231,7 @@ export default function WordsTextbook2() {
                     <FontAwesomeIcon icon={faBook} />
                   </Fab>
                 </Tooltip>
-                <Button variant="contained" hidden={!settingsService.selectedDictNote}
+                <Button variant="contained" color="warning" hidden={!settingsService.selectedDictNote}
                         onClick={() => getNote(row.ID)}>
                   Retrieve Note
                 </Button>
