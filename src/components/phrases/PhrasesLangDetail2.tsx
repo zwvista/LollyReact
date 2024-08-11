@@ -6,7 +6,7 @@ import { container } from "tsyringe";
 import { SettingsService } from '../../view-models/misc/settings.service';
 import { useReducer } from "react";
 import { MLangPhrase } from "../../models/wpp/lang-phrase";
-import { Button, Dialog, TextField } from "@mui/material";
+import { Button, Dialog, DialogContent, TextField } from "@mui/material";
 
 export default function PhrasesLangDetail2(
   {id, isDialogOpened, handleCloseDialog}: {id: number, isDialogOpened: boolean, handleCloseDialog: () => void}
@@ -30,23 +30,25 @@ export default function PhrasesLangDetail2(
   };
 
   return !item ? <div/> : (
-    <Dialog open={isDialogOpened} style={{width: '750px'}} onClose={handleCloseDialog}>
-      <div className="p-grid mt-2 mb-2">
-        <label className="col-4" htmlFor="ID">ID:</label>
-        <TextField className="col-8" id="ID" value={item.ID.toString()} disabled />
-      </div>
-      <div className="p-grid mb-2">
-        <label className="col-4" htmlFor="PHRASE">PHRASE:</label>
-        <TextField className="col-8" id="PHRASE" value={item.PHRASE} onChange={onChangeInput} />
-      </div>
-      <div className="p-grid mb-2">
-        <label className="col-4" htmlFor="TRANSLATION">TRANSLATION:</label>
-        <TextField className="col-8" id="TRANSLATION" value={item.TRANSLATION} onChange={onChangeInput} />
-      </div>
-      <div className="mt-4 flex justify-content-around flex-wrap">
-        <Button className="border-round" onClick={handleCloseDialog}>Cancel</Button>
-        <Button className="border-round" onClick={save}>Save</Button>
-      </div>
+    <Dialog open={isDialogOpened} onClose={handleCloseDialog}>
+      <DialogContent>
+        <div className="p-grid mt-2 mb-2">
+          <label className="col-4" htmlFor="ID">ID:</label>
+          <TextField className="col-8" id="ID" value={item.ID.toString()} disabled />
+        </div>
+        <div className="p-grid mb-2">
+          <label className="col-4" htmlFor="PHRASE">PHRASE:</label>
+          <TextField className="col-8" id="PHRASE" value={item.PHRASE} onChange={onChangeInput} />
+        </div>
+        <div className="p-grid mb-2">
+          <label className="col-4" htmlFor="TRANSLATION">TRANSLATION:</label>
+          <TextField className="col-8" id="TRANSLATION" value={item.TRANSLATION} onChange={onChangeInput} />
+        </div>
+        <div className="mt-4 flex justify-content-around flex-wrap">
+          <Button className="border-round" onClick={handleCloseDialog}>Cancel</Button>
+          <Button className="border-round" onClick={save}>Save</Button>
+        </div>
+      </DialogContent>
     </Dialog>
   );
 }

@@ -6,7 +6,7 @@ import { container } from "tsyringe";
 import { SettingsService } from '../../view-models/misc/settings.service';
 import { useReducer } from "react";
 import { MLangWord } from "../../models/wpp/lang-word";
-import { Button, Dialog, TextField } from "@mui/material";
+import { Button, Dialog, DialogContent, TextField } from "@mui/material";
 
 export default function WordsLangDetail2(
   {id, isDialogOpened, handleCloseDialog}: {id: number, isDialogOpened: boolean, handleCloseDialog: () => void}
@@ -30,31 +30,33 @@ export default function WordsLangDetail2(
   };
 
   return !item ? <div/> : (
-    <Dialog open={isDialogOpened} style={{width: '750px'}} onClose={handleCloseDialog}>
-      <div className="p-grid mt-2 mb-2">
-        <label className="col-4" htmlFor="ID">ID:</label>
-        <TextField className="col-8" id="ID" value={item.ID.toString()} disabled />
-      </div>
-      <div className="grid mt-2 align-items-center">
-        <label className="col-4" htmlFor="WORD">WORD:</label>
-        <TextField className="col-8" id="WORD" value={item.WORD} onChange={onChangeInput} />
-      </div>
-      <div className="grid mt-2 align-items-center">
-        <label className="col-4" htmlFor="NOTE">NOTE:</label>
-        <TextField className="col-8" id="NOTE" value={item.NOTE} onChange={onChangeInput} />
-      </div>
-      <div className="grid mt-2 align-items-center">
-        <label className="col-4" htmlFor="FAMIID">FAMIID:</label>
-        <TextField className="col-8" id="FAMIID" value={item.FAMIID.toString()} disabled />
-      </div>
-      <div className="grid mt-2 align-items-center">
-        <label className="col-4" htmlFor="ACCURACY">ACCURACY:</label>
-        <TextField className="col-8" id="ACCURACY" value={item.ACCURACY} disabled />
-      </div>
-      <div className="mt-4 flex justify-content-around flex-wrap">
-        <Button className="border-round" onClick={handleCloseDialog}>Cancel</Button>
-        <Button className="border-round" onClick={save}>Save</Button>
-      </div>
+    <Dialog open={isDialogOpened} onClose={handleCloseDialog}>
+      <DialogContent>
+        <div className="p-grid mt-2 mb-2">
+          <label className="col-4" htmlFor="ID">ID:</label>
+          <TextField className="col-8" id="ID" value={item.ID.toString()} disabled />
+        </div>
+        <div className="grid mt-2 align-items-center">
+          <label className="col-4" htmlFor="WORD">WORD:</label>
+          <TextField className="col-8" id="WORD" value={item.WORD} onChange={onChangeInput} />
+        </div>
+        <div className="grid mt-2 align-items-center">
+          <label className="col-4" htmlFor="NOTE">NOTE:</label>
+          <TextField className="col-8" id="NOTE" value={item.NOTE} onChange={onChangeInput} />
+        </div>
+        <div className="grid mt-2 align-items-center">
+          <label className="col-4" htmlFor="FAMIID">FAMIID:</label>
+          <TextField className="col-8" id="FAMIID" value={item.FAMIID.toString()} disabled />
+        </div>
+        <div className="grid mt-2 align-items-center">
+          <label className="col-4" htmlFor="ACCURACY">ACCURACY:</label>
+          <TextField className="col-8" id="ACCURACY" value={item.ACCURACY} disabled />
+        </div>
+        <div className="mt-4 flex justify-content-around flex-wrap">
+          <Button className="border-round" onClick={handleCloseDialog}>Cancel</Button>
+          <Button className="border-round" onClick={save}>Save</Button>
+        </div>
+      </DialogContent>
     </Dialog>
   );
 }
