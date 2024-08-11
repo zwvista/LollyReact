@@ -31,14 +31,13 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { SyntheticEvent, useEffect, useReducer, useState } from 'react';
 import { KeyboardEvent } from 'react';
-import * as $ from 'jquery';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { MLangWord } from '../../models/wpp/lang-word';
-import { ChangeEvent } from 'react';
 import { ReactNode } from 'react';
 import { AppService } from '../../view-models/misc/app.service';
 import { useNavigate } from "react-router-dom";
+import WordsLangDetail2 from "./WordsLangDetail2";
 
 export default function WordsLang2() {
   const appService = container.resolve(AppService);
@@ -46,6 +45,8 @@ export default function WordsLang2() {
   const settingsService = container.resolve(SettingsService);
   const subscription = new Subscription();
   const navigate = useNavigate();
+  const [showDialog, setShowDialog] = useState(false);
+  const [detailId, setDetailId] = useState(0);
 
   const [rows, setRows] = useState(0);
   const [page, setPage] = useState(1);
@@ -98,6 +99,11 @@ export default function WordsLang2() {
     navigate('/words-dict/lang/' + index);
   };
 
+  const showDetailDialog = (id: number) => {
+    setDetailId(id);
+    setShowDialog(true);
+  };
+
   useEffect(() => {
     subscription.add(appService.initializeObject.subscribe(_ => {
       setRows(settingsService.USROWSPERPAGE);
@@ -128,7 +134,7 @@ export default function WordsLang2() {
         </Select>
         <TextField label="Filter" value={filter}
                    onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
-        <Button variant="contained" color="primary" onClick={() => navigate('/words-lang-detail/0')}>
+        <Button variant="contained" color="primary" onClick={() => showDetailDialog(0)}>
           <span><FontAwesomeIcon icon={faPlus} />Add</span>
         </Button>
         <Button variant="contained" color="primary" onClick={(e: any) => onRefresh}>
@@ -176,7 +182,7 @@ export default function WordsLang2() {
                   </Fab>
                 </Tooltip>
                 <Tooltip title="Edit">
-                  <Fab size="small" color="primary" onClick={() => navigate('/words-lang-detail/' + row.ID)}>
+                  <Fab size="small" color="primary" onClick={() => showDetailDialog(row.ID)}>
                     <FontAwesomeIcon icon={faEdit} />
                   </Fab>
                 </Tooltip>
@@ -228,6 +234,7 @@ export default function WordsLang2() {
           </TableRow>
         </TableFooter>
       </Table>
+      {showDialog && <WordsLangDetail2 id={detailId} isDialogOpened={showDialog} handleCloseDialog={() => setShowDialog(false)} />}
     </div>
   );
 }

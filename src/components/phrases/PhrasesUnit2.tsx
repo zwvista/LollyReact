@@ -37,6 +37,7 @@ import { KeyboardEvent } from 'react';
 import { ReactNode } from 'react';
 import { AppService } from '../../view-models/misc/app.service';
 import { useNavigate } from "react-router-dom";
+import PhrasesUnitDetail2 from "./PhrasesUnitDetail2";
 
 export default function PhrasesUnit2() {
   const appService = container.resolve(AppService);
@@ -44,6 +45,8 @@ export default function PhrasesUnit2() {
   const settingsService = container.resolve(SettingsService);
   const subscription = new Subscription();
   const navigate = useNavigate();
+  const [showDialog, setShowDialog] = useState(false);
+  const [detailId, setDetailId] = useState(0);
 
   const [filter, setFilter] = useState('');
   const [filterType, setFilterType] = useState(0);
@@ -81,6 +84,11 @@ export default function PhrasesUnit2() {
     }
   }, []);
 
+  const showDetailDialog = (id: number) => {
+    setDetailId(id);
+    setShowDialog(true);
+  };
+
   useEffect(() => {
     (async () => {
       await phrasesUnitService.getDataInTextbook(filter, filterType);
@@ -101,7 +109,7 @@ export default function PhrasesUnit2() {
         </Select>
         <TextField label="Filter" value={filter}
                    onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
-        <Button variant="contained" color="primary" onClick={() => navigate('/phrases-unit-detail/0')}>
+        <Button variant="contained" color="primary" onClick={() => showDetailDialog(0)}>
           <span><FontAwesomeIcon icon={faPlus} />Add</span>
         </Button>
         <Button variant="contained" color="primary" onClick={onRefresh}>
@@ -138,7 +146,7 @@ export default function PhrasesUnit2() {
                   </Fab>
                 </Tooltip>
                 <Tooltip title="Edit">
-                  <Fab size="small" color="primary" onClick={() => navigate('/phrases-unit-detail/' + row.ID)}>
+                  <Fab size="small" color="primary" onClick={() => showDetailDialog(row.ID)}>
                     <FontAwesomeIcon icon={faEdit} />
                   </Fab>
                 </Tooltip>
@@ -165,6 +173,7 @@ export default function PhrasesUnit2() {
           ))}
         </TableBody>
       </Table>
+      {showDialog && <PhrasesUnitDetail2 id={detailId} isDialogOpened={showDialog} handleCloseDialog={() => setShowDialog(false)} />}
     </div>
   );
 }

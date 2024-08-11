@@ -36,6 +36,8 @@ import { KeyboardEvent } from 'react';
 import { ReactNode } from 'react';
 import { AppService } from '../../view-models/misc/app.service';
 import { useNavigate } from "react-router-dom";
+import WordsTextbookDetail from "./WordsTextbookDetail";
+import WordsTextbookDetail2 from "./WordsTextbookDetail2";
 
 export default function WordsTextbook2() {
   const appService = container.resolve(AppService);
@@ -43,6 +45,8 @@ export default function WordsTextbook2() {
   const settingsService = container.resolve(SettingsService);
   const subscription = new Subscription();
   const navigate = useNavigate();
+  const [showDialog, setShowDialog] = useState(false);
+  const [detailId, setDetailId] = useState(0);
 
   const [rows, setRows] = useState(0);
   const [page, setPage] = useState(1);
@@ -101,6 +105,11 @@ export default function WordsTextbook2() {
     navigate('/words-dict/textbook/' + index);
   };
 
+  const showDetailDialog = (id: number) => {
+    setDetailId(id);
+    setShowDialog(true);
+  };
+
   useEffect(() => {
     subscription.add(appService.initializeObject.subscribe(_ => {
       setRows(settingsService.USROWSPERPAGE);
@@ -143,7 +152,7 @@ export default function WordsTextbook2() {
         <Button variant="contained" color="primary" onClick={(e: any) => onRefresh}>
           <span><FontAwesomeIcon icon={faSync} />Refresh</span>
         </Button>
-        <Button variant="contained" color="primary" onClick={() => navigate('/words-dict/textbook/0')}>
+        <Button variant="contained" color="primary" onClick={() => showDetailDialog(0)}>
           <span><FontAwesomeIcon icon={faBook} />Dictionary</span>
         </Button>
       </Toolbar>
@@ -195,7 +204,7 @@ export default function WordsTextbook2() {
                   </Fab>
                 </Tooltip>
                 <Tooltip title="Edit">
-                  <Fab size="small" color="primary" onClick={() => navigate('/words-textbook-detail/' + row.ID)}>
+                  <Fab size="small" color="primary" onClick={() => showDetailDialog(row.ID)}>
                     <FontAwesomeIcon icon={faEdit} />
                   </Fab>
                 </Tooltip>
@@ -247,6 +256,7 @@ export default function WordsTextbook2() {
           </TableRow>
         </TableFooter>
       </Table>
+      {showDialog && <WordsTextbookDetail2 id={detailId} isDialogOpened={showDialog} handleCloseDialog={() => setShowDialog(false)} />}
     </div>
   );
 }

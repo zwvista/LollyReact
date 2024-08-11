@@ -35,6 +35,7 @@ import { ChangeEvent, ReactNode, SyntheticEvent, useEffect, useReducer, useState
 import { KeyboardEvent } from 'react';
 import { AppService } from '../../view-models/misc/app.service';
 import { useNavigate } from "react-router-dom";
+import WordsUnitDetail2 from "./WordsUnitDetail2";
 
 export default function WordsUnit2() {
   const appService = container.resolve(AppService);
@@ -42,6 +43,8 @@ export default function WordsUnit2() {
   const settingsService = container.resolve(SettingsService);
   const subscription = new Subscription();
   const navigate = useNavigate();
+  const [showDialog, setShowDialog] = useState(false);
+  const [detailId, setDetailId] = useState(0);
 
   const [newWord, setNewWord] = useState('');
   const [filter, setFilter] = useState('');
@@ -101,6 +104,11 @@ export default function WordsUnit2() {
     wordsUnitService.getNotes(ifEmpty, () => {}, () => {});
   };
 
+  const showDetailDialog = (id: number) => {
+    setDetailId(id);
+    setShowDialog(true);
+  };
+
   useEffect(() => {
     subscription.add(appService.initializeObject.subscribe(_ => {
       onRefresh();
@@ -138,7 +146,7 @@ export default function WordsUnit2() {
         </Select>
         <TextField label="Filter" value={filter}
                    onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
-        <Button variant="contained" color="primary" onClick={() => navigate('/words-unit-detail/0')}>
+        <Button variant="contained" color="primary" onClick={() => showDetailDialog(0)}>
           <span><FontAwesomeIcon icon={faPlus} />Add</span>
         </Button>
         <Button variant="contained" color="primary" onClick={onRefresh}>
@@ -186,7 +194,7 @@ export default function WordsUnit2() {
                   </Fab>
                 </Tooltip>
                 <Tooltip title="Edit">
-                  <Fab size="small" color="primary" onClick={() => navigate('/words-unit-detail/' + row.ID)}>
+                  <Fab size="small" color="primary" onClick={() => showDetailDialog(row.ID)}>
                     <FontAwesomeIcon icon={faEdit} />
                   </Fab>
                 </Tooltip>
@@ -222,6 +230,7 @@ export default function WordsUnit2() {
           ))}
         </TableBody>
       </Table>
+      {showDialog && <WordsUnitDetail2 id={detailId} isDialogOpened={showDialog} handleCloseDialog={() => setShowDialog(false)} />}
     </div>
   );
 }
