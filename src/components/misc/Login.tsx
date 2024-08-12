@@ -7,19 +7,19 @@ import { container } from "tsyringe";
 import { GlobalVars } from '../../common/common';
 import { Password } from 'primereact/password';
 import { LoginService } from '../../view-models/misc/login.service';
-import { useReducer } from "react";
+import { ChangeEvent, useReducer } from "react";
 
 export default function Login() {
   const loginService = container.resolve(LoginService);
   const [, forceUpdate] = useReducer(x => x + 1, 0);
 
-  const onChangeUsername = (e: any) => {
-    loginService.item.USERNAME = (e.nativeEvent.target as HTMLInputElement).value;
+  const onChangeUsername = (e: ChangeEvent<HTMLInputElement>) => {
+    loginService.item.USERNAME = e.target.value;
     forceUpdate();
   };
 
-  const onChangePassword = (e: any) => {
-    loginService.item.PASSWORD = (e.nativeEvent.target as HTMLInputElement).value;
+  const onChangePassword = (e: ChangeEvent<HTMLInputElement>) => {
+    loginService.item.PASSWORD = e.target.value;
     forceUpdate();
   };
 
@@ -30,7 +30,7 @@ export default function Login() {
       GlobalVars.userid = userid;
       window.location.reload();
     }
-  }
+  };
 
   return (
     <div className="h-100 d-flex align-items-center justify-content-center">

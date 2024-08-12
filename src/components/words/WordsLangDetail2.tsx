@@ -4,7 +4,7 @@ import '../misc/Common.css'
 import 'reflect-metadata';
 import { container } from "tsyringe";
 import { SettingsService } from '../../view-models/misc/settings.service';
-import { useReducer } from "react";
+import { ChangeEvent, useReducer, useState } from "react";
 import { MLangWord } from "../../models/wpp/lang-word";
 import { Button, Dialog, DialogContent, TextField } from "@mui/material";
 
@@ -14,12 +14,11 @@ export default function WordsLangDetail2(
   const wordsLangService = container.resolve(WordsLangService);
   const settingsService = container.resolve(SettingsService);
   const itemOld = wordsLangService.langWords.find(value => value.ID === id);
-  const item = itemOld ? Object.create(itemOld) as MLangWord : wordsLangService.newLangWord();
+  const [item] = useState(itemOld ? Object.create(itemOld) as MLangWord : wordsLangService.newLangWord());
   const [, forceUpdate] = useReducer(x => x + 1, 0);
 
-  const onChangeInput = (e: any) => {
-    const elem = e.nativeEvent.target as HTMLInputElement;
-    item[elem.id] = elem.value;
+  const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
+    item[e.target.id] = e.target.value;
     forceUpdate();
   };
 

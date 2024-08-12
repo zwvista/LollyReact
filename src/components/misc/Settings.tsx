@@ -1,9 +1,9 @@
 import * as React from 'react';
 import 'reflect-metadata';
 import { container } from "tsyringe";
-import { SettingsListener, SettingsService } from '../../view-models/misc/settings.service';
+import { SettingsService } from '../../view-models/misc/settings.service';
 import './Common.css'
-import { useEffect, useMemo, useReducer } from "react";
+import { ChangeEvent, MouseEvent, useEffect, useMemo, useReducer } from "react";
 
 export default function Settings() {
   const settingsService = container.resolve(SettingsService);
@@ -13,85 +13,85 @@ export default function Settings() {
   const toTypeIsPart = useMemo(() => settingsService.toType === 1, [settingsService.toType]);
   const toTypeIsTo = useMemo(() => settingsService.toType === 2, [settingsService.toType]);
 
-  const onLangChange = async (event: any) => {
-    console.log(event);
-    const index = event.target.selectedIndex;
+  const onLangChange = async (e: ChangeEvent<HTMLSelectElement>) => {
+    console.log(e);
+    const index = e.target.selectedIndex;
     settingsService.selectedLang = settingsService.languages[index];
     await settingsService.updateLang();
     forceUpdate();
   };
 
-  const onVoiceChange = async (event: any) => {
-    const index = event.target.selectedIndex;
+  const onVoiceChange = async (e: ChangeEvent<HTMLSelectElement>) => {
+    const index = e.target.selectedIndex;
     settingsService.selectedVoice = settingsService.voices[index];
     await settingsService.updateVoice();
     forceUpdate();
   };
 
-  const onDictReferenceChange = async (event: any) => {
-    const index = event.target.selectedIndex;
+  const onDictReferenceChange = async (e: ChangeEvent<HTMLSelectElement>) => {
+    const index = e.target.selectedIndex;
     settingsService.selectedDictReference = settingsService.dictsReference[index];
     await settingsService.updateDictReference();
     forceUpdate();
   };
 
-  const onDictNoteChange = async (event: any) => {
-    const index = event.target.selectedIndex;
+  const onDictNoteChange = async (e: ChangeEvent<HTMLSelectElement>) => {
+    const index = e.target.selectedIndex;
     settingsService.selectedDictNote = settingsService.dictsNote[index];
     await settingsService.updateDictNote();
     forceUpdate();
   };
 
-  const onDictTranslationChange = async (event: any) => {
-    const index = event.target.selectedIndex;
+  const onDictTranslationChange = async (e: ChangeEvent<HTMLSelectElement>) => {
+    const index = e.target.selectedIndex;
     settingsService.selectedDictTranslation = settingsService.dictsTranslation[index];
     await settingsService.updateDictTranslation();
     forceUpdate();
   };
 
-  const onTextbookChange = async (event: any) => {
-    const index = event.target.selectedIndex;
+  const onTextbookChange = async (e: ChangeEvent<HTMLSelectElement>) => {
+    const index = e.target.selectedIndex;
     settingsService.selectedTextbook = settingsService.textbooks[index];
     await settingsService.updateTextbook();
     forceUpdate();
   };
 
-  const onUnitFromChange = async (event: any) => {
-    const index = event.target.selectedIndex;
+  const onUnitFromChange = async (e: ChangeEvent<HTMLSelectElement>) => {
+    const index = e.target.selectedIndex;
     await settingsService.updateUnitFrom(settingsService.units[index].value);
     forceUpdate();
   };
 
-  const onPartFromChange = async (event: any) => {
-    const index = event.target.selectedIndex;
+  const onPartFromChange = async (e: ChangeEvent<HTMLSelectElement>) => {
+    const index = e.target.selectedIndex;
     await settingsService.updatePartFrom(settingsService.parts[index].value);
     forceUpdate();
   };
 
-  const onToTypeChange = async (event: any) => {
-    const index = event.target.selectedIndex;
+  const onToTypeChange = async (e: ChangeEvent<HTMLSelectElement>) => {
+    const index = e.target.selectedIndex;
     await settingsService.updateToType(settingsService.toTypes[index].value);
     forceUpdate();
   };
 
-  const previousUnitPart = async (event: any) => {
+  const previousUnitPart = async (e: MouseEvent) => {
     await settingsService.previousUnitPart();
     forceUpdate();
   };
 
-  const nextUnitPart = async (event: any) => {
+  const nextUnitPart = async (e: MouseEvent) => {
     await settingsService.nextUnitPart();
     forceUpdate();
   };
 
-  const onUnitToChange = async (event: any) => {
-    const index = event.target.selectedIndex;
+  const onUnitToChange = async (e: ChangeEvent<HTMLSelectElement>) => {
+    const index = e.target.selectedIndex;
     await settingsService.updateUnitTo(settingsService.units[index].value);
     forceUpdate();
   };
 
-  const onPartToChange = async (event: any) => {
-    const index = event.target.selectedIndex;
+  const onPartToChange = async (e: ChangeEvent<HTMLSelectElement>) => {
+    const index = e.target.selectedIndex;
     await settingsService.updateUnitTo(settingsService.parts[index].value);
     forceUpdate();
   };

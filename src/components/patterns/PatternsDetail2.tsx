@@ -4,7 +4,7 @@ import 'reflect-metadata';
 import { container } from "tsyringe";
 import { SettingsService } from '../../view-models/misc/settings.service';
 import { PatternsService } from '../../view-models/wpp/patterns.service';
-import { useReducer } from "react";
+import { ChangeEvent, useReducer, useState } from "react";
 import { MPattern } from "../../models/wpp/pattern";
 import { Button, Dialog, DialogContent, TextField } from "@mui/material";
 
@@ -14,12 +14,11 @@ export default function PatternsDetail2(
   const patternsService = container.resolve(PatternsService);
   const settingsService = container.resolve(SettingsService);
   const itemOld = patternsService.patterns.find(value => value.ID === id);
-  const item = itemOld ? Object.create(itemOld) as MPattern : patternsService.newPattern();
+  const [item] = useState(itemOld ? Object.create(itemOld) as MPattern : patternsService.newPattern());
   const [, forceUpdate] = useReducer(x => x + 1, 0);
 
-  const onChangeInput = (e: any) => {
-    const elem = e.nativeEvent.target as HTMLInputElement;
-    item[elem.id] = elem.value;
+  const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
+    item[e.target.id] = e.target.value;
     forceUpdate();
   };
 

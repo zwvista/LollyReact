@@ -6,9 +6,9 @@ import { InputText } from 'primereact/inputtext';
 import 'reflect-metadata';
 import { container } from "tsyringe";
 import { SettingsService } from '../../view-models/misc/settings.service';
-import { Dropdown } from 'primereact/dropdown';
+import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
 import { Dialog } from "primereact/dialog";
-import { useReducer } from "react";
+import { ChangeEvent, useReducer, useState } from "react";
 import { MUnitPhrase } from "../../models/wpp/unit-phrase";
 
 export default function PhrasesUnitDetail(
@@ -17,17 +17,16 @@ export default function PhrasesUnitDetail(
   const phrasesUnitService = container.resolve(PhrasesUnitService);
   const settingsService = container.resolve(SettingsService);
   const itemOld = phrasesUnitService.unitPhrases.find(value => value.ID === id);
-  const item = itemOld ? Object.create(itemOld) as MUnitPhrase : phrasesUnitService.newUnitPhrase();
+  const [item] = useState(itemOld ? Object.create(itemOld) as MUnitPhrase : phrasesUnitService.newUnitPhrase());
   const [, forceUpdate] = useReducer(x => x + 1, 0);
 
-  const onChangeInput = (e: any) => {
-    const elem = e.nativeEvent.target as HTMLInputElement;
-    item[elem.id] = elem.value;
+  const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
+    item[e.target.id] = e.target.value;
     forceUpdate();
   };
 
-  const onChangeDropDown = (e: any) => {
-    item[e.target.id] = e.value;
+  const onChangeDropDown = (e: DropdownChangeEvent) => {
+    item[e.target.id] = e.target.value;
     forceUpdate();
   };
 

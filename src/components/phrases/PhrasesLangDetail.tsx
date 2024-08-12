@@ -6,7 +6,7 @@ import { InputText } from 'primereact/inputtext';
 import 'reflect-metadata';
 import { container } from "tsyringe";
 import { SettingsService } from '../../view-models/misc/settings.service';
-import { useReducer } from "react";
+import { ChangeEvent, useReducer, useState } from "react";
 import { Dialog } from 'primereact/dialog';
 import { MLangPhrase } from "../../models/wpp/lang-phrase";
 
@@ -16,12 +16,11 @@ export default function PhrasesLangDetail(
   const phrasesLangService = container.resolve(PhrasesLangService);
   const settingsService = container.resolve(SettingsService);
   const itemOld = phrasesLangService.langPhrases.find(value => value.ID === id);
-  const item = itemOld ? Object.create(itemOld) as MLangPhrase : phrasesLangService.newLangPhrase();
+  const [item] = useState(itemOld ? Object.create(itemOld) as MLangPhrase : phrasesLangService.newLangPhrase());
   const [, forceUpdate] = useReducer(x => x + 1, 0);
 
-  const onChangeInput = (e: any) => {
-    const elem = e.nativeEvent.target as HTMLInputElement;
-    item[elem.id] = elem.value;
+  const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
+    item[e.target.id] = e.target.value;
     forceUpdate();
   };
 

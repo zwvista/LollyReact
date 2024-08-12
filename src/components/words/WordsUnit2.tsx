@@ -74,8 +74,8 @@ export default function WordsUnit2() {
     onRefresh();
   };
 
-  const onFilterTypeChange = (e: SelectChangeEvent<number>, child: ReactNode) => {
-    setFilterType(Number(e.target.value));
+  const onFilterTypeChange = (e: SelectChangeEvent<number>) => {
+    setFilterType(e.target.value as number);
     onRefresh();
   };
 
