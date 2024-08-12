@@ -1,7 +1,7 @@
 import { BaseService } from './base.service';
 import { MTextbook, MTextbooks } from '../../models/misc/textbook';
 import { MSelectItem } from '../../common/selectitem';
-import { singleton } from "tsyringe";
+import { singleton } from 'tsyringe';
 
 @singleton()
 export class TextbookService extends BaseService {

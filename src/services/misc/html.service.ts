@@ -1,5 +1,5 @@
 import { BaseService } from './base.service';
-import { singleton } from "tsyringe";
+import { singleton } from 'tsyringe';
 
 @singleton()
 export class HtmlService extends BaseService {

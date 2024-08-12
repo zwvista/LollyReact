@@ -1,6 +1,6 @@
 import { BaseService } from './base.service';
 import { MUSMapping, MUSMappings } from '../../models/misc/usmapping';
-import { singleton } from "tsyringe";
+import { singleton } from 'tsyringe';
 
 @singleton()
 export class UsMappingService extends BaseService {

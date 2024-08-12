@@ -2,7 +2,7 @@ import { BaseService } from '../misc/base.service';
 import { MPattern, MPatterns } from '../../models/wpp/pattern';
 import { MSPResult } from '../../common/sp-result';
 import { toParameters } from '../../common/common';
-import { singleton } from "tsyringe";
+import { singleton } from 'tsyringe';
 
 @singleton()
 export class PatternService extends BaseService {

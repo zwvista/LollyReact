@@ -1,6 +1,6 @@
 import { UserService } from '../../services/misc/user.service';
 import { MUser } from '../../models/misc/user';
-import { singleton } from "tsyringe";
+import { singleton } from 'tsyringe';
 
 @singleton()
 export class LoginService {

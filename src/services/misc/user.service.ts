@@ -1,6 +1,6 @@
 import { BaseService } from './base.service';
 import { MUser, MUsers } from '../../models/misc/user';
-import { singleton } from "tsyringe";
+import { singleton } from 'tsyringe';
 
 @singleton()
 export class UserService extends BaseService {

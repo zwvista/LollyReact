@@ -2,9 +2,8 @@ import { AppService } from '../misc/app.service';
 import { SettingsService } from '../misc/settings.service';
 import { MUnitPhrase } from '../../models/wpp/unit-phrase';
 import { UnitPhraseService } from '../../services/wpp/unit-phrase.service';
-import { take } from 'rxjs/operators';
 import { LangPhraseService } from '../../services/wpp/lang-phrase.service';
-import { singleton } from "tsyringe";
+import { singleton } from 'tsyringe';
 
 @singleton()
 export class PhrasesUnitService {
@@ -21,13 +20,13 @@ export class PhrasesUnitService {
   }
 
   async getDataInTextbook(filter: string, filterType: number) {
-    await this.appService.initializeObject.pipe(take(1));
+    await this.appService.getData();
     this.unitPhrases = await this.unitPhraseService.getDataByTextbookUnitPart(this.settingsService.selectedTextbook,
         this.settingsService.USUNITPARTFROM, this.settingsService.USUNITPARTTO, filter, filterType);
   }
 
   async getDataInLang(page: number, rows: number, filter: string, filterType: number, textbookFilter: number) {
-    await this.appService.initializeObject.pipe(take(1));
+    await this.appService.getData();
     const res = await this.unitPhraseService.getDataByLang(this.settingsService.selectedLang.ID,
         this.settingsService.textbooks, page, rows, filter, filterType, textbookFilter);
     this.textbookPhrases = res.records;

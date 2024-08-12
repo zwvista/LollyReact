@@ -1,6 +1,6 @@
 import { BaseService } from './base.service';
 import { MAutoCorrect, MAutoCorrects } from '../../models/misc/autocorrect';
-import { singleton } from "tsyringe";
+import { singleton } from 'tsyringe';
 
 @singleton()
 export class AutoCorrectService extends BaseService {

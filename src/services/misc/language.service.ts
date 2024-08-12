@@ -1,6 +1,6 @@
 import { BaseService } from './base.service';
 import { MLanguage, MLanguages } from '../../models/misc/language';
-import { singleton } from "tsyringe";
+import { singleton } from 'tsyringe';
 
 @singleton()
 export class LanguageService extends BaseService {

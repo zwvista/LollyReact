@@ -3,7 +3,7 @@ import { BaseService } from '../misc/base.service';
 import { MTextbook } from '../../models/misc/textbook';
 import { MSPResult } from '../../common/sp-result';
 import { toParameters } from '../../common/common';
-import { singleton } from "tsyringe";
+import { singleton } from 'tsyringe';
 
 @singleton()
 export class UnitWordService extends BaseService {

@@ -1,7 +1,7 @@
 import { BaseService } from './base.service';
 import { MUserSetting, MUserSettingInfo, MUserSettings } from '../../models/misc/user-setting';
 import { GlobalVars } from '../../common/common';
-import { singleton } from "tsyringe";
+import { singleton } from 'tsyringe';
 
 @singleton()
 export class UserSettingService extends BaseService {

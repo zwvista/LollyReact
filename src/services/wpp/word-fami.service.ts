@@ -1,7 +1,7 @@
 import { BaseService } from '../misc/base.service';
 import { MWordFami, MWordsFami } from '../../models/wpp/word-fami';
 import { GlobalVars } from '../../common/common';
-import { singleton } from "tsyringe";
+import { singleton } from 'tsyringe';
 
 @singleton()
 export class WordFamiService extends BaseService {

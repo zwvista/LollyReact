@@ -7,7 +7,6 @@ import { Paginator, PaginatorPageChangeEvent } from 'primereact/paginator';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import '../misc/Common.css'
-import { Subscription } from 'rxjs';
 import { Toolbar } from 'primereact/toolbar';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
 import { googleString } from '../../common/common';
@@ -26,7 +25,6 @@ export default function PhrasesLang() {
   const appService = container.resolve(AppService);
   const phrasesLangService = container.resolve(PhrasesLangService);
   const settingsService = container.resolve(SettingsService);
-  const subscription = new Subscription();
   const navigate = useNavigate();
   const [showDialog, setShowDialog] = useState(false);
   const [detailId, setDetailId] = useState(0);
@@ -74,17 +72,16 @@ export default function PhrasesLang() {
   };
 
   useEffect(() => {
-    subscription.add(appService.initializeObject.subscribe(_ => {
+    (async () => {
+      await appService.getData();
       setRows(settingsService.USROWSPERPAGE);
-      onRefresh();
-    }));
-    return () => {
-      subscription.unsubscribe();
-    };
+      await onRefresh();
+    })();
   }, []);
 
   useEffect(() => {
     (async () => {
+      await appService.getData();
       await phrasesLangService.getData(page, rows, filter, filterType);
       forceUpdate();
     })();

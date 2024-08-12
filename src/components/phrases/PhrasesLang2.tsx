@@ -2,7 +2,6 @@ import * as React from 'react';
 import 'reflect-metadata';
 import { container } from "tsyringe";
 import '../misc/Common.css'
-import { Subscription } from 'rxjs';
 import { SettingsService } from '../../view-models/misc/settings.service';
 import {
   Button,
@@ -34,7 +33,6 @@ export default function PhrasesLang2() {
   const appService = container.resolve(AppService);
   const phrasesLangService = container.resolve(PhrasesLangService);
   const settingsService = container.resolve(SettingsService);
-  const subscription = new Subscription();
   const navigate = useNavigate();
   const [showDialog, setShowDialog] = useState(false);
   const [detailId, setDetailId] = useState(0);
@@ -85,17 +83,16 @@ export default function PhrasesLang2() {
   };
 
   useEffect(() => {
-    subscription.add(appService.initializeObject.subscribe(_ => {
+    (async () => {
+      await appService.getData();
       setRows(settingsService.USROWSPERPAGE);
-      onRefresh();
-    }));
-    return () => {
-      subscription.unsubscribe();
-    };
+      await onRefresh();
+    })();
   }, []);
 
   useEffect(() => {
     (async () => {
+      await appService.getData();
       await phrasesLangService.getData(page, rows, filter, filterType);
       forceUpdate();
     })();

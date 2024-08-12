@@ -3,7 +3,6 @@ import { WordsUnitService } from '../../view-models/wpp/words-unit.service';
 import 'reflect-metadata';
 import { container } from "tsyringe";
 import '../misc/Common.css'
-import { Subscription } from 'rxjs';
 import { SettingsService } from '../../view-models/misc/settings.service';
 import {
   Button,
@@ -41,7 +40,6 @@ export default function WordsUnit2() {
   const appService = container.resolve(AppService);
   const wordsUnitService = container.resolve(WordsUnitService);
   const settingsService = container.resolve(SettingsService);
-  const subscription = new Subscription();
   const navigate = useNavigate();
   const [showDialog, setShowDialog] = useState(false);
   const [detailId, setDetailId] = useState(0);
@@ -110,16 +108,15 @@ export default function WordsUnit2() {
   };
 
   useEffect(() => {
-    subscription.add(appService.initializeObject.subscribe(_ => {
-      onRefresh();
-    }));
-    return () => {
-      subscription.unsubscribe();
-    };
+    (async () => {
+      await appService.getData();
+      await onRefresh();
+    })();
   }, []);
 
   useEffect(() => {
     (async () => {
+      await appService.getData();
       await wordsUnitService.getDataInTextbook(filter, filterType);
       forceUpdate();
     })();

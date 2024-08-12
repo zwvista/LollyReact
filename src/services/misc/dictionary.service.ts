@@ -3,7 +3,7 @@ import {
   MDictionary,
   MDictionaries,
 } from '../../models/misc/dictionary';
-import { singleton } from "tsyringe";
+import { singleton } from 'tsyringe';
 
 @singleton()
 export class DictionaryService extends BaseService {

@@ -2,9 +2,8 @@ import { SettingsService } from '../misc/settings.service';
 import { AppService } from '../misc/app.service';
 import { LangWordService } from '../../services/wpp/lang-word.service';
 import { MLangWord } from '../../models/wpp/lang-word';
-import { take } from 'rxjs/operators';
 import { WordFamiService } from '../../services/wpp/word-fami.service';
-import { singleton } from "tsyringe";
+import { singleton } from 'tsyringe';
 
 @singleton()
 export class WordsLangService {
@@ -19,7 +18,7 @@ export class WordsLangService {
   }
 
   async getData(page: number, rows: number, filter: string, filterType: number): Promise<void> {
-    await this.appService.initializeObject.pipe(take(1));
+    await this.appService.getData();
     const res =　await this.langWordService.getDataByLang(this.settingsService.selectedLang.ID, page, rows, filter, filterType);
     this.langWords = res.records;
     this.langWordsCount = res.results;

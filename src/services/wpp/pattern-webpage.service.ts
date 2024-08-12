@@ -1,6 +1,6 @@
 import { BaseService } from '../misc/base.service';
 import { MPatternWebPage, MPatternWebPages } from '../../models/wpp/pattern-webpage';
-import { singleton } from "tsyringe";
+import { singleton } from 'tsyringe';
 
 @singleton()
 export class PatternWebpageService extends BaseService {

@@ -7,7 +7,6 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import '../misc/Common.css'
-import { Subscription } from 'rxjs';
 import { Toolbar } from 'primereact/toolbar';
 import { InputText } from 'primereact/inputtext';
 import * as CopyToClipboard from 'react-copy-to-clipboard';
@@ -23,7 +22,6 @@ export default function WordsUnit() {
   const appService = container.resolve(AppService);
   const wordsUnitService = container.resolve(WordsUnitService);
   const settingsService = container.resolve(SettingsService);
-  const subscription = new Subscription();
   const navigate = useNavigate();
   const [showDialog, setShowDialog] = useState(false);
   const [detailId, setDetailId] = useState(0);
@@ -100,16 +98,15 @@ export default function WordsUnit() {
   };
 
   useEffect(() => {
-    subscription.add(appService.initializeObject.subscribe(_ => {
-      onRefresh();
-    }));
-    return () => {
-      subscription.unsubscribe();
-    };
+    (async () => {
+      await appService.getData();
+      await onRefresh();
+    })();
   }, []);
 
   useEffect(() => {
     (async () => {
+      await appService.getData();
       await wordsUnitService.getDataInTextbook(filter, filterType);
       forceUpdate();
     })();
