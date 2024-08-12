@@ -112,7 +112,6 @@ export default function WordsLang2() {
 
   useEffect(() => {
     (async () => {
-      await appService.getData();
       await wordsLangService.getData(page, rows, filter, filterType);
       forceUpdate();
     })();

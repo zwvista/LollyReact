@@ -92,7 +92,6 @@ export default function PhrasesLang2() {
 
   useEffect(() => {
     (async () => {
-      await appService.getData();
       await phrasesLangService.getData(page, rows, filter, filterType);
       forceUpdate();
     })();

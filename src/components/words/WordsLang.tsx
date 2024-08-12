@@ -90,7 +90,6 @@ export default function WordsLang() {
 
   useEffect(() => {
     (async () => {
-      await appService.getData();
       await wordsLangService.getData(page, rows, filter, filterType);
       forceUpdate();
     })();

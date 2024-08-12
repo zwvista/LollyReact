@@ -91,7 +91,6 @@ export default function Patterns2() {
 
   useEffect(() => {
     (async () => {
-      await appService.getData();
       await patternsService.getData(page, rows, filter, filterType);
       forceUpdate();
     })();

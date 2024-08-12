@@ -118,7 +118,6 @@ export default function WordsTextbook2() {
 
   useEffect(() => {
     (async () => {
-      await appService.getData();
       // https://stackoverflow.com/questions/4228356/integer-division-with-remainder-in-javascript
       await wordsUnitService.getDataInLang(page, rows, filter, filterType, textbookFilter);
       forceUpdate();

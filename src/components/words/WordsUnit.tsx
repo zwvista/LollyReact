@@ -106,7 +106,6 @@ export default function WordsUnit() {
 
   useEffect(() => {
     (async () => {
-      await appService.getData();
       await wordsUnitService.getDataInTextbook(filter, filterType);
       forceUpdate();
     })();

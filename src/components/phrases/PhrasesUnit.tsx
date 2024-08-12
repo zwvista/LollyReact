@@ -61,13 +61,6 @@ export default function PhrasesUnit() {
     googleString(phrase);
   };
 
-  useEffect(() => {
-    (async () => {
-      await appService.getData();
-      await onRefresh();
-    })();
-  }, []);
-
   const showDetailDialog = (id: number) => {
     setDetailId(id);
     setShowDetail(true);
@@ -76,6 +69,12 @@ export default function PhrasesUnit() {
   useEffect(() => {
     (async () => {
       await appService.getData();
+      await onRefresh();
+    })();
+  }, []);
+
+  useEffect(() => {
+    (async () => {
       await phrasesUnitService.getDataInTextbook(filter, filterType);
       forceUpdate();
     })();
