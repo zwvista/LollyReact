@@ -44,8 +44,8 @@ export default function PhrasesLangDetail2(
           <TextField className="col-8" id="TRANSLATION" value={item.TRANSLATION} onChange={onChangeInput} />
         </div>
         <div className="mt-4 flex justify-content-around flex-wrap">
-          <Button className="border-round" onClick={handleCloseDialog}>Cancel</Button>
-          <Button className="border-round" onClick={save}>Save</Button>
+          <Button variant="contained" className="border-round" onClick={handleCloseDialog}>Cancel</Button>
+          <Button variant="contained" className="border-round" onClick={save}>Save</Button>
         </div>
       </DialogContent>
     </Dialog>

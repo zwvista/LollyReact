@@ -84,8 +84,8 @@ export default function WordsTextbookDetail2(
           <TextField className="col-8" id="ACCURACY" value={item.ACCURACY} disabled />
         </div>
         <div className="mt-4 flex justify-content-around flex-wrap">
-          <Button className="border-round" onClick={handleCloseDialog}>Cancel</Button>
-          <Button className="border-round" onClick={save}>Save</Button>
+          <Button variant="contained" className="border-round" onClick={handleCloseDialog}>Cancel</Button>
+          <Button variant="contained" className="border-round" onClick={save}>Save</Button>
         </div>
       </DialogContent>
     </Dialog>
