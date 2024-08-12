@@ -7,40 +7,24 @@ import { container } from "tsyringe";
 import { GlobalVars } from '../../common/common';
 import { Password } from 'primereact/password';
 import { LoginService } from '../../view-models/misc/login.service';
+import { useReducer } from "react";
 
-export default class Login extends React.Component<any, any> {
-  loginService = container.resolve(LoginService);
+export default function Login() {
+  const loginService = container.resolve(LoginService);
+  const [, forceUpdate] = useReducer(x => x + 1, 0);
 
-  render() {
-    return (
-      <div>
-        <div className="p-grid mt-2 mb-2">
-          <label htmlFor="username" className="col-2 control-label">USERNAME:</label>
-          <InputText className="col-8" id="username" value={this.loginService.item.USERNAME} onChange={this.onChangeUsername} />
-        </div>
-        <div className="p-grid mt-2 mb-2">
-          <label htmlFor="password" className="col-2 control-label">PASSWORD:</label>
-          <Password className="col-8" id="password" value={this.loginService.item.PASSWORD} onChange={this.onChangePassword} />
-        </div>
-        <div>
-          <Button label="Login" onClick={this.login} />
-        </div>
-      </div>
-    );
-  }
-
-  onChangeUsername = (e: any) => {
-    this.loginService.item.USERNAME = (e.nativeEvent.target as HTMLInputElement).value;
-    this.setState({loginService: this.loginService});
+  const onChangeUsername = (e: any) => {
+    loginService.item.USERNAME = (e.nativeEvent.target as HTMLInputElement).value;
+    forceUpdate();
   };
 
-  onChangePassword = (e: any) => {
-    this.loginService.item.PASSWORD = (e.nativeEvent.target as HTMLInputElement).value;
-    this.setState({loginService: this.loginService});
+  const onChangePassword = (e: any) => {
+    loginService.item.PASSWORD = (e.nativeEvent.target as HTMLInputElement).value;
+    forceUpdate();
   };
 
-  login = async () => {
-    const userid = await this.loginService.login();
+  const login = async () => {
+    const userid = await loginService.login();
     if (userid) {
       localStorage.setItem('userid', userid);
       GlobalVars.userid = userid;
@@ -48,5 +32,21 @@ export default class Login extends React.Component<any, any> {
     }
   }
 
-};
-
+  return (
+    <div className="h-100 d-flex align-items-center justify-content-center">
+      <div className="w-50">
+        <div className="field grid mt-2 mb-2">
+          <label htmlFor="username" className="col-4 control-label">USERNAME:</label>
+          <InputText className="col-8" id="username" value={loginService.item.USERNAME} onChange={onChangeUsername} />
+        </div>
+        <div className="field grid mt-2 mb-2">
+          <label htmlFor="password" className="col-4 control-label">PASSWORD:</label>
+          <Password className="col-8" id="password" value={loginService.item.PASSWORD} onChange={onChangePassword} />
+        </div>
+        <div>
+          <Button label="Login" onClick={login} />
+        </div>
+      </div>
+    </div>
+  );
+}
