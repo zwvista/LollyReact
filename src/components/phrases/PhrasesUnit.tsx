@@ -69,7 +69,7 @@ export default function PhrasesUnit() {
   useEffect(() => {
     (async () => {
       await appService.getData();
-      await onRefresh();
+      onRefresh();
     })();
   }, []);
 

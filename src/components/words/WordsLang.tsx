@@ -84,7 +84,7 @@ export default function WordsLang() {
     (async () => {
       await appService.getData();
       setRows(settingsService.USROWSPERPAGE);
-      await onRefresh();
+      onRefresh();
     })();
   }, []);
 

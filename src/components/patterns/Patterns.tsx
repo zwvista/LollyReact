@@ -74,7 +74,7 @@ export default function Patterns() {
     (async () => {
       await appService.getData();
       setRows(settingsService.USROWSPERPAGE);
-      await onRefresh();
+      onRefresh();
     })();
   }, []);
 

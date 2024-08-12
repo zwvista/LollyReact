@@ -110,7 +110,7 @@ export default function WordsUnit2() {
   useEffect(() => {
     (async () => {
       await appService.getData();
-      await onRefresh();
+      onRefresh();
     })();
   }, []);
 

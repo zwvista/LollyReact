@@ -75,7 +75,7 @@ export default function PhrasesLang() {
     (async () => {
       await appService.getData();
       setRows(settingsService.USROWSPERPAGE);
-      await onRefresh();
+      onRefresh();
     })();
   }, []);
 

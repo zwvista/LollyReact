@@ -91,7 +91,7 @@ export default function WordsTextbook() {
     (async () => {
       await appService.getData();
       setRows(settingsService.USROWSPERPAGE);
-      await onRefresh();
+      onRefresh();
     })();
   }, []);
 

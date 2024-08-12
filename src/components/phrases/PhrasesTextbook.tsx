@@ -81,7 +81,7 @@ export default function PhrasesTextbook() {
     (async () => {
       await appService.getData();
       setRows(settingsService.USROWSPERPAGE);
-      await onRefresh();
+      onRefresh();
     })();
   }, []);
 
