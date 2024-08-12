@@ -41,7 +41,7 @@ export default function WordsUnit2() {
   const wordsUnitService = container.resolve(WordsUnitService);
   const settingsService = container.resolve(SettingsService);
   const navigate = useNavigate();
-  const [showDialog, setShowDialog] = useState(false);
+  const [showDetail, setShowDetail] = useState(false);
   const [detailId, setDetailId] = useState(0);
 
   const [newWord, setNewWord] = useState('');
@@ -104,7 +104,7 @@ export default function WordsUnit2() {
 
   const showDetailDialog = (id: number) => {
     setDetailId(id);
-    setShowDialog(true);
+    setShowDetail(true);
   };
 
   useEffect(() => {
@@ -227,7 +227,7 @@ export default function WordsUnit2() {
           ))}
         </TableBody>
       </Table>
-      {showDialog && <WordsUnitDetail2 id={detailId} isDialogOpened={showDialog} handleCloseDialog={() => setShowDialog(false)} />}
+      {showDetail && <WordsUnitDetail2 id={detailId} isDialogOpened={showDetail} handleCloseDialog={() => setShowDetail(false)} />}
     </div>
   );
 }

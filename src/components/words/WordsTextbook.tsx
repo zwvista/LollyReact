@@ -25,7 +25,7 @@ export default function WordsTextbook() {
   const wordsUnitService = container.resolve(WordsUnitService);
   const settingsService = container.resolve(SettingsService);
   const navigate = useNavigate();
-  const [showDialog, setShowDialog] = useState(false);
+  const [showDetail, setShowDetail] = useState(false);
   const [detailId, setDetailId] = useState(0);
 
   const [first, setFirst] = useState(0);
@@ -84,7 +84,7 @@ export default function WordsTextbook() {
 
   const showDetailDialog = (id: number) => {
     setDetailId(id);
-    setShowDialog(true);
+    setShowDetail(true);
   };
 
   useEffect(() => {
@@ -157,7 +157,7 @@ export default function WordsTextbook() {
       <Paginator first={first} rows={rows} onPageChange={onPageChange}
                  totalRecords={wordsUnitService.textbookWordCount}
                  rowsPerPageOptions={settingsService.USROWSPERPAGEOPTIONS}/>
-      {showDialog && <WordsTextbookDetail id={detailId} isDialogOpened={showDialog} handleCloseDialog={() => setShowDialog(false)} />}
+      {showDetail && <WordsTextbookDetail id={detailId} isDialogOpened={showDetail} handleCloseDialog={() => setShowDetail(false)} />}
     </div>
   );
 }

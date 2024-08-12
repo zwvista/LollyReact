@@ -26,7 +26,7 @@ export default function PhrasesLang() {
   const phrasesLangService = container.resolve(PhrasesLangService);
   const settingsService = container.resolve(SettingsService);
   const navigate = useNavigate();
-  const [showDialog, setShowDialog] = useState(false);
+  const [showDetail, setShowDetail] = useState(false);
   const [detailId, setDetailId] = useState(0);
 
   const [first, setFirst] = useState(0);
@@ -68,7 +68,7 @@ export default function PhrasesLang() {
 
   const showDetailDialog = (id: number) => {
     setDetailId(id);
-    setShowDialog(true);
+    setShowDetail(true);
   };
 
   useEffect(() => {
@@ -130,7 +130,7 @@ export default function PhrasesLang() {
       <Paginator first={first} rows={rows} onPageChange={onPageChange}
                  totalRecords={phrasesLangService.langPhraseCount}
                  rowsPerPageOptions={settingsService.USROWSPERPAGEOPTIONS}/>
-      {showDialog && <PhrasesLangDetail id={detailId} isDialogOpened={showDialog} handleCloseDialog={() => setShowDialog(false)} />}
+      {showDetail && <PhrasesLangDetail id={detailId} isDialogOpened={showDetail} handleCloseDialog={() => setShowDetail(false)} />}
     </div>
   );
 }

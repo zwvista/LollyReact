@@ -26,7 +26,7 @@ export default function PhrasesTextbook() {
   const phrasesUnitService = container.resolve(PhrasesUnitService);
   const settingsService = container.resolve(SettingsService);
   const navigate = useNavigate();
-  const [showDialog, setShowDialog] = useState(false);
+  const [showDetail, setShowDetail] = useState(false);
   const [detailId, setDetailId] = useState(0);
 
   const [first, setFirst] = useState(0);
@@ -74,7 +74,7 @@ export default function PhrasesTextbook() {
 
   const showDetailDialog = (id: number) => {
     setDetailId(id);
-    setShowDialog(true);
+    setShowDetail(true);
   };
 
   useEffect(() => {
@@ -141,7 +141,7 @@ export default function PhrasesTextbook() {
       <Paginator first={first} rows={rows} onPageChange={onPageChange}
                  totalRecords={phrasesUnitService.textbookPhraseCount}
                  rowsPerPageOptions={settingsService.USROWSPERPAGEOPTIONS}/>
-      {showDialog && <PhrasesTextbookDetail id={detailId} isDialogOpened={showDialog} handleCloseDialog={() => setShowDialog(false)} />}
+      {showDetail && <PhrasesTextbookDetail id={detailId} isDialogOpened={showDetail} handleCloseDialog={() => setShowDetail(false)} />}
     </div>
   );
 }

@@ -43,7 +43,7 @@ export default function WordsTextbook2() {
   const wordsUnitService = container.resolve(WordsUnitService);
   const settingsService = container.resolve(SettingsService);
   const navigate = useNavigate();
-  const [showDialog, setShowDialog] = useState(false);
+  const [showDetail, setShowDetail] = useState(false);
   const [detailId, setDetailId] = useState(0);
 
   const [rows, setRows] = useState(0);
@@ -105,7 +105,7 @@ export default function WordsTextbook2() {
 
   const showDetailDialog = (id: number) => {
     setDetailId(id);
-    setShowDialog(true);
+    setShowDetail(true);
   };
 
   useEffect(() => {
@@ -253,7 +253,7 @@ export default function WordsTextbook2() {
           </TableRow>
         </TableFooter>
       </Table>
-      {showDialog && <WordsTextbookDetail2 id={detailId} isDialogOpened={showDialog} handleCloseDialog={() => setShowDialog(false)} />}
+      {showDetail && <WordsTextbookDetail2 id={detailId} isDialogOpened={showDetail} handleCloseDialog={() => setShowDetail(false)} />}
     </div>
   );
 }

@@ -33,7 +33,7 @@ export default function Patterns2() {
   const patternsService = container.resolve(PatternsService);
   const settingsService = container.resolve(SettingsService);
   const navigate = useNavigate();
-  const [showDialog, setShowDialog] = useState(false);
+  const [showDetail, setShowDetail] = useState(false);
   const [detailId, setDetailId] = useState(0);
 
   const [rows, setRows] = useState(0);
@@ -78,7 +78,7 @@ export default function Patterns2() {
 
   const showDetailDialog = (id: number) => {
     setDetailId(id);
-    setShowDialog(true);
+    setShowDetail(true);
   };
 
   useEffect(() => {
@@ -198,7 +198,7 @@ export default function Patterns2() {
           </TableRow>
         </TableFooter>
       </Table>
-      {showDialog && <PatternsDetail2 id={detailId} isDialogOpened={showDialog} handleCloseDialog={() => setShowDialog(false)} />}
+      {showDetail && <PatternsDetail2 id={detailId} isDialogOpened={showDetail} handleCloseDialog={() => setShowDetail(false)} />}
     </div>
   );
 }

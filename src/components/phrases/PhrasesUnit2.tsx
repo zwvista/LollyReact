@@ -43,7 +43,7 @@ export default function PhrasesUnit2() {
   const phrasesUnitService = container.resolve(PhrasesUnitService);
   const settingsService = container.resolve(SettingsService);
   const navigate = useNavigate();
-  const [showDialog, setShowDialog] = useState(false);
+  const [showDetail, setShowDetail] = useState(false);
   const [detailId, setDetailId] = useState(0);
 
   const [filter, setFilter] = useState('');
@@ -82,7 +82,7 @@ export default function PhrasesUnit2() {
 
   const showDetailDialog = (id: number) => {
     setDetailId(id);
-    setShowDialog(true);
+    setShowDetail(true);
   };
 
   useEffect(() => {
@@ -170,7 +170,7 @@ export default function PhrasesUnit2() {
           ))}
         </TableBody>
       </Table>
-      {showDialog && <PhrasesUnitDetail2 id={detailId} isDialogOpened={showDialog} handleCloseDialog={() => setShowDialog(false)} />}
+      {showDetail && <PhrasesUnitDetail2 id={detailId} isDialogOpened={showDetail} handleCloseDialog={() => setShowDetail(false)} />}
     </div>
   );
 }

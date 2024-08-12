@@ -23,7 +23,7 @@ export default function WordsUnit() {
   const wordsUnitService = container.resolve(WordsUnitService);
   const settingsService = container.resolve(SettingsService);
   const navigate = useNavigate();
-  const [showDialog, setShowDialog] = useState(false);
+  const [showDetail, setShowDetail] = useState(false);
   const [detailId, setDetailId] = useState(0);
 
   const [newWord, setNewWord] = useState('');
@@ -94,7 +94,7 @@ export default function WordsUnit() {
 
   const showDetailDialog = (id: number) => {
     setDetailId(id);
-    setShowDialog(true);
+    setShowDetail(true);
   };
 
   useEffect(() => {
@@ -168,7 +168,7 @@ export default function WordsUnit() {
         <Column style={{width:'80px'}} field="ACCURACY" header="ACCURACY" />
         <Column style={{width:'30%'}} body={actionTemplate} header="ACTIONS" />
       </DataTable>
-      {showDialog && <WordsUnitDetail id={detailId} isDialogOpened={showDialog} handleCloseDialog={() => setShowDialog(false)} />}
+      {showDetail && <WordsUnitDetail id={detailId} isDialogOpened={showDetail} handleCloseDialog={() => setShowDetail(false)} />}
     </div>
   );
 }

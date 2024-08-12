@@ -24,7 +24,7 @@ export default function WordsLang() {
   const wordsLangService = container.resolve(WordsLangService);
   const settingsService = container.resolve(SettingsService);
   const navigate = useNavigate();
-  const [showDialog, setShowDialog] = useState(false);
+  const [showDetail, setShowDetail] = useState(false);
   const [detailId, setDetailId] = useState(0);
 
   const [first, setFirst] = useState(0);
@@ -77,7 +77,7 @@ export default function WordsLang() {
 
   const showDetailDialog = (id: number) => {
     setDetailId(id);
-    setShowDialog(true);
+    setShowDetail(true);
   };
 
   useEffect(() => {
@@ -144,7 +144,7 @@ export default function WordsLang() {
       <Paginator first={first} rows={rows} onPageChange={onPageChange}
                  totalRecords={wordsLangService.langWordsCount}
                  rowsPerPageOptions={settingsService.USROWSPERPAGEOPTIONS}/>
-      {showDialog && <WordsLangDetail id={detailId} isDialogOpened={showDialog} handleCloseDialog={() => setShowDialog(false)} />}
+      {showDetail && <WordsLangDetail id={detailId} isDialogOpened={showDetail} handleCloseDialog={() => setShowDetail(false)} />}
     </div>
   );
 }

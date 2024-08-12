@@ -34,7 +34,7 @@ export default function PhrasesTextbook2() {
   const phrasesUnitService = container.resolve(PhrasesUnitService);
   const settingsService = container.resolve(SettingsService);
   const navigate = useNavigate();
-  const [showDialog, setShowDialog] = useState(false);
+  const [showDetail, setShowDetail] = useState(false);
   const [detailId, setDetailId] = useState(0);
 
   const [rows, setRows] = useState(0);
@@ -85,7 +85,7 @@ export default function PhrasesTextbook2() {
 
   const showDetailDialog = (id: number) => {
     setDetailId(id);
-    setShowDialog(true);
+    setShowDetail(true);
   };
 
   useEffect(() => {
@@ -221,7 +221,7 @@ export default function PhrasesTextbook2() {
           </TableRow>
         </TableFooter>
       </Table>
-      {showDialog && <PhrasesTextbookDetail2 id={detailId} isDialogOpened={showDialog} handleCloseDialog={() => setShowDialog(false)} />}
+      {showDetail && <PhrasesTextbookDetail2 id={detailId} isDialogOpened={showDetail} handleCloseDialog={() => setShowDetail(false)} />}
     </div>
   );
 }

@@ -25,7 +25,7 @@ export default function Patterns() {
   const patternsService = container.resolve(PatternsService);
   const settingsService = container.resolve(SettingsService);
   const navigate = useNavigate();
-  const [showDialog, setShowDialog] = useState(false);
+  const [showDetail, setShowDetail] = useState(false);
   const [detailId, setDetailId] = useState(0);
 
   const [first, setFirst] = useState(0);
@@ -67,7 +67,7 @@ export default function Patterns() {
 
   const showDetailDialog = (id: number) => {
     setDetailId(id);
-    setShowDialog(true);
+    setShowDetail(true);
   };
 
   useEffect(() => {
@@ -130,7 +130,7 @@ export default function Patterns() {
       <Paginator first={first} rows={rows} onPageChange={onPageChange}
                  totalRecords={patternsService.patternCount}
                  rowsPerPageOptions={settingsService.USROWSPERPAGEOPTIONS}/>
-      {showDialog && <PatternsDetail id={detailId} isDialogOpened={showDialog} handleCloseDialog={() => setShowDialog(false)} />}
+      {showDetail && <PatternsDetail id={detailId} isDialogOpened={showDetail} handleCloseDialog={() => setShowDetail(false)} />}
     </div>
   );
 }
