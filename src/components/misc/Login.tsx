@@ -35,18 +35,14 @@ export default function Login() {
   return (
     <div className="h-100 d-flex align-items-center justify-content-center">
       <div className="container w-50">
-        <div className="row mt-2 mb-2">
-          <div className="col-4">
-            <label htmlFor="username">USERNAME:</label>
-          </div>
+        <div className="row mb-4">
+          <label className="col-4 align-content-center" htmlFor="username">USERNAME:</label>
           <div className="col">
             <InputText id="username" value={loginService.item.USERNAME} onChange={onChangeUsername} />
           </div>
         </div>
-        <div className="row mt-2 mb-2">
-          <div className="col-4">
-            <label htmlFor="password">PASSWORD:</label>
-          </div>
+        <div className="row mb-4">
+          <label className="col-4 align-content-center" htmlFor="password">PASSWORD:</label>
           <div className="col">
             <Password id="password" style={{width: '100%'}} value={loginService.item.PASSWORD} onChange={onChangePassword} />
           </div>
@@ -60,6 +56,9 @@ export default function Login() {
         </div>
       </div>
       <style jsx global>{`
+        html, body, #root {
+          height: 100%;
+        }
         input {
           width: 100%;
         }
