@@ -34,19 +34,36 @@ export default function Login() {
 
   return (
     <div className="h-100 d-flex align-items-center justify-content-center">
-      <div className="w-50">
-        <div className="field grid mt-2 mb-2">
-          <label htmlFor="username" className="col-4 control-label">USERNAME:</label>
-          <InputText className="col-8" id="username" value={loginService.item.USERNAME} onChange={onChangeUsername} />
+      <div className="container w-50">
+        <div className="row mt-2 mb-2">
+          <div className="col-4">
+            <label htmlFor="username">USERNAME:</label>
+          </div>
+          <div className="col">
+            <InputText id="username" value={loginService.item.USERNAME} onChange={onChangeUsername} />
+          </div>
         </div>
-        <div className="field grid mt-2 mb-2">
-          <label htmlFor="password" className="col-4 control-label">PASSWORD:</label>
-          <Password className="col-8" id="password" value={loginService.item.PASSWORD} onChange={onChangePassword} />
+        <div className="row mt-2 mb-2">
+          <div className="col-4">
+            <label htmlFor="password">PASSWORD:</label>
+          </div>
+          <div className="col">
+            <Password id="password" style={{width: '100%'}} value={loginService.item.PASSWORD} onChange={onChangePassword} />
+          </div>
         </div>
-        <div>
-          <Button label="Login" onClick={login} />
+        <div className="row">
+          <div className="col-4">
+          </div>
+          <div className="col">
+            <Button label="Login" onClick={login} />
+          </div>
         </div>
       </div>
+      <style jsx global>{`
+        input {
+          width: 100%;
+        }
+      `}</style>
     </div>
   );
 }

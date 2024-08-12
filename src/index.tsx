@@ -22,6 +22,11 @@ import WordsDict from "./components/misc/WordsDict";
 import Settings from "./components/misc/Settings";
 import 'reflect-metadata'
 
+// https://stackoverflow.com/questions/57261540/warning-received-true-for-a-non-boolean-attribute-jsx-zeit-styled-jsx/66285652#66285652
+const _JSXStyle = require('styled-jsx/style').default;
+if (typeof global !== 'undefined') {
+  Object.assign(global, { _JSXStyle });
+}
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(
   <BrowserRouter>
