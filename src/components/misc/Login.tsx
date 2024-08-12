@@ -48,8 +48,7 @@ export default function Login() {
           </div>
         </div>
         <div className="row">
-          <div className="col-4">
-          </div>
+          <div className="col-4"></div>
           <div className="col">
             <Button label="Login" onClick={login} />
           </div>

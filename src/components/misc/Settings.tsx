@@ -184,7 +184,7 @@ export default function Settings() {
         </select>
       </div>
       <div className="row mb-2">
-        <label className="col-2" />
+        <div className="col-2"></div>
         <div className="col-auto">
           <button className="btn btn-primary mr-2" disabled={toTypeIsTo} onClick={previousUnitPart}>Previous</button>
           <button className="btn btn-primary mr-2" disabled={toTypeIsTo} onClick={nextUnitPart}>Next</button>
