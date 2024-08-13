@@ -107,11 +107,11 @@ export default function Settings() {
     <div className="container mt-2">
       <div className="row mb-2">
         <label htmlFor="lang" className="col-2 align-content-center">Language:</label>
-          <select id="lang" className="col" value={settingsService.selectedLang.ID} onChange={onLangChange}>
-          {
-            settingsService.languages.map(o => <option key={o.ID} value={o.ID}>{o.NAME}</option>)
-          }
-          </select>
+        <select id="lang" className="col" value={settingsService.selectedLang.ID} onChange={onLangChange}>
+        {
+          settingsService.languages.map(o => <option key={o.ID} value={o.ID}>{o.NAME}</option>)
+        }
+        </select>
       </div>
       <div className="row mb-2">
         <label htmlFor="voice" className="col-2 align-content-center">Voice:</label>
