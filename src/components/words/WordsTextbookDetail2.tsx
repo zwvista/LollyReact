@@ -35,7 +35,7 @@ export default function WordsTextbookDetail2(
   return !item ? <div/> : (
     <Dialog open={isDialogOpened} onClose={handleCloseDialog} fullWidth classes={{ paperFullWidth: 'width:750px' }}>
       <DialogContent>
-        <div className="p-grid mt-2 mb-2">
+        <div className="grid mt-2 mb-2">
           <label className="col-4" htmlFor="ID">ID:</label>
           <TextField className="col-8" id="ID" value={item.ID.toString()} disabled />
         </div>

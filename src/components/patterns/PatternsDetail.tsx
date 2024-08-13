@@ -32,19 +32,19 @@ export default function PatternsDetail(
 
   return !item ? <div/> : (
     <Dialog visible={isDialogOpened} style={{width: '750px'}} onHide={handleCloseDialog}>
-      <div className="p-grid mt-2 mb-2">
+      <div className="grid mt-2 mb-2">
         <label className="col-4" htmlFor="ID">ID:</label>
         <InputText className="col-8" id="ID" value={item.ID.toString()} disabled />
       </div>
-      <div className="p-grid mb-2">
+      <div className="grid mb-2">
         <label className="col-4" htmlFor="PATTERN">PATTERN:</label>
         <InputText className="col-8" id="PATTERN" value={item.PATTERN} onChange={onChangeInput} />
       </div>
-      <div className="p-grid mb-2">
+      <div className="grid mb-2">
         <label className="col-4" htmlFor="NOTE">NOTE:</label>
         <InputText className="col-8" id="NOTE" value={item.NOTE} onChange={onChangeInput} />
       </div>
-      <div className="p-grid mb-2">
+      <div className="grid mb-2">
         <label className="col-4" htmlFor="TAGS">TAGS:</label>
         <InputText className="col-8" id="TAGS" value={item.TAGS} onChange={onChangeInput} />
       </div>

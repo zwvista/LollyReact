@@ -36,11 +36,11 @@ export default function PhrasesUnitDetail2(
   return !item ? <div/> : (
     <Dialog open={isDialogOpened} onClose={handleCloseDialog} fullWidth classes={{ paperFullWidth: 'width:750px' }}>
       <DialogContent>
-        <div className="p-grid mt-2 mb-2">
+        <div className="grid mt-2 mb-2">
           <label className="col-4" htmlFor="ID">ID:</label>
           <TextField className="col-8" id="ID" value={item.ID.toString()} disabled />
         </div>
-        <div className="p-grid mb-2">
+        <div className="grid mb-2">
           <label className="col-4" htmlFor="UNIT">UNIT:</label>
           <Select className="col-8" id="UNIT" name="UNIT" value={item.UNIT.toString()} onChange={onChangeSelect}>
             {settingsService.units.map(row =>
@@ -48,7 +48,7 @@ export default function PhrasesUnitDetail2(
             )}
           </Select>
         </div>
-        <div className="p-grid mb-2">
+        <div className="grid mb-2">
           <label className="col-4" htmlFor="PART">PART:</label>
           <Select className="col-8" id="PART" name="PART" value={item.PART.toString()} onChange={onChangeSelect}>
             {settingsService.parts.map(row =>
@@ -56,19 +56,19 @@ export default function PhrasesUnitDetail2(
             )}
           </Select>
         </div>
-        <div className="p-grid mb-2">
+        <div className="grid mb-2">
           <label className="col-4" htmlFor="SEQNUM">SEQNUM:</label>
           <TextField className="col-8" id="SEQNUM" value={item.SEQNUM.toString()} onChange={onChangeInput} />
         </div>
-        <div className="p-grid mb-2">
+        <div className="grid mb-2">
           <label className="col-4" htmlFor="PHRASEID">PHRASEID:</label>
           <TextField className="col-8" id="PHRASEID" value={item.PHRASEID.toString()} disabled />
         </div>
-        <div className="p-grid mb-2">
+        <div className="grid mb-2">
           <label className="col-4" htmlFor="PHRASE">PHRASE:</label>
           <TextField className="col-8" id="PHRASE" value={item.PHRASE} onChange={onChangeInput} />
         </div>
-        <div className="p-grid mb-2">
+        <div className="grid mb-2">
           <label className="col-4" htmlFor="TRANSLATION">TRANSLATION:</label>
           <TextField className="col-8" id="TRANSLATION" value={item.TRANSLATION} onChange={onChangeInput} />
         </div>

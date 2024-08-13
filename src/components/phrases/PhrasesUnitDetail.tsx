@@ -38,31 +38,31 @@ export default function PhrasesUnitDetail(
 
   return !item ? <div/> : (
     <Dialog visible={isDialogOpened} style={{width: '750px'}} onHide={handleCloseDialog}>
-      <div className="p-grid mt-2 mb-2">
+      <div className="grid mt-2 mb-2">
         <label className="col-4" htmlFor="ID">ID:</label>
         <InputText className="col-8" id="ID" value={item.ID.toString()} disabled />
       </div>
-      <div className="p-grid mb-2">
+      <div className="grid mb-2">
         <label className="col-4" htmlFor="UNIT">UNIT:</label>
         <Dropdown className="col-8" id="UNIT" options={settingsService.units} value={item.UNIT} onChange={onChangeDropDown} />
       </div>
-      <div className="p-grid mb-2">
+      <div className="grid mb-2">
         <label className="col-4" htmlFor="PART">PART:</label>
         <Dropdown className="col-8" id="PART" options={settingsService.parts} value={item.PART} onChange={onChangeDropDown} />
       </div>
-      <div className="p-grid mb-2">
+      <div className="grid mb-2">
         <label className="col-4" htmlFor="SEQNUM">SEQNUM:</label>
         <InputText className="col-8" id="SEQNUM" value={item.SEQNUM.toString()} onChange={onChangeInput} />
       </div>
-      <div className="p-grid mb-2">
+      <div className="grid mb-2">
         <label className="col-4" htmlFor="PHRASEID">PHRASEID:</label>
         <InputText className="col-8" id="PHRASEID" value={item.PHRASEID.toString()} disabled />
       </div>
-      <div className="p-grid mb-2">
+      <div className="grid mb-2">
         <label className="col-4" htmlFor="PHRASE">PHRASE:</label>
         <InputText className="col-8" id="PHRASE" value={item.PHRASE} onChange={onChangeInput} />
       </div>
-      <div className="p-grid mb-2">
+      <div className="grid mb-2">
         <label className="col-4" htmlFor="TRANSLATION">TRANSLATION:</label>
         <InputText className="col-8" id="TRANSLATION" value={item.TRANSLATION} onChange={onChangeInput} />
       </div>

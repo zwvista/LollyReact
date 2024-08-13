@@ -32,15 +32,15 @@ export default function PhrasesLangDetail(
 
   return !item ? <div/> : (
     <Dialog visible={isDialogOpened} style={{width: '750px'}} onHide={handleCloseDialog}>
-      <div className="p-grid mt-2 mb-2">
+      <div className="grid mt-2 mb-2">
         <label className="col-4" htmlFor="ID">ID:</label>
         <InputText className="col-8" id="ID" value={item.ID.toString()} disabled />
       </div>
-      <div className="p-grid mb-2">
+      <div className="grid mb-2">
         <label className="col-4" htmlFor="PHRASE">PHRASE:</label>
         <InputText className="col-8" id="PHRASE" value={item.PHRASE} onChange={onChangeInput} />
       </div>
-      <div className="p-grid mb-2">
+      <div className="grid mb-2">
         <label className="col-4" htmlFor="TRANSLATION">TRANSLATION:</label>
         <InputText className="col-8" id="TRANSLATION" value={item.TRANSLATION} onChange={onChangeInput} />
       </div>
