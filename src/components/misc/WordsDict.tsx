@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { WordsUnitService } from '../../view-models/wpp/words-unit.service';
-import 'reflect-metadata';
 import { container } from "tsyringe";
 import './Common.css'
 import { Toolbar } from 'primereact/toolbar';

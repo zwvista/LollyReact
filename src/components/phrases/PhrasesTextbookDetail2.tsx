@@ -1,6 +1,5 @@
 import * as React from 'react';
 import '../misc/Common.css'
-import 'reflect-metadata';
 import { container } from "tsyringe";
 import { SettingsService } from '../../view-models/misc/settings.service';
 import { Dropdown } from 'primereact/dropdown';

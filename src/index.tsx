@@ -20,7 +20,6 @@ import Patterns from "./components/patterns/Patterns";
 import Patterns2 from "./components/patterns/Patterns2";
 import WordsDict from "./components/misc/WordsDict";
 import Settings from "./components/misc/Settings";
-import 'reflect-metadata'
 
 // https://stackoverflow.com/questions/57261540/warning-received-true-for-a-non-boolean-attribute-jsx-zeit-styled-jsx/66285652#66285652
 const _JSXStyle = require('styled-jsx/style').default;

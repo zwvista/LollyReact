@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Button } from 'primereact/button';
 import './Common.css'
 import { InputText } from 'primereact/inputtext';
-import 'reflect-metadata';
 import { container } from "tsyringe";
 import { GlobalVars } from '../../common/common';
 import { Password } from 'primereact/password';

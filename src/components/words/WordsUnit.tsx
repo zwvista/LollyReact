@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { KeyboardEvent, SyntheticEvent, useEffect, useReducer, useState } from 'react';
 import { WordsUnitService } from '../../view-models/wpp/words-unit.service';
-import 'reflect-metadata';
 import { container } from "tsyringe";
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { PhrasesUnitService } from '../../view-models/wpp/phrases-unit.service';
-import 'reflect-metadata';
 import { container } from "tsyringe";
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import 'reflect-metadata';
 import { container } from "tsyringe";
 import '../misc/Common.css'
 import { SettingsService } from '../../view-models/misc/settings.service';

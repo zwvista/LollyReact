@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { PhrasesUnitService } from '../../view-models/wpp/phrases-unit.service';
 import '../misc/Common.css'
-import 'reflect-metadata';
 import { container } from "tsyringe";
 import { SettingsService } from '../../view-models/misc/settings.service';
 import { ChangeEvent, useReducer, useState } from "react";

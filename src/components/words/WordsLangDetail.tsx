@@ -3,7 +3,6 @@ import { WordsLangService } from '../../view-models/wpp/words-lang.service';
 import { Button } from 'primereact/button';
 import '../misc/Common.css'
 import { InputText } from 'primereact/inputtext';
-import 'reflect-metadata';
 import { container } from "tsyringe";
 import { SettingsService } from '../../view-models/misc/settings.service';
 import { Dialog } from "primereact/dialog";

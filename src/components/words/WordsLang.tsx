@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { KeyboardEvent, SyntheticEvent, useEffect, useReducer, useState } from 'react';
 import { WordsLangService } from '../../view-models/wpp/words-lang.service';
-import 'reflect-metadata';
 import { container } from "tsyringe";
 import { DataTable } from 'primereact/datatable';
 import { Paginator, PaginatorPageChangeEvent } from 'primereact/paginator';

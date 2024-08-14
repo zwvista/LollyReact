@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { PhrasesLangService } from '../../view-models/wpp/phrases-lang.service';
-import 'reflect-metadata';
 import { container } from "tsyringe";
 import { DataTable } from 'primereact/datatable';
 import { Paginator, PaginatorPageChangeEvent } from 'primereact/paginator';
