@@ -128,7 +128,7 @@ export class SettingsService {
   selectedLang!: MLanguage;
 
   voices: MVoice[] = [];
-  speech = new Speech.default();
+  speech?: Speech.default;
   selectedVoice: MVoice | null = null;
 
   dictsReference: MDictionary[] = [];
@@ -179,7 +179,14 @@ export class SettingsService {
               private autoCorrectService: AutoCorrectService,
               private voiceService: VoiceService,
               private htmlService: HtmlService) {
-    this.speech.init();
+    this.initSpeech();
+  }
+
+  private initSpeech() {
+    if (window && !this.speech) {
+      this.speech = new Speech.default();
+      this.speech.init();
+    }
   }
 
   private getUSInfo(name: string): MUserSettingInfo {
@@ -196,6 +203,7 @@ export class SettingsService {
   }
 
   async getData() {
+    this.initSpeech();
     const res = await Promise.all([this.langService.getData(),
         this.usMappingService.getData(),
         this.userSettingService.getDataByUser()]);
@@ -292,7 +300,7 @@ export class SettingsService {
     const newVal = this.selectedVoice.ID;
     const dirty = this.USVOICE !== newVal;
     this.USVOICE = newVal;
-    this.speech.setVoice(this.selectedVoice.VOICENAME);
+    this.speech?.setVoice(this.selectedVoice.VOICENAME);
     if (dirty) await this.userSettingService.updateIntValue(this.INFO_USVOICE, this.USVOICE);
     if (this.settingsListener) this.settingsListener.onUpdateVoice();
   }
@@ -302,7 +310,7 @@ export class SettingsService {
   }
 
   speak(text: string) {
-    this.speech.speak({
+    this.speech?.speak({
       text,
       queue: false,
     });
