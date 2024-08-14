@@ -34,7 +34,6 @@ import { KeyboardEvent } from 'react';
 import { ReactNode } from 'react';
 import { AppService } from '../../view-models/misc/app.service';
 import { useNavigate } from "react-router-dom";
-import WordsTextbookDetail from "./WordsTextbookDetail";
 import WordsTextbookDetail2 from "./WordsTextbookDetail2";
 
 export default function WordsTextbook2() {

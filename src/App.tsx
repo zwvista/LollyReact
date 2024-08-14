@@ -22,7 +22,9 @@ import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faDollarSign, faEuroSign, faBus, faTrain, faCar, faTaxi, faPlane, faRocket, faMotorcycle, faCog } from '@fortawesome/free-solid-svg-icons'
+import { far } from "@fortawesome/free-regular-svg-icons";
+import { fas } from "@fortawesome/free-solid-svg-icons";
+import { fab } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { GlobalVars } from './common/common';
 import Login from './components/misc/Login';
@@ -62,7 +64,7 @@ export default function App() {
   const [indexTab2, setIndexTab2] = useState(0);
   const [indexApp, setIndexApp] = useState(0);
   const navigate = useNavigate();
-  library.add(faDollarSign, faEuroSign, faBus, faTrain, faCar, faTaxi, faPlane, faRocket, faMotorcycle, faCog);
+  library.add(fas as any, far as any, fab as any);
 
   function onTabAppChange(event: any, value: any) {
     let index = value === 0 ? indexTab : indexTab2;

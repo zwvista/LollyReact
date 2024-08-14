@@ -2,7 +2,6 @@ import * as React from 'react';
 import '../misc/Common.css'
 import { container } from "tsyringe";
 import { SettingsService } from '../../view-models/misc/settings.service';
-import { Dropdown } from 'primereact/dropdown';
 import { PhrasesUnitService } from '../../view-models/wpp/phrases-unit.service';
 import { ChangeEvent, useReducer, useState } from "react";
 import { MUnitPhrase } from "../../models/wpp/unit-phrase";
