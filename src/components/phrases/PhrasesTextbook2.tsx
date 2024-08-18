@@ -74,8 +74,8 @@ export default function PhrasesTextbook2() {
     onRefresh();
   };
 
-  const deletePhrase = (item: MUnitPhrase) => {
-    phrasesUnitService.delete(item);
+  const deletePhrase = async (item: MUnitPhrase) => {
+    await phrasesUnitService.delete(item);
   };
 
   const googlePhrase = (phrase: string) => {

@@ -68,8 +68,8 @@ export default function PhrasesLang2() {
     onRefresh();
   };
 
-  const deletePhrase = (item: MLangPhrase) => {
-    phrasesLangService.delete(item);
+  const deletePhrase = async (item: MLangPhrase) => {
+    await phrasesLangService.delete(item);
   };
 
   const googlePhrase = (phrase: string) => {

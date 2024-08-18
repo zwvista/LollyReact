@@ -67,8 +67,8 @@ export default function WordsUnit() {
     onRefresh();
   };
 
-  const deleteWord = (item: MUnitWord) => {
-    wordsUnitService.delete(item);
+  const deleteWord = async (item: MUnitWord) => {
+    await wordsUnitService.delete(item);
   };
 
   const getNote = async (item: MUnitWord) => {

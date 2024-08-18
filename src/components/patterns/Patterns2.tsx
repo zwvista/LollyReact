@@ -67,8 +67,8 @@ export default function Patterns2() {
     onRefresh();
   };
 
-  const deletePattern = (id: number) => {
-    patternsService.delete(id);
+  const deletePattern = async (id: number) => {
+    await patternsService.delete(id);
   };
 
   const googlePattern = (pattern: string) => {

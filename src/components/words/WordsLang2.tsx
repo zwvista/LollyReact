@@ -77,8 +77,8 @@ export default function WordsLang2() {
     onRefresh();
   };
 
-  const deleteWord = (item: MLangWord) => {
-    wordsLangService.delete(item);
+  const deleteWord = async (item: MLangWord) => {
+    await wordsLangService.delete(item);
   };
 
   const getNote = async (index: number) => {
