@@ -81,9 +81,12 @@ export default function WordsLang2() {
     await wordsLangService.delete(item);
   };
 
-  const getNote = async (index: number) => {
-    console.log(index);
-    await wordsLangService.getNote(index);
+  const getNote = async (item: MLangWord) => {
+    await wordsLangService.getNote(item);
+  };
+
+  const clearNote = async (item: MLangWord) => {
+    await wordsLangService.clearNote(item);
   };
 
   // https://stackoverflow.com/questions/42775017/angular-2-redirect-to-an-external-url-and-open-in-a-new-tab
@@ -205,8 +208,12 @@ export default function WordsLang2() {
                   </Fab>
                 </Tooltip>
                 <Button variant="contained" color="warning" hidden={!settingsService.selectedDictNote}
-                        onClick={() => getNote(row.ID)}>
-                  Retrieve Note
+                        onClick={() => getNote(row)}>
+                  Get Note
+                </Button>
+                <Button variant="contained" color="warning" hidden={!settingsService.selectedDictNote}
+                        onClick={() => clearNote(row)}>
+                  Get Note
                 </Button>
               </TableCell>
             </TableRow>

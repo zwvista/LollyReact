@@ -24,102 +24,143 @@ export class SettingsService {
 
   usMappings: MUSMapping[] = [];
   userSettings: MUserSetting[] = [];
+
   private getUSValue(info: MUserSettingInfo): string | null {
     return (this.userSettings.find(v => v.ID === info.USERSETTINGID)! as any)['VALUE' + info.VALUEID]!;
   }
+
   private setUSValue(info: MUserSettingInfo, value: string) {
     (this.userSettings.find(v => v.ID === info.USERSETTINGID)! as any)['VALUE' + info.VALUEID]! = value;
   }
+
   private INFO_USLANG: MUserSettingInfo = new MUserSettingInfo();
+
   private get USLANG(): number {
     return +this.getUSValue(this.INFO_USLANG)!;
   }
+
   private set USLANG(newValue: number) {
     this.setUSValue(this.INFO_USLANG, String(newValue));
   }
+
   private INFO_USROWSPERPAGEOPTIONS: MUserSettingInfo = new MUserSettingInfo();
+
   get USROWSPERPAGEOPTIONS(): number[] {
     return this.getUSValue(this.INFO_USROWSPERPAGEOPTIONS)!.split(',').map(value => +value);
   }
+
   private INFO_USROWSPERPAGE: MUserSettingInfo = new MUserSettingInfo();
+
   get USROWSPERPAGE(): number {
     return +this.getUSValue(this.INFO_USROWSPERPAGE)!;
   }
+
   private INFO_USTEXTBOOK: MUserSettingInfo = new MUserSettingInfo();
+
   get USTEXTBOOK(): number {
     return +this.getUSValue(this.INFO_USTEXTBOOK)!;
   }
+
   set USTEXTBOOK(newValue: number) {
     this.setUSValue(this.INFO_USTEXTBOOK, String(newValue));
   }
+
   private INFO_USDICTREFERENCE: MUserSettingInfo = new MUserSettingInfo();
+
   get USDICTREFERENCE(): string {
     return this.getUSValue(this.INFO_USDICTREFERENCE)!;
   }
+
   set USDICTREFERENCE(newValue: string) {
     this.setUSValue(this.INFO_USDICTREFERENCE, newValue);
   }
+
   private INFO_USDICTNOTE: MUserSettingInfo = new MUserSettingInfo();
+
   get USDICTNOTE(): number {
     return +this.getUSValue(this.INFO_USDICTNOTE)! || 0;
   }
+
   set USDICTNOTE(newValue: number) {
     this.setUSValue(this.INFO_USDICTNOTE, String(newValue));
   }
+
   private INFO_USDICTTRANSLATION: MUserSettingInfo = new MUserSettingInfo();
+
   get USDICTTRANSLATION(): number {
     return +this.getUSValue(this.INFO_USDICTTRANSLATION)! || 0;
   }
+
   set USDICTTRANSLATION(newValue: number) {
     this.setUSValue(this.INFO_USDICTTRANSLATION, String(newValue));
   }
+
   private INFO_USVOICE: MUserSettingInfo = new MUserSettingInfo();
+
   get USVOICE(): number {
     return +(this.getUSValue(this.INFO_USVOICE) || '0');
   }
+
   set USVOICE(newValue: number) {
     this.setUSValue(this.INFO_USVOICE, String(newValue));
   }
+
   private INFO_USUNITFROM: MUserSettingInfo = new MUserSettingInfo();
+
   get USUNITFROM(): number {
     return +this.getUSValue(this.INFO_USUNITFROM)!;
   }
+
   set USUNITFROM(newValue: number) {
     this.setUSValue(this.INFO_USUNITFROM, String(newValue));
   }
+
   private INFO_USPARTFROM: MUserSettingInfo = new MUserSettingInfo();
+
   get USPARTFROM(): number {
     return +this.getUSValue(this.INFO_USPARTFROM)!;
   }
+
   set USPARTFROM(newValue: number) {
     this.setUSValue(this.INFO_USPARTFROM, String(newValue));
   }
+
   private INFO_USUNITTO: MUserSettingInfo = new MUserSettingInfo();
+
   get USUNITTO(): number {
     return +this.getUSValue(this.INFO_USUNITTO)!;
   }
+
   set USUNITTO(newValue: number) {
     this.setUSValue(this.INFO_USUNITTO, String(newValue));
   }
+
   private INFO_USPARTTO: MUserSettingInfo = new MUserSettingInfo();
+
   get USPARTTO(): number {
     return +this.getUSValue(this.INFO_USPARTTO)!;
   }
+
   set USPARTTO(newValue: number) {
     this.setUSValue(this.INFO_USPARTTO, String(newValue));
   }
+
   get USUNITPARTFROM(): number {
     return this.USUNITFROM * 10 + this.USPARTFROM;
   }
+
   get USUNITPARTTO(): number {
     return this.USUNITTO * 10 + this.USPARTTO;
   }
+
   get isSingleUnitPart(): boolean {
     return this.USUNITPARTFROM === this.USUNITPARTTO;
   }
+
   get isSingleUnit(): boolean {
     return this.USUNITFROM === this.USUNITTO && this.USPARTFROM === 1 && this.USPARTTO === this.partCount;
   }
+
   get isInvalidUnitPart(): boolean {
     return this.USUNITPARTFROM > this.USUNITPARTTO;
   }
@@ -147,15 +188,19 @@ export class SettingsService {
   get units(): MSelectItem[] {
     return this.selectedTextbook.units;
   }
+
   get unitCount(): number {
     return this.units.length;
   }
+
   get parts(): MSelectItem[] {
     return this.selectedTextbook.parts;
   }
+
   get partCount(): number {
     return this.parts.length;
   }
+
   get isSinglePart(): boolean {
     return this.partCount === 1;
   }
@@ -205,8 +250,8 @@ export class SettingsService {
   async getData() {
     this.initSpeech();
     const res = await Promise.all([this.langService.getData(),
-        this.usMappingService.getData(),
-        this.userSettingService.getDataByUser()]);
+      this.usMappingService.getData(),
+      this.userSettingService.getDataByUser()]);
     this.languages = res[0] as MLanguage[];
     this.usMappings = res[1] as MUSMapping[];
     this.userSettings = res[2] as MUserSetting[];
@@ -342,7 +387,7 @@ export class SettingsService {
     if (this.toType === 0) {
       if (this.USUNITFROM > 1)
         await Promise.all([this.doUpdateUnitFrom(this.USUNITFROM - 1),
-            this.doUpdateUnitTo(this.USUNITFROM)]);
+          this.doUpdateUnitTo(this.USUNITFROM)]);
     } else if (this.USPARTFROM > 1)
       await Promise.all([this.doUpdatePartFrom(this.USPARTFROM - 1),
         this.doUpdateUnitPartTo()]);
@@ -358,10 +403,10 @@ export class SettingsService {
           this.doUpdateUnitTo(this.USUNITFROM)]);
     } else if (this.USPARTFROM < this.partCount)
       await Promise.all([this.doUpdatePartFrom(this.USPARTFROM + 1),
-      this.doUpdateUnitPartTo()]);
+        this.doUpdateUnitPartTo()]);
     else if (this.USUNITFROM < this.unitCount)
       await Promise.all([this.doUpdateUnitFrom(this.USUNITFROM + 1),
-      this.doUpdatePartFrom(1), this.doUpdateUnitPartTo()]);
+        this.doUpdatePartFrom(1), this.doUpdateUnitPartTo()]);
   }
 
   async updateUnitTo(value: number) {
@@ -413,6 +458,7 @@ export class SettingsService {
     if (dirty) await this.userSettingService.updateIntValue(this.INFO_USPARTTO, this.USPARTTO);
   }
 
+  zeroNote = "O";
   async getNote(word: string): Promise<string> {
     const dictNote = this.selectedDictNote;
     if (!dictNote) return "";
@@ -440,6 +486,16 @@ export class SettingsService {
         i++;
       }
     });
+  }
+
+  clearNotes(wordCount: number, isNoteEmpty: (index: number) => boolean, getOne: (index: number) => void, allComplete: () => void) {
+    for (let i = 0; i < wordCount; i++) {
+      while (i < wordCount && !isNoteEmpty(i))
+        i++;
+      if (i < wordCount)
+        getOne(i);
+    }
+    allComplete();
   }
 }
 

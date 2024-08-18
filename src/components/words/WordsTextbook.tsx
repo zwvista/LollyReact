@@ -66,9 +66,12 @@ export default function WordsTextbook() {
     await wordsUnitService.delete(item);
   };
 
-  const getNote = async (index: number) => {
-    console.log(index);
-    await wordsUnitService.getNote(index);
+  const getNote = async (item: MUnitWord) => {
+    await wordsUnitService.getNote(item);
+  };
+
+  const clearNote = async (item: MUnitWord) => {
+    await wordsUnitService.clearNote(item);
   };
 
   // https://stackoverflow.com/questions/42775017/angular-2-redirect-to-an-external-url-and-open-in-a-new-tab
@@ -117,7 +120,8 @@ export default function WordsTextbook() {
               tooltip="Google Word" tooltipOptions={{position: 'top'}}/>
       <Button icon="fa fa-book" onClick={() => dictWord(rowData.ID)}
               tooltip="Dictionary" tooltipOptions={{position: 'top'}}/>
-      <Button hidden={!settingsService.selectedDictNote} severity="warning" label="Retrieve Note" onClick={() => getNote(rowData.ID)} />
+      <Button hidden={!settingsService.selectedDictNote} severity="warning" label="Get Note" onClick={() => getNote(rowData.ID)} />
+      <Button hidden={!settingsService.selectedDictNote} severity="warning" label="Clear Note" onClick={() => clearNote(rowData.ID)} />
     </div>;
   };
 

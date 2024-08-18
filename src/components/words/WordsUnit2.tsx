@@ -83,8 +83,12 @@ export default function WordsUnit2() {
   };
 
   const getNote = async (item: MUnitWord) => {
-    const index = wordsUnitService.unitWords.indexOf(item);
-    await wordsUnitService.getNote(index);
+    await wordsUnitService.getNote(item);
+    onRefresh();
+  };
+
+  const clearNote = async (item: MUnitWord) => {
+    await wordsUnitService.clearNote(item);
     onRefresh();
   };
 
@@ -148,10 +152,16 @@ export default function WordsUnit2() {
           <span><FontAwesomeIcon icon={faSync} />Refresh</span>
         </Button>
         <Button hidden={!settingsService.selectedDictNote} variant="contained" color="warning">
-          Retrieve All Notes
+          Get All Notes
         </Button>
         <Button hidden={!settingsService.selectedDictNote} variant="contained" color="warning">
-          Retrieve Notes If Empty
+          Get Notes If Empty
+        </Button>
+        <Button hidden={!settingsService.selectedDictNote} variant="contained" color="warning">
+          Clear All Notes
+        </Button>
+        <Button hidden={!settingsService.selectedDictNote} variant="contained" color="warning">
+          Clear Notes If Empty
         </Button>
         <Button variant="contained" color="primary" onClick={() => navigate('/words-dict/unit/0')}>
           <span><FontAwesomeIcon icon={faBook} />Dictionary</span>
@@ -218,7 +228,11 @@ export default function WordsUnit2() {
                 </Tooltip>
                 <Button variant="contained" color="warning" hidden={!settingsService.selectedDictNote}
                         onClick={() => getNote(row)}>
-                  Retrieve Note
+                  Get Note
+                </Button>
+                <Button variant="contained" color="warning" hidden={!settingsService.selectedDictNote}
+                        onClick={() => clearNote(row)}>
+                  Clear Note
                 </Button>
               </TableCell>
             </TableRow>

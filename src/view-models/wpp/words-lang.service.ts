@@ -4,6 +4,7 @@ import { LangWordService } from '../../services/wpp/lang-word.service';
 import { MLangWord } from '../../models/wpp/lang-word';
 import { WordFamiService } from '../../services/wpp/word-fami.service';
 import { singleton } from 'tsyringe';
+import { MUnitWord } from "../../models/wpp/unit-word";
 
 @singleton()
 export class WordsLangService {
@@ -46,10 +47,23 @@ export class WordsLangService {
     return o;
   }
 
-  async getNote(index: number): Promise<number> {
+  async getNoteByIndex(index: number) {
     const item = this.langWords[index];
-    const note = await this.settingsService.getNote(item.WORD);
-    item.NOTE = note;
-    return await this.updateNote(item.ID, note);
+    return await this.getNote(item);
+  }
+
+  async getNote(item: MLangWord) {
+    item.NOTE = await this.settingsService.getNote(item.WORD);
+    return await this.updateNote(item.ID, item.NOTE);
+  }
+
+  async clearNoteByIndex(index: number) {
+    const item = this.langWords[index];
+    this.clearNote(item)
+  }
+
+  async clearNote(item: MLangWord) {
+    item.NOTE = this.settingsService.zeroNote;
+    await this.updateNote(item.ID, item.NOTE);
   }
 }

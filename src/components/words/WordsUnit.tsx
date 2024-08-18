@@ -72,8 +72,12 @@ export default function WordsUnit() {
   };
 
   const getNote = async (item: MUnitWord) => {
-    const index = wordsUnitService.unitWords.indexOf(item);
-    await wordsUnitService.getNote(index);
+    await wordsUnitService.getNote(item);
+    onRefresh();
+  };
+
+  const clearNote = async (item: MUnitWord) => {
+    await wordsUnitService.clearNote(item);
     onRefresh();
   };
 
@@ -125,7 +129,8 @@ export default function WordsUnit() {
               tooltip="Google Word" tooltipOptions={{position: 'top'}}/>
       <Button icon="fa fa-book" onClick={() => dictWord(rowData)}
               tooltip="Dictionary" tooltipOptions={{position: 'top'}}/>
-      <Button hidden={!settingsService.selectedDictNote} severity="warning" label="Retrieve Note" onClick={() => getNote(rowData)}/>
+      <Button hidden={!settingsService.selectedDictNote} severity="warning" label="Get Note" onClick={() => getNote(rowData)}/>
+      <Button hidden={!settingsService.selectedDictNote} severity="warning" label="Clear Note" onClick={() => clearNote(rowData)}/>
     </div>;
   };
 
@@ -144,8 +149,10 @@ export default function WordsUnit() {
               tooltip="Speak" onClick={() => settingsService.speak(newWord)} />
       <Button label="Add" icon="fa fa-plus" onClick={() => showDetailDialog(0)} />
       <Button label="Refresh" icon="fa fa-refresh" onClick={onRefresh}/>
-      <Button hidden={!settingsService.selectedDictNote} severity="warning" label="Retrieve All Notes" />
-      <Button hidden={!settingsService.selectedDictNote} severity="warning" label="Retrieve Notes If Empty" />
+      <Button hidden={!settingsService.selectedDictNote} severity="warning" label="Get All Notes" />
+      <Button hidden={!settingsService.selectedDictNote} severity="warning" label="Get Notes If Empty" />
+      <Button hidden={!settingsService.selectedDictNote} severity="warning" label="Clear All Notes" />
+      <Button hidden={!settingsService.selectedDictNote} severity="warning" label="Clear Notes If Empty" />
       <Button label="Dictionary" icon="fa fa-book" onClick={() => navigate('/words-dict/unit/0')} />
     </>
   );

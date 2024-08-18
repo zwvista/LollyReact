@@ -76,8 +76,12 @@ export class WordsUnitService {
     return o;
   }
 
-  async getNote(index: number) {
+  async getNoteByIndex(index: number) {
     const item = this.unitWords[index];
+    await this.getNote(item);
+  }
+
+  async getNote(item: MUnitWord) {
     item.NOTE = await this.settingsService.getNote(item.WORD);
     await this.updateNote(item.WORDID, item.NOTE);
   }
@@ -85,7 +89,24 @@ export class WordsUnitService {
   getNotes(ifEmpty: boolean, oneComplete: (index: number) => void, allComplete: () => void) {
     this.settingsService.getNotes(this.unitWords.length,
       i => !ifEmpty || !this.unitWords[i],
-      async i => { await this.getNote(i); oneComplete(i);
+      async i => { await this.getNoteByIndex(i); oneComplete(i);
+      }, allComplete);
+  }
+
+  async clearNoteByIndex(index: number) {
+    const item = this.unitWords[index];
+    this.clearNote(item)
+  }
+
+  async clearNote(item: MUnitWord) {
+    item.NOTE = this.settingsService.zeroNote;
+    await this.updateNote(item.WORDID, item.NOTE);
+  }
+
+  clearNotes(ifEmpty: boolean, oneComplete: (index: number) => void, allComplete: () => void) {
+    this.settingsService.clearNotes(this.unitWords.length,
+      i => !ifEmpty || !this.unitWords[i],
+      async i => { await this.clearNoteByIndex(i); oneComplete(i);
       }, allComplete);
   }
 }
