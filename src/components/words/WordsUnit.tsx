@@ -95,6 +95,10 @@ export default function WordsUnit() {
     wordsUnitService.getNotes(ifEmpty, () => {}, () => {});
   };
 
+  const clearNotes = (ifEmpty: boolean) => {
+    wordsUnitService.clearNotes(ifEmpty, () => {}, () => {});
+  };
+
   const showDetailDialog = (id: number) => {
     setDetailId(id);
     setShowDetail(true);
@@ -149,10 +153,10 @@ export default function WordsUnit() {
               tooltip="Speak" onClick={() => settingsService.speak(newWord)} />
       <Button label="Add" icon="fa fa-plus" onClick={() => showDetailDialog(0)} />
       <Button label="Refresh" icon="fa fa-refresh" onClick={onRefresh}/>
-      <Button hidden={!settingsService.selectedDictNote} severity="warning" label="Get All Notes" />
-      <Button hidden={!settingsService.selectedDictNote} severity="warning" label="Get Notes If Empty" />
-      <Button hidden={!settingsService.selectedDictNote} severity="warning" label="Clear All Notes" />
-      <Button hidden={!settingsService.selectedDictNote} severity="warning" label="Clear Notes If Empty" />
+      <Button hidden={!settingsService.selectedDictNote} severity="warning" label="Get All Notes" onClick={() => getNotes(false)} />
+      <Button hidden={!settingsService.selectedDictNote} severity="warning" label="Get Notes If Empty" onClick={() => getNotes(true)} />
+      <Button hidden={!settingsService.selectedDictNote} severity="warning" label="Clear All Notes" onClick={() => clearNotes(false)} />
+      <Button hidden={!settingsService.selectedDictNote} severity="warning" label="Clear Notes If Empty" onClick={() => clearNotes(true)} />
       <Button label="Dictionary" icon="fa fa-book" onClick={() => navigate('/words-dict/unit/0')} />
     </>
   );

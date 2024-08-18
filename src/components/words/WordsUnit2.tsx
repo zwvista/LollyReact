@@ -105,6 +105,10 @@ export default function WordsUnit2() {
     wordsUnitService.getNotes(ifEmpty, () => {}, () => {});
   };
 
+  const clearNotes = (ifEmpty: boolean) => {
+    wordsUnitService.clearNotes(ifEmpty, () => {}, () => {});
+  };
+
   const showDetailDialog = (id: number) => {
     setDetailId(id);
     setShowDetail(true);
@@ -151,16 +155,16 @@ export default function WordsUnit2() {
         <Button variant="contained" color="primary" onClick={onRefresh}>
           <span><FontAwesomeIcon icon={faSync} />Refresh</span>
         </Button>
-        <Button hidden={!settingsService.selectedDictNote} variant="contained" color="warning">
+        <Button hidden={!settingsService.selectedDictNote} variant="contained" color="warning" onClick={() => getNotes(false)}>
           Get All Notes
         </Button>
-        <Button hidden={!settingsService.selectedDictNote} variant="contained" color="warning">
+        <Button hidden={!settingsService.selectedDictNote} variant="contained" color="warning" onClick={() => getNotes(true)}>
           Get Notes If Empty
         </Button>
-        <Button hidden={!settingsService.selectedDictNote} variant="contained" color="warning">
+        <Button hidden={!settingsService.selectedDictNote} variant="contained" color="warning" onClick={() => clearNotes(false)}>
           Clear All Notes
         </Button>
-        <Button hidden={!settingsService.selectedDictNote} variant="contained" color="warning">
+        <Button hidden={!settingsService.selectedDictNote} variant="contained" color="warning" onClick={() => clearNotes(true)}>
           Clear Notes If Empty
         </Button>
         <Button variant="contained" color="primary" onClick={() => navigate('/words-dict/unit/0')}>
