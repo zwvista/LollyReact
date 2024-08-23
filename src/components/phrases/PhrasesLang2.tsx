@@ -83,11 +83,9 @@ export default function PhrasesLang2() {
 
   useEffect(() => {
     (async () => {
-      if (appService.isInitialized) {
-        await appService.getData();
-        setRows(settingsService.USROWSPERPAGE);
-        onRefresh();
-      }
+      await appService.getData();
+      setRows(settingsService.USROWSPERPAGE);
+      onRefresh();
     })();
   }, []);
 

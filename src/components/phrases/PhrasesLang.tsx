@@ -80,10 +80,8 @@ export default function PhrasesLang() {
 
   useEffect(() => {
     (async () => {
-      if (appService.isInitialized) {
-        await phrasesLangService.getData(page, rows, filter, filterType);
-        forceUpdate();
-      }
+      await phrasesLangService.getData(page, rows, filter, filterType);
+      forceUpdate();
     })();
   }, [refreshCount]);
 
