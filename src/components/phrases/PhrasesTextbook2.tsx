@@ -96,6 +96,7 @@ export default function PhrasesTextbook2() {
   }, []);
 
   useEffect(() => {
+    if (!appService.isInitialized) return;
     (async () => {
       await phrasesUnitService.getDataInLang(page, rows, filter, filterType, textbookFilter);
       forceUpdate();

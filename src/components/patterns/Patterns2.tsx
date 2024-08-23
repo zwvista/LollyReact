@@ -89,6 +89,7 @@ export default function Patterns2() {
   }, []);
 
   useEffect(() => {
+    if (!appService.isInitialized) return;
     (async () => {
       await patternsService.getData(page, rows, filter, filterType);
       forceUpdate();

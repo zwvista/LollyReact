@@ -98,6 +98,7 @@ export default function WordsTextbook() {
   }, []);
 
   useEffect(() => {
+    if (!appService.isInitialized) return;
     (async () => {
       // https://stackoverflow.com/questions/4228356/integer-division-with-remainder-in-javascript
       await wordsUnitService.getDataInLang(page, rows, filter, filterType, textbookFilter);

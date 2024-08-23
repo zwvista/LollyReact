@@ -122,6 +122,7 @@ export default function WordsUnit2() {
   }, []);
 
   useEffect(() => {
+    if (!appService.isInitialized) return;
     (async () => {
       await wordsUnitService.getDataInTextbook(filter, filterType);
       forceUpdate();
