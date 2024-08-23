@@ -86,10 +86,8 @@ export default function PhrasesUnit2() {
 
   useEffect(() => {
     (async () => {
-      if (appService.isInitialized) {
-        await phrasesUnitService.getDataInTextbook(filter, filterType);
-        forceUpdate();
-      }
+      await phrasesUnitService.getDataInTextbook(filter, filterType);
+      forceUpdate();
     })();
   }, [refreshCount]);
 
