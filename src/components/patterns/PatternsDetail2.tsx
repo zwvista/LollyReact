@@ -32,19 +32,23 @@ export default function PatternsDetail2(
       <DialogContent>
         <div className="grid mt-2 mb-2">
           <label className="col-4" htmlFor="ID">ID:</label>
-          <TextField className="col-8" id="ID" value={item.ID.toString()} disabled />
+          <TextField className="col-8" id="ID" value={item.ID.toString()} disabled/>
         </div>
         <div className="grid mb-2">
           <label className="col-4" htmlFor="PATTERN">PATTERN:</label>
-          <TextField className="col-8" id="PATTERN" value={item.PATTERN} onChange={onChangeInput} />
-        </div>
-        <div className="grid mb-2">
-          <label className="col-4" htmlFor="NOTE">NOTE:</label>
-          <TextField className="col-8" id="NOTE" value={item.NOTE} onChange={onChangeInput} />
+          <TextField className="col-8" id="PATTERN" value={item.PATTERN} onChange={onChangeInput}/>
         </div>
         <div className="grid mb-2">
           <label className="col-4" htmlFor="TAGS">TAGS:</label>
-          <TextField className="col-8" id="TAGS" value={item.TAGS} onChange={onChangeInput} />
+          <TextField className="col-8" id="TAGS" value={item.TAGS} onChange={onChangeInput}/>
+        </div>
+        <div className="grid mb-2">
+          <label className="col-4" htmlFor="TITLE">TITLE:</label>
+          <TextField className="col-8" id="TITLE" value={item.TITLE} onChange={onChangeInput}/>
+        </div>
+        <div className="grid mb-2">
+          <label className="col-4" htmlFor="URL">URL:</label>
+          <TextField className="col-8" id="URL" value={item.URL} onChange={onChangeInput}/>
         </div>
         <div className="mt-4 flex justify-content-around flex-wrap">
           <Button variant="contained" className="border-round" onClick={handleCloseDialog}>Cancel</Button>

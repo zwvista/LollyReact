@@ -18,6 +18,7 @@ export class MUnitWord {
   FAMIID = 0;
   CORRECT = 0;
   TOTAL = 0;
+  isChecked = false;
 
   textbook!: MTextbook;
   get UNITSTR(): string {

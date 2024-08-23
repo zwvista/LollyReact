@@ -10,6 +10,7 @@ export class MDictionary {
   NAME = '';
   URL = '';
   CHCONV = '';
+  AUTOMATION = '';
   TRANSFORM = '';
   WAIT = 0;
   TEMPLATE = '';

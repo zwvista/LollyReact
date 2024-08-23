@@ -33,23 +33,27 @@ export default function PatternsDetail(
     <Dialog visible={isDialogOpened} style={{width: '750px'}} onHide={handleCloseDialog}>
       <div className="grid mt-2 mb-2">
         <label className="col-4" htmlFor="ID">ID:</label>
-        <InputText className="col-8" id="ID" value={item.ID.toString()} disabled />
+        <InputText className="col-8" id="ID" value={item.ID.toString()} disabled/>
       </div>
       <div className="grid mb-2">
         <label className="col-4" htmlFor="PATTERN">PATTERN:</label>
-        <InputText className="col-8" id="PATTERN" value={item.PATTERN} onChange={onChangeInput} />
-      </div>
-      <div className="grid mb-2">
-        <label className="col-4" htmlFor="NOTE">NOTE:</label>
-        <InputText className="col-8" id="NOTE" value={item.NOTE} onChange={onChangeInput} />
+        <InputText className="col-8" id="PATTERN" value={item.PATTERN} onChange={onChangeInput}/>
       </div>
       <div className="grid mb-2">
         <label className="col-4" htmlFor="TAGS">TAGS:</label>
-        <InputText className="col-8" id="TAGS" value={item.TAGS} onChange={onChangeInput} />
+        <InputText className="col-8" id="TAGS" value={item.TAGS} onChange={onChangeInput}/>
+      </div>
+      <div className="grid mb-2">
+        <label className="col-4" htmlFor="TITLE">TITLE:</label>
+        <InputText className="col-8" id="TITLE" value={item.TITLE} onChange={onChangeInput}/>
+      </div>
+      <div className="grid mb-2">
+        <label className="col-4" htmlFor="URL">URL:</label>
+        <InputText className="col-8" id="URL" value={item.URL} onChange={onChangeInput}/>
       </div>
       <div className="mt-4 flex justify-content-around flex-wrap">
-        <Button className="border-round" label="Cancel" onClick={handleCloseDialog} />
-        <Button className="border-round" label="Save" onClick={save} />
+        <Button className="border-round" label="Cancel" onClick={handleCloseDialog}/>
+        <Button className="border-round" label="Save" onClick={save}/>
       </div>
     </Dialog>
   );

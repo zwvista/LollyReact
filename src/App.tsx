@@ -8,8 +8,6 @@ import 'reflect-metadata';
 import { container } from "tsyringe";
 import { AppService } from './view-models/misc/app.service';
 
-import Settings from './components/misc/Settings';
-
 import "primereact/resources/themes/lara-light-cyan/theme.css";
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';

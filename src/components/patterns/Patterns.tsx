@@ -121,8 +121,9 @@ export default function Patterns() {
       <DataTable value={patternsService.patterns} selectionMode="single">
         <Column style={{width:'80px'}} field="ID" header="ID" />
         <Column field="PATTERN" header="PATTERN" />
-        <Column field="NOTE" header="NOTE" />
         <Column field="TAGS" header="TAGS" />
+        <Column field="TITLE" header="TITLE" />
+        <Column field="URL" header="URL" />
         <Column style={{width:'20%'}} body={actionTemplate} header="ACTIONS" />
       </DataTable>
       <Paginator first={first} rows={rows} onPageChange={onPageChange}

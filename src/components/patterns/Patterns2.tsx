@@ -134,8 +134,9 @@ export default function Patterns2() {
           <TableRow>
             <TableCell>ID</TableCell>
             <TableCell>PATTERN</TableCell>
-            <TableCell>NOTE</TableCell>
             <TableCell>TAGS</TableCell>
+            <TableCell>TITLE</TableCell>
+            <TableCell>URL</TableCell>
             <TableCell>ACTIONS</TableCell>
           </TableRow>
         </TableHead>
@@ -144,8 +145,9 @@ export default function Patterns2() {
             <TableRow key={row.ID}>
               <TableCell>{row.ID}</TableCell>
               <TableCell>{row.PATTERN}</TableCell>
-              <TableCell>{row.NOTE}</TableCell>
               <TableCell>{row.TAGS}</TableCell>
+              <TableCell>{row.TITLE}</TableCell>
+              <TableCell>{row.URL}</TableCell>
               <TableCell>
                 <Tooltip title="Delete">
                   <Fab size="small" color="secondary" onClick={() => deletePattern(row.ID)}>

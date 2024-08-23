@@ -15,6 +15,7 @@ export class MUnitPhrase {
   PHRASEID = 0;
   PHRASE = '';
   TRANSLATION = '';
+  isChecked = false;
 
   textbook!: MTextbook;
   get UNITSTR(): string {
