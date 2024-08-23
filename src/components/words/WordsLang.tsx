@@ -63,6 +63,10 @@ export default function WordsLang() {
     await wordsLangService.getNote(item);
   };
 
+  const clearNote = async (item: MLangWord) => {
+    await wordsLangService.clearNote(item);
+  };
+
   // https://stackoverflow.com/questions/42775017/angular-2-redirect-to-an-external-url-and-open-in-a-new-tab
   const googleWord = (WORD: string) => {
     window.open('https://www.google.com/search?q=' + encodeURIComponent(WORD), '_blank');
@@ -109,6 +113,7 @@ export default function WordsLang() {
       <Button icon="fa fa-book" onClick={() => dictWord(rowData)}
               tooltip="Dictionary" tooltipOptions={{position: 'top'}}/>
       <Button hidden={!settingsService.selectedDictNote} severity="warning" label="Get Note" onClick={() => getNote(rowData)} />
+      <Button hidden={!settingsService.selectedDictNote} severity="warning" label="Get Note" onClick={() => clearNote(rowData)} />
     </div>;
   };
 
