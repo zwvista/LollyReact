@@ -213,7 +213,7 @@ export default function WordsLang2() {
                 </Button>
                 <Button variant="contained" color="warning" hidden={!settingsService.selectedDictNote}
                         onClick={() => clearNote(row)}>
-                  Get Note
+                  Clear Note
                 </Button>
               </TableCell>
             </TableRow>
