@@ -123,8 +123,10 @@ export default function WordsUnit2() {
 
   useEffect(() => {
     (async () => {
-      await wordsUnitService.getDataInTextbook(filter, filterType);
-      forceUpdate();
+      if (appService.isInitialized) {
+        await wordsUnitService.getDataInTextbook(filter, filterType);
+        forceUpdate();
+      }
     })();
   }, [refreshCount]);
 
