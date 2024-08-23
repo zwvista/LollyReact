@@ -99,9 +99,11 @@ export default function WordsTextbook() {
 
   useEffect(() => {
     (async () => {
-      // https://stackoverflow.com/questions/4228356/integer-division-with-remainder-in-javascript
-      await wordsUnitService.getDataInLang(page, rows, filter, filterType, textbookFilter);
-      forceUpdate();
+      if (appService.isInitialized) {
+        // https://stackoverflow.com/questions/4228356/integer-division-with-remainder-in-javascript
+        await wordsUnitService.getDataInLang(page, rows, filter, filterType, textbookFilter);
+        forceUpdate();
+      }
     })();
   }, [refreshCount]);
 

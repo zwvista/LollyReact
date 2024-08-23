@@ -79,8 +79,10 @@ export default function Patterns() {
 
   useEffect(() => {
     (async () => {
-      await patternsService.getData(page, rows, filter, filterType);
-      forceUpdate();
+      if (appService.isInitialized) {
+        await patternsService.getData(page, rows, filter, filterType);
+        forceUpdate();
+      }
     })();
   }, [refreshCount]);
 

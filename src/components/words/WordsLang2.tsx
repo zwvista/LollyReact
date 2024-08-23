@@ -114,8 +114,10 @@ export default function WordsLang2() {
 
   useEffect(() => {
     (async () => {
-      await wordsLangService.getData(page, rows, filter, filterType);
-      forceUpdate();
+      if (appService.isInitialized) {
+        await wordsLangService.getData(page, rows, filter, filterType);
+        forceUpdate();
+      }
     })();
   }, [refreshCount]);
 
