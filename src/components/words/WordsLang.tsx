@@ -113,7 +113,7 @@ export default function WordsLang() {
       <Button icon="fa fa-book" onClick={() => dictWord(rowData)}
               tooltip="Dictionary" tooltipOptions={{position: 'top'}}/>
       <Button hidden={!settingsService.selectedDictNote} severity="warning" label="Get Note" onClick={() => getNote(rowData)} />
-      <Button hidden={!settingsService.selectedDictNote} severity="warning" label="Get Note" onClick={() => clearNote(rowData)} />
+      <Button hidden={!settingsService.selectedDictNote} severity="warning" label="Clear Note" onClick={() => clearNote(rowData)} />
     </div>;
   };
 
