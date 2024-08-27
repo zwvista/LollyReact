@@ -6,7 +6,7 @@ import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import '../misc/Common.css'
 import { Toolbar } from 'primereact/toolbar';
-import * as CopyToClipboard from 'react-copy-to-clipboard';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { googleString } from '../../common/common';
 import { SettingsService } from '../../view-models/misc/settings.service';
 import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';

@@ -26,7 +26,7 @@ import {
   faTrash,
   faVolumeUp
 } from '@fortawesome/free-solid-svg-icons';
-import * as CopyToClipboard from 'react-copy-to-clipboard';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { MUnitPhrase } from '../../models/wpp/unit-phrase';
 import { googleString } from '../../common/common';

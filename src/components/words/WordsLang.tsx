@@ -9,7 +9,7 @@ import { Button } from 'primereact/button';
 import '../misc/Common.css'
 import { Toolbar } from 'primereact/toolbar';
 import { InputText } from 'primereact/inputtext';
-import * as CopyToClipboard from 'react-copy-to-clipboard';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { SettingsService } from '../../view-models/misc/settings.service';
 import { MLangWord } from '../../models/wpp/lang-word';
 import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
