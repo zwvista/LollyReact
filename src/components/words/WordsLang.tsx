@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { KeyboardEvent, SyntheticEvent, useEffect, useReducer, useState } from 'react';
-import { WordsLangService } from '../../view-models/wpp/words-lang.service';
+import { WordsLangService } from '../../shared/view-models/wpp/words-lang.service';
 import { container } from "tsyringe";
 import { DataTable } from 'primereact/datatable';
 import { Paginator, PaginatorPageChangeEvent } from 'primereact/paginator';
@@ -10,10 +10,10 @@ import '../misc/Common.css'
 import { Toolbar } from 'primereact/toolbar';
 import { InputText } from 'primereact/inputtext';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { SettingsService } from '../../view-models/misc/settings.service';
-import { MLangWord } from '../../models/wpp/lang-word';
+import { SettingsService } from '../../shared/view-models/misc/settings.service';
+import { MLangWord } from '../../shared/models/wpp/lang-word';
 import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
-import { AppService } from '../../view-models/misc/app.service';
+import { AppService } from '../../shared/view-models/misc/app.service';
 import { useNavigate } from "react-router-dom";
 import { FloatLabel } from "primereact/floatlabel";
 import WordsLangDetail from "./WordsLangDetail";

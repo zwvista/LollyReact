@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { container } from "tsyringe";
-import { SettingsService } from '../../view-models/misc/settings.service';
+import { SettingsService } from '../../shared/view-models/misc/settings.service';
 import './Common.css'
 import { ChangeEvent, MouseEvent, useEffect, useMemo, useReducer } from "react";
 

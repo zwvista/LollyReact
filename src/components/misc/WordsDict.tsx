@@ -1,16 +1,16 @@
 import * as React from 'react';
-import { WordsUnitService } from '../../view-models/wpp/words-unit.service';
+import { WordsUnitService } from '../../shared/view-models/wpp/words-unit.service';
 import { container } from "tsyringe";
 import './Common.css'
 import { Toolbar } from 'primereact/toolbar';
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
-import { SettingsService } from '../../view-models/misc/settings.service';
+import { SettingsService } from '../../shared/view-models/misc/settings.service';
 import DictBrowser from './DictBrowser';
 import { ListBox } from 'primereact/listbox';
-import { MDictionary } from '../../models/misc/dictionary';
-import { HtmlService } from '../../services/misc/html.service';
-import { WordsLangService } from '../../view-models/wpp/words-lang.service';
+import { MDictionary } from '../../shared/models/misc/dictionary';
+import { HtmlService } from '../../shared/services/misc/html.service';
+import { WordsLangService } from '../../shared/view-models/wpp/words-lang.service';
 
 export default class WordsDict extends React.Component<any, any> {
   wordsUnitService = container.resolve(WordsUnitService);

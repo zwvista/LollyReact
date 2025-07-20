@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { PhrasesLangService } from '../../view-models/wpp/phrases-lang.service';
+import { PhrasesLangService } from '../../shared/view-models/wpp/phrases-lang.service';
 import '../misc/Common.css'
 import { container } from "tsyringe";
-import { SettingsService } from '../../view-models/misc/settings.service';
+import { SettingsService } from '../../shared/view-models/misc/settings.service';
 import { ChangeEvent, useReducer, useState } from "react";
-import { MLangPhrase } from "../../models/wpp/lang-phrase";
+import { MLangPhrase } from "../../shared/models/wpp/lang-phrase";
 import { Button, Dialog, DialogContent, TextField } from "@mui/material";
 
 export default function PhrasesLangDetail2(

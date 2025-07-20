@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { WordsLangService } from '../../view-models/wpp/words-lang.service';
+import { WordsLangService } from '../../shared/view-models/wpp/words-lang.service';
 import { Button } from 'primereact/button';
 import '../misc/Common.css'
 import { InputText } from 'primereact/inputtext';
 import { container } from "tsyringe";
-import { SettingsService } from '../../view-models/misc/settings.service';
+import { SettingsService } from '../../shared/view-models/misc/settings.service';
 import { Dialog } from "primereact/dialog";
 import { ChangeEvent, useReducer, useState } from "react";
-import { MLangWord } from "../../models/wpp/lang-word";
+import { MLangWord } from "../../shared/models/wpp/lang-word";
 
 export default function WordsLangDetail(
   {id, isDialogOpened, handleCloseDialog}: {id: number, isDialogOpened: boolean, handleCloseDialog: () => void}

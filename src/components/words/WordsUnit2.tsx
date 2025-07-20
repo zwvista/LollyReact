@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { WordsUnitService } from '../../view-models/wpp/words-unit.service';
+import { WordsUnitService } from '../../shared/view-models/wpp/words-unit.service';
 import { container } from "tsyringe";
 import '../misc/Common.css'
-import { SettingsService } from '../../view-models/misc/settings.service';
+import { SettingsService } from '../../shared/view-models/misc/settings.service';
 import {
   Button,
   Fab, MenuItem, Select, SelectChangeEvent,
@@ -27,11 +27,11 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
-import { MUnitWord } from '../../models/wpp/unit-word';
+import { MUnitWord } from '../../shared/models/wpp/unit-word';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { ChangeEvent, ReactNode, SyntheticEvent, useEffect, useReducer, useState } from 'react';
 import { KeyboardEvent } from 'react';
-import { AppService } from '../../view-models/misc/app.service';
+import { AppService } from '../../shared/view-models/misc/app.service';
 import { useNavigate } from "react-router-dom";
 import WordsUnitDetail2 from "./WordsUnitDetail2";
 

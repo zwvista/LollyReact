@@ -1,14 +1,14 @@
 import * as React from 'react';
-import { WordsUnitService } from '../../view-models/wpp/words-unit.service';
+import { WordsUnitService } from '../../shared/view-models/wpp/words-unit.service';
 import { Button } from 'primereact/button';
 import '../misc/Common.css'
 import { InputText } from 'primereact/inputtext';
 import { container } from "tsyringe";
-import { SettingsService } from '../../view-models/misc/settings.service';
+import { SettingsService } from '../../shared/view-models/misc/settings.service';
 import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
 import { ChangeEvent, useReducer, useState } from "react";
 import { Dialog } from "primereact/dialog";
-import { MUnitWord } from "../../models/wpp/unit-word";
+import { MUnitWord } from "../../shared/models/wpp/unit-word";
 
 export default function WordsUnitDetail(
   {id, isDialogOpened, handleCloseDialog}: {id: number, isDialogOpened: boolean, handleCloseDialog: () => void}

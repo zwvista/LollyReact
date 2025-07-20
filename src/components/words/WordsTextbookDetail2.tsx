@@ -1,10 +1,10 @@
 import * as React from 'react';
 import '../misc/Common.css'
 import { container } from "tsyringe";
-import { SettingsService } from '../../view-models/misc/settings.service';
-import { WordsUnitService } from '../../view-models/wpp/words-unit.service';
+import { SettingsService } from '../../shared/view-models/misc/settings.service';
+import { WordsUnitService } from '../../shared/view-models/wpp/words-unit.service';
 import { ChangeEvent, useReducer } from "react";
-import { MUnitWord } from "../../models/wpp/unit-word";
+import { MUnitWord } from "../../shared/models/wpp/unit-word";
 import { Button, Dialog, DialogContent, MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material";
 
 export default function WordsTextbookDetail2(

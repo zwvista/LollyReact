@@ -1,10 +1,10 @@
 import * as React from 'react';
 import '../misc/Common.css'
 import { container } from "tsyringe";
-import { SettingsService } from '../../view-models/misc/settings.service';
-import { PhrasesUnitService } from '../../view-models/wpp/phrases-unit.service';
+import { SettingsService } from '../../shared/view-models/misc/settings.service';
+import { PhrasesUnitService } from '../../shared/view-models/wpp/phrases-unit.service';
 import { ChangeEvent, useReducer, useState } from "react";
-import { MUnitPhrase } from "../../models/wpp/unit-phrase";
+import { MUnitPhrase } from "../../shared/models/wpp/unit-phrase";
 import { Button, Dialog, DialogContent, MenuItem, Select, SelectChangeEvent, TextField } from "@mui/material";
 
 export default function PhrasesTextbookDetail2(

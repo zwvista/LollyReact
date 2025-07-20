@@ -7,14 +7,14 @@ import { Button } from 'primereact/button';
 import '../misc/Common.css'
 import { Toolbar } from 'primereact/toolbar';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { SettingsService } from '../../view-models/misc/settings.service';
-import { WordsUnitService } from '../../view-models/wpp/words-unit.service';
-import { MUnitWord } from '../../models/wpp/unit-word';
+import { SettingsService } from '../../shared/view-models/misc/settings.service';
+import { WordsUnitService } from '../../shared/view-models/wpp/words-unit.service';
+import { MUnitWord } from '../../shared/models/wpp/unit-word';
 import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 import { SyntheticEvent, useEffect, useReducer, useState } from 'react';
 import { KeyboardEvent } from 'react';
-import { AppService } from '../../view-models/misc/app.service';
+import { AppService } from '../../shared/view-models/misc/app.service';
 import { useNavigate } from "react-router-dom";
 import { FloatLabel } from "primereact/floatlabel";
 import WordsTextbookDetail from "./WordsTextbookDetail";

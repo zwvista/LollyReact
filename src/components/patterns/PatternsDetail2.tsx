@@ -1,10 +1,10 @@
 import * as React from 'react';
 import '../misc/Common.css'
 import { container } from "tsyringe";
-import { SettingsService } from '../../view-models/misc/settings.service';
-import { PatternsService } from '../../view-models/wpp/patterns.service';
+import { SettingsService } from '../../shared/view-models/misc/settings.service';
+import { PatternsService } from '../../shared/view-models/wpp/patterns.service';
 import { ChangeEvent, useReducer, useState } from "react";
-import { MPattern } from "../../models/wpp/pattern";
+import { MPattern } from "../../shared/models/wpp/pattern";
 import { Button, Dialog, DialogContent, TextField } from "@mui/material";
 
 export default function PatternsDetail2(

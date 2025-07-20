@@ -3,12 +3,12 @@ import { Button } from 'primereact/button';
 import '../misc/Common.css'
 import { InputText } from 'primereact/inputtext';
 import { container } from "tsyringe";
-import { SettingsService } from '../../view-models/misc/settings.service';
+import { SettingsService } from '../../shared/view-models/misc/settings.service';
 import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
-import { PhrasesUnitService } from '../../view-models/wpp/phrases-unit.service';
+import { PhrasesUnitService } from '../../shared/view-models/wpp/phrases-unit.service';
 import { Dialog } from "primereact/dialog";
 import { ChangeEvent, useReducer, useState } from "react";
-import { MUnitPhrase } from "../../models/wpp/unit-phrase";
+import { MUnitPhrase } from "../../shared/models/wpp/unit-phrase";
 
 export default function PhrasesTextbookDetail(
   {id, isDialogOpened, handleCloseDialog}: {id: number, isDialogOpened: boolean, handleCloseDialog: () => void}

@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { PhrasesLangService } from '../../view-models/wpp/phrases-lang.service';
+import { PhrasesLangService } from '../../shared/view-models/wpp/phrases-lang.service';
 import { Button } from 'primereact/button';
 import '../misc/Common.css'
 import { InputText } from 'primereact/inputtext';
 import { container } from "tsyringe";
-import { SettingsService } from '../../view-models/misc/settings.service';
+import { SettingsService } from '../../shared/view-models/misc/settings.service';
 import { ChangeEvent, useReducer, useState } from "react";
 import { Dialog } from 'primereact/dialog';
-import { MLangPhrase } from "../../models/wpp/lang-phrase";
+import { MLangPhrase } from "../../shared/models/wpp/lang-phrase";
 
 export default function PhrasesLangDetail(
   {id, isDialogOpened, handleCloseDialog}: {id: number, isDialogOpened: boolean, handleCloseDialog: () => void}

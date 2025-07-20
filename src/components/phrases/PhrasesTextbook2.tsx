@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { container } from "tsyringe";
 import '../misc/Common.css'
-import { SettingsService } from '../../view-models/misc/settings.service';
+import { SettingsService } from '../../shared/view-models/misc/settings.service';
 import {
   Button,
   Fab, MenuItem, Select, SelectChangeEvent,
@@ -14,17 +14,17 @@ import {
   Toolbar,
   Tooltip
 } from '@mui/material';
-import { PhrasesUnitService } from '../../view-models/wpp/phrases-unit.service';
+import { PhrasesUnitService } from '../../shared/view-models/wpp/phrases-unit.service';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCopy, faEdit, faPlus, faSync, faTrash, faVolumeUp } from '@fortawesome/free-solid-svg-icons';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
-import { googleString } from '../../common/common';
-import { MUnitPhrase } from '../../models/wpp/unit-phrase';
+import { googleString } from '../../shared/common/common';
+import { MUnitPhrase } from '../../shared/models/wpp/unit-phrase';
 import { SyntheticEvent, useEffect, useReducer, useState } from 'react';
 import { KeyboardEvent } from 'react';
 import { ReactNode } from 'react';
-import { AppService } from '../../view-models/misc/app.service';
+import { AppService } from '../../shared/view-models/misc/app.service';
 import { useNavigate } from "react-router-dom";
 import PhrasesTextbookDetail2 from "./PhrasesTextbookDetail2";
 

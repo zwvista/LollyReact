@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { KeyboardEvent, SyntheticEvent, useEffect, useReducer, useState } from 'react';
-import { WordsUnitService } from '../../view-models/wpp/words-unit.service';
+import { WordsUnitService } from '../../shared/view-models/wpp/words-unit.service';
 import { container } from "tsyringe";
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
@@ -9,10 +9,10 @@ import '../misc/Common.css'
 import { Toolbar } from 'primereact/toolbar';
 import { InputText } from 'primereact/inputtext';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { SettingsService } from '../../view-models/misc/settings.service';
-import { MUnitWord } from '../../models/wpp/unit-word';
+import { SettingsService } from '../../shared/view-models/misc/settings.service';
+import { MUnitWord } from '../../shared/models/wpp/unit-word';
 import { Dropdown, DropdownChangeEvent } from 'primereact/dropdown';
-import { AppService } from '../../view-models/misc/app.service';
+import { AppService } from '../../shared/view-models/misc/app.service';
 import { useNavigate } from "react-router-dom";
 import { FloatLabel } from "primereact/floatlabel";
 import WordsUnitDetail from "./WordsUnitDetail";

@@ -3,11 +3,11 @@ import { Button } from 'primereact/button';
 import '../misc/Common.css'
 import { InputText } from 'primereact/inputtext';
 import { container } from "tsyringe";
-import { SettingsService } from '../../view-models/misc/settings.service';
-import { PatternsService } from '../../view-models/wpp/patterns.service';
+import { SettingsService } from '../../shared/view-models/misc/settings.service';
+import { PatternsService } from '../../shared/view-models/wpp/patterns.service';
 import { Dialog } from 'primereact/dialog';
 import { ChangeEvent, useReducer, useState } from "react";
-import { MPattern } from "../../models/wpp/pattern";
+import { MPattern } from "../../shared/models/wpp/pattern";
 
 export default function PatternsDetail(
   {id, isDialogOpened, handleCloseDialog}: {id: number, isDialogOpened: boolean, handleCloseDialog: () => void}

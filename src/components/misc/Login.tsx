@@ -3,9 +3,9 @@ import { Button } from 'primereact/button';
 import './Common.css'
 import { InputText } from 'primereact/inputtext';
 import { container } from "tsyringe";
-import { GlobalVars } from '../../common/common';
+import { GlobalVars } from '../../shared/common/common';
 import { Password } from 'primereact/password';
-import { LoginService } from '../../view-models/misc/login.service';
+import { LoginService } from '../../shared/view-models/misc/login.service';
 import { ChangeEvent, useReducer } from "react";
 
 export default function Login() {

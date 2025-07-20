@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { container } from "tsyringe";
 import '../misc/Common.css'
-import { SettingsService } from '../../view-models/misc/settings.service';
+import { SettingsService } from '../../shared/view-models/misc/settings.service';
 import {
   Button,
   Fab, MenuItem, Select, SelectChangeEvent,
@@ -14,7 +14,7 @@ import {
   Toolbar,
   Tooltip
 } from '@mui/material';
-import { WordsLangService } from '../../view-models/wpp/words-lang.service';
+import { WordsLangService } from '../../shared/view-models/wpp/words-lang.service';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faArrowDown,
@@ -31,9 +31,9 @@ import { SyntheticEvent, useEffect, useReducer, useState } from 'react';
 import { KeyboardEvent } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
-import { MLangWord } from '../../models/wpp/lang-word';
+import { MLangWord } from '../../shared/models/wpp/lang-word';
 import { ReactNode } from 'react';
-import { AppService } from '../../view-models/misc/app.service';
+import { AppService } from '../../shared/view-models/misc/app.service';
 import { useNavigate } from "react-router-dom";
 import WordsLangDetail2 from "./WordsLangDetail2";
 

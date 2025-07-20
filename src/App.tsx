@@ -6,7 +6,7 @@ import { AppBar, Tab, Tabs } from '@mui/material';
 
 import 'reflect-metadata';
 import { container } from "tsyringe";
-import { AppService } from './view-models/misc/app.service';
+import { AppService } from './shared/view-models/misc/app.service';
 
 import "primereact/resources/themes/lara-light-cyan/theme.css";
 import 'primereact/resources/primereact.min.css';
@@ -24,7 +24,7 @@ import { far } from "@fortawesome/free-regular-svg-icons";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { GlobalVars } from './common/common';
+import { GlobalVars } from './shared/common/common';
 import Login from './components/misc/Login';
 import { useState } from "react";
 
