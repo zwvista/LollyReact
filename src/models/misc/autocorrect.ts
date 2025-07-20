@@ -1,5 +1,5 @@
-export class MAutoCorrects {
-  records!: MAutoCorrect[];
+export interface MAutoCorrects {
+  records: MAutoCorrect[];
 }
 
 export class MAutoCorrect {

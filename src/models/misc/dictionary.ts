@@ -1,6 +1,9 @@
 import { autoCorrect, MAutoCorrect } from './autocorrect';
 import { HtmlService } from '../../services/misc/html.service';
 
+export interface MDictionaries {
+  records: MDictionary[];
+}
 export class MDictionary {
   ID = 0;
   DICTID = 0;
@@ -27,10 +30,6 @@ export class MDictionary {
     return HtmlService.extractTextFrom(html, this.TRANSFORM, this.TEMPLATE, (text, template2) =>
       template2.replace(/\{0\}/g, word).replace(/\{1\}/g, cssFolder).replace(/\{2\}/g, text));
   }
-}
-
-export class MDictionaries {
-  records!: MDictionary[];
 }
 
 const cssFolder = 'http://zwvista.com/lolly/css/';

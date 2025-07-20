@@ -1,8 +1,5 @@
 import { BaseService } from './base.service';
-import {
-  MDictionary,
-  MDictionaries,
-} from '../../models/misc/dictionary';
+import { MDictionaries, MDictionary, } from '../../models/misc/dictionary';
 import { singleton } from 'tsyringe';
 
 @singleton()

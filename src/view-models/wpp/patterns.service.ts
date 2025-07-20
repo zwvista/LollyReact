@@ -17,7 +17,7 @@ export class PatternsService {
 
   async getData(page: number, rows: number, filter: string, filterType: number) {
     await this.appService.getData();
-    const res = await this.patternService.getDataByLang(this.settingsService.selectedLang.ID, page, rows, filter, filterType);
+    const res = await this.patternService.getDataByLang(this.settingsService.selectedLang.ID, filter, filterType, page, rows);
     this.patterns = res.records;
     this.patternCount = res.results;
   }

@@ -1,5 +1,5 @@
-export class MUserSettings {
-  records!: MUserSetting[];
+export interface MUserSettings {
+  records: MUserSetting[];
 }
 export class MUserSetting {
   ID!: number;

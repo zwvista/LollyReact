@@ -1,7 +1,7 @@
 import { MSelectItem } from '../../common/selectitem';
 
-export class MTextbooks {
-  records!: MTextbook[];
+export interface MTextbooks {
+  records: MTextbook[];
 }
 export class MTextbook {
   ID = 0;
@@ -9,6 +9,7 @@ export class MTextbook {
   NAME = '';
   UNITS = '';
   PARTS = '';
+  ONLINE = 0;
 
   units: MSelectItem[] = [];
   parts: MSelectItem[] = [];

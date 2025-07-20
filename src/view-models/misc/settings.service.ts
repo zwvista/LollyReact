@@ -226,7 +226,7 @@ export class SettingsService {
     this.INFO_USDICTREFERENCE = this.getUSInfo(MUSMapping.NAME_USDICTREFERENCE);
     this.INFO_USDICTNOTE = this.getUSInfo(MUSMapping.NAME_USDICTNOTE);
     this.INFO_USDICTTRANSLATION = this.getUSInfo(MUSMapping.NAME_USDICTTRANSLATION);
-    this.INFO_USVOICE = this.getUSInfo(MUSMapping.NAME_USVOICE);
+    this.INFO_USVOICE = this.getUSInfo(MUSMapping.NAME_USVOICE_WEB);
     const res = await Promise.all([
       this.dictionaryService.getDictsReference(this.USLANG),
       this.dictionaryService.getDictsNote(this.USLANG),

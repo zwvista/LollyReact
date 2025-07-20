@@ -1,5 +1,5 @@
-export class MWordsFami {
-  records!: MWordFami[];
+export interface MWordsFami {
+  records: MWordFami[];
 }
 export class MWordFami {
   ID = 0;

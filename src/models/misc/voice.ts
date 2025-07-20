@@ -1,5 +1,5 @@
-export class MVoices {
-  records!: MVoice[];
+export interface MVoices {
+  records: MVoice[];
 }
 export class MVoice {
   ID = 0;

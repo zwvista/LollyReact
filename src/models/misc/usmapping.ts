@@ -1,5 +1,5 @@
-export class MUSMappings {
-  records!: MUSMapping[];
+export interface MUSMappings {
+  records: MUSMapping[];
 }
 export class MUSMapping {
   ID = 0;
@@ -17,7 +17,9 @@ export class MUSMapping {
   static NAME_USDICTREFERENCE = 'USDICTREFERENCE';
   static NAME_USDICTNOTE = 'USDICTNOTE';
   static NAME_USDICTTRANSLATION = 'USDICTTRANSLATION';
-  static NAME_USVOICE = 'USWEBVOICE';
+  static NAME_USVOICE_WEB = 'USWEBVOICE';
+  static NAME_USVOICE_IOS = 'USIOSVOICE';
+  static NAME_USVOICE_ANDROID = 'USANDROIDVOICE';
 
   static NAME_USUNITFROM = 'USUNITFROM';
   static NAME_USPARTFROM = 'USPARTFROM';

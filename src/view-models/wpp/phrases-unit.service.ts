@@ -28,7 +28,7 @@ export class PhrasesUnitService {
   async getDataInLang(page: number, rows: number, filter: string, filterType: number, textbookFilter: number) {
     await this.appService.getData();
     const res = await this.unitPhraseService.getDataByLang(this.settingsService.selectedLang.ID,
-        this.settingsService.textbooks, page, rows, filter, filterType, textbookFilter);
+        this.settingsService.textbooks, filter, filterType, textbookFilter, page, rows);
     this.textbookPhrases = res.records;
     this.textbookPhraseCount = res.results;
   }

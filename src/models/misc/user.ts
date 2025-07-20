@@ -1,5 +1,5 @@
-export class MUsers {
-  records!: MUser[];
+export interface MUsers {
+  records: MUser[];
 }
 export class MUser {
   ID = 0;

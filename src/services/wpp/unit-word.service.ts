@@ -18,12 +18,24 @@ export class UnitWordService extends BaseService {
     return result2;
   }
 
-  async getDataByLang(langid: number, textbooks: MTextbook[], page: number, rows: number, filter: string, filterType: number, textbookFilter: number): Promise<MUnitWords> {
-    let url = `${this.baseUrlAPI}VUNITWORDS?filter=LANGID,eq,${langid}&order=TEXTBOOKID&order=UNIT&order=PART&order=SEQNUM&page=${page},${rows}`;
+  async getDataByTextbook(textbook: MTextbook): Promise<MUnitWord[]> {
+    let url = `${this.baseUrlAPI}VUNITWORDS?filter=TEXTBOOKID,eq,${textbook.ID}&order=UNITPART&order=SEQNUM`;
+    const result = await this.httpGet<MUnitWords>(url);
+    const result2 = result.records.map(value => Object.assign(new MUnitWord(), value));
+    result2.forEach(o => o.textbook = textbook);
+    return result2;
+  }
+
+  async getDataByLang(langid: number, textbooks: MTextbook[], filter: string, filterType: number, textbookFilter: number): Promise<MUnitWords>;
+  async getDataByLang(langid: number, textbooks: MTextbook[], filter: string, filterType: number, textbookFilter: number, page: number, rows: number): Promise<MUnitWords>;
+  async getDataByLang(langid: number, textbooks: MTextbook[], filter: string, filterType: number, textbookFilter: number, page?: number, rows?: number): Promise<MUnitWords> {
+    let url = `${this.baseUrlAPI}VUNITWORDS?filter=LANGID,eq,${langid}&order=TEXTBOOKID&order=UNIT&order=PART&order=SEQNUM`;
     if (filterType !== 0 && filter)
       url += `&filter=${filterType === 1 ? 'WORD' : 'NOTE'},cs,${encodeURIComponent(filter)}`;
     if (textbookFilter !== 0)
       url += `&filter=TEXTBOOKID,eq,${textbookFilter}`;
+    if (page !== undefined && rows !== undefined)
+      url += `&page=${page},${rows}`;
     const result = await this.httpGet<MUnitWords>(url);
     return ({
       records: result.records.map(value => {
