@@ -16,12 +16,12 @@ export default function PhrasesTextbookDetail2(
   const [, forceUpdate] = useReducer(x => x + 1, 0);
 
   const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
-    item[e.target.id] = e.target.value;
+    (item as any)[e.target.id] = e.target.value;
     forceUpdate();
   };
 
   const onChangeSelect = (e: SelectChangeEvent) => {
-    item[e.target.name] = e.target.value;
+    (item as any)[e.target.name] = e.target.value;
     forceUpdate();
   };
 
