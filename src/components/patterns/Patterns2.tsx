@@ -39,18 +39,18 @@ export default function Patterns2() {
   const [page, setPage] = useState(1);
   const [filter, setFilter] = useState('');
   const [filterType, setFilterType] = useState(0);
-  const [refreshCount, onRefresh] = useReducer(x => x + 1, 0);
+  const [reloadCount, onReload] = useReducer(x => x + 1, 0);
   const [, forceUpdate] = useReducer(x => x + 1, 0);
 
   const handleChangePage = (event: any, page: any) => {
     setPage(page + 1);
-    onRefresh();
+    onReload();
   };
 
   const handleRowsPerPageChange = (event: any) => {
     setPage(1);
     setRows(event.target.value);
-    onRefresh();
+    onReload();
   };
 
   const onFilterChange = (e: SyntheticEvent) => {
@@ -59,12 +59,12 @@ export default function Patterns2() {
 
   const onFilterKeyPress = (e: KeyboardEvent) => {
     if (e.key !== 'Enter') return;
-    onRefresh();
+    onReload();
   };
 
   const onFilterTypeChange = (e: SelectChangeEvent<number>, child: ReactNode) => {
     setFilterType(Number(e.target.value));
-    onRefresh();
+    onReload();
   };
 
   const deletePattern = async (id: number) => {
@@ -84,7 +84,7 @@ export default function Patterns2() {
     (async () => {
       await appService.getData();
       setRows(settingsService.USROWSPERPAGE);
-      onRefresh();
+      onReload();
     })();
   }, []);
 
@@ -94,7 +94,7 @@ export default function Patterns2() {
       await patternsService.getData(page, rows, filter, filterType);
       forceUpdate();
     })();
-  }, [refreshCount]);
+  }, [reloadCount]);
 
   return !appService.isInitialized ? (<div/>) : (
     <div>
@@ -112,7 +112,7 @@ export default function Patterns2() {
         <Button variant="contained" color="primary" onClick={() => showDetailDialog(0)}>
           <span><FontAwesomeIcon icon={faPlus} />Add</span>
         </Button>
-        <Button variant="contained" color="primary" onClick={(e: any) => onRefresh}>
+        <Button variant="contained" color="primary" onClick={(e: any) => onReload}>
           <span><FontAwesomeIcon icon={faSync} />Refresh</span>
         </Button>
       </Toolbar>

@@ -29,13 +29,13 @@ export default function PhrasesUnit() {
 
   const [filter, setFilter] = useState('');
   const [filterType, setFilterType] = useState(0);
-  const [refreshCount, onRefresh] = useReducer(x => x + 1, 0);
+  const [reloadCount, onReload] = useReducer(x => x + 1, 0);
   const [, forceUpdate] = useReducer(x => x + 1, 0);
 
   const onReorder = (e:any) => {
     console.log(`${e.dragIndex},${e.dropIndex}`);
     phrasesUnitService.unitPhrases = e.value;
-    phrasesUnitService.reindex(index => onRefresh());
+    phrasesUnitService.reindex(index => onReload());
   };
 
   const onFilterChange = (e: SyntheticEvent) => {
@@ -44,12 +44,12 @@ export default function PhrasesUnit() {
 
   const onFilterKeyPress = (e: KeyboardEvent) => {
     if (e.key !== 'Enter') return;
-    onRefresh();
+    onReload();
   };
 
   const onFilterTypeChange = (e: DropdownChangeEvent) => {
     setFilterType(e.value);
-    onRefresh();
+    onReload();
   };
 
   const deletePhrase = async (item: MUnitPhrase) => {
@@ -68,7 +68,7 @@ export default function PhrasesUnit() {
   useEffect(() => {
     (async () => {
       await appService.getData();
-      onRefresh();
+      onReload();
     })();
   }, []);
 
@@ -78,7 +78,7 @@ export default function PhrasesUnit() {
       await phrasesUnitService.getDataInTextbook(filter, filterType);
       forceUpdate();
     })();
-  }, [refreshCount]);
+  }, [reloadCount]);
 
   const actionTemplate = (rowData: any, column: any) => {
     return <div>
@@ -104,7 +104,7 @@ export default function PhrasesUnit() {
         <label htmlFor="filter">Filter</label>
       </FloatLabel>
       <Button label="Add" icon="fa fa-plus" onClick={() => showDetailDialog(0)} />
-      <Button label="Refresh" icon="fa fa-refresh" onClick={onRefresh}/>
+      <Button label="Refresh" icon="fa fa-refresh" onClick={onReload}/>
     </>
   );
 

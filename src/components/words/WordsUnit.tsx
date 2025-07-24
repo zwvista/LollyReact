@@ -28,7 +28,7 @@ export default function WordsUnit() {
   const [newWord, setNewWord] = useState('');
   const [filter, setFilter] = useState('');
   const [filterType, setFilterType] = useState(0);
-  const [refreshCount, onRefresh] = useReducer(x => x + 1, 0);
+  const [reloadCount, onReload] = useReducer(x => x + 1, 0);
   // https://stackoverflow.com/questions/30626030/can-you-force-a-react-component-to-rerender-without-calling-setstate
   const [, forceUpdate] = useReducer(x => x + 1, 0);
 
@@ -44,13 +44,13 @@ export default function WordsUnit() {
     const id = await wordsUnitService.create(o);
     o.ID = id as number;
     wordsUnitService.unitWords.push(o);
-    onRefresh();
+    onReload();
   };
 
   const onReorder = (e:any) => {
     console.log(`${e.dragIndex},${e.dropIndex}`);
     wordsUnitService.unitWords = e.value;
-    wordsUnitService.reindex(index => onRefresh());
+    wordsUnitService.reindex(index => onReload());
   };
 
   const onFilterChange = (e: SyntheticEvent) => {
@@ -59,12 +59,12 @@ export default function WordsUnit() {
 
   const onFilterKeyPress = (e: KeyboardEvent) => {
     if (e.key !== 'Enter') return;
-    onRefresh();
+    onReload();
   };
 
   const onFilterTypeChange = (e: DropdownChangeEvent) => {
     setFilterType(e.value);
-    onRefresh();
+    onReload();
   };
 
   const deleteWord = async (item: MUnitWord) => {
@@ -73,12 +73,12 @@ export default function WordsUnit() {
 
   const getNote = async (item: MUnitWord) => {
     await wordsUnitService.getNote(item);
-    onRefresh();
+    onReload();
   };
 
   const clearNote = async (item: MUnitWord) => {
     await wordsUnitService.clearNote(item);
-    onRefresh();
+    onReload();
   };
 
   // https://stackoverflow.com/questions/42775017/angular-2-redirect-to-an-external-url-and-open-in-a-new-tab
@@ -107,7 +107,7 @@ export default function WordsUnit() {
   useEffect(() => {
     (async () => {
       await appService.getData();
-      onRefresh();
+      onReload();
     })();
   }, []);
 
@@ -117,7 +117,7 @@ export default function WordsUnit() {
       await wordsUnitService.getDataInTextbook(filter, filterType);
       forceUpdate();
     })();
-  }, [refreshCount]);
+  }, [reloadCount]);
 
   const actionTemplate = (rowData: any, column: any) => {
     return <div>
@@ -153,7 +153,7 @@ export default function WordsUnit() {
       <Button hidden={!settingsService.selectedVoice} icon="fa fa-volume-up" tooltipOptions={{position: 'top'}}
               tooltip="Speak" onClick={() => settingsService.speak(newWord)} />
       <Button label="Add" icon="fa fa-plus" onClick={() => showDetailDialog(0)} />
-      <Button label="Refresh" icon="fa fa-refresh" onClick={onRefresh}/>
+      <Button label="Refresh" icon="fa fa-refresh" onClick={onReload}/>
       <Button hidden={!settingsService.selectedDictNote} severity="warning" label="Get All Notes" onClick={() => getNotes(false)} />
       <Button hidden={!settingsService.selectedDictNote} severity="warning" label="Get Notes If Empty" onClick={() => getNotes(true)} />
       <Button hidden={!settingsService.selectedDictNote} severity="warning" label="Clear All Notes" onClick={() => clearNotes(false)} />

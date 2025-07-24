@@ -47,7 +47,7 @@ export default function PhrasesUnit2() {
 
   const [filter, setFilter] = useState('');
   const [filterType, setFilterType] = useState(0);
-  const [refreshCount, onRefresh] = useReducer(x => x + 1, 0);
+  const [reloadCount, onReload] = useReducer(x => x + 1, 0);
   const [, forceUpdate] = useReducer(x => x + 1, 0);
 
   const onFilterChange = (e: SyntheticEvent) => {
@@ -56,12 +56,12 @@ export default function PhrasesUnit2() {
 
   const onFilterKeyPress = (e: KeyboardEvent) => {
     if (e.key !== 'Enter') return;
-    onRefresh();
+    onReload();
   };
 
   const onFilterTypeChange = (e: SelectChangeEvent<number>, child: ReactNode) => {
     setFilterType(Number(e.target.value));
-    onRefresh();
+    onReload();
   };
 
   const deletePhrase = async (item: MUnitPhrase) => {
@@ -80,7 +80,7 @@ export default function PhrasesUnit2() {
   useEffect(() => {
     (async () => {
       await appService.getData();
-      onRefresh();
+      onReload();
     })();
   }, []);
 
@@ -90,7 +90,7 @@ export default function PhrasesUnit2() {
       await phrasesUnitService.getDataInTextbook(filter, filterType);
       forceUpdate();
     })();
-  }, [refreshCount]);
+  }, [reloadCount]);
 
   return (
     <div>
@@ -108,7 +108,7 @@ export default function PhrasesUnit2() {
         <Button variant="contained" color="primary" onClick={() => showDetailDialog(0)}>
           <span><FontAwesomeIcon icon={faPlus} />Add</span>
         </Button>
-        <Button variant="contained" color="primary" onClick={onRefresh}>
+        <Button variant="contained" color="primary" onClick={onReload}>
           <span><FontAwesomeIcon icon={faSync} />Refresh</span>
         </Button>
       </Toolbar>

@@ -46,7 +46,7 @@ export default function WordsUnit2() {
   const [newWord, setNewWord] = useState('');
   const [filter, setFilter] = useState('');
   const [filterType, setFilterType] = useState(0);
-  const [refreshCount, onRefresh] = useReducer(x => x + 1, 0);
+  const [reloadCount, onReload] = useReducer(x => x + 1, 0);
   const [, forceUpdate] = useReducer(x => x + 1, 0);
 
   const onNewWordChange = (e: SyntheticEvent) => {
@@ -61,7 +61,7 @@ export default function WordsUnit2() {
     const id = await wordsUnitService.create(o);
     o.ID = id as number;
     wordsUnitService.unitWords.push(o);
-    onRefresh();
+    onReload();
   };
 
   const onFilterChange = (e: SyntheticEvent) => {
@@ -70,12 +70,12 @@ export default function WordsUnit2() {
 
   const onFilterKeyPress = (e: KeyboardEvent) => {
     if (e.key !== 'Enter') return;
-    onRefresh();
+    onReload();
   };
 
   const onFilterTypeChange = (e: SelectChangeEvent<number>) => {
     setFilterType(e.target.value as number);
-    onRefresh();
+    onReload();
   };
 
   const deleteWord = async (item: MUnitWord) => {
@@ -84,12 +84,12 @@ export default function WordsUnit2() {
 
   const getNote = async (item: MUnitWord) => {
     await wordsUnitService.getNote(item);
-    onRefresh();
+    onReload();
   };
 
   const clearNote = async (item: MUnitWord) => {
     await wordsUnitService.clearNote(item);
-    onRefresh();
+    onReload();
   };
 
   const googleWord = (WORD: string) => {
@@ -117,7 +117,7 @@ export default function WordsUnit2() {
   useEffect(() => {
     (async () => {
       await appService.getData();
-      onRefresh();
+      onReload();
     })();
   }, []);
 
@@ -127,7 +127,7 @@ export default function WordsUnit2() {
       await wordsUnitService.getDataInTextbook(filter, filterType);
       forceUpdate();
     })();
-  }, [refreshCount]);
+  }, [reloadCount]);
 
   return (
     <div>
@@ -153,7 +153,7 @@ export default function WordsUnit2() {
         <Button variant="contained" color="primary" onClick={() => showDetailDialog(0)}>
           <span><FontAwesomeIcon icon={faPlus} />Add</span>
         </Button>
-        <Button variant="contained" color="primary" onClick={onRefresh}>
+        <Button variant="contained" color="primary" onClick={onReload}>
           <span><FontAwesomeIcon icon={faSync} />Refresh</span>
         </Button>
         <Button hidden={!settingsService.selectedDictNote} variant="contained" color="warning" onClick={() => getNotes(false)}>

@@ -34,14 +34,14 @@ export default function PhrasesTextbook() {
   const [filter, setFilter] = useState('');
   const [filterType, setFilterType] = useState(0);
   const [textbookFilter, setTextbookFilter] = useState(0);
-  const [refreshCount, onRefresh] = useReducer(x => x + 1, 0);
+  const [reloadCount, onReload] = useReducer(x => x + 1, 0);
   const [, forceUpdate] = useReducer(x => x + 1, 0);
 
   const onPageChange = (e: PaginatorPageChangeEvent) => {
     setFirst(e.first);
     setRows(e.rows);
     setPage(e.page + 1);
-    onRefresh();
+    onReload();
   };
 
   const onFilterChange = (e: SyntheticEvent) => {
@@ -50,17 +50,17 @@ export default function PhrasesTextbook() {
 
   const onFilterKeyPress = (e: KeyboardEvent) => {
     if (e.key !== 'Enter') return;
-    onRefresh();
+    onReload();
   };
 
   const onFilterTypeChange = (e: DropdownChangeEvent) => {
     setFilterType(e.value);
-    onRefresh();
+    onReload();
   };
 
   const onTextbookFilterChange = (e: DropdownChangeEvent) => {
     setTextbookFilter(e.value);
-    onRefresh();
+    onReload();
   };
 
   const deletePhrase = async (item: MUnitPhrase) => {
@@ -80,7 +80,7 @@ export default function PhrasesTextbook() {
     (async () => {
       await appService.getData();
       setRows(settingsService.USROWSPERPAGE);
-      onRefresh();
+      onReload();
     })();
   }, []);
 
@@ -90,7 +90,7 @@ export default function PhrasesTextbook() {
       await phrasesUnitService.getDataInLang(page, rows, filter, filterType, textbookFilter);
       forceUpdate();
     })();
-  }, [refreshCount]);
+  }, [reloadCount]);
 
   const actionTemplate = (rowData: any, column: any) => {
     return <div>
@@ -116,7 +116,7 @@ export default function PhrasesTextbook() {
         <label htmlFor="filter">Filter</label>
       </FloatLabel>
       <Dropdown options={settingsService.textbookFilters} value={textbookFilter} onChange={onTextbookFilterChange} />
-      <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => onRefresh}/>
+      <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => onReload}/>
     </>
   );
 
