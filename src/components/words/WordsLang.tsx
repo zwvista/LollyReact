@@ -29,8 +29,6 @@ export default function WordsLang() {
   const [first, setFirst] = useState(0);
   const [rows, setRows] = useState(0);
   const [page, setPage] = useState(1);
-  const [filter, setFilter] = useState('');
-  const [filterType, setFilterType] = useState(0);
   const [reloadCount, onReload] = useReducer(x => x + 1, 0);
   const [, forceUpdate] = useReducer(x => x + 1, 0);
 
@@ -42,7 +40,8 @@ export default function WordsLang() {
   };
 
   const onFilterChange = (e: SyntheticEvent) => {
-    setFilter((e.nativeEvent.target as HTMLInputElement).value);
+    wordsLangService.filter = (e.nativeEvent.target as HTMLInputElement).value;
+    onReload();
   };
 
   const onFilterKeyPress = (e: KeyboardEvent) => {
@@ -51,7 +50,7 @@ export default function WordsLang() {
   };
 
   const onFilterTypeChange = (e: DropdownChangeEvent) => {
-    setFilterType(e.value);
+    wordsLangService.filterType = e.value;
     onReload();
   };
 
@@ -93,7 +92,7 @@ export default function WordsLang() {
   useEffect(() => {
     if (!appService.isInitialized) return;
     (async () => {
-      await wordsLangService.getData(page, rows, filter, filterType);
+      await wordsLangService.getData(page, rows);
       forceUpdate();
     })();
   }, [reloadCount]);
@@ -120,9 +119,9 @@ export default function WordsLang() {
 
   const startContent = (
     <>
-      <Dropdown options={settingsService.wordFilterTypes} value={filterType} onChange={onFilterTypeChange} />
+      <Dropdown options={settingsService.wordFilterTypes} value={wordsLangService.filterType} onChange={onFilterTypeChange} />
       <FloatLabel>
-        <InputText id="filter" value={filter} onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
+        <InputText id="filter" value={wordsLangService.filter} onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
         <label htmlFor="Filter">Filter</label>
       </FloatLabel>
       <Button label="Add" icon="fa fa-plus" onClick={() => showDetailDialog(0)} />

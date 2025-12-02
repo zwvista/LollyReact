@@ -17,12 +17,10 @@ import {
 } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faArrowDown,
-  faArrowUp,
   faBook,
   faCopy,
   faEdit,
-  faPlus, faSync,
+  faSync,
   faTrash,
   faVolumeUp
 } from '@fortawesome/free-solid-svg-icons';
@@ -46,8 +44,6 @@ export default function WordsTextbook2() {
 
   const [rows, setRows] = useState(0);
   const [page, setPage] = useState(1);
-  const [filter, setFilter] = useState('');
-  const [filterType, setFilterType] = useState(0);
   const [textbookFilter, setTextbookFilter] = useState(0);
   const [reloadCount, onReload] = useReducer(x => x + 1, 0);
   const [, forceUpdate] = useReducer(x => x + 1, 0);
@@ -64,7 +60,8 @@ export default function WordsTextbook2() {
   };
 
   const onFilterChange = (e: SyntheticEvent) => {
-    setFilter((e.nativeEvent.target as HTMLInputElement).value);
+    wordsUnitService.filter = (e.nativeEvent.target as HTMLInputElement).value;
+    onReload();
   };
 
   const onFilterKeyPress = (e: KeyboardEvent) => {
@@ -73,7 +70,7 @@ export default function WordsTextbook2() {
   };
 
   const onFilterTypeChange = (e: SelectChangeEvent<number>, child: ReactNode) => {
-    setFilterType(Number(e.target.value));
+    wordsUnitService.filterType = Number(e.target.value);
     onReload();
   };
 
@@ -121,7 +118,7 @@ export default function WordsTextbook2() {
     if (!appService.isInitialized) return;
     (async () => {
       // https://stackoverflow.com/questions/4228356/integer-division-with-remainder-in-javascript
-      await wordsUnitService.getDataInLang(page, rows, filter, filterType, textbookFilter);
+      await wordsUnitService.getDataInLang(page, rows, textbookFilter);
       forceUpdate();
     })();
   }, [reloadCount]);
@@ -130,14 +127,14 @@ export default function WordsTextbook2() {
     <div>
       <Toolbar>
         <Select
-          value={filterType}
+          value={wordsUnitService.filterType}
           onChange={onFilterTypeChange}
         >
           {settingsService.wordFilterTypes.map(row =>
             <MenuItem value={row.value} key={row.value}>{row.label}</MenuItem>
           )}
         </Select>
-        <TextField label="Filter" value={filter}
+        <TextField label="Filter" value={wordsUnitService.filter}
                    onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
         <Select
           value={textbookFilter}

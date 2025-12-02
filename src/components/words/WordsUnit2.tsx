@@ -20,8 +20,6 @@ import {
   faEdit,
   faVolumeUp,
   faCopy,
-  faArrowUp,
-  faArrowDown,
   faBook,
   faPlus, faSync,
 } from '@fortawesome/free-solid-svg-icons'
@@ -29,7 +27,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { MUnitWord } from '../../shared/models/wpp/unit-word';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { ChangeEvent, ReactNode, SyntheticEvent, useEffect, useReducer, useState } from 'react';
+import { SyntheticEvent, useEffect, useReducer, useState } from 'react';
 import { KeyboardEvent } from 'react';
 import { AppService } from '../../shared/view-models/misc/app.service';
 import { useNavigate } from "react-router-dom";
@@ -43,29 +41,23 @@ export default function WordsUnit2() {
   const [showDetail, setShowDetail] = useState(false);
   const [detailId, setDetailId] = useState(0);
 
-  const [newWord, setNewWord] = useState('');
-  const [filter, setFilter] = useState('');
-  const [filterType, setFilterType] = useState(0);
   const [reloadCount, onReload] = useReducer(x => x + 1, 0);
   const [, forceUpdate] = useReducer(x => x + 1, 0);
 
   const onNewWordChange = (e: SyntheticEvent) => {
-    setNewWord((e.nativeEvent.target as HTMLInputElement).value);
+    wordsUnitService.newWord = (e.nativeEvent.target as HTMLInputElement).value;
+    onReload();
   };
 
   const onNewWordKeyPress = async (e: KeyboardEvent) => {
-    if (e.key !== 'Enter' || !newWord) return;
-    const o = wordsUnitService.newUnitWord();
-    o.WORD = settingsService.autoCorrectInput(newWord);
-    setNewWord('');
-    const id = await wordsUnitService.create(o);
-    o.ID = id as number;
-    wordsUnitService.unitWords.push(o);
+    if (e.key !== 'Enter' || !wordsUnitService.newWord) return;
+    await wordsUnitService.createWithNewWord();
     onReload();
   };
 
   const onFilterChange = (e: SyntheticEvent) => {
-    setFilter((e.nativeEvent.target as HTMLInputElement).value);
+    wordsUnitService.filter = (e.nativeEvent.target as HTMLInputElement).value;
+    onReload();
   };
 
   const onFilterKeyPress = (e: KeyboardEvent) => {
@@ -74,7 +66,7 @@ export default function WordsUnit2() {
   };
 
   const onFilterTypeChange = (e: SelectChangeEvent<number>) => {
-    setFilterType(e.target.value as number);
+    wordsUnitService.filterType = e.target.value as number;
     onReload();
   };
 
@@ -124,7 +116,7 @@ export default function WordsUnit2() {
   useEffect(() => {
     if (!appService.isInitialized) return;
     (async () => {
-      await wordsUnitService.getDataInTextbook(filter, filterType);
+      await wordsUnitService.getDataInTextbook();
       forceUpdate();
     })();
   }, [reloadCount]);
@@ -132,23 +124,23 @@ export default function WordsUnit2() {
   return (
     <div>
       <Toolbar>
-        <TextField label="New Word" value={newWord}
+        <TextField label="New Word" value={wordsUnitService.newWord}
                    onChange={onNewWordChange} onKeyPress={onNewWordKeyPress}/>
         <Tooltip title="Speak">
           <Fab size="small" color="primary" hidden={!settingsService.selectedVoice}
-               onClick={() => settingsService.speak(newWord)}>
+               onClick={() => settingsService.speak(wordsUnitService.newWord)}>
             <FontAwesomeIcon icon={faVolumeUp} />
           </Fab>
         </Tooltip>
         <Select
-          value={filterType}
+          value={wordsUnitService.filterType}
           onChange={onFilterTypeChange}
         >
           {settingsService.wordFilterTypes.map(row =>
             <MenuItem value={row.value} key={row.value}>{row.label}</MenuItem>
           )}
         </Select>
-        <TextField label="Filter" value={filter}
+        <TextField label="Filter" value={wordsUnitService.filter}
                    onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
         <Button variant="contained" color="primary" onClick={() => showDetailDialog(0)}>
           <span><FontAwesomeIcon icon={faPlus} />Add</span>

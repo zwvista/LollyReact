@@ -30,8 +30,6 @@ export default function WordsTextbook() {
   const [first, setFirst] = useState(0);
   const [rows, setRows] = useState(0);
   const [page, setPage] = useState(1);
-  const [filter, setFilter] = useState('');
-  const [filterType, setFilterType] = useState(0);
   const [textbookFilter, setTextbookFilter] = useState(0);
   const [reloadCount, onReload] = useReducer(x => x + 1, 0);
   const [, forceUpdate] = useReducer(x => x + 1, 0);
@@ -44,7 +42,8 @@ export default function WordsTextbook() {
   };
 
   const onFilterChange = (e: SyntheticEvent) => {
-    setFilter((e.nativeEvent.target as HTMLInputElement).value);
+    wordsUnitService.filter = (e.nativeEvent.target as HTMLInputElement).value;
+    onReload();
   };
 
   const onFilterKeyPress = (e: KeyboardEvent) => {
@@ -53,7 +52,7 @@ export default function WordsTextbook() {
   };
 
   const onFilterTypeChange = (e: DropdownChangeEvent) => {
-    setFilterType(e.value);
+    wordsUnitService.filterType = e.value;
     onReload();
   };
 
@@ -101,7 +100,7 @@ export default function WordsTextbook() {
     if (!appService.isInitialized) return;
     (async () => {
       // https://stackoverflow.com/questions/4228356/integer-division-with-remainder-in-javascript
-      await wordsUnitService.getDataInLang(page, rows, filter, filterType, textbookFilter);
+      await wordsUnitService.getDataInLang(page, rows, textbookFilter);
       forceUpdate();
     })();
   }, [reloadCount]);
@@ -128,9 +127,9 @@ export default function WordsTextbook() {
 
   const startContent = (
     <>
-      <Dropdown options={settingsService.wordFilterTypes} value={filterType} onChange={onFilterTypeChange} />
+      <Dropdown options={settingsService.wordFilterTypes} value={wordsUnitService.filterType} onChange={onFilterTypeChange} />
       <FloatLabel>
-        <InputText id="filter" value={filter} onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
+        <InputText id="filter" value={wordsUnitService.filter} onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
         <label htmlFor="filter">Filter</label>
       </FloatLabel>
       <Dropdown options={settingsService.textbookFilters} value={textbookFilter} onChange={onTextbookFilterChange} />

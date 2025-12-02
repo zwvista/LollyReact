@@ -25,25 +25,18 @@ export default function WordsUnit() {
   const [showDetail, setShowDetail] = useState(false);
   const [detailId, setDetailId] = useState(0);
 
-  const [newWord, setNewWord] = useState('');
-  const [filter, setFilter] = useState('');
-  const [filterType, setFilterType] = useState(0);
   const [reloadCount, onReload] = useReducer(x => x + 1, 0);
   // https://stackoverflow.com/questions/30626030/can-you-force-a-react-component-to-rerender-without-calling-setstate
   const [, forceUpdate] = useReducer(x => x + 1, 0);
 
   const onNewWordChange = (e: SyntheticEvent) => {
-    setNewWord((e.nativeEvent.target as HTMLInputElement).value);
+    wordsUnitService.newWord = (e.nativeEvent.target as HTMLInputElement).value;
+    onReload();
   };
 
   const onNewWordKeyPress = async (e: KeyboardEvent) => {
-    if (e.key !== 'Enter' || !newWord) return;
-    const o = wordsUnitService.newUnitWord();
-    o.WORD = settingsService.autoCorrectInput(newWord);
-    setNewWord('');
-    const id = await wordsUnitService.create(o);
-    o.ID = id as number;
-    wordsUnitService.unitWords.push(o);
+    if (e.key !== 'Enter' || !wordsUnitService.newWord) return;
+    await wordsUnitService.createWithNewWord();
     onReload();
   };
 
@@ -54,7 +47,8 @@ export default function WordsUnit() {
   };
 
   const onFilterChange = (e: SyntheticEvent) => {
-    setFilter((e.nativeEvent.target as HTMLInputElement).value);
+    wordsUnitService.filter = (e.nativeEvent.target as HTMLInputElement).value;
+    onReload();
   };
 
   const onFilterKeyPress = (e: KeyboardEvent) => {
@@ -63,7 +57,7 @@ export default function WordsUnit() {
   };
 
   const onFilterTypeChange = (e: DropdownChangeEvent) => {
-    setFilterType(e.value);
+    wordsUnitService.filterType = e.value;
     onReload();
   };
 
@@ -114,7 +108,7 @@ export default function WordsUnit() {
   useEffect(() => {
     if (!appService.isInitialized) return;
     (async () => {
-      await wordsUnitService.getDataInTextbook(filter, filterType);
+      await wordsUnitService.getDataInTextbook();
       forceUpdate();
     })();
   }, [reloadCount]);
@@ -142,16 +136,16 @@ export default function WordsUnit() {
   const startContent = (
     <>
       <FloatLabel>
-        <InputText id="word" value={newWord} onChange={onNewWordChange} onKeyPress={onNewWordKeyPress}/>
+        <InputText id="word" value={wordsUnitService.newWord} onChange={onNewWordChange} onKeyPress={onNewWordKeyPress}/>
         <label htmlFor="word">New Word</label>
       </FloatLabel>
-      <Dropdown options={settingsService.wordFilterTypes} value={filterType} onChange={onFilterTypeChange} />
+      <Dropdown options={settingsService.wordFilterTypes} value={wordsUnitService.filterType} onChange={onFilterTypeChange} />
       <FloatLabel>
-        <InputText id="filter" value={filter} onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
+        <InputText id="filter" value={wordsUnitService.filter} onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
         <label htmlFor="Filter">Filter</label>
       </FloatLabel>
       <Button hidden={!settingsService.selectedVoice} icon="fa fa-volume-up" tooltipOptions={{position: 'top'}}
-              tooltip="Speak" onClick={() => settingsService.speak(newWord)} />
+              tooltip="Speak" onClick={() => settingsService.speak(wordsUnitService.newWord)} />
       <Button label="Add" icon="fa fa-plus" onClick={() => showDetailDialog(0)} />
       <Button label="Refresh" icon="fa fa-refresh" onClick={onReload}/>
       <Button hidden={!settingsService.selectedDictNote} severity="warning" label="Get All Notes" onClick={() => getNotes(false)} />
