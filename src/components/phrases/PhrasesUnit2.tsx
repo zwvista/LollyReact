@@ -50,6 +50,7 @@ export default function PhrasesUnit2() {
 
   const onFilterChange = (e: SyntheticEvent) => {
     phrasesUnitService.filter = (e.nativeEvent.target as HTMLInputElement).value;
+    onReload();
   };
 
   const onFilterKeyPress = (e: KeyboardEvent) => {

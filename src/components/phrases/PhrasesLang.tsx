@@ -106,7 +106,7 @@ export default function PhrasesLang() {
         <label htmlFor="filter">Filter</label>
       </FloatLabel>
       <Button label="Add" icon="fa fa-plus" onClick={() => showDetailDialog(0)} />
-      <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => onReload}/>
+      <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => onReload()}/>
     </>
   );
 

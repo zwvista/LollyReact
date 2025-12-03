@@ -111,7 +111,7 @@ export default function PhrasesTextbook() {
         <label htmlFor="filter">Filter</label>
       </FloatLabel>
       <Dropdown options={settingsService.textbookFilters} value={phrasesUnitService.textbookFilter} onChange={onTextbookFilterChange} />
-      <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => onReload}/>
+      <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => onReload()}/>
     </>
   );
 

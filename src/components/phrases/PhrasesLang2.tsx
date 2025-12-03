@@ -52,6 +52,7 @@ export default function PhrasesLang2() {
 
   const onFilterChange = (e: SyntheticEvent) => {
     phrasesLangService.filter = (e.nativeEvent.target as HTMLInputElement).value;
+    onReload();
   };
 
   const onFilterKeyPress = (e: KeyboardEvent) => {
@@ -109,7 +110,7 @@ export default function PhrasesLang2() {
         <Button variant="contained" color="primary" onClick={() => showDetailDialog(0)}>
           <span><FontAwesomeIcon icon={faPlus} />Add</span>
         </Button>
-        <Button variant="contained" color="primary" onClick={(e: any) => onReload}>
+        <Button variant="contained" color="primary" onClick={(e: any) => onReload()}>
           <span><FontAwesomeIcon icon={faSync} />Refresh</span>
         </Button>
       </Toolbar>

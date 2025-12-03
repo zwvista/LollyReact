@@ -147,14 +147,14 @@ export default function WordsUnit() {
                    onKeyPress={onNewWordKeyPress}/>
         <label htmlFor="word">New Word</label>
       </FloatLabel>
+      <Button hidden={!settingsService.selectedVoice} icon="fa fa-volume-up" tooltipOptions={{position: 'top'}}
+              tooltip="Speak" onClick={() => settingsService.speak(wordsUnitService.newWord)}/>
       <Dropdown options={settingsService.wordFilterTypes} value={wordsUnitService.filterType}
                 onChange={onFilterTypeChange}/>
       <FloatLabel>
         <InputText id="filter" value={wordsUnitService.filter} onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
         <label htmlFor="Filter">Filter</label>
       </FloatLabel>
-      <Button hidden={!settingsService.selectedVoice} icon="fa fa-volume-up" tooltipOptions={{position: 'top'}}
-              tooltip="Speak" onClick={() => settingsService.speak(wordsUnitService.newWord)}/>
       <Button label="Add" icon="fa fa-plus" onClick={() => showDetailDialog(0)}/>
       <Button label="Refresh" icon="fa fa-refresh" onClick={onReload}/>
       <div className="flex align-items-center">

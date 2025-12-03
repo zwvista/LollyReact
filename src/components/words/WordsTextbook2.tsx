@@ -141,7 +141,7 @@ export default function WordsTextbook2() {
             <MenuItem value={row.value} key={row.value}>{row.label}</MenuItem>
           )}
         </Select>
-        <Button variant="contained" color="primary" onClick={(e: any) => onReload}>
+        <Button variant="contained" color="primary" onClick={(e: any) => onReload()}>
           <span><FontAwesomeIcon icon={faSync} />Refresh</span>
         </Button>
         <Button variant="contained" color="primary" onClick={() => showDetailDialog(0)}>

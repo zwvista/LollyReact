@@ -130,7 +130,7 @@ export default function WordsTextbook() {
         <label htmlFor="filter">Filter</label>
       </FloatLabel>
       <Dropdown options={settingsService.textbookFilters} value={wordsUnitService.textbookFilter} onChange={onTextbookFilterChange} />
-      <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => onReload}/>
+      <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => onReload()}/>
       <Button label="Dictionary" icon="fa fa-book" onClick={() => navigate('/words-dict/textbook/0')} />
     </>
   );
