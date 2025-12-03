@@ -27,8 +27,6 @@ export default function PhrasesUnit() {
   const [showDetail, setShowDetail] = useState(false);
   const [detailId, setDetailId] = useState(0);
 
-  const [filter, setFilter] = useState('');
-  const [filterType, setFilterType] = useState(0);
   const [reloadCount, onReload] = useReducer(x => x + 1, 0);
   const [, forceUpdate] = useReducer(x => x + 1, 0);
 
@@ -39,7 +37,8 @@ export default function PhrasesUnit() {
   };
 
   const onFilterChange = (e: SyntheticEvent) => {
-    setFilter((e.nativeEvent.target as HTMLInputElement).value);
+    phrasesUnitService.filter = (e.nativeEvent.target as HTMLInputElement).value;
+    onReload();
   };
 
   const onFilterKeyPress = (e: KeyboardEvent) => {
@@ -48,7 +47,7 @@ export default function PhrasesUnit() {
   };
 
   const onFilterTypeChange = (e: DropdownChangeEvent) => {
-    setFilterType(e.value);
+    phrasesUnitService.filterType = e.value;
     onReload();
   };
 
@@ -75,7 +74,7 @@ export default function PhrasesUnit() {
   useEffect(() => {
     if (!appService.isInitialized) return;
     (async () => {
-      await phrasesUnitService.getDataInTextbook(filter, filterType);
+      await phrasesUnitService.getDataInTextbook();
       forceUpdate();
     })();
   }, [reloadCount]);
@@ -98,9 +97,9 @@ export default function PhrasesUnit() {
 
   const startContent = (
     <>
-      <Dropdown options={settingsService.phraseFilterTypes} value={filterType} onChange={onFilterTypeChange} />
+      <Dropdown options={settingsService.phraseFilterTypes} value={phrasesUnitService.filterType} onChange={onFilterTypeChange} />
       <FloatLabel>
-        <InputText id="filter" value={filter} onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
+        <InputText id="filter" value={phrasesUnitService.filter} onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
         <label htmlFor="filter">Filter</label>
       </FloatLabel>
       <Button label="Add" icon="fa fa-plus" onClick={() => showDetailDialog(0)} />

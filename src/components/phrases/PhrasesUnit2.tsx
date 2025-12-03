@@ -45,13 +45,11 @@ export default function PhrasesUnit2() {
   const [showDetail, setShowDetail] = useState(false);
   const [detailId, setDetailId] = useState(0);
 
-  const [filter, setFilter] = useState('');
-  const [filterType, setFilterType] = useState(0);
   const [reloadCount, onReload] = useReducer(x => x + 1, 0);
   const [, forceUpdate] = useReducer(x => x + 1, 0);
 
   const onFilterChange = (e: SyntheticEvent) => {
-    setFilter((e.nativeEvent.target as HTMLInputElement).value);
+    phrasesUnitService.filter = (e.nativeEvent.target as HTMLInputElement).value;
   };
 
   const onFilterKeyPress = (e: KeyboardEvent) => {
@@ -60,7 +58,7 @@ export default function PhrasesUnit2() {
   };
 
   const onFilterTypeChange = (e: SelectChangeEvent<number>, child: ReactNode) => {
-    setFilterType(Number(e.target.value));
+    phrasesUnitService.filterType = Number(e.target.value);
     onReload();
   };
 
@@ -87,7 +85,7 @@ export default function PhrasesUnit2() {
   useEffect(() => {
     if (!appService.isInitialized) return;
     (async () => {
-      await phrasesUnitService.getDataInTextbook(filter, filterType);
+      await phrasesUnitService.getDataInTextbook();
       forceUpdate();
     })();
   }, [reloadCount]);
@@ -96,14 +94,14 @@ export default function PhrasesUnit2() {
     <div>
       <Toolbar>
         <Select
-          value={filterType}
+          value={phrasesUnitService.filterType}
           onChange={onFilterTypeChange}
         >
           {settingsService.phraseFilterTypes.map(row =>
             <MenuItem value={row.value} key={row.value}>{row.label}</MenuItem>
           )}
         </Select>
-        <TextField label="Filter" value={filter}
+        <TextField label="Filter" value={phrasesUnitService.filter}
                    onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
         <Button variant="contained" color="primary" onClick={() => showDetailDialog(0)}>
           <span><FontAwesomeIcon icon={faPlus} />Add</span>

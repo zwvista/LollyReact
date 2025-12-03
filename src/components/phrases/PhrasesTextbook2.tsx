@@ -36,27 +36,22 @@ export default function PhrasesTextbook2() {
   const [showDetail, setShowDetail] = useState(false);
   const [detailId, setDetailId] = useState(0);
 
-  const [rows, setRows] = useState(0);
-  const [page, setPage] = useState(1);
-  const [filter, setFilter] = useState('');
-  const [filterType, setFilterType] = useState(0);
-  const [textbookFilter, setTextbookFilter] = useState(0);
   const [reloadCount, onReload] = useReducer(x => x + 1, 0);
   const [, forceUpdate] = useReducer(x => x + 1, 0);
 
   const handleChangePage = (event: any, page: any) => {
-    setPage(page + 1);
+    phrasesUnitService.page = page + 1;
     onReload();
   };
 
   const handleRowsPerPageChange = (event: any) => {
-    setPage(1);
-    setRows(event.target.value);
+    phrasesUnitService.page = 1;
+    phrasesUnitService.rows = event.target.value;
     onReload();
   };
 
   const onFilterChange = (e: SyntheticEvent) => {
-    setFilter((e.nativeEvent.target as HTMLInputElement).value);
+    phrasesUnitService.filter = (e.nativeEvent.target as HTMLInputElement).value;
   };
 
   const onFilterKeyPress = (e: KeyboardEvent) => {
@@ -65,12 +60,12 @@ export default function PhrasesTextbook2() {
   };
 
   const onFilterTypeChange = (e: SelectChangeEvent<number>, child: ReactNode) => {
-    setFilterType(Number(e.target.value));
+    phrasesUnitService.filterType = Number(e.target.value);
     onReload();
   };
 
   const onTextbookFilterChange = (e: SelectChangeEvent<number>, child: ReactNode) => {
-    setTextbookFilter(Number(e.target.value));
+    phrasesUnitService.textbookFilter = Number(e.target.value);
     onReload();
   };
 
@@ -90,7 +85,7 @@ export default function PhrasesTextbook2() {
   useEffect(() => {
     (async () => {
       await appService.getData();
-      setRows(settingsService.USROWSPERPAGE);
+      phrasesUnitService.rows = settingsService.USROWSPERPAGE;
       onReload();
     })();
   }, []);
@@ -98,7 +93,7 @@ export default function PhrasesTextbook2() {
   useEffect(() => {
     if (!appService.isInitialized) return;
     (async () => {
-      await phrasesUnitService.getDataInLang(page, rows, filter, filterType, textbookFilter);
+      await phrasesUnitService.getDataInLang();
       forceUpdate();
     })();
   }, [reloadCount]);
@@ -107,17 +102,17 @@ export default function PhrasesTextbook2() {
     <div>
       <Toolbar>
         <Select
-          value={filterType}
+          value={phrasesUnitService.filterType}
           onChange={onFilterTypeChange}
         >
           {settingsService.phraseFilterTypes.map(row =>
             <MenuItem value={row.value} key={row.value}>{row.label}</MenuItem>
           )}
         </Select>
-        <TextField label="Filter" value={filter}
+        <TextField label="Filter" value={phrasesUnitService.filter}
                    onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
         <Select
-          value={textbookFilter}
+          value={phrasesUnitService.textbookFilter}
           onChange={onTextbookFilterChange}
         >
           {settingsService.textbookFilters.map(row =>
@@ -138,8 +133,8 @@ export default function PhrasesTextbook2() {
               rowsPerPageOptions={settingsService.USROWSPERPAGEOPTIONS}
               colSpan={9}
               count={phrasesUnitService.textbookPhraseCount}
-              rowsPerPage={rows}
-              page={page - 1}
+              rowsPerPage={phrasesUnitService.rows}
+              page={phrasesUnitService.page - 1}
               SelectProps={{
                 native: true,
               }}
@@ -209,8 +204,8 @@ export default function PhrasesTextbook2() {
               rowsPerPageOptions={settingsService.USROWSPERPAGEOPTIONS}
               colSpan={9}
               count={phrasesUnitService.textbookPhraseCount}
-              rowsPerPage={rows}
-              page={page - 1}
+              rowsPerPage={phrasesUnitService.rows}
+              page={phrasesUnitService.page - 1}
               SelectProps={{
                 native: true,
               }}

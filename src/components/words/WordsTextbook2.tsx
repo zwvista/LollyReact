@@ -42,20 +42,17 @@ export default function WordsTextbook2() {
   const [showDetail, setShowDetail] = useState(false);
   const [detailId, setDetailId] = useState(0);
 
-  const [rows, setRows] = useState(0);
-  const [page, setPage] = useState(1);
-  const [textbookFilter, setTextbookFilter] = useState(0);
   const [reloadCount, onReload] = useReducer(x => x + 1, 0);
   const [, forceUpdate] = useReducer(x => x + 1, 0);
 
   const handleChangePage = (event: any, page: any) => {
-    setPage(page + 1);
+    wordsUnitService.page = page + 1;
     onReload();
   };
 
   const handleRowsPerPageChange = (event: any) => {
-    setPage(1);
-    setRows(event.target.value);
+    wordsUnitService.page = 1;
+    wordsUnitService.rows = event.target.value;
     onReload();
   };
 
@@ -75,7 +72,7 @@ export default function WordsTextbook2() {
   };
 
   const onTextbookFilterChange = (e: SelectChangeEvent<number>, child: ReactNode) => {
-    setTextbookFilter(Number(e.target.value));
+    wordsUnitService.textbookFilter = Number(e.target.value);
     onReload();
   };
 
@@ -109,7 +106,7 @@ export default function WordsTextbook2() {
   useEffect(() => {
     (async () => {
       await appService.getData();
-      setRows(settingsService.USROWSPERPAGE);
+      wordsUnitService.rows = settingsService.USROWSPERPAGE;
       onReload();
     })();
   }, []);
@@ -118,7 +115,7 @@ export default function WordsTextbook2() {
     if (!appService.isInitialized) return;
     (async () => {
       // https://stackoverflow.com/questions/4228356/integer-division-with-remainder-in-javascript
-      await wordsUnitService.getDataInLang(page, rows, textbookFilter);
+      await wordsUnitService.getDataInLang();
       forceUpdate();
     })();
   }, [reloadCount]);
@@ -137,7 +134,7 @@ export default function WordsTextbook2() {
         <TextField label="Filter" value={wordsUnitService.filter}
                    onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
         <Select
-          value={textbookFilter}
+          value={wordsUnitService.textbookFilter}
           onChange={onTextbookFilterChange}
         >
           {settingsService.textbookFilters.map(row =>
@@ -158,8 +155,8 @@ export default function WordsTextbook2() {
               rowsPerPageOptions={settingsService.USROWSPERPAGEOPTIONS}
               colSpan={10}
               count={wordsUnitService.textbookWordCount}
-              rowsPerPage={rows}
-              page={page - 1}
+              rowsPerPage={wordsUnitService.rows}
+              page={wordsUnitService.page - 1}
               SelectProps={{
                 native: true,
               }}
@@ -244,8 +241,8 @@ export default function WordsTextbook2() {
               rowsPerPageOptions={settingsService.USROWSPERPAGEOPTIONS}
               colSpan={10}
               count={wordsUnitService.textbookWordCount}
-              rowsPerPage={rows}
-              page={page - 1}
+              rowsPerPage={wordsUnitService.rows}
+              page={wordsUnitService.page - 1}
               SelectProps={{
                 native: true,
               }}

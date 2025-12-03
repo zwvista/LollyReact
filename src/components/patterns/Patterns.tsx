@@ -28,22 +28,18 @@ export default function Patterns() {
   const [detailId, setDetailId] = useState(0);
 
   const [first, setFirst] = useState(0);
-  const [rows, setRows] = useState(0);
-  const [page, setPage] = useState(1);
-  const [filter, setFilter] = useState('');
-  const [filterType, setFilterType] = useState(0);
   const [reloadCount, onReload] = useReducer(x => x + 1, 0);
   const [, forceUpdate] = useReducer(x => x + 1, 0);
 
   const onPageChange = (e: PaginatorPageChangeEvent) => {
     setFirst(e.first);
-    setRows(e.rows);
-    setPage(e.page + 1);
+    patternsService.rows = e.rows;
+    patternsService.page = e.page + 1;
     onReload();
   };
 
   const onFilterChange = (e: SyntheticEvent) => {
-    setFilter((e.nativeEvent.target as HTMLInputElement).value);
+    patternsService.filter = (e.nativeEvent.target as HTMLInputElement).value;
   };
 
   const onFilterKeyPress = (e: KeyboardEvent) => {
@@ -52,7 +48,7 @@ export default function Patterns() {
   };
 
   const onFilterTypeChange = (e: DropdownChangeEvent) => {
-    setFilterType(e.value);
+    patternsService.filterType = e.value;
     onReload();
   };
 
@@ -72,7 +68,7 @@ export default function Patterns() {
   useEffect(() => {
     (async () => {
       await appService.getData();
-      setRows(settingsService.USROWSPERPAGE);
+      patternsService.rows = settingsService.USROWSPERPAGE;
       onReload();
     })();
   }, []);
@@ -80,7 +76,7 @@ export default function Patterns() {
   useEffect(() => {
     if (!appService.isInitialized) return;
     (async () => {
-      await patternsService.getData(page, rows, filter, filterType);
+      await patternsService.getData();
       forceUpdate();
     })();
   }, [reloadCount]);
@@ -103,9 +99,9 @@ export default function Patterns() {
 
   const startContent = (
     <>
-      <Dropdown options={settingsService.patternFilterTypes} value={filterType} onChange={onFilterTypeChange} />
+      <Dropdown options={settingsService.patternFilterTypes} value={patternsService.filterType} onChange={onFilterTypeChange} />
       <FloatLabel>
-        <InputText id="filter" value={filter} onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
+        <InputText id="filter" value={patternsService.filter} onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
         <label htmlFor="filter">Filter</label>
       </FloatLabel>
       <Button label="Add" icon="fa fa-plus" onClick={() => showDetailDialog(0)} />
@@ -116,7 +112,7 @@ export default function Patterns() {
   return !appService.isInitialized ? (<div/>) : (
     <div>
       <Toolbar start={startContent} />
-      <Paginator first={first} rows={rows} onPageChange={onPageChange}
+      <Paginator first={first} rows={patternsService.rows} onPageChange={onPageChange}
                  totalRecords={patternsService.patternCount}
                  rowsPerPageOptions={settingsService.USROWSPERPAGEOPTIONS}/>
       <DataTable value={patternsService.patterns} selectionMode="single">
@@ -127,7 +123,7 @@ export default function Patterns() {
         <Column field="URL" header="URL" />
         <Column style={{width:'20%'}} body={actionTemplate} header="ACTIONS" />
       </DataTable>
-      <Paginator first={first} rows={rows} onPageChange={onPageChange}
+      <Paginator first={first} rows={patternsService.rows} onPageChange={onPageChange}
                  totalRecords={patternsService.patternCount}
                  rowsPerPageOptions={settingsService.USROWSPERPAGEOPTIONS}/>
       {showDetail && <PatternsDetail id={detailId} isDialogOpened={showDetail} handleCloseDialog={() => setShowDetail(false)} />}

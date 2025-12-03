@@ -16,6 +16,8 @@ import { AppService } from '../../shared/view-models/misc/app.service';
 import { useNavigate } from "react-router-dom";
 import { FloatLabel } from "primereact/floatlabel";
 import WordsUnitDetail from "./WordsUnitDetail";
+import { Checkbox } from "primereact/checkbox";
+import { InputSwitch } from "primereact/inputswitch";
 
 export default function WordsUnit() {
   const appService = container.resolve(AppService);
@@ -85,12 +87,17 @@ export default function WordsUnit() {
     navigate('/words-dict/unit/' + index);
   };
 
-  const getNotes = (ifEmpty: boolean) => {
-    wordsUnitService.getNotes(ifEmpty, () => {}, () => {});
+  const setIfEmpty = (checked: boolean) => {
+    wordsUnitService.ifEmpty = checked;
+    onReload();
   };
 
-  const clearNotes = (ifEmpty: boolean) => {
-    wordsUnitService.clearNotes(ifEmpty, () => {}, () => {});
+  const getNotes = () => {
+    wordsUnitService.getNotes(() => {}, () => {});
+  };
+
+  const clearNotes = () => {
+    wordsUnitService.clearNotes(() => {}, () => {});
   };
 
   const showDetailDialog = (id: number) => {
@@ -136,32 +143,40 @@ export default function WordsUnit() {
   const startContent = (
     <>
       <FloatLabel>
-        <InputText id="word" value={wordsUnitService.newWord} onChange={onNewWordChange} onKeyPress={onNewWordKeyPress}/>
+        <InputText id="word" value={wordsUnitService.newWord} onChange={onNewWordChange}
+                   onKeyPress={onNewWordKeyPress}/>
         <label htmlFor="word">New Word</label>
       </FloatLabel>
-      <Dropdown options={settingsService.wordFilterTypes} value={wordsUnitService.filterType} onChange={onFilterTypeChange} />
+      <Dropdown options={settingsService.wordFilterTypes} value={wordsUnitService.filterType}
+                onChange={onFilterTypeChange}/>
       <FloatLabel>
         <InputText id="filter" value={wordsUnitService.filter} onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
         <label htmlFor="Filter">Filter</label>
       </FloatLabel>
       <Button hidden={!settingsService.selectedVoice} icon="fa fa-volume-up" tooltipOptions={{position: 'top'}}
-              tooltip="Speak" onClick={() => settingsService.speak(wordsUnitService.newWord)} />
-      <Button label="Add" icon="fa fa-plus" onClick={() => showDetailDialog(0)} />
+              tooltip="Speak" onClick={() => settingsService.speak(wordsUnitService.newWord)}/>
+      <Button label="Add" icon="fa fa-plus" onClick={() => showDetailDialog(0)}/>
       <Button label="Refresh" icon="fa fa-refresh" onClick={onReload}/>
-      <Button hidden={!settingsService.selectedDictNote} severity="warning" label="Get All Notes" onClick={() => getNotes(false)} />
-      <Button hidden={!settingsService.selectedDictNote} severity="warning" label="Get Notes If Empty" onClick={() => getNotes(true)} />
-      <Button hidden={!settingsService.selectedDictNote} severity="warning" label="Clear All Notes" onClick={() => clearNotes(false)} />
-      <Button hidden={!settingsService.selectedDictNote} severity="warning" label="Clear Notes If Empty" onClick={() => clearNotes(true)} />
-      <Button label="Dictionary" icon="fa fa-book" onClick={() => navigate('/words-dict/unit/0')} />
+      <div className="flex align-items-center">
+        <Checkbox inputId="ifEmpty" checked={wordsUnitService.ifEmpty} onChange={e => setIfEmpty(e.checked)}/>
+        <label htmlFor="ifEmpty" className="ml-2">If Empty</label>
+        <InputSwitch checked={wordsUnitService.ifEmpty} onChange={(e) => setIfEmpty(e.value)}/>
+      </div>
+      <Button hidden={!settingsService.selectedDictNote} severity="warning" label="Get Notes"
+              onClick={() => getNotes()}/>
+      <Button hidden={!settingsService.selectedDictNote} severity="warning" label="Clear Notes"
+              onClick={() => clearNotes()}/>
+      <Button label="Dictionary" icon="fa fa-book" onClick={() => navigate('/words-dict/unit/0')}/>
     </>
   );
 
   return (
     <div>
-      <Toolbar start={startContent} />
+      <Toolbar start={startContent}/>
       <DataTable value={wordsUnitService.unitWords}
                  onRowReorder={onReorder} selectionMode="single">
-        <Column rowReorder={settingsService.selectedTextbook && settingsService.isSingleUnitPart} style={{width: '3em'}} />
+        <Column rowReorder={settingsService.selectedTextbook && settingsService.isSingleUnitPart}
+                style={{width: '3em'}}/>
         <Column style={{width:'80px'}} field="ID" header="ID" />
         <Column style={{width:'80px'}} field="UNITSTR" header="UNIT" />
         <Column style={{width:'80px'}} field="PARTSTR" header="PART" />

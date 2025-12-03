@@ -28,16 +28,13 @@ export default function WordsTextbook() {
   const [detailId, setDetailId] = useState(0);
 
   const [first, setFirst] = useState(0);
-  const [rows, setRows] = useState(0);
-  const [page, setPage] = useState(1);
-  const [textbookFilter, setTextbookFilter] = useState(0);
   const [reloadCount, onReload] = useReducer(x => x + 1, 0);
   const [, forceUpdate] = useReducer(x => x + 1, 0);
 
   const onPageChange = (e: PaginatorPageChangeEvent) => {
     setFirst(e.first);
-    setRows(e.rows);
-    setPage(e.page + 1);
+    wordsUnitService.rows = e.rows;
+    wordsUnitService.page = e.page + 1;
     onReload();
   };
 
@@ -57,7 +54,7 @@ export default function WordsTextbook() {
   };
 
   const onTextbookFilterChange = (e: DropdownChangeEvent) => {
-    setTextbookFilter(e.value);
+    wordsUnitService.textbookFilter = e.value;
     onReload();
   };
 
@@ -91,7 +88,7 @@ export default function WordsTextbook() {
   useEffect(() => {
     (async () => {
       await appService.getData();
-      setRows(settingsService.USROWSPERPAGE);
+      wordsUnitService.rows = settingsService.USROWSPERPAGE;
       onReload();
     })();
   }, []);
@@ -100,7 +97,7 @@ export default function WordsTextbook() {
     if (!appService.isInitialized) return;
     (async () => {
       // https://stackoverflow.com/questions/4228356/integer-division-with-remainder-in-javascript
-      await wordsUnitService.getDataInLang(page, rows, textbookFilter);
+      await wordsUnitService.getDataInLang();
       forceUpdate();
     })();
   }, [reloadCount]);
@@ -132,7 +129,7 @@ export default function WordsTextbook() {
         <InputText id="filter" value={wordsUnitService.filter} onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
         <label htmlFor="filter">Filter</label>
       </FloatLabel>
-      <Dropdown options={settingsService.textbookFilters} value={textbookFilter} onChange={onTextbookFilterChange} />
+      <Dropdown options={settingsService.textbookFilters} value={wordsUnitService.textbookFilter} onChange={onTextbookFilterChange} />
       <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => onReload}/>
       <Button label="Dictionary" icon="fa fa-book" onClick={() => navigate('/words-dict/textbook/0')} />
     </>
@@ -141,7 +138,7 @@ export default function WordsTextbook() {
   return !appService.isInitialized ? (<div/>) : (
     <div>
       <Toolbar start={startContent} />
-      <Paginator first={first} rows={rows} onPageChange={onPageChange}
+      <Paginator first={first} rows={wordsUnitService.rows} onPageChange={onPageChange}
                  totalRecords={wordsUnitService.textbookWordCount}
                  rowsPerPageOptions={settingsService.USROWSPERPAGEOPTIONS}/>
       <DataTable value={wordsUnitService.textbookWords} selectionMode="single">
@@ -156,7 +153,7 @@ export default function WordsTextbook() {
         <Column style={{width:'80px'}} field="ACCURACY" header="ACCURACY" />
         <Column style={{width:'30%'}} body={actionTemplate} header="ACTIONS" />
       </DataTable>
-      <Paginator first={first} rows={rows} onPageChange={onPageChange}
+      <Paginator first={first} rows={wordsUnitService.rows} onPageChange={onPageChange}
                  totalRecords={wordsUnitService.textbookWordCount}
                  rowsPerPageOptions={settingsService.USROWSPERPAGEOPTIONS}/>
       {showDetail && <WordsTextbookDetail id={detailId} isDialogOpened={showDetail} handleCloseDialog={() => setShowDetail(false)} />}

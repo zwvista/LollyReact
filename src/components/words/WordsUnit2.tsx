@@ -5,7 +5,7 @@ import '../misc/Common.css'
 import { SettingsService } from '../../shared/view-models/misc/settings.service';
 import {
   Button,
-  Fab, MenuItem, Select, SelectChangeEvent,
+  Fab, FormControlLabel, MenuItem, Select, SelectChangeEvent,
   Table,
   TableBody,
   TableCell,
@@ -32,6 +32,7 @@ import { KeyboardEvent } from 'react';
 import { AppService } from '../../shared/view-models/misc/app.service';
 import { useNavigate } from "react-router-dom";
 import WordsUnitDetail2 from "./WordsUnitDetail2";
+import { Checkbox, CheckboxChangeEvent } from "primereact/checkbox";
 
 export default function WordsUnit2() {
   const appService = container.resolve(AppService);
@@ -93,12 +94,16 @@ export default function WordsUnit2() {
     navigate('/words-dict/unit/' + index);
   };
 
-  const getNotes = (ifEmpty: boolean) => {
-    wordsUnitService.getNotes(ifEmpty, () => {}, () => {});
+  const onIfEmptyChange = (e: CheckboxChangeEvent) => {
+    wordsUnitService.ifEmpty = e.checked;
+  }
+
+  const getNotes = () => {
+    wordsUnitService.getNotes(() => {}, () => {});
   };
 
-  const clearNotes = (ifEmpty: boolean) => {
-    wordsUnitService.clearNotes(ifEmpty, () => {}, () => {});
+  const clearNotes = () => {
+    wordsUnitService.clearNotes(() => {}, () => {});
   };
 
   const showDetailDialog = (id: number) => {
@@ -148,17 +153,12 @@ export default function WordsUnit2() {
         <Button variant="contained" color="primary" onClick={onReload}>
           <span><FontAwesomeIcon icon={faSync} />Refresh</span>
         </Button>
-        <Button hidden={!settingsService.selectedDictNote} variant="contained" color="warning" onClick={() => getNotes(false)}>
-          Get All Notes
+        <FormControlLabel control={<Checkbox checked={wordsUnitService.ifEmpty} onChange={onIfEmptyChange} />} label="If Empty" />
+        <Button hidden={!settingsService.selectedDictNote} variant="contained" color="warning" onClick={() => getNotes()}>
+          Get Notes
         </Button>
-        <Button hidden={!settingsService.selectedDictNote} variant="contained" color="warning" onClick={() => getNotes(true)}>
-          Get Notes If Empty
-        </Button>
-        <Button hidden={!settingsService.selectedDictNote} variant="contained" color="warning" onClick={() => clearNotes(false)}>
-          Clear All Notes
-        </Button>
-        <Button hidden={!settingsService.selectedDictNote} variant="contained" color="warning" onClick={() => clearNotes(true)}>
-          Clear Notes If Empty
+        <Button hidden={!settingsService.selectedDictNote} variant="contained" color="warning" onClick={() => clearNotes()}>
+          Clear Notes
         </Button>
         <Button variant="contained" color="primary" onClick={() => navigate('/words-dict/unit/0')}>
           <span><FontAwesomeIcon icon={faBook} />Dictionary</span>

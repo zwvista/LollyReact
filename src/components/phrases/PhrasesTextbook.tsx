@@ -29,23 +29,18 @@ export default function PhrasesTextbook() {
   const [detailId, setDetailId] = useState(0);
 
   const [first, setFirst] = useState(0);
-  const [rows, setRows] = useState(0);
-  const [page, setPage] = useState(1);
-  const [filter, setFilter] = useState('');
-  const [filterType, setFilterType] = useState(0);
-  const [textbookFilter, setTextbookFilter] = useState(0);
   const [reloadCount, onReload] = useReducer(x => x + 1, 0);
   const [, forceUpdate] = useReducer(x => x + 1, 0);
 
   const onPageChange = (e: PaginatorPageChangeEvent) => {
     setFirst(e.first);
-    setRows(e.rows);
-    setPage(e.page + 1);
+    phrasesUnitService.rows = e.rows;
+    phrasesUnitService.page = e.page + 1;
     onReload();
   };
 
   const onFilterChange = (e: SyntheticEvent) => {
-    setFilter((e.nativeEvent.target as HTMLInputElement).value);
+    phrasesUnitService.filter = (e.nativeEvent.target as HTMLInputElement).value;
   };
 
   const onFilterKeyPress = (e: KeyboardEvent) => {
@@ -54,12 +49,12 @@ export default function PhrasesTextbook() {
   };
 
   const onFilterTypeChange = (e: DropdownChangeEvent) => {
-    setFilterType(e.value);
+    phrasesUnitService.filterType = e.value;
     onReload();
   };
 
   const onTextbookFilterChange = (e: DropdownChangeEvent) => {
-    setTextbookFilter(e.value);
+    phrasesUnitService.textbookFilter = e.value;
     onReload();
   };
 
@@ -79,7 +74,7 @@ export default function PhrasesTextbook() {
   useEffect(() => {
     (async () => {
       await appService.getData();
-      setRows(settingsService.USROWSPERPAGE);
+      phrasesUnitService.rows = settingsService.USROWSPERPAGE;
       onReload();
     })();
   }, []);
@@ -87,7 +82,7 @@ export default function PhrasesTextbook() {
   useEffect(() => {
     if (!appService.isInitialized) return;
     (async () => {
-      await phrasesUnitService.getDataInLang(page, rows, filter, filterType, textbookFilter);
+      await phrasesUnitService.getDataInLang();
       forceUpdate();
     })();
   }, [reloadCount]);
@@ -110,12 +105,12 @@ export default function PhrasesTextbook() {
 
   const startContent = (
     <>
-      <Dropdown options={settingsService.phraseFilterTypes} value={filterType} onChange={onFilterTypeChange} />
+      <Dropdown options={settingsService.phraseFilterTypes} value={phrasesUnitService.filterType} onChange={onFilterTypeChange} />
       <FloatLabel>
-        <InputText id="filter" value={filter} onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
+        <InputText id="filter" value={phrasesUnitService.filter} onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
         <label htmlFor="filter">Filter</label>
       </FloatLabel>
-      <Dropdown options={settingsService.textbookFilters} value={textbookFilter} onChange={onTextbookFilterChange} />
+      <Dropdown options={settingsService.textbookFilters} value={phrasesUnitService.textbookFilter} onChange={onTextbookFilterChange} />
       <Button label="Refresh" icon="fa fa-refresh" onClick={(e: any) => onReload}/>
     </>
   );
@@ -123,7 +118,7 @@ export default function PhrasesTextbook() {
   return !appService.isInitialized ? (<div/>) : (
     <div>
       <Toolbar start={startContent} />
-      <Paginator first={first} rows={rows} onPageChange={onPageChange}
+      <Paginator first={first} rows={phrasesUnitService.rows} onPageChange={onPageChange}
                  totalRecords={phrasesUnitService.textbookPhraseCount}
                  rowsPerPageOptions={settingsService.USROWSPERPAGEOPTIONS}/>
       <DataTable value={phrasesUnitService.textbookPhrases} selectionMode="single">
@@ -137,7 +132,7 @@ export default function PhrasesTextbook() {
         <Column field="TRANSLATION" header="TRANSLATION" />
         <Column style={{width:'20%'}} body={actionTemplate} header="ACTIONS" />
       </DataTable>
-      <Paginator first={first} rows={rows} onPageChange={onPageChange}
+      <Paginator first={first} rows={phrasesUnitService.rows} onPageChange={onPageChange}
                  totalRecords={phrasesUnitService.textbookPhraseCount}
                  rowsPerPageOptions={settingsService.USROWSPERPAGEOPTIONS}/>
       {showDetail && <PhrasesTextbookDetail id={detailId} isDialogOpened={showDetail} handleCloseDialog={() => setShowDetail(false)} />}

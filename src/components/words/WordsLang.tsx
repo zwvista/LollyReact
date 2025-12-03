@@ -27,15 +27,13 @@ export default function WordsLang() {
   const [detailId, setDetailId] = useState(0);
 
   const [first, setFirst] = useState(0);
-  const [rows, setRows] = useState(0);
-  const [page, setPage] = useState(1);
   const [reloadCount, onReload] = useReducer(x => x + 1, 0);
   const [, forceUpdate] = useReducer(x => x + 1, 0);
 
   const onPageChange = (e: PaginatorPageChangeEvent) => {
     setFirst(e.first);
-    setRows(e.rows);
-    setPage(e.page + 1);
+    wordsLangService.rows = e.rows;
+    wordsLangService.page = e.page + 1;
     onReload();
   };
 
@@ -84,7 +82,7 @@ export default function WordsLang() {
   useEffect(() => {
     (async () => {
       await appService.getData();
-      setRows(settingsService.USROWSPERPAGE);
+      wordsLangService.rows = settingsService.USROWSPERPAGE;
       onReload();
     })();
   }, []);
@@ -92,7 +90,7 @@ export default function WordsLang() {
   useEffect(() => {
     if (!appService.isInitialized) return;
     (async () => {
-      await wordsLangService.getData(page, rows);
+      await wordsLangService.getData();
       forceUpdate();
     })();
   }, [reloadCount]);
@@ -133,7 +131,7 @@ export default function WordsLang() {
   return !appService.isInitialized && wordsLangService ? (<div/>) : (
     <div>
       <Toolbar start={startContent} />
-      <Paginator first={first} rows={rows} onPageChange={onPageChange}
+      <Paginator first={first} rows={wordsLangService.rows} onPageChange={onPageChange}
                  totalRecords={wordsLangService.langWordsCount}
                  rowsPerPageOptions={settingsService.USROWSPERPAGEOPTIONS}/>
       <DataTable value={wordsLangService.langWords} selectionMode="single">
@@ -143,7 +141,7 @@ export default function WordsLang() {
         <Column style={{width:'80px'}} field="ACCURACY" header="ACCURACY" />
         <Column style={{width:'30%'}} body={actionTemplate} header="ACTIONS" />
       </DataTable>
-      <Paginator first={first} rows={rows} onPageChange={onPageChange}
+      <Paginator first={first} rows={wordsLangService.rows} onPageChange={onPageChange}
                  totalRecords={wordsLangService.langWordsCount}
                  rowsPerPageOptions={settingsService.USROWSPERPAGEOPTIONS}/>
       {showDetail && <WordsLangDetail id={detailId} isDialogOpened={showDetail} handleCloseDialog={() => setShowDetail(false)} />}

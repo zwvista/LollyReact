@@ -36,26 +36,22 @@ export default function PhrasesLang2() {
   const [showDetail, setShowDetail] = useState(false);
   const [detailId, setDetailId] = useState(0);
 
-  const [rows, setRows] = useState(0);
-  const [page, setPage] = useState(1);
-  const [filter, setFilter] = useState('');
-  const [filterType, setFilterType] = useState(0);
   const [reloadCount, onReload] = useReducer(x => x + 1, 0);
   const [, forceUpdate] = useReducer(x => x + 1, 0);
 
   const handleChangePage = (event: any, page: any) => {
-    setPage(page + 1);
+    phrasesLangService.page = page + 1;
     onReload();
   };
 
   const handleRowsPerPageChange = (event: any) => {
-    setPage(1);
-    setRows(event.target.value);
+    phrasesLangService.page = 1;
+    phrasesLangService.rows = event.target.value;
     onReload();
   };
 
   const onFilterChange = (e: SyntheticEvent) => {
-    setFilter((e.nativeEvent.target as HTMLInputElement).value);
+    phrasesLangService.filter = (e.nativeEvent.target as HTMLInputElement).value;
   };
 
   const onFilterKeyPress = (e: KeyboardEvent) => {
@@ -64,7 +60,7 @@ export default function PhrasesLang2() {
   };
 
   const onFilterTypeChange = (e: SelectChangeEvent<number>, child: ReactNode) => {
-    setFilterType(Number(e.target.value));
+    phrasesLangService.filterType = Number(e.target.value);
     onReload();
   };
 
@@ -84,7 +80,7 @@ export default function PhrasesLang2() {
   useEffect(() => {
     (async () => {
       await appService.getData();
-      setRows(settingsService.USROWSPERPAGE);
+      phrasesLangService.rows = settingsService.USROWSPERPAGE;
       onReload();
     })();
   }, []);
@@ -92,7 +88,7 @@ export default function PhrasesLang2() {
   useEffect(() => {
     if (!appService.isInitialized) return;
     (async () => {
-      await phrasesLangService.getData(page, rows, filter, filterType);
+      await phrasesLangService.getData();
       forceUpdate();
     })();
   }, [reloadCount]);
@@ -101,14 +97,14 @@ export default function PhrasesLang2() {
     <div>
       <Toolbar>
         <Select
-          value={filterType}
+          value={phrasesLangService.filterType}
           onChange={onFilterTypeChange}
         >
           {settingsService.phraseFilterTypes.map(row =>
             <MenuItem value={row.value} key={row.value}>{row.label}</MenuItem>
           )}
         </Select>
-        <TextField label="Filter" value={filter}
+        <TextField label="Filter" value={phrasesLangService.filter}
                    onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
         <Button variant="contained" color="primary" onClick={() => showDetailDialog(0)}>
           <span><FontAwesomeIcon icon={faPlus} />Add</span>
@@ -124,8 +120,8 @@ export default function PhrasesLang2() {
               rowsPerPageOptions={settingsService.USROWSPERPAGEOPTIONS}
               colSpan={4}
               count={phrasesLangService.langPhraseCount}
-              rowsPerPage={rows}
-              page={page - 1}
+              rowsPerPage={phrasesLangService.rows}
+              page={phrasesLangService.page - 1}
               SelectProps={{
                 native: true,
               }}
@@ -185,8 +181,8 @@ export default function PhrasesLang2() {
               rowsPerPageOptions={settingsService.USROWSPERPAGEOPTIONS}
               colSpan={4}
               count={phrasesLangService.langPhraseCount}
-              rowsPerPage={rows}
-              page={page - 1}
+              rowsPerPage={phrasesLangService.rows}
+              page={phrasesLangService.page - 1}
               SelectProps={{
                 native: true,
               }}
