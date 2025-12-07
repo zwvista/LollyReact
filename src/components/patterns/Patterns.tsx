@@ -47,8 +47,8 @@ export default function Patterns() {
     onReload();
   };
 
-  const onFilterTypeChange = (e: DropdownChangeEvent) => {
-    patternsService.filterType = e.value;
+  const onFilterScopeChange = (e: DropdownChangeEvent) => {
+    patternsService.filterScope = e.value;
     onReload();
   };
 
@@ -99,7 +99,7 @@ export default function Patterns() {
 
   const startContent = (
     <>
-      <Dropdown options={settingsService.patternFilterTypes} value={patternsService.filterType} onChange={onFilterTypeChange} />
+      <Dropdown options={patternsService.scopeFilters} value={patternsService.filterScope} onChange={onFilterScopeChange} />
       <FloatLabel>
         <InputText id="filter" value={patternsService.filter} onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
         <label htmlFor="filter">Filter</label>

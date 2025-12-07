@@ -48,8 +48,8 @@ export default function WordsTextbook() {
     onReload();
   };
 
-  const onFilterTypeChange = (e: DropdownChangeEvent) => {
-    wordsUnitService.filterType = e.value;
+  const onFilterScopeChange = (e: DropdownChangeEvent) => {
+    wordsUnitService.filterScope = e.value;
     onReload();
   };
 
@@ -124,7 +124,7 @@ export default function WordsTextbook() {
 
   const startContent = (
     <>
-      <Dropdown options={settingsService.wordFilterTypes} value={wordsUnitService.filterType} onChange={onFilterTypeChange} />
+      <Dropdown options={wordsUnitService.scopeFilters} value={wordsUnitService.filterScope} onChange={onFilterScopeChange} />
       <FloatLabel>
         <InputText id="filter" value={wordsUnitService.filter} onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
         <label htmlFor="filter">Filter</label>

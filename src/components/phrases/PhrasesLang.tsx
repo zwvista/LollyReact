@@ -48,8 +48,8 @@ export default function PhrasesLang() {
     onReload();
   };
 
-  const onFilterTypeChange = (e: DropdownChangeEvent) => {
-    phrasesLangService.filterType = e.value;
+  const onFilterScopeChange = (e: DropdownChangeEvent) => {
+    phrasesLangService.filterScope = e.value;
     onReload();
   };
 
@@ -100,7 +100,7 @@ export default function PhrasesLang() {
 
   const startContent = (
     <>
-      <Dropdown options={settingsService.phraseFilterTypes} value={phrasesLangService.filterType} onChange={onFilterTypeChange} />
+      <Dropdown options={phrasesLangService.scopeFilters} value={phrasesLangService.filterScope} onChange={onFilterScopeChange} />
       <FloatLabel>
         <InputText id="filter" value={phrasesLangService.filter} onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
         <label htmlFor="filter">Filter</label>

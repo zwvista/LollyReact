@@ -20,7 +20,7 @@ import { Checkbox } from "primereact/checkbox";
 import { InputSwitch } from "primereact/inputswitch";
 import { ProgressSpinner } from 'primereact/progressspinner';
 
-export default function WordsUnit() {
+export default function WordsUnitDeepSeek() {
   const appService = container.resolve(AppService);
   const wordsUnitService = container.resolve(WordsUnitService);
   const settingsService = container.resolve(SettingsService);
@@ -66,8 +66,8 @@ export default function WordsUnit() {
     onReload();
   }, []);
 
-  const onFilterTypeChange = useCallback((e: DropdownChangeEvent) => {
-    wordsUnitService.filterType = e.value;
+  const onFilterScopeChange = useCallback((e: DropdownChangeEvent) => {
+    wordsUnitService.filterScope = e.value;
     onReload();
   }, []);
 
@@ -317,9 +317,9 @@ export default function WordsUnit() {
       )}
 
       <Dropdown
-        options={settingsService.wordFilterTypes || []}
-        value={wordsUnitService.filterType}
-        onChange={onFilterTypeChange}
+        options={wordsUnitService.scopeFilters}
+        value={wordsUnitService.filterScope}
+        onChange={onFilterScopeChange}
         disabled={isLoading}
         className="w-10rem"
       />
