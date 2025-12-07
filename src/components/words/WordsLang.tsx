@@ -47,8 +47,8 @@ export default function WordsLang() {
     onReload();
   };
 
-  const onFilterScopeChange = (e: DropdownChangeEvent) => {
-    wordsLangService.filterScope = e.value;
+  const onFilterTypeChange = (e: DropdownChangeEvent) => {
+    wordsLangService.filterType = e.value;
     onReload();
   };
 
@@ -117,7 +117,7 @@ export default function WordsLang() {
 
   const startContent = (
     <>
-      <Dropdown options={wordsLangService.scopeFilters} value={wordsLangService.filterScope} onChange={onFilterScopeChange} />
+      <Dropdown options={settingsService.wordFilterTypes} value={wordsLangService.filterType} onChange={onFilterTypeChange} />
       <FloatLabel>
         <InputText id="filter" value={wordsLangService.filter} onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
         <label htmlFor="Filter">Filter</label>

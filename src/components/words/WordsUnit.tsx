@@ -58,8 +58,8 @@ export default function WordsUnit() {
     onReload();
   };
 
-  const onFilterScopeChange = (e: DropdownChangeEvent) => {
-    wordsUnitService.filterScope = e.value;
+  const onFilterTypeChange = (e: DropdownChangeEvent) => {
+    wordsUnitService.filterType = e.value;
     onReload();
   };
 
@@ -149,8 +149,8 @@ export default function WordsUnit() {
       </FloatLabel>
       <Button hidden={!settingsService.selectedVoice} icon="fa fa-volume-up" tooltipOptions={{position: 'top'}}
               tooltip="Speak" onClick={() => settingsService.speak(wordsUnitService.newWord)}/>
-      <Dropdown options={wordsUnitService.scopeFilters} value={wordsUnitService.filterScope}
-                onChange={onFilterScopeChange}/>
+      <Dropdown options={settingsService.wordFilterTypes} value={wordsUnitService.filterType}
+                onChange={onFilterTypeChange}/>
       <FloatLabel>
         <InputText id="filter" value={wordsUnitService.filter} onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
         <label htmlFor="Filter">Filter</label>

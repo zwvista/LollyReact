@@ -17,6 +17,9 @@ import {
 import { PhrasesUnitService } from '../../shared/view-models/wpp/phrases-unit.service';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
+  faArrowDown,
+  faArrowUp,
+  faBook,
   faCopy,
   faEdit,
   faPlus, faSync,
@@ -29,6 +32,7 @@ import { MUnitPhrase } from '../../shared/models/wpp/unit-phrase';
 import { googleString } from '../../shared/common/common';
 import { SyntheticEvent, useEffect, useReducer, useState } from 'react';
 import { KeyboardEvent } from 'react';
+import { ReactNode } from 'react';
 import { AppService } from '../../shared/view-models/misc/app.service';
 import { useNavigate } from "react-router-dom";
 import PhrasesUnitDetail2 from "./PhrasesUnitDetail2";
@@ -54,8 +58,8 @@ export default function PhrasesUnit2() {
     onReload();
   };
 
-  const onFilterScopeChange = (e: SelectChangeEvent<string>) => {
-    phrasesUnitService.filterScope = e.target.value;
+  const onFilterTypeChange = (e: SelectChangeEvent<number>, child: ReactNode) => {
+    phrasesUnitService.filterType = Number(e.target.value);
     onReload();
   };
 
@@ -91,11 +95,11 @@ export default function PhrasesUnit2() {
     <div>
       <Toolbar>
         <Select
-          value={phrasesUnitService.filterScope}
-          onChange={onFilterScopeChange}
+          value={phrasesUnitService.filterType}
+          onChange={onFilterTypeChange}
         >
-          {phrasesUnitService.scopeFilters.map(row =>
-            <MenuItem value={row} key={row}>{row}</MenuItem>
+          {settingsService.phraseFilterTypes.map(row =>
+            <MenuItem value={row.value} key={row.value}>{row.label}</MenuItem>
           )}
         </Select>
         <TextField label="Filter" value={phrasesUnitService.filter}

@@ -23,6 +23,7 @@ import { googleString } from '../../shared/common/common';
 import { MUnitPhrase } from '../../shared/models/wpp/unit-phrase';
 import { SyntheticEvent, useEffect, useReducer, useState } from 'react';
 import { KeyboardEvent } from 'react';
+import { ReactNode } from 'react';
 import { AppService } from '../../shared/view-models/misc/app.service';
 import { useNavigate } from "react-router-dom";
 import PhrasesTextbookDetail2 from "./PhrasesTextbookDetail2";
@@ -59,12 +60,12 @@ export default function PhrasesTextbook2() {
     onReload();
   };
 
-  const onFilterScopeChange = (e: SelectChangeEvent<string>) => {
-    phrasesUnitService.filterScope = e.target.value;
+  const onFilterTypeChange = (e: SelectChangeEvent<number>, child: ReactNode) => {
+    phrasesUnitService.filterType = Number(e.target.value);
     onReload();
   };
 
-  const onTextbookFilterChange = (e: SelectChangeEvent<number>) => {
+  const onTextbookFilterChange = (e: SelectChangeEvent<number>, child: ReactNode) => {
     phrasesUnitService.textbookFilter = Number(e.target.value);
     onReload();
   };
@@ -102,11 +103,11 @@ export default function PhrasesTextbook2() {
     <div>
       <Toolbar>
         <Select
-          value={phrasesUnitService.filterScope}
-          onChange={onFilterScopeChange}
+          value={phrasesUnitService.filterType}
+          onChange={onFilterTypeChange}
         >
-          {phrasesUnitService.scopeFilters.map(row =>
-            <MenuItem value={row} key={row}>{row}</MenuItem>
+          {settingsService.phraseFilterTypes.map(row =>
+            <MenuItem value={row.value} key={row.value}>{row.label}</MenuItem>
           )}
         </Select>
         <TextField label="Filter" value={phrasesUnitService.filter}

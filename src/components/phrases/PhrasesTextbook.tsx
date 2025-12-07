@@ -48,8 +48,8 @@ export default function PhrasesTextbook() {
     onReload();
   };
 
-  const onFilterScopeChange = (e: DropdownChangeEvent) => {
-    phrasesUnitService.filterScope = e.value;
+  const onFilterTypeChange = (e: DropdownChangeEvent) => {
+    phrasesUnitService.filterType = e.value;
     onReload();
   };
 
@@ -105,7 +105,7 @@ export default function PhrasesTextbook() {
 
   const startContent = (
     <>
-      <Dropdown options={phrasesUnitService.scopeFilters} value={phrasesUnitService.filterScope} onChange={onFilterScopeChange} />
+      <Dropdown options={settingsService.phraseFilterTypes} value={phrasesUnitService.filterType} onChange={onFilterTypeChange} />
       <FloatLabel>
         <InputText id="filter" value={phrasesUnitService.filter} onChange={onFilterChange} onKeyPress={onFilterKeyPress}/>
         <label htmlFor="filter">Filter</label>
