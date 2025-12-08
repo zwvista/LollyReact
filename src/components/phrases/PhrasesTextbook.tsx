@@ -74,7 +74,6 @@ export default function PhrasesTextbook() {
   useEffect(() => {
     (async () => {
       await appService.getData();
-      phrasesUnitService.rows = settingsService.USROWSPERPAGE;
       onReload();
     })();
   }, []);

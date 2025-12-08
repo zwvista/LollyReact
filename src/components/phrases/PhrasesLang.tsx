@@ -69,7 +69,6 @@ export default function PhrasesLang() {
   useEffect(() => {
     (async () => {
       await appService.getData();
-      phrasesLangService.rows = settingsService.USROWSPERPAGE;
       onReload();
     })();
   }, []);

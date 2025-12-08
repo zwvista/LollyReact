@@ -68,7 +68,6 @@ export default function Patterns() {
   useEffect(() => {
     (async () => {
       await appService.getData();
-      patternsService.rows = settingsService.USROWSPERPAGE;
       onReload();
     })();
   }, []);

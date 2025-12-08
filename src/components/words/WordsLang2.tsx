@@ -104,7 +104,6 @@ export default function WordsLang2() {
   useEffect(() => {
     (async () => {
       await appService.getData();
-      wordsLangService.rows = settingsService.USROWSPERPAGE;
       onReload();
     })();
   }, []);

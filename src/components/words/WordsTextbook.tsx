@@ -88,7 +88,6 @@ export default function WordsTextbook() {
   useEffect(() => {
     (async () => {
       await appService.getData();
-      wordsUnitService.rows = settingsService.USROWSPERPAGE;
       onReload();
     })();
   }, []);
